@@ -2,6 +2,10 @@ import { pool } from "@/lib/db";
 import { getCurrentUser } from "@/app/lib/auth";
 import { NotificationEmail } from "@/lib/EmailNotification";
 
+const parseNumber = (value) => {
+  return value === "" || value == null ? null : parseFloat(value);
+};
+
 export async function POST(request) {
   let client;
   try {
@@ -33,9 +37,9 @@ export async function POST(request) {
         body.itemname,
         body.itemstatus,
         body.productcode,
-        body.tdprice,
-        body.discountrate,
-        body.discountedvalue,
+        parseNumber(body.tdprice),
+        parseNumber(body.discountrate),
+        parseNumber(body.discountedvalue),
         body.date,
         body.signature,
       ],
