@@ -7,8 +7,6 @@ import ProductDetailsSection from "@/components/FormEditComponents/ProductDetail
 import Alert from "@/components/Alert";
 import EditFormSkeleton from "@/components/skeletons/EditFormSkeleton";
 
-// const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-
 export default function EditPurchaseForm({ params }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);

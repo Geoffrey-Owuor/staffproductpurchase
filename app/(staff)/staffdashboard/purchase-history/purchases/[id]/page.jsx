@@ -7,13 +7,13 @@ import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import PurchaseDetailSkeleton from "@/components/skeletons/PurchaseDetailsSkeleton";
 
-// const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-
 export default function ViewPurchase({ params }) {
   const { id } = use(params);
   const [purchase, setPurchase] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -32,6 +32,20 @@ export default function ViewPurchase({ params }) {
 
     fetchPurchaseDetails();
   }, [id]);
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+    setTimeout(() => {
+      router.push(`/staffdashboard/purchase-history/purchases/${id}/edit`);
+    }, 100); // Short delay to show the spinner
+  };
+
+  const handleCloseClick = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      router.push("/staffdashboard");
+    }, 100); // Short delay to show the spinner
+  };
 
   if (loading) {
     return <PurchaseDetailSkeleton />;
@@ -85,13 +99,18 @@ export default function ViewPurchase({ params }) {
 
         {/* Middle Edit Button */}
         <button
-          onClick={() =>
-            router.push(`/staffdashboard/purchase-history/purchases/${id}/edit`)
-          }
-          className="flex cursor-pointer items-center gap-1 rounded-full bg-red-900 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-red-700"
+          onClick={handleEditClick}
+          disabled={isEditing}
+          className="flex cursor-pointer items-center justify-center gap-1 rounded-full bg-red-900 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-red-700"
         >
-          <Edit className="h-4 w-4" />
-          Edit
+          {isEditing ? (
+            <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+          ) : (
+            <>
+              <Edit className="h-4 w-4" />
+              Edit
+            </>
+          )}
         </button>
 
         <div className="flex items-center">
@@ -193,20 +212,32 @@ export default function ViewPurchase({ params }) {
       {/* Bottom Buttons - Centered */}
       <div className="mt-6 flex justify-center gap-4">
         <button
-          onClick={() =>
-            router.push(`/staffdashboard/purchase-history/purchases/${id}/edit`)
-          }
-          className="inline-flex cursor-pointer items-center gap-1 rounded-full bg-red-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700"
+          onClick={handleEditClick}
+          disabled={isEditing}
+          className="inline-flex cursor-pointer items-center justify-center gap-1 rounded-full bg-red-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700"
         >
-          <Edit className="h-4 w-4" />
-          Edit
+          {isEditing ? (
+            <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+          ) : (
+            <>
+              <Edit className="h-4 w-4" />
+              Edit
+            </>
+          )}
         </button>
         <button
-          onClick={() => router.push("/staffdashboard")}
-          className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
+          onClick={handleCloseClick}
+          disabled={isClosing}
+          className="inline-flex cursor-pointer items-center justify-center gap-1 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
         >
-          <X className="h-4 w-4" />
-          Close
+          {isClosing ? (
+            <div className="h-4 w-4 animate-spin rounded-full border-2 border-gray-700 border-t-transparent"></div>
+          ) : (
+            <>
+              <X className="h-4 w-4" />
+              Close
+            </>
+          )}
         </button>
       </div>
     </div>

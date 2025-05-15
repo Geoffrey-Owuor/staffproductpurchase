@@ -15,6 +15,7 @@ const Header = ({ isSidebarOpen, toggleSidebar }) => {
   const router = useRouter();
   const [userName, setUserName] = useState("User"); // Default to "User"
   const [isScrolled, setIsScrolled] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -44,6 +45,7 @@ const Header = ({ isSidebarOpen, toggleSidebar }) => {
   }, []);
 
   const handleLogout = async () => {
+    setLoggingOut(true);
     try {
       const response = await fetch("/api/logout", {
         method: "POST",
@@ -89,7 +91,7 @@ const Header = ({ isSidebarOpen, toggleSidebar }) => {
           href="/staffdashboard/new-purchase"
           className={`flex items-center rounded-full bg-red-100 px-3 py-2 transition-colors hover:bg-red-200`}
         >
-          <PlusCircle className="mr-2 h-5 w-5" />
+          <PlusCircle className="mr-2 h-4 w-4" />
           <span className="text-sm">New Purchase</span>
         </Link>
 
@@ -97,9 +99,19 @@ const Header = ({ isSidebarOpen, toggleSidebar }) => {
         <button
           className="flex cursor-pointer items-center rounded-full bg-red-100 px-3 py-2 transition-colors hover:bg-red-200"
           onClick={handleLogout}
+          disabled={loggingOut}
         >
-          <LogOut className="mr-2 h-5 w-5" />
-          <span className="text-sm">Logout</span>
+          {loggingOut ? (
+            <>
+              <div className="mr-2 h-3 w-3 animate-spin rounded-full border border-black border-t-transparent"></div>
+              <span className="text-sm">Logging Out...</span>
+            </>
+          ) : (
+            <>
+              <LogOut className="mr-2 h-4 w-4" />
+              <span className="text-sm">Logout</span>
+            </>
+          )}
         </button>
       </div>
     </header>

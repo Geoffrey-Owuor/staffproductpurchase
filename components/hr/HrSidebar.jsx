@@ -6,11 +6,14 @@ import Image from "next/image";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { usePathname } from "next/navigation";
 
 export default function HrSidebar({ isOpen }) {
+  const [loggingOut, setLoggingOut] = useState(false);
   const router = useRouter();
   const handleLogout = async () => {
+    setLoggingOut(true);
     try {
       const response = await fetch("/api/logout", {
         method: "POST",
@@ -86,10 +89,20 @@ export default function HrSidebar({ isOpen }) {
       <div className="p-3">
         <button
           onClick={handleLogout}
+          disabled={loggingOut}
           className="flex w-full cursor-pointer items-center gap-2 rounded-2xl p-3 text-white transition-colors hover:bg-red-700"
         >
-          <LogOutIcon className="h-4 w-4" />
-          Logout
+          {loggingOut ? (
+            <>
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+              Logging Out...
+            </>
+          ) : (
+            <>
+              <LogOutIcon className="h-4 w-4" />
+              Logout
+            </>
+          )}
         </button>
       </div>
     </div>

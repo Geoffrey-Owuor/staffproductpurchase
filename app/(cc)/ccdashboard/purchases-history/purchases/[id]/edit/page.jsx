@@ -9,8 +9,6 @@ import HRApprovalSection from "@/components/FormEditComponents/HrApprovalSection
 import CreditControlSection from "@/components/FormEditComponents/CreditControlSection";
 import EditFormSkeleton from "@/components/skeletons/EditFormSkeleton";
 
-// const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-
 export default function EditPurchaseForm({ params }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);

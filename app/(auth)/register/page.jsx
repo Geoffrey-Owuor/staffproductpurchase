@@ -131,7 +131,16 @@ export default function RegisterPage() {
             disabled={redirect}
             className={`w-full rounded-xl px-4 py-3 font-medium text-white transition duration-200 ${redirect ? "cursor-not-allowed bg-red-400" : "cursor-pointer bg-red-600 hover:bg-red-700"}`}
           >
-            {redirect ? "Redirecting..." : "Register"}
+            {redirect ? (
+              <>
+                <div className="flex items-center justify-center gap-2">
+                  Redirecting...
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                </div>
+              </>
+            ) : (
+              <>Register</>
+            )}
           </button>
         </form>
 
