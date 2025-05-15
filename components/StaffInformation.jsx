@@ -8,16 +8,16 @@ const StaffInformation = ({ formData, handleChange }) => {
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           <div>
             <label
-              htmlFor="staffName"
+              htmlFor="staffname"
               className="mb-2 block font-medium text-red-900"
             >
               Staff Name
             </label>
             <input
               type="text"
-              id="staffName"
-              name="staffName"
-              value={formData.staffName}
+              id="staffname"
+              name="staffname"
+              value={formData.staffname}
               onChange={handleChange}
               className="w-full rounded-xl border border-red-200 p-3 focus:border-red-500 focus:ring-2 focus:ring-red-200"
               required
@@ -26,16 +26,16 @@ const StaffInformation = ({ formData, handleChange }) => {
 
           <div>
             <label
-              htmlFor="payrollNo"
+              htmlFor="payrollno"
               className="mb-2 block font-medium text-red-900"
             >
               Payroll No
             </label>
             <input
               type="text"
-              id="payrollNo"
-              name="payrollNo"
-              value={formData.payrollNo}
+              id="payrollno"
+              name="payrollno"
+              value={formData.payrollno}
               onChange={handleChange}
               className="w-full rounded-xl border border-red-200 p-3 focus:border-red-500 focus:ring-2 focus:ring-red-200"
               required

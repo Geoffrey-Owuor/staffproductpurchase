@@ -7,17 +7,17 @@ import Alert from "@/components/Alert";
 export default function NewPurchase() {
   const [formData, setFormData] = useState({
     // Staff Information
-    staffName: "",
-    payrollNo: "",
+    staffname: "",
+    payrollno: "",
     department: "",
 
     // Product & Pricing
-    itemName: "",
-    itemStatus: "",
-    productCode: "",
-    tdPrice: "",
-    discountRate: "",
-    discountedValue: "",
+    itemname: "",
+    itemstatus: "",
+    productcode: "",
+    tdprice: "",
+    discountrate: "",
+    discountedvalue: "",
     date: "",
     signature: "",
   });
@@ -36,22 +36,22 @@ export default function NewPurchase() {
   };
 
   useEffect(() => {
-    const tdPrice = parseFloat(formData.tdPrice);
-    const discountRate = parseFloat(formData.discountRate);
+    const tdprice = parseFloat(formData.tdprice);
+    const discountrate = parseFloat(formData.discountrate);
 
-    if (!isNaN(tdPrice) && !isNaN(discountRate)) {
-      const discountedValue = tdPrice * (1 - discountRate / 100);
+    if (!isNaN(tdprice) && !isNaN(discountrate)) {
+      const discountedvalue = tdprice * (1 - discountrate / 100);
       setFormData((prev) => ({
         ...prev,
-        discountedValue: discountedValue.toFixed(2),
+        discountedvalue: discountedvalue.toFixed(2),
       }));
     } else {
       setFormData((prev) => ({
         ...prev,
-        discountedValue: "",
+        discountedvalue: "",
       }));
     }
-  }, [formData.tdPrice, formData.discountRate]);
+  }, [formData.tdprice, formData.discountrate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -79,15 +79,15 @@ export default function NewPurchase() {
 
       //Reset the form
       setFormData({
-        staffName: "",
-        payrollNo: "",
+        staffname: "",
+        payrollno: "",
         department: "",
-        itemName: "",
-        itemStatus: "",
-        productCode: "",
-        tdPrice: "",
-        discountRate: "",
-        discountedValue: "",
+        itemname: "",
+        itemstatus: "",
+        productcode: "",
+        tdprice: "",
+        discountrate: "",
+        discountedvalue: "",
         date: "",
         signature: "",
       });

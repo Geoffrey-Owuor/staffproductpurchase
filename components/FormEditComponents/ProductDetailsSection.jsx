@@ -7,16 +7,16 @@ export default function ProductDetailsSection({ formData, handleChange }) {
       <div className="grid grid-cols-1 gap-6 bg-white p-6 md:grid-cols-2">
         <div className="md:col-span-2">
           <label
-            htmlFor="itemName"
+            htmlFor="itemname"
             className="mb-1 block text-sm font-medium text-gray-700"
           >
             Item Name
           </label>
           <input
             type="text"
-            id="itemName"
-            name="itemName"
-            value={formData.itemName}
+            id="itemname"
+            name="itemname"
+            value={formData.itemname}
             onChange={handleChange}
             className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
             required
@@ -25,15 +25,15 @@ export default function ProductDetailsSection({ formData, handleChange }) {
 
         <div>
           <label
-            htmlFor="itemStatus"
+            htmlFor="itemstatus"
             className="mb-1 block text-sm font-medium text-gray-700"
           >
             Status
           </label>
           <select
-            id="itemStatus"
-            name="itemStatus"
-            value={formData.itemStatus}
+            id="itemstatus"
+            name="itemstatus"
+            value={formData.itemstatus}
             onChange={handleChange}
             className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
             required
@@ -46,16 +46,16 @@ export default function ProductDetailsSection({ formData, handleChange }) {
 
         <div>
           <label
-            htmlFor="productCode"
+            htmlFor="productcode"
             className="mb-1 block text-sm font-medium text-gray-700"
           >
             Product Code
           </label>
           <input
             type="text"
-            id="productCode"
-            name="productCode"
-            value={formData.productCode}
+            id="productcode"
+            name="productcode"
+            value={formData.productcode}
             onChange={handleChange}
             className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
             required
@@ -64,16 +64,16 @@ export default function ProductDetailsSection({ formData, handleChange }) {
 
         <div>
           <label
-            htmlFor="tdPrice"
+            htmlFor="tdprice"
             className="mb-1 block text-sm font-medium text-gray-700"
           >
             TD Price (Ksh)
           </label>
           <input
             type="number"
-            id="tdPrice"
-            name="tdPrice"
-            value={formData.tdPrice}
+            id="tdprice"
+            name="tdprice"
+            value={formData.tdprice}
             onChange={handleChange}
             step="0.01"
             min="0"
@@ -84,16 +84,16 @@ export default function ProductDetailsSection({ formData, handleChange }) {
 
         <div>
           <label
-            htmlFor="discountRate"
+            htmlFor="discountrate"
             className="mb-1 block text-sm font-medium text-gray-700"
           >
             Discount Rate (%)
           </label>
           <input
             type="number"
-            id="discountRate"
-            name="discountRate"
-            value={formData.discountRate}
+            id="discountrate"
+            name="discountrate"
+            value={formData.discountrate}
             onChange={handleChange}
             step="0.01"
             min="0"
@@ -105,16 +105,16 @@ export default function ProductDetailsSection({ formData, handleChange }) {
 
         <div>
           <label
-            htmlFor="discountedValue"
+            htmlFor="discountedvalue"
             className="mb-1 block text-sm font-medium text-gray-700"
           >
             Discounted Value (Ksh)
           </label>
           <input
             type="number"
-            id="discountedValue"
-            name="discountedValue"
-            value={formData.discountedValue}
+            id="discountedvalue"
+            name="discountedvalue"
+            value={formData.discountedvalue}
             step="0.01"
             min="0"
             readOnly

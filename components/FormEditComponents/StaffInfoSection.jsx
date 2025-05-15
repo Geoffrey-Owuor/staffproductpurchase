@@ -7,16 +7,16 @@ export default function StaffInfoSection({ formData, handleChange }) {
       <div className="grid grid-cols-1 gap-6 bg-white p-6 md:grid-cols-3">
         <div>
           <label
-            htmlFor="staffName"
+            htmlFor="staffname"
             className="mb-1 block text-sm font-medium text-gray-700"
           >
             Staff Name
           </label>
           <input
             type="text"
-            id="staffName"
-            name="staffName"
-            value={formData.staffName}
+            id="staffname"
+            name="staffname"
+            value={formData.staffname}
             onChange={handleChange}
             className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
             required
@@ -24,16 +24,16 @@ export default function StaffInfoSection({ formData, handleChange }) {
         </div>
         <div>
           <label
-            htmlFor="payrollNo"
+            htmlFor="payrollno"
             className="mb-1 block text-sm font-medium text-gray-700"
           >
             Payroll No
           </label>
           <input
             type="text"
-            id="payrollNo"
-            name="payrollNo"
-            value={formData.payrollNo}
+            id="payrollno"
+            name="payrollno"
+            value={formData.payrollno}
             onChange={handleChange}
             className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
             required

@@ -1,34 +1,48 @@
 // api/bi/bitablepurchases/route.js
-import pool from "@/lib/db";
+import { pool } from "@/lib/db";
 
 export async function GET(request) {
-  let connection;
+  let client;
   try {
     const { searchParams } = new URL(request.url);
     const searchQuery = searchParams.get("search") || "";
 
-    connection = await pool.getConnection();
+    client = await pool.connect();
 
-    let query = `SELECT id, itemName, itemStatus, productCode, 
-                tdPrice, discountedValue, date, staffName, payrollNo, BI_Approval 
-         FROM purchasesInfo`;
+    // Base query with parameterized input
+    let query = {
+      text: `SELECT id, itemname, itemstatus, productcode, 
+             tdprice, discountedvalue, date, staffname, payrollno, bi_approval 
+             FROM purchasesinfo`,
+      values: [],
+    };
 
-    let params = [];
-
+    // Add search filter if provided
     if (searchQuery) {
-      query += ` WHERE staffName LIKE ?`;
-      params.push(`%${searchQuery}%`);
+      query.text += ` WHERE staffname ILIKE $1`;
+      query.values.push(`%${searchQuery}%`);
     }
 
-    query += ` ORDER BY createdAt DESC`;
+    // Add sorting
+    query.text += ` ORDER BY createdat DESC`;
 
-    const [rows] = await connection.execute(query, params);
+    // Execute query
+    const { rows } = await client.query(query);
 
-    return Response.json(rows || [], { status: 200 });
+    return Response.json(rows || [], {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+        "Cache-Control": "no-store, max-age=0",
+      },
+    });
   } catch (error) {
     console.error("API Error:", error);
-    return Response.json("Error Displaying the Data", { status: 400 });
+    return Response.json(
+      { error: "Error displaying the data", details: error.message },
+      { status: 500 },
+    );
   } finally {
-    if (connection) connection.release();
+    if (client) client.release();
   }
 }

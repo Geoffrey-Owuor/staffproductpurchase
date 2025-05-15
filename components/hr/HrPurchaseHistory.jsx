@@ -136,34 +136,34 @@ export default function HrPurchaseHistory() {
                 purchases.map((purchase) => (
                   <tr key={purchase.id} className="hover:bg-red-50">
                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
-                      {purchase.itemName}
+                      {purchase.itemname}
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
-                      {purchase.itemStatus}
+                      {purchase.itemstatus}
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
-                      {purchase.productCode}
+                      {purchase.productcode}
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
-                      Ksh {Number(purchase.tdPrice).toFixed(2)}
+                      Ksh {Number(purchase.tdprice).toFixed(2)}
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
-                      {purchase.staffName}
+                      {purchase.staffname}
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
-                      {purchase.payrollNo}
+                      {purchase.payrollno}
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap">
                       <span
                         className={`inline-flex rounded-full px-2 py-1 text-xs leading-5 font-semibold ${
-                          purchase.HR_Approval === "approved"
+                          purchase.hr_approval === "approved"
                             ? "bg-green-100 text-green-800"
-                            : purchase.HR_Approval === "declined"
+                            : purchase.hr_approval === "declined"
                               ? "bg-red-100 text-red-800"
                               : "bg-yellow-100 text-yellow-800"
                         }`}
                       >
-                        {purchase.HR_Approval}
+                        {purchase.hr_approval}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">

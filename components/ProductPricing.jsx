@@ -33,8 +33,8 @@ const ProductPricing = ({ formData, handleChange }) => {
               <td className="border border-red-200 p-2">
                 <input
                   type="text"
-                  name="itemName"
-                  value={formData.itemName}
+                  name="itemname"
+                  value={formData.itemname}
                   onChange={handleChange}
                   className="w-full rounded-xl border border-red-200 p-2 focus:border-red-500 focus:ring-2 focus:ring-red-200"
                   required
@@ -42,8 +42,8 @@ const ProductPricing = ({ formData, handleChange }) => {
               </td>
               <td className="border border-red-200 p-2">
                 <select
-                  name="itemStatus"
-                  value={formData.itemStatus}
+                  name="itemstatus"
+                  value={formData.itemstatus}
                   onChange={handleChange}
                   className="w-full rounded-xl border border-red-200 p-2 focus:border-red-500 focus:ring-2 focus:ring-red-200"
                   required
@@ -56,8 +56,8 @@ const ProductPricing = ({ formData, handleChange }) => {
               <td className="border border-red-200 p-2">
                 <input
                   type="text"
-                  name="productCode"
-                  value={formData.productCode}
+                  name="productcode"
+                  value={formData.productcode}
                   onChange={handleChange}
                   className="w-full rounded-xl border border-red-200 p-2 focus:border-red-500 focus:ring-2 focus:ring-red-200"
                 />
@@ -66,8 +66,8 @@ const ProductPricing = ({ formData, handleChange }) => {
                 <input
                   type="number"
                   step="0.01"
-                  name="tdPrice"
-                  value={formData.tdPrice}
+                  name="tdprice"
+                  value={formData.tdprice}
                   onChange={handleChange}
                   className="w-full rounded-xl border border-red-200 p-2 focus:border-red-500 focus:ring-2 focus:ring-red-200"
                 />
@@ -76,8 +76,8 @@ const ProductPricing = ({ formData, handleChange }) => {
                 <input
                   type="number"
                   step="0.01"
-                  name="discountRate"
-                  value={formData.discountRate}
+                  name="discountrate"
+                  value={formData.discountrate}
                   onChange={handleChange}
                   className="w-full rounded-xl border border-red-200 p-2 focus:border-red-500 focus:ring-2 focus:ring-red-200"
                 />
@@ -86,8 +86,8 @@ const ProductPricing = ({ formData, handleChange }) => {
                 <input
                   type="number"
                   step="0.01"
-                  name="discountedValue"
-                  value={formData.discountedValue}
+                  name="discountedvalue"
+                  value={formData.discountedvalue}
                   readOnly
                   className="w-full rounded-xl border border-red-200 bg-gray-100 p-2 focus:border-red-500 focus:ring-2 focus:ring-red-200"
                 />

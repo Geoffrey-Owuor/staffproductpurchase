@@ -1,34 +1,38 @@
-import pool from "@/lib/db";
+// api/auth/reset-password/route.js
+import { pool } from "@/lib/db";
 import { v4 as uuidv4 } from "uuid";
 import { sendPasswordResetEmail } from "@/lib/email";
 
 export async function POST(request) {
-  const { email } = await request.json();
-  const conn = await pool.getConnection();
-
+  let client;
   try {
-    const [users] = await conn.execute("SELECT id FROM users WHERE email = ?", [
-      email,
-    ]);
+    const { email } = await request.json();
+    client = await pool.connect();
 
-    if (users.length === 0) {
+    const { rows } = await client.query(
+      "SELECT id FROM users WHERE email = $1",
+      [email],
+    );
+
+    if (rows.length === 0) {
+      // Respond as if email was found to avoid user enumeration
       return Response.json(
         { message: "A reset link was sent to this email if it exists" },
         { status: 200 },
       );
     }
 
-    //Generate a secure token of 32 characters
+    // Generate a secure token
     const token = uuidv4();
-    const expiry = new Date(Date.now() + 3600000); //1 day expiry
+    const expiry = new Date(Date.now() + 3600000); // 1 hour expiry
 
-    //Store generated token in the database
-    await conn.execute(
-      "UPDATE users SET reset_token = ?, reset_token_expiry = ? WHERE id = ?",
-      [token, expiry, users[0].id],
+    // Store the reset token and expiry in the database
+    await client.query(
+      `UPDATE users SET reset_token = $1, reset_token_expiry = $2 WHERE id = $3`,
+      [token, expiry, rows[0].id],
     );
 
-    //Send Email
+    // Send password reset email
     await sendPasswordResetEmail(email, token);
 
     return Response.json({ message: "Reset link sent if email exists" });
@@ -39,6 +43,6 @@ export async function POST(request) {
       { status: 500 },
     );
   } finally {
-    conn.release();
+    if (client) client.release();
   }
 }

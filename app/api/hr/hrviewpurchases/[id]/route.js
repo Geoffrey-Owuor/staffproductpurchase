@@ -1,16 +1,16 @@
-import pool from "@/lib/db";
+// api/hr/hrviewpurchases/[id]/route.js
+import { pool } from "@/lib/db";
 import { getCurrentUser } from "@/app/lib/auth";
 import { NotificationEmail } from "@/lib/EmailNotification";
 
 export async function GET(request, { params }) {
-  let connection;
-
+  let client;
   try {
     const { id } = await params;
-    connection = await pool.getConnection();
+    client = await pool.connect();
 
-    const [rows] = await connection.execute(
-      `SELECT * FROM purchasesInfo WHERE id= ?`,
+    const { rows } = await client.query(
+      `SELECT * FROM purchasesinfo WHERE id = $1`,
       [id],
     );
 
@@ -22,106 +22,107 @@ export async function GET(request, { params }) {
     console.error("Failed: ", error);
     return Response.json({ error: error.message }, { status: 500 });
   } finally {
-    if (connection) connection.release();
+    if (client) client.release();
   }
 }
 
 export async function PUT(request, { params }) {
-  let connection;
+  let client;
   try {
     const user = await getCurrentUser();
 
     if (!user) {
-      return Response.json("No User Found", { status: 200 });
+      return Response.json("No User Found", { status: 401 });
     }
+
     const { id } = await params;
     const {
-      staffName,
-      payrollNo,
+      staffname,
+      payrollno,
       department,
-      itemName,
-      itemStatus,
-      productCode,
-      tdPrice,
-      discountRate,
-      discountedValue,
+      itemname,
+      itemstatus,
+      productcode,
+      tdprice,
+      discountrate,
+      discountedvalue,
       date,
       signature,
       is_employed,
       on_probation,
       hr_comments,
-      HR_Approval,
+      hr_approval,
       hr_approver_name,
       hr_approval_date,
       hr_signature,
     } = await request.json();
-    connection = await pool.getConnection();
 
-    const [result] = await connection.execute(
-      `UPDATE purchasesInfo 
+    client = await pool.connect();
+
+    const { rowCount } = await client.query(
+      `UPDATE purchasesinfo 
        SET 
-       staffName = ?,
-       payrollNo = ?,
-       department = ?,
-       itemName = ?, 
-       itemStatus = ?,
-       productCode = ?,
-       tdPrice = ?,
-       discountRate= ?,
-       discountedValue = ?,
-       date = ?,
-       signature = ?,
-       is_employed = ?,
-       on_probation = ?,
-       hr_comments = ?,
-       HR_Approval = ?,
-       hr_approver_name = ?,
-       hr_approval_date = ?,
-       hr_signature = ?,
-       hr_approver_id = ?
-       WHERE id = ? 
-       `,
+         staffname = $1,
+         payrollno = $2,
+         department = $3,
+         itemname = $4, 
+         itemstatus = $5,
+         productcode = $6,
+         tdprice = $7,
+         discountrate = $8,
+         discountedvalue = $9,
+         date = $10,
+         signature = $11,
+         is_employed = $12,
+         on_probation = $13,
+         hr_comments = $14,
+         hr_approval = $15,
+         hr_approver_name = $16,
+         hr_approval_date = $17,
+         hr_signature = $18,
+         hr_approver_id = $19
+       WHERE id = $20`,
       [
-        staffName || null,
-        payrollNo || null,
+        staffname || null,
+        payrollno || null,
         department || null,
-        itemName || null,
-        itemStatus || null,
-        productCode || null,
-        tdPrice || null,
-        discountRate || null,
-        discountedValue || null,
+        itemname || null,
+        itemstatus || null,
+        productcode || null,
+        tdprice || null,
+        discountrate || null,
+        discountedvalue || null,
         date || null,
         signature || null,
         is_employed || null,
         on_probation || null,
         hr_comments || null,
-        HR_Approval || null,
+        hr_approval || null,
         hr_approver_name || null,
         hr_approval_date || null,
         hr_signature || null,
         user.id,
-        id || null,
+        id,
       ],
     );
 
-    if (result.affectedRows === 0) {
+    if (rowCount === 0) {
       return Response.json({ message: "Purchase not found" }, { status: 404 });
     }
 
     // Send notification email after successful update
-    // const EmailAddress = "cc@hotpoint.com";
+    // const emailaddress = "cc@hotpoint.com";
     // const approvalLink = `${process.env.NEXT_PUBLIC_BASE_URL}/ccdashboard`;
 
     // await NotificationEmail({
-    //   staffName: staffName,
-    //   payrollNo: payrollNo,
-    //   itemName: itemName,
-    //   itemStatus: itemStatus,
-    //   tdPrice: tdPrice,
-    //   discountedValue: discountedValue,
+    //   staffname: staffname,
+    //   payrollno: payrollno,
+    //   itemname: itemname,
+    //   itemstatus: itemstatus,
+    //   tdprice: tdprice,
+    //   discountedvalue: discountedvalue,
     //   approvalLink: approvalLink,
-    //   EmailAddress: EmailAddress,
+    //   emailaddress: emailaddress,
     // });
 
     return Response.json(
@@ -135,6 +136,6 @@ export async function PUT(request, { params }) {
       { status: 500 },
     );
   } finally {
-    if (connection) connection.release();
+    if (client) client.release();
   }
 }

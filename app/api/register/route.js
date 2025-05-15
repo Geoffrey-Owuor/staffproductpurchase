@@ -1,5 +1,5 @@
 import { hashPassword, createSession } from "@/app/lib/auth";
-import pool from "@/lib/db";
+import { pool } from "@/lib/db";
 
 const getRoleFromEmail = (email) => {
   // Ensure email ends with @hotpoint.co.ke
@@ -29,18 +29,19 @@ const getRoleFromEmail = (email) => {
 };
 
 export async function POST(request) {
+  let client;
   try {
     const { name, email, password } = await request.json();
 
-    const conn = await pool.getConnection();
+    client = await pool.connect();
 
-    const [existingUsers] = await conn.execute(
-      "SELECT id FROM users WHERE email = ? ",
+    // Check for existing user
+    const { rows: existingUsers } = await client.query(
+      "SELECT id FROM users WHERE email = $1",
       [email],
     );
 
     if (existingUsers.length > 0) {
-      conn.release();
       return Response.json(
         { success: false, message: "Email already registered" },
         { status: 400 },
@@ -48,36 +49,42 @@ export async function POST(request) {
     }
 
     const role = getRoleFromEmail(email);
-
     const hashedPassword = await hashPassword(password);
 
-    const [userResult] = await conn.execute(
-      `INSERT INTO users (name, email, password, role) VALUES(?,?,?,?)`,
+    // Insert new user
+    const { rows: userResult } = await client.query(
+      `INSERT INTO users (name, email, password, role) 
+       VALUES($1, $2, $3, $4) 
+       RETURNING id`,
       [name, email, hashedPassword, role],
     );
 
-    await createSession(userResult.insertId, role);
-
-    conn.release();
+    await createSession(userResult[0].id, role);
 
     return Response.json(
-      { success: true, userId: userResult.insertId, role: role },
+      {
+        success: true,
+        userId: userResult[0].id,
+        role: role,
+      },
       { status: 201 },
     );
   } catch (error) {
-    console.error("Registration error:", error); // Optional but useful for debugging
+    console.error("Registration error:", error);
 
-    if (error.code === "ER_DUP_ENTRY") {
+    if (error.code === "23505") {
+      // PostgreSQL duplicate key error code
       return Response.json(
         { success: false, message: "Email already registered" },
         { status: 400 },
       );
     }
 
-    // 🔴 Always return a fallback response
     return Response.json(
       { success: false, message: "Server error. Please try again." },
       { status: 500 },
     );
+  } finally {
+    if (client) client.release();
   }
 }

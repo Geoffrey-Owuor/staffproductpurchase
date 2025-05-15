@@ -1,83 +1,87 @@
-import pool from "@/lib/db";
+import { pool } from "@/lib/db";
 
 export async function GET(request, { params }) {
-  let connection;
+  let client;
 
   try {
     const { id } = await params;
-    connection = await pool.getConnection();
+    client = await pool.connect();
 
-    const [rows] = await connection.execute(
-      `SELECT * FROM purchasesInfo WHERE id= ?`,
+    const { rows } = await client.query(
+      `SELECT * FROM purchasesinfo WHERE id = $1`,
       [id],
     );
 
     if (rows.length === 0) {
       return Response.json({ error: "Purchase not found" }, { status: 404 });
     }
+
     return Response.json(rows[0]);
   } catch (error) {
     console.error("Failed: ", error);
     return Response.json({ error: error.message }, { status: 500 });
   } finally {
-    if (connection) connection.release();
+    if (client) client.release();
   }
 }
 
 export async function PUT(request, { params }) {
-  let connection;
+  let client;
+
   try {
     const { id } = await params;
     const {
-      staffName,
-      payrollNo,
+      staffname,
+      payrollno,
       department,
-      itemName,
-      itemStatus,
-      productCode,
-      tdPrice,
-      discountRate,
-      discountedValue,
+      itemname,
+      itemstatus,
+      productcode,
+      tdprice,
+      discountrate,
+      discountedvalue,
       date,
       signature,
     } = await request.json();
-    connection = await pool.getConnection();
 
-    const [result] = await connection.execute(
-      `UPDATE purchasesInfo 
-       SET 
-       staffName = ?,
-       payrollNo = ?,
-       department = ?,
-       itemName = ?, 
-       itemStatus = ?,
-       productCode = ?,
-       tdPrice = ?,
-       discountRate= ?,
-       discountedValue = ?,
-       date = ?,
-       signature = ?
-       WHERE id = ? 
-       `,
+    client = await pool.connect();
+
+    const { rowCount } = await client.query(
+      `
+      UPDATE purchasesinfo SET 
+        staffname = $1,
+        payrollno = $2,
+        department = $3,
+        itemname = $4,
+        itemstatus = $5,
+        productcode = $6,
+        tdprice = $7,
+        discountrate = $8,
+        discountedvalue = $9,
+        date = $10,
+        signature = $11
+      WHERE id = $12
+      `,
       [
-        staffName || null,
-        payrollNo || null,
+        staffname || null,
+        payrollno || null,
         department || null,
-        itemName || null,
-        itemStatus || null,
-        productCode || null,
-        tdPrice || null,
-        discountRate || null,
-        discountedValue || null,
+        itemname || null,
+        itemstatus || null,
+        productcode || null,
+        tdprice || null,
+        discountrate || null,
+        discountedvalue || null,
         date || null,
         signature || null,
-        id || null,
+        id,
       ],
     );
 
-    if (result.affectedRows === 0) {
+    if (rowCount === 0) {
       return Response.json({ message: "Purchase not found" }, { status: 404 });
     }
+
     return Response.json(
       { message: "Purchase Updated Successfully" },
       { status: 200 },
@@ -89,6 +93,6 @@ export async function PUT(request, { params }) {
       { status: 500 },
     );
   } finally {
-    if (connection) connection.release();
+    if (client) client.release();
   }
 }

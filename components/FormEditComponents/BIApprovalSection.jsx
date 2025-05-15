@@ -183,15 +183,15 @@ export default function BIApprovalSection({ formData, handleChange }) {
           </div>
           <div>
             <label
-              htmlFor="BI_Approval"
+              htmlFor="bi_approval"
               className="mb-1 block text-sm font-medium text-gray-700"
             >
               BI Approval
             </label>
             <select
-              id="BI_Approval"
-              name="BI_Approval"
-              value={formData.BI_Approval}
+              id="bi_approval"
+              name="bi_approval"
+              value={formData.bi_approval}
               onChange={handleChange}
               className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500"
             >

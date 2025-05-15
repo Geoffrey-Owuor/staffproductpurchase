@@ -1,19 +1,21 @@
+// api/auth/logout/route.js
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import pool from "@/lib/db";
+import { pool } from "@/lib/db";
 
 export async function POST() {
   const cookieStore = await cookies();
   const sessionToken = cookieStore.get("session_token")?.value;
 
+  let client;
   if (sessionToken) {
-    const conn = await pool.getConnection();
+    client = await pool.connect();
     try {
-      await conn.execute("DELETE FROM sessions WHERE session_token = ?", [
+      await client.query("DELETE FROM sessions WHERE session_token = $1", [
         sessionToken,
       ]);
     } finally {
-      conn.release();
+      client.release();
     }
   }
 

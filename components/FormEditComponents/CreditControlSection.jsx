@@ -83,15 +83,15 @@ export default function CreditControlSection({ formData, handleChange }) {
 
         <div>
           <label
-            htmlFor="CC_Approval"
+            htmlFor="cc_approval"
             className="mb-1 block text-sm font-medium text-gray-700"
           >
             Approval Status
           </label>
           <select
-            id="CC_Approval"
-            name="CC_Approval"
-            value={formData.CC_Approval}
+            id="cc_approval"
+            name="cc_approval"
+            value={formData.cc_approval}
             onChange={handleChange}
             className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500"
           >

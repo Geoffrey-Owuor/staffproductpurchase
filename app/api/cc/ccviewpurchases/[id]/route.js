@@ -1,16 +1,16 @@
-import pool from "@/lib/db";
+// api/cc/ccviewpurchases/[id]/route.js
+import { pool } from "@/lib/db";
 import { getCurrentUser } from "@/app/lib/auth";
 import { NotificationEmail } from "@/lib/EmailNotification";
 
 export async function GET(request, { params }) {
-  let connection;
-
+  let client;
   try {
     const { id } = await params;
-    connection = await pool.getConnection();
+    client = await pool.connect();
 
-    const [rows] = await connection.execute(
-      `SELECT * FROM purchasesInfo WHERE id= ?`,
+    const { rows } = await client.query(
+      `SELECT * FROM purchasesinfo WHERE id = $1`,
       [id],
     );
 
@@ -22,35 +22,36 @@ export async function GET(request, { params }) {
     console.error("Failed: ", error);
     return Response.json({ error: error.message }, { status: 500 });
   } finally {
-    if (connection) connection.release();
+    if (client) client.release();
   }
 }
 
 export async function PUT(request, { params }) {
-  let connection;
+  let client;
   try {
     const user = await getCurrentUser();
 
     if (!user) {
-      return Response.json("No User Found", { status: 200 });
+      return Response.json("No User Found", { status: 401 });
     }
+
     const { id } = await params;
     const {
-      staffName,
-      payrollNo,
+      staffname,
+      payrollno,
       department,
-      itemName,
-      itemStatus,
-      productCode,
-      tdPrice,
-      discountRate,
-      discountedValue,
+      itemname,
+      itemstatus,
+      productcode,
+      tdprice,
+      discountrate,
+      discountedvalue,
       date,
       signature,
       is_employed,
       on_probation,
       hr_comments,
-      HR_Approval,
+      hr_approval,
       hr_approver_name,
       hr_approval_date,
       hr_signature,
@@ -58,59 +59,59 @@ export async function PUT(request, { params }) {
       one_third_rule,
       purchase_history_comments,
       pending_invoices,
-      CC_Approval,
+      cc_approval,
       cc_signature,
       cc_approval_date,
     } = await request.json();
-    connection = await pool.getConnection();
 
-    const [result] = await connection.execute(
-      `UPDATE purchasesInfo 
+    client = await pool.connect();
+
+    const { rowCount } = await client.query(
+      `UPDATE purchasesinfo 
        SET 
-       staffName = ?,
-       payrollNo = ?,
-       department = ?,
-       itemName = ?, 
-       itemStatus = ?,
-       productCode = ?,
-       tdPrice = ?,
-       discountRate= ?,
-       discountedValue = ?,
-       date = ?,
-       signature = ?,
-       is_employed = ?,
-       on_probation = ?,
-       hr_comments = ?,
-       HR_Approval = ?,
-       hr_approver_name = ?,
-       hr_approval_date = ?,
-       hr_signature = ?,
-       credit_period = ?,
-       one_third_rule = ?,
-       purchase_history_comments = ?,
-       pending_invoices = ?,
-       CC_Approval = ?,
-       cc_signature = ?,
-       cc_approval_date = ?,
-       cc_approver_id = ?
-       WHERE id = ? 
-       `,
+         staffname = $1,
+         payrollno = $2,
+         department = $3,
+         itemname = $4, 
+         itemstatus = $5,
+         productcode = $6,
+         tdprice = $7,
+         discountrate = $8,
+         discountedvalue = $9,
+         date = $10,
+         signature = $11,
+         is_employed = $12,
+         on_probation = $13,
+         hr_comments = $14,
+         hr_approval = $15,
+         hr_approver_name = $16,
+         hr_approval_date = $17,
+         hr_signature = $18,
+         credit_period = $19,
+         one_third_rule = $20,
+         purchase_history_comments = $21,
+         pending_invoices = $22,
+         cc_approval = $23,
+         cc_signature = $24,
+         cc_approval_date = $25,
+         cc_approver_id = $26
+       WHERE id = $27`,
       [
-        staffName || null,
-        payrollNo || null,
+        staffname || null,
+        payrollno || null,
         department || null,
-        itemName || null,
-        itemStatus || null,
-        productCode || null,
-        tdPrice || null,
-        discountRate || null,
-        discountedValue || null,
+        itemname || null,
+        itemstatus || null,
+        productcode || null,
+        tdprice || null,
+        discountrate || null,
+        discountedvalue || null,
         date || null,
         signature || null,
         is_employed || null,
         on_probation || null,
         hr_comments || null,
-        HR_Approval || null,
+        hr_approval || null,
         hr_approver_name || null,
         hr_approval_date || null,
         hr_signature || null,
@@ -118,32 +119,31 @@ export async function PUT(request, { params }) {
         one_third_rule || null,
         purchase_history_comments || null,
         pending_invoices || null,
-        CC_Approval || null,
+        cc_approval || null,
         cc_signature || null,
         cc_approval_date || null,
         user.id,
-        id || null,
+        id,
       ],
     );
 
-    if (result.affectedRows === 0) {
+    if (rowCount === 0) {
       return Response.json({ message: "Purchase not found" }, { status: 404 });
     }
 
-    // Send notification email after successful update
-    // const EmailAddress = "bi@hotpoint.com";
-    // const approvalLink = `${process.env.NEXT_PUBLIC_BASE_URL}/bidashboard`;
-
-    // await NotificationEmail({
-    //   staffName: staffName,
-    //   payrollNo: payrollNo,
-    //   itemName: itemName,
-    //   itemStatus: itemStatus,
-    //   tdPrice: tdPrice,
-    //   discountedValue: discountedValue,
-    //   approvalLink: approvalLink,
-    //   EmailAddress: EmailAddress,
-    // });
+    // Uncomment when ready to send emails
+    /* 
+    await NotificationEmail({
+      staffname: rows[0].staffname,
+      payrollno: rows[0].payrollno,
+      itemname: rows[0].itemname,
+      itemstatus: rows[0].itemstatus,
+      tdprice: rows[0].tdprice,
+      discountedvalue: rows[0].discountedvalue,
+      approvalLink: `${process.env.NEXT_PUBLIC_BASE_URL}/bidashboard`,
+      emailaddress: "bi@hotpoint.com"
+    });
+    */
 
     return Response.json(
       { message: "Purchase Updated Successfully" },
@@ -156,6 +156,6 @@ export async function PUT(request, { params }) {
       { status: 500 },
     );
   } finally {
-    if (connection) connection.release();
+    if (client) client.release();
   }
 }

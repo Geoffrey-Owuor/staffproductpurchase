@@ -9,28 +9,28 @@ import HRApprovalSection from "@/components/FormEditComponents/HrApprovalSection
 import CreditControlSection from "@/components/FormEditComponents/CreditControlSection";
 import EditFormSkeleton from "@/components/skeletons/EditFormSkeleton";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+// const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
 export default function EditPurchaseForm({ params }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [submitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
-    staffName: "",
-    payrollNo: "",
+    staffname: "",
+    payrollno: "",
     department: "",
-    itemName: "",
-    itemStatus: "",
-    productCode: "",
-    tdPrice: "",
-    discountRate: "",
-    discountedValue: "",
+    itemname: "",
+    itemstatus: "",
+    productcode: "",
+    tdprice: "",
+    discountrate: "",
+    discountedvalue: "",
     date: "",
     signature: "",
     is_employed: "",
     on_probation: "",
     hr_comments: "",
-    HR_Approval: "",
+    hr_approval: "",
     hr_approver_name: "",
     hr_approval_date: "",
     hr_signature: "",
@@ -38,7 +38,7 @@ export default function EditPurchaseForm({ params }) {
     one_third_rule: "",
     purchase_history_comments: "",
     pending_invoices: "",
-    CC_Approval: "",
+    cc_approval: "",
     cc_signature: "",
     cc_approval_date: "",
   });
@@ -50,9 +50,7 @@ export default function EditPurchaseForm({ params }) {
     const fetchPurchaseData = async () => {
       const { id } = await params;
       try {
-        const response = await fetch(
-          `${BASE_URL}/api/cc/ccviewpurchases/${id}`,
-        );
+        const response = await fetch(`/api/cc/ccviewpurchases/${id}`);
         const data = await response.json();
 
         if (!response.ok) {
@@ -60,21 +58,21 @@ export default function EditPurchaseForm({ params }) {
         }
 
         setFormData({
-          staffName: data.staffName || "",
-          payrollNo: data.payrollNo || "",
+          staffname: data.staffname || "",
+          payrollno: data.payrollno || "",
           department: data.department || "",
-          itemName: data.itemName || "",
-          itemStatus: data.itemStatus || "",
-          productCode: data.productCode || "",
-          tdPrice: data.tdPrice || "",
-          discountRate: data.discountRate || "",
-          discountedValue: data.discountedValue || "",
+          itemname: data.itemname || "",
+          itemstatus: data.itemstatus || "",
+          productcode: data.productcode || "",
+          tdprice: data.tdprice || "",
+          discountrate: data.discountrate || "",
+          discountedvalue: data.discountedvalue || "",
           date: data.date ? data.date.split("T")[0] : "",
           signature: data.signature || "",
           is_employed: data.is_employed || "",
           on_probation: data.on_probation || "",
           hr_comments: data.hr_comments || "",
-          HR_Approval: data.HR_Approval || "",
+          hr_approval: data.hr_approval || "",
           hr_approver_name: data.hr_approver_name || "",
           hr_approval_date: data.hr_approval_date
             ? data.hr_approval_date.split("T")[0]
@@ -84,7 +82,7 @@ export default function EditPurchaseForm({ params }) {
           one_third_rule: data.one_third_rule || "",
           purchase_history_comments: data.purchase_history_comments || "",
           pending_invoices: data.pending_invoices || "",
-          CC_Approval: data.CC_Approval || "",
+          cc_approval: data.cc_approval || "",
           cc_signature: data.cc_signature || "",
           cc_approval_date: data.cc_approval_date
             ? data.cc_approval_date.split("T")[0]
@@ -112,22 +110,22 @@ export default function EditPurchaseForm({ params }) {
   };
 
   useEffect(() => {
-    const tdPrice = parseFloat(formData.tdPrice);
-    const discountRate = parseFloat(formData.discountRate);
+    const tdprice = parseFloat(formData.tdprice);
+    const discountrate = parseFloat(formData.discountrate);
 
-    if (!isNaN(tdPrice) && !isNaN(discountRate)) {
-      const discountedValue = tdPrice * (1 - discountRate / 100);
+    if (!isNaN(tdprice) && !isNaN(discountrate)) {
+      const discountedvalue = tdprice * (1 - discountrate / 100);
       setFormData((prev) => ({
         ...prev,
-        discountedValue: discountedValue.toFixed(2),
+        discountedvalue: discountedvalue.toFixed(2),
       }));
     } else {
       setFormData((prev) => ({
         ...prev,
-        discountedValue: "",
+        discountedvalue: "",
       }));
     }
-  }, [formData.tdPrice, formData.discountRate]);
+  }, [formData.tdprice, formData.discountrate]);
 
   const handleSubmit = async (e) => {
     setIsSubmitting(true);
@@ -135,7 +133,7 @@ export default function EditPurchaseForm({ params }) {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${BASE_URL}/api/cc/ccviewpurchases/${id}`, {
+      const response = await fetch(`/api/cc/ccviewpurchases/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

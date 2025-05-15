@@ -7,7 +7,7 @@ import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import PurchaseDetailSkeleton from "@/components/skeletons/PurchaseDetailsSkeleton";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+// const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
 export default function ViewPurchase({ params }) {
   const { id } = use(params);
@@ -19,7 +19,7 @@ export default function ViewPurchase({ params }) {
   useEffect(() => {
     const fetchPurchaseDetails = async () => {
       try {
-        const res = await fetch(`${BASE_URL}/api/staffviewpurchases/${id}`);
+        const res = await fetch(`/api/staffviewpurchases/${id}`);
         if (!res.ok) throw new Error("Failed to fetch purchase");
         const data = await res.json();
         setPurchase(data);
@@ -113,8 +113,8 @@ export default function ViewPurchase({ params }) {
             Staff Information
           </h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            <DetailField label="Staff Name" value={purchase.staffName} />
-            <DetailField label="Payroll No" value={purchase.payrollNo} />
+            <DetailField label="Staff Name" value={purchase.staffname} />
+            <DetailField label="Payroll No" value={purchase.payrollno} />
             <DetailField label="Department" value={purchase.department} />
           </div>
         </div>
@@ -125,9 +125,9 @@ export default function ViewPurchase({ params }) {
             Product Information
           </h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            <DetailField label="Item Name" value={purchase.itemName} />
-            <DetailField label="Item Status" value={purchase.itemStatus} />
-            <DetailField label="Product Code" value={purchase.productCode} />
+            <DetailField label="Item Name" value={purchase.itemname} />
+            <DetailField label="Item Status" value={purchase.itemstatus} />
+            <DetailField label="Product Code" value={purchase.productcode} />
           </div>
         </div>
 
@@ -139,15 +139,15 @@ export default function ViewPurchase({ params }) {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             <DetailField
               label="TD Price"
-              value={`Ksh ${Number(purchase.tdPrice).toFixed(2)}`}
+              value={`Ksh ${Number(purchase.tdprice).toFixed(2)}`}
             />
             <DetailField
               label="Discount Rate"
-              value={`${purchase.discountRate}%`}
+              value={`${purchase.discountrate}%`}
             />
             <DetailField
               label="Discounted Value"
-              value={`Ksh ${Number(purchase.discountedValue).toFixed(2)}`}
+              value={`Ksh ${Number(purchase.discountedvalue).toFixed(2)}`}
             />
           </div>
         </div>
@@ -161,15 +161,15 @@ export default function ViewPurchase({ params }) {
             <div className="space-y-4">
               <ApprovalStatus
                 label="HR Approval"
-                status={purchase.HR_Approval}
+                status={purchase.hr_approval}
               />
               <ApprovalStatus
                 label="CC Approval"
-                status={purchase.CC_Approval}
+                status={purchase.cc_approval}
               />
               <ApprovalStatus
                 label="BI Approval"
-                status={purchase.BI_Approval}
+                status={purchase.bi_approval}
               />
             </div>
           </div>
@@ -202,7 +202,7 @@ export default function ViewPurchase({ params }) {
           Edit
         </button>
         <button
-          onClick={() => router.back()}
+          onClick={() => router.push("/staffdashboard")}
           className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
         >
           <X className="h-4 w-4" />

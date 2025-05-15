@@ -1,9 +1,9 @@
-import pool from "@/lib/db";
+import { pool } from "@/lib/db";
 import { getCurrentUser } from "@/app/lib/auth";
 import { NotificationEmail } from "@/lib/EmailNotification";
 
 export async function POST(request) {
-  let connection;
+  let client;
   try {
     // 1. Get the logged-in user
     const user = await getCurrentUser();
@@ -14,43 +14,44 @@ export async function POST(request) {
       );
     }
 
-    connection = await pool.getConnection();
+    client = await pool.connect();
     const body = await request.json();
 
-    // Destructure directly in the parameter list to avoid extra lines
-    const [result] = await connection.execute(
-      `INSERT INTO purchasesInfo 
-       (staffName,user_id, payrollNo, department, itemName, itemStatus, productCode, tdPrice, discountRate, discountedValue, date, signature,HR_Approval, 
-        CC_Approval, BI_Approval) 
-       VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', 'pending', 'pending')`,
+    // Execute the query using PostgreSQL syntax
+    const { rows } = await client.query(
+      `INSERT INTO purchasesinfo 
+       (staffname, user_id, payrollno, department, itemname, itemstatus, productcode, 
+        tdprice, discountrate, discountedvalue, date, signature, hr_approval, 
+        cc_approval, bi_approval) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, 'pending', 'pending', 'pending')
+       RETURNING id`, // PostgreSQL returns the inserted ID using RETURNING
       [
-        body.staffName,
+        body.staffname,
         user.id,
-        body.payrollNo,
+        body.payrollno,
         body.department,
-        body.itemName,
-        body.itemStatus,
-        body.productCode,
-        body.tdPrice,
-        body.discountRate,
-        body.discountedValue,
+        body.itemname,
+        body.itemstatus,
+        body.productcode,
+        body.tdprice,
+        body.discountrate,
+        body.discountedvalue,
         body.date,
         body.signature,
       ],
     );
 
-    //Send Email Notification to HR
-    // const purchaseId = result.insertId;
-    // const EmailAddress = "hr@hotpoint.com";
+    // Uncomment and adjust when ready to use email notifications
+    // const emailaddress = "hr@hotpoint.com";
     // const approvalLink = `${process.env.NEXT_PUBLIC_BASE_URL}/hrdashboard`;
     // await NotificationEmail({
-    //   staffName: body.staffName,
-    //   payrollNo: body.payrollNo,
-    //   itemName: body.itemName,
-    //   itemStatus: body.itemStatus,
-    //   tdPrice: body.tdPrice,
-    //   discountedValue: body.discountedValue,
-    //   approvalLink: approvalLink,
+    //   staffname: body.staffname,
+    //   payrollno: body.payrollno,
+    //   itemname: body.itemname,
+    //   itemstatus: body.itemstatus,
+    //   tdprice: body.tdprice,
+    //   discountedvalue: body.discountedvalue,
+    //   approvallink: approvallink,
     //   EmailAddress: EmailAddress,
     // });
 
@@ -58,9 +59,9 @@ export async function POST(request) {
       {
         success: true,
         message: "Purchase recorded successfully",
-        id: purchaseId,
+        id: rows[0]?.id, // Return the ID even if email is commented out
       },
-      { status: 201 }, // 201 Created for successful resource creation
+      { status: 201 },
     );
   } catch (error) {
     console.error("Database error:", error);
@@ -73,6 +74,6 @@ export async function POST(request) {
       { status: 500 },
     );
   } finally {
-    if (connection) connection.release();
+    if (client) client.release();
   }
 }

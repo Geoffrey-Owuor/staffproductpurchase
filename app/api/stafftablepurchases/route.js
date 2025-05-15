@@ -1,8 +1,8 @@
-import pool from "@/lib/db";
+import { pool } from "@/lib/db";
 import { getCurrentUser } from "@/app/lib/auth";
 
 export async function GET() {
-  let connection;
+  let client;
   try {
     const user = await getCurrentUser();
 
@@ -10,22 +10,22 @@ export async function GET() {
       return Response.json("No User Found", { status: 200 });
     }
 
-    connection = await pool.getConnection();
+    client = await pool.connect();
 
-    const [rows] = await connection.execute(
-      `SELECT id, itemName, itemStatus, productCode, 
-              tdPrice, discountedValue, date, HR_Approval, CC_Approval, BI_Approval 
-       FROM purchasesInfo 
-       WHERE user_id = ? 
-       ORDER BY createdAt DESC`,
+    const { rows } = await client.query(
+      `SELECT id, itemname, itemstatus, productcode, 
+              tdprice, discountedvalue, date, hr_approval, cc_approval, bi_approval 
+       FROM purchasesinfo 
+       WHERE user_id = $1 
+       ORDER BY createdat DESC`,
       [user.id],
     );
 
     return Response.json(rows || [], { status: 200 });
   } catch (error) {
-    console.error("API Error:", error); // ✅ Add error logging
-    return Response.json("Error Displaying the Data", { status: 200 });
+    console.error("API Error:", error);
+    return Response.json("Error Displaying the Data", { status: 500 }); // Changed to 500 for server errors
   } finally {
-    if (connection) connection.release();
+    if (client) client.release();
   }
 }

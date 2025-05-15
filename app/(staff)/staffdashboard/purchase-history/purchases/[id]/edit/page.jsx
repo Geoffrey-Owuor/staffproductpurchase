@@ -7,22 +7,22 @@ import ProductDetailsSection from "@/components/FormEditComponents/ProductDetail
 import Alert from "@/components/Alert";
 import EditFormSkeleton from "@/components/skeletons/EditFormSkeleton";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+// const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
 export default function EditPurchaseForm({ params }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [submitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
-    staffName: "",
-    payrollNo: "",
+    staffname: "",
+    payrollno: "",
     department: "",
-    itemName: "",
-    itemStatus: "",
-    productCode: "",
-    tdPrice: "",
-    discountRate: "",
-    discountedValue: "",
+    itemname: "",
+    itemstatus: "",
+    productcode: "",
+    tdprice: "",
+    discountrate: "",
+    discountedvalue: "",
     date: "",
     signature: "",
   });
@@ -34,9 +34,7 @@ export default function EditPurchaseForm({ params }) {
     const fetchPurchaseData = async () => {
       const { id } = await params;
       try {
-        const response = await fetch(
-          `${BASE_URL}/api/staffviewpurchases/${id}`,
-        );
+        const response = await fetch(`/api/staffviewpurchases/${id}`);
         const data = await response.json();
 
         if (!response.ok) {
@@ -44,15 +42,15 @@ export default function EditPurchaseForm({ params }) {
         }
 
         setFormData({
-          staffName: data.staffName || "",
-          payrollNo: data.payrollNo || "",
+          staffname: data.staffname || "",
+          payrollno: data.payrollno || "",
           department: data.department || "",
-          itemName: data.itemName || "",
-          itemStatus: data.itemStatus || "",
-          productCode: data.productCode || "",
-          tdPrice: data.tdPrice || "",
-          discountRate: data.discountRate || "",
-          discountedValue: data.discountedValue || "",
+          itemname: data.itemname || "",
+          itemstatus: data.itemstatus || "",
+          productcode: data.productcode || "",
+          tdprice: data.tdprice || "",
+          discountrate: data.discountrate || "",
+          discountedvalue: data.discountedvalue || "",
           date: data.date ? data.date.split("T")[0] : "",
           signature: data.signature || "",
         });
@@ -78,22 +76,22 @@ export default function EditPurchaseForm({ params }) {
   };
 
   useEffect(() => {
-    const tdPrice = parseFloat(formData.tdPrice);
-    const discountRate = parseFloat(formData.discountRate);
+    const tdprice = parseFloat(formData.tdprice);
+    const discountrate = parseFloat(formData.discountrate);
 
-    if (!isNaN(tdPrice) && !isNaN(discountRate)) {
-      const discountedValue = tdPrice * (1 - discountRate / 100);
+    if (!isNaN(tdprice) && !isNaN(discountrate)) {
+      const discountedvalue = tdprice * (1 - discountrate / 100);
       setFormData((prev) => ({
         ...prev,
-        discountedValue: discountedValue.toFixed(2),
+        discountedvalue: discountedvalue.toFixed(2),
       }));
     } else {
       setFormData((prev) => ({
         ...prev,
-        discountedValue: "",
+        discountedvalue: "",
       }));
     }
-  }, [formData.tdPrice, formData.discountRate]);
+  }, [formData.tdprice, formData.discountrate]);
 
   const handleSubmit = async (e) => {
     setIsSubmitting(true);
@@ -101,7 +99,7 @@ export default function EditPurchaseForm({ params }) {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${BASE_URL}/api/staffviewpurchases/${id}`, {
+      const response = await fetch(`/api/staffviewpurchases/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

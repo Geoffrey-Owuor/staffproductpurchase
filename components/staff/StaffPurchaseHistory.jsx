@@ -85,19 +85,19 @@ export default function StaffPurchaseHistory() {
                 purchases.map((purchase) => (
                   <tr key={purchase.id} className="hover:bg-red-50">
                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
-                      {purchase.itemName}
+                      {purchase.itemname}
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
-                      {purchase.itemStatus}
+                      {purchase.itemstatus}
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
-                      {purchase.productCode}
+                      {purchase.productcode}
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
-                      Ksh {Number(purchase.tdPrice).toFixed(2)}
+                      Ksh {Number(purchase.tdprice).toFixed(2)}
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
-                      Ksh {Number(purchase.discountedValue).toFixed(2)}
+                      Ksh {Number(purchase.discountedvalue).toFixed(2)}
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
                       {new Date(purchase.date).toLocaleDateString("en-GB")}
@@ -105,14 +105,14 @@ export default function StaffPurchaseHistory() {
                     <td className="px-6 py-4 text-sm whitespace-nowrap">
                       <span
                         className={`inline-flex rounded-full px-2 py-1 text-xs leading-5 font-semibold ${
-                          purchase.BI_Approval === "approved"
+                          purchase.bi_approval === "approved"
                             ? "bg-green-100 text-green-800"
-                            : purchase.BI_Approval === "declined"
+                            : purchase.bi_approval === "declined"
                               ? "bg-red-100 text-red-800"
                               : "bg-yellow-100 text-yellow-800"
                         }`}
                       >
-                        {purchase.BI_Approval}
+                        {purchase.bi_approval}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">

@@ -1,6 +1,6 @@
 import { getCurrentUser } from "@/app/lib/auth";
 
-export const dynamic = "force-dynamic"; // Ensure no caching
+export const dynamic = "force-dynamic";
 
 export async function GET(request) {
   try {
@@ -12,7 +12,7 @@ export async function GET(request) {
 
     return Response.json({
       valid: true,
-      role: user.role, // Include role in response
+      role: user.role,
       user: {
         id: user.id,
         name: user.name,
@@ -25,7 +25,6 @@ export async function GET(request) {
       {
         valid: false,
         error: "Session validation failed",
-        details: error.message,
       },
       { status: 500 },
     );

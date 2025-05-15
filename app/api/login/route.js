@@ -1,41 +1,37 @@
 import { verifyPassword, createSession } from "@/app/lib/auth";
-import pool from "@/lib/db";
+import { pool } from "@/lib/db";
 
 export async function POST(request) {
+  let client;
   try {
     const { email, password } = await request.json();
-    const conn = await pool.getConnection();
+    client = await pool.connect();
 
-    //Find user by email
-    const [users] = await conn.execute(
-      "SELECT id, password, role FROM users WHERE email = ? LIMIT 1",
+    // Find user by email
+    const { rows } = await client.query(
+      "SELECT id, password, role FROM users WHERE email = $1 LIMIT 1",
       [email],
     );
 
-    if (!users.length) {
-      conn.release();
+    if (!rows.length) {
       return Response.json(
         { success: false, message: "Invalid Credentials" },
         { status: 401 },
       );
     }
-    const user = users[0];
+    const user = rows[0];
 
-    //Verify Password
+    // Verify Password
     const isValid = await verifyPassword(password, user.password);
     if (!isValid) {
-      conn.release();
-
       return Response.json(
         { success: false, message: "Invalid credentials" },
         { status: 401 },
       );
     }
 
-    //Create Session
-
+    // Create Session
     await createSession(user.id, user.role);
-    conn.release();
 
     return Response.json({ success: true, role: user.role });
   } catch (error) {
@@ -44,5 +40,7 @@ export async function POST(request) {
       { success: false, message: "Login Failed" },
       { status: 500 },
     );
+  } finally {
+    if (client) client.release();
   }
 }

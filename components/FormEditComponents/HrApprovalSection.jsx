@@ -49,15 +49,15 @@ export default function HRApprovalSection({ formData, handleChange }) {
 
         <div>
           <label
-            htmlFor="HR_Approval"
+            htmlFor="hr_approval"
             className="mb-1 block text-sm font-medium text-gray-700"
           >
             Approval Status
           </label>
           <select
-            id="HR_Approval"
-            name="HR_Approval"
-            value={formData.HR_Approval}
+            id="hr_approval"
+            name="hr_approval"
+            value={formData.hr_approval}
             onChange={handleChange}
             required
             className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500"
