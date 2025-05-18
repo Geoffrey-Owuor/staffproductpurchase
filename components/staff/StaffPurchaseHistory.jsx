@@ -100,7 +100,7 @@ export default function StaffPurchaseHistory() {
                       Ksh {Number(purchase.discountedvalue).toFixed(2)}
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
-                      {new Date(purchase.date).toLocaleDateString("en-GB")}
+                      {new Date(purchase.createdat).toLocaleDateString("en-GB")}
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap">
                       <span

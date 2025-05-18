@@ -99,20 +99,25 @@ const ProductPricing = ({ formData, handleChange }) => {
         <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
             <label
-              htmlFor="date"
+              htmlFor="employee_payment_terms"
               className="mb-2 block font-medium text-red-900"
             >
-              Date
+              Payment Terms/Options
             </label>
-            <input
-              type="date"
-              id="date"
-              name="date"
-              value={formData.date}
+            <select
+              id="employee_payment_terms"
+              name="employee_payment_terms"
+              value={formData.employee_payment_terms}
               onChange={handleChange}
               className="w-full rounded-xl border border-red-200 p-3 focus:border-red-500 focus:ring-2 focus:ring-red-200"
               required
-            />
+            >
+              <option value="">Select a payment option</option>
+              <option value="CREDIT">Credit</option>
+              <option value="CASH">Cash</option>
+              <option value="BANK">Bank</option>
+              <option value="MPESA">Mpesa</option>
+            </select>
           </div>
           <div>
             <label

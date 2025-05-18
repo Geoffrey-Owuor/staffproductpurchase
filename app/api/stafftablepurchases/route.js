@@ -14,7 +14,7 @@ export async function GET() {
 
     const { rows } = await client.query(
       `SELECT id, itemname, itemstatus, productcode, 
-              tdprice, discountedvalue, date, hr_approval, cc_approval, bi_approval 
+              tdprice, discountedvalue, createdat, hr_approval, cc_approval, bi_approval 
        FROM purchasesinfo 
        WHERE user_id = $1 
        ORDER BY createdat DESC`,

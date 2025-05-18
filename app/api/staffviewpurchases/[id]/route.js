@@ -40,7 +40,7 @@ export async function PUT(request, { params }) {
       tdprice,
       discountrate,
       discountedvalue,
-      date,
+      employee_payment_terms,
       signature,
     } = await request.json();
 
@@ -58,7 +58,7 @@ export async function PUT(request, { params }) {
         tdprice = $7,
         discountrate = $8,
         discountedvalue = $9,
-        date = $10,
+        employee_payment_terms = $10,
         signature = $11
       WHERE id = $12
       `,
@@ -72,7 +72,7 @@ export async function PUT(request, { params }) {
         tdprice || null,
         discountrate || null,
         discountedvalue || null,
-        date || null,
+        employee_payment_terms || null,
         signature || null,
         id,
       ],

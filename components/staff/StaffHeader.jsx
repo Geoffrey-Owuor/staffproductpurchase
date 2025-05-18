@@ -8,7 +8,8 @@ import {
   LogOut,
   PlusCircle,
   ChevronLeft,
-  ChevronRight,
+  SidebarClose,
+  SidebarOpen,
 } from "lucide-react";
 
 const Header = ({ isSidebarOpen, toggleSidebar }) => {
@@ -69,12 +70,12 @@ const Header = ({ isSidebarOpen, toggleSidebar }) => {
       {/* Sidebar Toggle Button */}
       <button
         onClick={toggleSidebar}
-        className="mr-4 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-red-200 hover:bg-red-300"
+        className="mr-4 flex h-8 w-8 cursor-pointer items-center justify-center rounded-xl bg-red-200 hover:bg-red-300"
       >
         {isSidebarOpen ? (
-          <ChevronLeft className="h-5 w-5" />
+          <SidebarClose className="h-5 w-5" />
         ) : (
-          <ChevronRight className="h-5 w-5" />
+          <SidebarOpen className="h-5 w-5" />
         )}
       </button>
 
@@ -86,6 +87,13 @@ const Header = ({ isSidebarOpen, toggleSidebar }) => {
 
       {/* Right side - Actions */}
       <div className="ml-auto flex items-center space-x-4">
+        {/* Go back Button */}
+        <button
+          onClick={() => router.back()}
+          className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-red-200 hover:bg-red-300"
+        >
+          <ChevronLeft className="h-5 w-5" />
+        </button>
         {/* New Purchase Link */}
         <Link
           href="/staffdashboard/new-purchase"

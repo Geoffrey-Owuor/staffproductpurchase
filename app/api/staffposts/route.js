@@ -2,6 +2,10 @@ import { pool } from "@/lib/db";
 import { getCurrentUser } from "@/app/lib/auth";
 import { NotificationEmail } from "@/lib/EmailNotification";
 
+const parseNumber = (value) => {
+  return value === "" || value == null ? null : parseFloat(value);
+};
+
 export async function POST(request) {
   let client;
   try {
@@ -21,7 +25,7 @@ export async function POST(request) {
     const { rows } = await client.query(
       `INSERT INTO purchasesinfo 
        (staffname, user_id, payrollno, department, itemname, itemstatus, productcode, 
-        tdprice, discountrate, discountedvalue, date, signature, hr_approval, 
+        tdprice, discountrate, discountedvalue, employee_payment_terms, signature, hr_approval, 
         cc_approval, bi_approval) 
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, 'pending', 'pending', 'pending')
        RETURNING id`, // PostgreSQL returns the inserted ID using RETURNING
@@ -33,10 +37,10 @@ export async function POST(request) {
         body.itemname,
         body.itemstatus,
         body.productcode,
-        body.tdprice,
-        body.discountrate,
-        body.discountedvalue,
-        body.date,
+        parseNumber(body.tdprice),
+        parseNumber(body.discountrate),
+        parseNumber(body.discountedvalue),
+        body.employee_payment_terms,
         body.signature,
       ],
     );

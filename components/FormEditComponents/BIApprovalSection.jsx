@@ -123,6 +123,7 @@ export default function BIApprovalSection({ formData, handleChange }) {
               <option value="cash">Cash</option>
               <option value="bank">Bank</option>
               <option value="card">Card</option>
+              <option value="credit">Credit</option>
               <option value="mobile">Mobile Money</option>
             </select>
           </div>

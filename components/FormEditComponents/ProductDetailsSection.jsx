@@ -58,7 +58,6 @@ export default function ProductDetailsSection({ formData, handleChange }) {
             value={formData.productcode}
             onChange={handleChange}
             className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
-            required
           />
         </div>
 
@@ -78,7 +77,6 @@ export default function ProductDetailsSection({ formData, handleChange }) {
             step="0.01"
             min="0"
             className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
-            required
           />
         </div>
 
@@ -99,7 +97,6 @@ export default function ProductDetailsSection({ formData, handleChange }) {
             min="0"
             max="100"
             className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
-            required
           />
         </div>
 
@@ -119,26 +116,49 @@ export default function ProductDetailsSection({ formData, handleChange }) {
             min="0"
             readOnly
             className="w-full rounded-xl border border-gray-300 bg-gray-100 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
+          />
+        </div>
+
+        <div>
+          <label
+            htmlFor="createdat"
+            className="mb-1 block text-sm font-medium text-gray-700"
+          >
+            Date
+          </label>
+          <input
+            type="createdat"
+            id="createdat"
+            name="createdat"
+            value={formData.createdat}
+            onChange={handleChange}
+            readOnly
+            className="w-full rounded-xl border border-gray-300 bg-gray-100 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
             required
           />
         </div>
 
         <div>
           <label
-            htmlFor="date"
+            htmlFor="employee_payment_terms"
             className="mb-1 block text-sm font-medium text-gray-700"
           >
-            Date
+            Payment Terms/Options
           </label>
-          <input
-            type="date"
-            id="date"
-            name="date"
-            value={formData.date}
+          <select
+            id="employee_payment_terms"
+            name="employee_payment_terms"
+            value={formData.employee_payment_terms}
             onChange={handleChange}
             className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
             required
-          />
+          >
+            <option value="">No payment option selected</option>
+            <option value="CREDIT">Credit</option>
+            <option value="CASH">Cash</option>
+            <option value="BANK">Bank</option>
+            <option value="MPESA">Mpesa</option>
+          </select>
         </div>
 
         <div>

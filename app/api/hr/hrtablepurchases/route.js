@@ -12,7 +12,7 @@ export async function GET(request) {
     // Prepare the query
     let query = {
       text: `SELECT id, itemname, itemstatus, productcode, 
-                    tdprice, discountedvalue, date, staffname, payrollno, hr_approval 
+                    tdprice, discountedvalue, createdat, staffname, payrollno, hr_approval 
              FROM purchasesinfo`,
       values: [],
     };

@@ -162,7 +162,7 @@ export default function ViewPurchase({ params }) {
             />
             <DetailField
               label="Discount Rate"
-              value={`${purchase.discountrate}%`}
+              value={`${Number(purchase.discountrate).toFixed(2)}%`}
             />
             <DetailField
               label="Discounted Value"
@@ -198,12 +198,16 @@ export default function ViewPurchase({ params }) {
               <DetailField
                 label="Date"
                 value={
-                  purchase.date
-                    ? new Date(purchase.date).toLocaleDateString()
+                  purchase.createdat
+                    ? new Date(purchase.createdat).toLocaleDateString()
                     : "N/A"
                 }
               />
               <DetailField label="Signature" value={purchase.signature} />
+              <DetailField
+                label="Payment Terms/Options"
+                value={purchase.employee_payment_terms}
+              />
             </div>
           </div>
         </div>

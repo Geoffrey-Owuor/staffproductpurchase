@@ -14,7 +14,9 @@ export default function layout({ children }) {
     <>
       <Sidebar isOpen={sidebarOpen} />
       <Header isSidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
-      <main className={`mt-14 flex-grow ${sidebarOpen ? "ml-56" : "ml-0"}`}>
+      <main
+        className={`mt-14 flex-grow pb-3 ${sidebarOpen ? "ml-56" : "ml-0"}`}
+      >
         {children}
       </main>
       <DashboardFooter isSidebarOpen={sidebarOpen} />

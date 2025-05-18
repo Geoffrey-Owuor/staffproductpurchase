@@ -18,7 +18,7 @@ export default function NewPurchase() {
     tdprice: "",
     discountrate: "",
     discountedvalue: "",
-    date: "",
+    employee_payment_terms: "",
     signature: "",
   });
 
@@ -88,7 +88,7 @@ export default function NewPurchase() {
         tdprice: "",
         discountrate: "",
         discountedvalue: "",
-        date: "",
+        employee_payment_terms: "",
         signature: "",
       });
     } catch (error) {

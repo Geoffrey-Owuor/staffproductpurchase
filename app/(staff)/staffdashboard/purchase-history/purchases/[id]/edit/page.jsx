@@ -21,7 +21,8 @@ export default function EditPurchaseForm({ params }) {
     tdprice: "",
     discountrate: "",
     discountedvalue: "",
-    date: "",
+    createdat: "",
+    employee_payment_terms: "",
     signature: "",
   });
   const [showAlert, setShowAlert] = useState(false);
@@ -49,7 +50,8 @@ export default function EditPurchaseForm({ params }) {
           tdprice: data.tdprice || "",
           discountrate: data.discountrate || "",
           discountedvalue: data.discountedvalue || "",
-          date: data.date ? data.date.split("T")[0] : "",
+          createdat: data.createdat ? data.createdat.split("T")[0] : "",
+          employee_payment_terms: data.employee_payment_terms || "",
           signature: data.signature || "",
         });
       } catch (err) {
