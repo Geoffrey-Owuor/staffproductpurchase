@@ -178,7 +178,7 @@ export default function ViewPurchase({ params }) {
             <div className="space-y-4">
               <ApprovalStatus
                 label="HR Approval"
-                status={purchase.cc_approval}
+                status={purchase.hr_approval}
               />
               <ApprovalStatus
                 label="CC Approval"
