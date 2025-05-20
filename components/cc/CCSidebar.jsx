@@ -62,7 +62,7 @@ export default function CCSidebar({ isOpen }) {
           <li>
             <Link
               href="/ccdashboard"
-              className={`flex items-center gap-2 rounded-2xl p-3 transition-colors ${isActive(
+              className={`flex items-center gap-2 rounded-xl p-3 transition-colors ${isActive(
                 "/ccdashboard",
               )}`}
             >
@@ -74,7 +74,7 @@ export default function CCSidebar({ isOpen }) {
           <li>
             <Link
               href="/ccdashboard/purchases-history"
-              className={`flex items-center gap-2 rounded-2xl p-3 transition-colors ${isActive(
+              className={`flex items-center gap-2 rounded-xl p-3 transition-colors ${isActive(
                 "/ccdashboard/purchases-history",
               )}`}
             >
@@ -90,7 +90,7 @@ export default function CCSidebar({ isOpen }) {
         <button
           onClick={handleLogout}
           disabled={loggingOut}
-          className="flex w-full cursor-pointer items-center gap-2 rounded-2xl p-3 text-white transition-colors hover:bg-red-700"
+          className="flex w-full cursor-pointer items-center gap-2 rounded-xl p-3 text-white transition-colors hover:bg-red-700"
         >
           {loggingOut ? (
             <>

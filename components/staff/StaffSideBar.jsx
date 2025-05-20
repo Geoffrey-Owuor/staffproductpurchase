@@ -67,7 +67,7 @@ export default function Sidebar({ isOpen }) {
           <li>
             <Link
               href="/staffdashboard"
-              className={`flex items-center gap-2 rounded-2xl p-3 transition-colors ${isActive(
+              className={`flex items-center gap-2 rounded-xl p-3 transition-colors ${isActive(
                 "/staffdashboard",
               )}`}
             >
@@ -78,7 +78,7 @@ export default function Sidebar({ isOpen }) {
           <li>
             <Link
               href="/staffdashboard/new-purchase"
-              className={`flex items-center gap-2 rounded-2xl p-3 transition-colors ${isActive(
+              className={`flex items-center gap-2 rounded-xl p-3 transition-colors ${isActive(
                 "/staffdashboard/new-purchase",
               )}`}
             >
@@ -89,7 +89,7 @@ export default function Sidebar({ isOpen }) {
           <li>
             <Link
               href="/staffdashboard/purchase-history"
-              className={`flex items-center gap-2 rounded-2xl p-3 transition-colors ${isActive(
+              className={`flex items-center gap-2 rounded-xl p-3 transition-colors ${isActive(
                 "/staffdashboard/purchase-history",
               )}`}
             >
@@ -105,7 +105,7 @@ export default function Sidebar({ isOpen }) {
         <button
           onClick={handleLogout}
           disabled={loggingOut}
-          className="flex w-full cursor-pointer items-center gap-2 rounded-2xl p-3 text-white transition-colors hover:bg-red-700"
+          className="flex w-full cursor-pointer items-center gap-2 rounded-xl p-3 text-white transition-colors hover:bg-red-700"
         >
           {loggingOut ? (
             <>

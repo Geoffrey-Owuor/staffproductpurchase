@@ -61,7 +61,7 @@ export default function BISidebar({ isOpen }) {
           <li>
             <Link
               href="/bidashboard"
-              className={`flex items-center gap-2 rounded-2xl p-3 transition-colors ${isActive(
+              className={`flex items-center gap-2 rounded-xl p-3 transition-colors ${isActive(
                 "/bidashboard",
               )}`}
             >
@@ -73,7 +73,7 @@ export default function BISidebar({ isOpen }) {
           <li>
             <Link
               href="/bidashboard/purchases-history"
-              className={`flex items-center gap-2 rounded-2xl p-3 transition-colors ${isActive(
+              className={`flex items-center gap-2 rounded-xl p-3 transition-colors ${isActive(
                 "/bidashboard/purchases-history",
               )}`}
             >
@@ -89,7 +89,7 @@ export default function BISidebar({ isOpen }) {
         <button
           onClick={handleLogout}
           disabled={loggingOut}
-          className="flex w-full cursor-pointer items-center gap-2 rounded-2xl p-3 text-white transition-colors hover:bg-red-700"
+          className="flex w-full cursor-pointer items-center gap-2 rounded-xl p-3 text-white transition-colors hover:bg-red-700"
         >
           {loggingOut ? (
             <>

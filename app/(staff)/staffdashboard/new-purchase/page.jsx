@@ -117,7 +117,7 @@ export default function NewPurchase() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className={`mx-auto my-8 block cursor-pointer rounded-full px-6 py-3 text-lg text-white transition-colors ${
+            className={`mx-auto my-8 block cursor-pointer rounded-xl px-6 py-3 text-lg text-white transition-colors ${
               isSubmitting
                 ? "cursor-not-allowed bg-gray-400"
                 : "bg-green-600 hover:bg-green-700"

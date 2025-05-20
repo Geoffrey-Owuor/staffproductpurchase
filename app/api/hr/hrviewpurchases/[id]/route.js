@@ -80,8 +80,9 @@ export async function PUT(request, { params }) {
          hr_approver_name = $16,
          hr_approval_date = $17,
          hr_signature = $18,
-         hr_approver_id = $19
-       WHERE id = $20`,
+         hr_approver_id = $19,
+         hr_approver_email =$20
+       WHERE id = $21`,
       [
         staffname || null,
         payrollno || null,
@@ -102,6 +103,7 @@ export async function PUT(request, { params }) {
         hr_approval_date || null,
         hr_signature || null,
         user.id,
+        user.email,
         id,
       ],
     );

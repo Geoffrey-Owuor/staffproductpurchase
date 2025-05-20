@@ -67,7 +67,7 @@ export default function BIApprovalSection({ formData, handleChange }) {
               htmlFor="bi_signature"
               className="mb-1 block text-sm font-medium text-gray-700"
             >
-              Invoiced By
+              Invoiced By (Signature)
             </label>
             <input
               type="text"

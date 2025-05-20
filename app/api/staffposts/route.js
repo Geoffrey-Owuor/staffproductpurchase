@@ -24,14 +24,15 @@ export async function POST(request) {
     // Execute the query using PostgreSQL syntax
     const { rows } = await client.query(
       `INSERT INTO purchasesinfo 
-       (staffname, user_id, payrollno, department, itemname, itemstatus, productcode, 
+       (staffname, user_id, user_email, payrollno, department, itemname, itemstatus, productcode, 
         tdprice, discountrate, discountedvalue, employee_payment_terms, signature, hr_approval, 
         cc_approval, bi_approval) 
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, 'pending', 'pending', 'pending')
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, 'pending', 'pending', 'pending')
        RETURNING id`, // PostgreSQL returns the inserted ID using RETURNING
       [
         body.staffname,
         user.id,
+        user.email,
         body.payrollno,
         body.department,
         body.itemname,

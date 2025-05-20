@@ -111,8 +111,9 @@ export async function PUT(request, { params }) {
        amount = $33,
        bi_signature = $34,
        bi_approval = $35,
-       bi_approver_id = $36
-       WHERE id = $37`,
+       bi_approver_id = $36,
+       bi_approver_email = $37
+       WHERE id = $38`,
       [
         staffname || null,
         payrollno || null,
@@ -150,6 +151,7 @@ export async function PUT(request, { params }) {
         bi_signature || null,
         bi_approval || null,
         user.id,
+        user.email,
         id,
       ],
     );

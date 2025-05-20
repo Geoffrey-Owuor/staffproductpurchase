@@ -62,7 +62,7 @@ const HrHeader = ({ isSidebarOpen, toggleSidebar }) => {
     <header
       className={`fixed top-0 right-0 z-50 flex h-14 items-center pr-4 pl-2 ${
         isSidebarOpen ? "left-56" : "left-0"
-      } ${isScrolled ? "border-b border-gray-200 bg-white shadow-md" : "bg-white"}`}
+      } ${isScrolled ? "border-b border-gray-200 bg-white shadow-xs" : "bg-white"}`}
     >
       {/* Sidebar Toggle Button */}
       <button

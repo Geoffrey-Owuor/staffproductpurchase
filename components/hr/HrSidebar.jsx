@@ -62,7 +62,7 @@ export default function HrSidebar({ isOpen }) {
           <li>
             <Link
               href="/hrdashboard"
-              className={`flex items-center gap-2 rounded-2xl p-3 transition-colors ${isActive(
+              className={`flex items-center gap-2 rounded-xl p-3 transition-colors ${isActive(
                 "/hrdashboard",
               )}`}
             >
@@ -74,7 +74,7 @@ export default function HrSidebar({ isOpen }) {
           <li>
             <Link
               href="/hrdashboard/requests-history"
-              className={`flex items-center gap-2 rounded-2xl p-3 transition-colors ${isActive(
+              className={`flex items-center gap-2 rounded-xl p-3 transition-colors ${isActive(
                 "/hrdashboard/requests-history",
               )}`}
             >
@@ -90,7 +90,7 @@ export default function HrSidebar({ isOpen }) {
         <button
           onClick={handleLogout}
           disabled={loggingOut}
-          className="flex w-full cursor-pointer items-center gap-2 rounded-2xl p-3 text-white transition-colors hover:bg-red-700"
+          className="flex w-full cursor-pointer items-center gap-2 rounded-xl p-3 text-white transition-colors hover:bg-red-700"
         >
           {loggingOut ? (
             <>

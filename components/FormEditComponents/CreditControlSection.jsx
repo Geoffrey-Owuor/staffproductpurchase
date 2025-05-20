@@ -106,7 +106,7 @@ export default function CreditControlSection({ formData, handleChange }) {
             htmlFor="cc_signature"
             className="mb-1 block text-sm font-medium text-gray-700"
           >
-            Checked By
+            Checked By (Signature)
           </label>
           <input
             type="text"

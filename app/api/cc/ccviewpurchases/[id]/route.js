@@ -94,8 +94,9 @@ export async function PUT(request, { params }) {
          cc_approval = $23,
          cc_signature = $24,
          cc_approval_date = $25,
-         cc_approver_id = $26
-       WHERE id = $27`,
+         cc_approver_id = $26,
+         cc_approver_email = $27
+       WHERE id = $28`,
       [
         staffname || null,
         payrollno || null,
@@ -123,6 +124,7 @@ export async function PUT(request, { params }) {
         cc_signature || null,
         cc_approval_date || null,
         user.id,
+        user.email,
         id,
       ],
     );
