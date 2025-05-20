@@ -32,7 +32,7 @@ export default function HrPurchaseHistory() {
     const fetchPurchases = async () => {
       try {
         setLoading(true);
-        const url = `/api/hr/hrtablepurchases${debouncedSearchTerm ? `?search=${encodeURIComponent(debouncedSearchTerm)}` : ""}`;
+        const url = `/api/hr/hrpurchaseshistory${debouncedSearchTerm ? `?search=${encodeURIComponent(debouncedSearchTerm)}` : ""}`;
         const response = await fetch(url);
         const data = await response.json();
 

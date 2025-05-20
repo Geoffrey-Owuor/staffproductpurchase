@@ -11,15 +11,17 @@ export default function layout({ children }) {
     setSideBarOpen((prev) => !prev);
   };
   return (
-    <>
-      <CCSidebar isOpen={sidebarOpen} />
+    <div className="flex min-h-screen flex-col">
       <CCHeader isSidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
-      <main
-        className={`mt-14 flex-grow pb-3 ${sidebarOpen ? "ml-56" : "ml-0"}`}
-      >
-        {children}
-      </main>
+      <div className="flex flex-1">
+        <CCSidebar isOpen={sidebarOpen} />
+        <main
+          className={`flex-1 overflow-x-hidden ${sidebarOpen ? "ml-56" : "ml-0"}`}
+        >
+          <div className="mt-12">{children}</div>
+        </main>
+      </div>
       <DashboardFooter isSidebarOpen={sidebarOpen} />
-    </>
+    </div>
   );
 }

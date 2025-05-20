@@ -56,6 +56,14 @@ export default function EditPurchaseForm({ params }) {
           throw new Error("Failed to fetch purchase data");
         }
 
+        // Check if bi_approval is 'approved'
+        if (data.bi_approval === "approved") {
+          router.push(
+            `/ccdashboard/purchases-history/purchases/${id}/unauthorized`,
+          );
+          return;
+        }
+
         setFormData({
           staffname: data.staffname || "",
           payrollno: data.payrollno || "",
@@ -88,12 +96,12 @@ export default function EditPurchaseForm({ params }) {
             ? data.cc_approval_date.split("T")[0]
             : "",
         });
+        setLoading(false);
       } catch (err) {
         console.error("Error fetching purchase data:", err);
         setAlertMessage("Error Fetching Purchase Data");
         setAlertType("error");
         setShowAlert(true);
-      } finally {
         setLoading(false);
       }
     };

@@ -32,7 +32,7 @@ export default function CCPurchaseHistory() {
     const fetchPurchases = async () => {
       try {
         setLoading(true);
-        const url = `/api/cc/cctablepurchases${debouncedSearchTerm ? `?search=${encodeURIComponent(debouncedSearchTerm)}` : ""}`;
+        const url = `/api/cc/ccpurchaseshistory${debouncedSearchTerm ? `?search=${encodeURIComponent(debouncedSearchTerm)}` : ""}`;
         const response = await fetch(url);
         const data = await response.json();
 

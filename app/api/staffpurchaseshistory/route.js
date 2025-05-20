@@ -16,7 +16,7 @@ export async function GET() {
       `SELECT id, itemname, itemstatus, productcode, 
               tdprice, discountedvalue, createdat, hr_approval, cc_approval, bi_approval 
        FROM purchasesinfo 
-       WHERE user_id = $1 AND bi_approval = 'pending'
+       WHERE user_id = $1
        ORDER BY createdat DESC`,
       [user.id],
     );

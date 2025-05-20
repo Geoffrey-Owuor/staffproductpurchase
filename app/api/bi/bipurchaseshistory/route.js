@@ -13,13 +13,13 @@ export async function GET(request) {
     let query = {
       text: `SELECT id, itemname, itemstatus, productcode, 
              tdprice, discountedvalue, createdat, staffname, payrollno, bi_approval 
-             FROM purchasesinfo WHERE bi_approval = 'pending'`,
+             FROM purchasesinfo`,
       values: [],
     };
 
     // Add search filter if provided
     if (searchQuery) {
-      query.text += ` AND staffname ILIKE $1`;
+      query.text += ` WHERE staffname ILIKE $1`;
       query.values.push(`%${searchQuery}%`);
     }
 

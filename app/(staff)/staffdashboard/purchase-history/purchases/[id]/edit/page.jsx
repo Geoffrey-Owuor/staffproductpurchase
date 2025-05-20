@@ -40,6 +40,14 @@ export default function EditPurchaseForm({ params }) {
           throw new Error("Failed to fetch purchase data");
         }
 
+        // Check if bi_approval is 'approved'
+        if (data.bi_approval === "approved") {
+          router.push(
+            `/staffdashboard/purchase-history/purchases/${id}/unauthorized`,
+          );
+          return;
+        }
+
         setFormData({
           staffname: data.staffname || "",
           payrollno: data.payrollno || "",
@@ -54,12 +62,12 @@ export default function EditPurchaseForm({ params }) {
           employee_payment_terms: data.employee_payment_terms || "",
           signature: data.signature || "",
         });
+        setLoading(false);
       } catch (err) {
         console.error("Error fetching purchase data:", err);
         setAlertMessage("Error Fetching Purchase Data");
         setAlertType("error");
         setShowAlert(true);
-      } finally {
         setLoading(false);
       }
     };

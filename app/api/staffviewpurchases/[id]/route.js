@@ -1,15 +1,21 @@
 import { pool } from "@/lib/db";
+import { getCurrentUser } from "@/app/lib/auth";
 
 export async function GET(request, { params }) {
   let client;
 
   try {
+    const user = await getCurrentUser();
+    if (!user) {
+      return Response.json("No User Found", { status: 200 });
+    }
+
     const { id } = await params;
     client = await pool.connect();
 
     const { rows } = await client.query(
-      `SELECT * FROM purchasesinfo WHERE id = $1`,
-      [id],
+      `SELECT * FROM purchasesinfo WHERE id = $1 AND user_id = $2`,
+      [id, user.id],
     );
 
     if (rows.length === 0) {
@@ -29,6 +35,10 @@ export async function PUT(request, { params }) {
   let client;
 
   try {
+    const user = await getCurrentUser();
+    if (!user) {
+      return Response.json("No User Found", { status: 200 });
+    }
     const { id } = await params;
     const {
       staffname,
@@ -60,7 +70,7 @@ export async function PUT(request, { params }) {
         discountedvalue = $9,
         employee_payment_terms = $10,
         signature = $11
-      WHERE id = $12
+      WHERE id = $12 AND user_id = $13
       `,
       [
         staffname || null,
@@ -75,6 +85,7 @@ export async function PUT(request, { params }) {
         employee_payment_terms || null,
         signature || null,
         id,
+        user.id,
       ],
     );
 

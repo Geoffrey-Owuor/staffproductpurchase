@@ -1,4 +1,4 @@
-// api/bi/bitablepurchases/route.js
+// api/cc/cctablepurchases/route.js
 import { pool } from "@/lib/db";
 
 export async function GET(request) {
@@ -12,14 +12,14 @@ export async function GET(request) {
     // Base query with parameterized input
     let query = {
       text: `SELECT id, itemname, itemstatus, productcode, 
-             tdprice, discountedvalue, createdat, staffname, payrollno, bi_approval 
-             FROM purchasesinfo WHERE bi_approval = 'pending'`,
+             tdprice, discountedvalue, createdat, staffname, payrollno, cc_approval 
+             FROM purchasesinfo`,
       values: [],
     };
 
     // Add search filter if provided
     if (searchQuery) {
-      query.text += ` AND staffname ILIKE $1`;
+      query.text += ` WHERE staffname ILIKE $1`;
       query.values.push(`%${searchQuery}%`);
     }
 

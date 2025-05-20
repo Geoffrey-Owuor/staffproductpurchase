@@ -97,20 +97,22 @@ export default function ViewPurchase({ params }) {
         </button>
 
         {/* Middle Edit Button */}
-        <button
-          onClick={handleEditClick}
-          disabled={isEditing}
-          className="flex cursor-pointer items-center justify-center gap-1 rounded-full bg-red-900 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-red-700"
-        >
-          {isEditing ? (
-            <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-          ) : (
-            <>
-              <Edit className="h-4 w-4" />
-              Edit
-            </>
-          )}
-        </button>
+        {purchase.bi_approval !== "approved" && (
+          <button
+            onClick={handleEditClick}
+            disabled={isEditing}
+            className="flex cursor-pointer items-center justify-center gap-1 rounded-full bg-red-900 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-red-700"
+          >
+            {isEditing ? (
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+            ) : (
+              <>
+                <Edit className="h-4 w-4" />
+                Edit
+              </>
+            )}
+          </button>
+        )}
 
         <div className="flex items-center">
           <button
@@ -254,20 +256,22 @@ export default function ViewPurchase({ params }) {
 
       {/* Bottom Buttons - Centered */}
       <div className="mt-6 flex justify-center gap-4">
-        <button
-          onClick={handleEditClick}
-          disabled={isEditing}
-          className="inline-flex cursor-pointer items-center justify-center gap-1 rounded-full bg-red-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700"
-        >
-          {isEditing ? (
-            <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-          ) : (
-            <>
-              <Edit className="h-4 w-4" />
-              Edit
-            </>
-          )}
-        </button>
+        {purchase.bi_approval !== "approved" && (
+          <button
+            onClick={handleEditClick}
+            disabled={isEditing}
+            className="inline-flex cursor-pointer items-center justify-center gap-1 rounded-full bg-red-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700"
+          >
+            {isEditing ? (
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+            ) : (
+              <>
+                <Edit className="h-4 w-4" />
+                Edit
+              </>
+            )}
+          </button>
+        )}
         <button
           onClick={handleCloseClick}
           disabled={isClosing}

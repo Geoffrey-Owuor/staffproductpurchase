@@ -1,4 +1,4 @@
-// api/bi/bitablepurchases/route.js
+// api/hr/hrtablepurchases/route.js
 import { pool } from "@/lib/db";
 
 export async function GET(request) {
@@ -9,24 +9,24 @@ export async function GET(request) {
 
     client = await pool.connect();
 
-    // Base query with parameterized input
+    // Prepare the query
     let query = {
       text: `SELECT id, itemname, itemstatus, productcode, 
-             tdprice, discountedvalue, createdat, staffname, payrollno, bi_approval 
-             FROM purchasesinfo WHERE bi_approval = 'pending'`,
+                    tdprice, discountedvalue, createdat, staffname, payrollno, hr_approval 
+             FROM purchasesinfo`,
       values: [],
     };
 
-    // Add search filter if provided
+    // Add filtering if a search query is provided
     if (searchQuery) {
-      query.text += ` AND staffname ILIKE $1`;
+      query.text += ` WHERE staffname ILIKE $1`;
       query.values.push(`%${searchQuery}%`);
     }
 
-    // Add sorting
+    // Add ordering
     query.text += ` ORDER BY createdat DESC`;
 
-    // Execute query
+    // Execute the query
     const { rows } = await client.query(query);
 
     return Response.json(rows || [], {

@@ -32,7 +32,7 @@ export default function BIPurchaseHistory() {
     const fetchPurchases = async () => {
       try {
         setLoading(true);
-        const url = `/api/bi/bitablepurchases${debouncedSearchTerm ? `?search=${encodeURIComponent(debouncedSearchTerm)}` : ""}`;
+        const url = `/api/bi/bipurchaseshistory${debouncedSearchTerm ? `?search=${encodeURIComponent(debouncedSearchTerm)}` : ""}`;
         const response = await fetch(url);
         const data = await response.json();
 

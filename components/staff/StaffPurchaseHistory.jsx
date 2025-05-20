@@ -18,7 +18,7 @@ export default function StaffPurchaseHistory() {
   useEffect(() => {
     const fetchPurchases = async () => {
       try {
-        const response = await fetch("/api/stafftablepurchases");
+        const response = await fetch("/api/staffpurchaseshistory");
         const data = await response.json();
 
         if (!response.ok) {
