@@ -106,8 +106,8 @@ export default function Footer() {
         </div>
         <div className="mt-12 border-t border-gray-800 pt-8 text-center text-gray-500">
           <p>
-            © {new Date().getFullYear()} Hotpoint Staff Purchase Portal. All
-            rights reserved.
+            © {new Date().getFullYear()} Hotpoint Appliances Ltd. All rights
+            reserved.
           </p>
         </div>
       </div>

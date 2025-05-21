@@ -11,7 +11,7 @@ export default function Hero() {
         <div className="flex flex-col items-center md:flex-row">
           <div className="mb-10 md:mb-0 md:w-1/2">
             <Image
-              src={assets.landing_logo}
+              src={assets.hotpoint_logo}
               alt="hotpoint logo"
               className="w-120"
               priority

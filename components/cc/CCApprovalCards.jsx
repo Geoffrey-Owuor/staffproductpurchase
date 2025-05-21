@@ -38,7 +38,7 @@ export default function CCApprovalCards() {
         {[1, 2, 3].map((i) => (
           <div
             key={i}
-            className="h-39 animate-pulse rounded-lg bg-gray-100"
+            className="h-39 animate-pulse rounded-3xl bg-gray-100"
           ></div>
         ))}
       </div>

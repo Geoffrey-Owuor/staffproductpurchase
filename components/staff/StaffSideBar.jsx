@@ -1,13 +1,11 @@
 "use client";
 
-import { assets } from "@/public/assets";
 import {
   HomeIcon,
   LogOutIcon,
   ShoppingBagIcon,
   ShoppingCartIcon,
 } from "lucide-react";
-import Image from "next/image";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -38,27 +36,23 @@ export default function Sidebar({ isOpen }) {
     if (href === "/staffdashboard") {
       return pathname === href
         ? "bg-red-700 font-semibold"
-        : "hover:text-gray-300";
+        : "hover:text-gray-200";
     }
     return pathname.startsWith(href)
       ? "bg-red-700 font-semibold"
-      : "hover:text-gray-300";
+      : "hover:text-gray-200";
   };
 
   return (
     <div
-      className={`fixed top-0 left-0 flex h-full w-56 flex-col bg-red-900 text-white shadow-md ${
+      className={`fixed top-0 left-0 flex h-full w-56 flex-col bg-red-900 text-white ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
       {/* Logo Section */}
-      <div className="ml-5.5">
-        <Image
-          src={assets.hotpoint_logo}
-          alt="Logo"
-          className="w-35"
-          priority
-        />
+      <div className="mt-1.5 flex items-center pb-5.5 pl-5 text-3xl font-bold">
+        <ShoppingBagIcon className="h-8 w-8 text-white" />
+        <span className="text-white">Hotpoint</span>
       </div>
 
       {/* Navigation Links */}
