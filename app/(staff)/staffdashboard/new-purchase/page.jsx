@@ -120,7 +120,7 @@ export default function NewPurchase() {
             className={`mx-auto my-8 block cursor-pointer rounded-xl px-6 py-3 text-lg text-white transition-colors ${
               isSubmitting
                 ? "cursor-not-allowed bg-gray-400"
-                : "bg-green-600 hover:bg-green-700"
+                : "bg-red-800 hover:bg-red-900"
             }`}
           >
             {isSubmitting ? "Submitting..." : "Submit Form"}
