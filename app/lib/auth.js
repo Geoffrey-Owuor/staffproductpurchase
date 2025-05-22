@@ -17,7 +17,8 @@ export const createSession = async (userId, role) => {
 
   const client = await pool.connect();
   try {
-    await client.query("DELETE FROM sessions WHERE user_id = $1", [userId]);
+    //Uncomment when needed
+    // await client.query("DELETE FROM sessions WHERE user_id = $1", [userId]);
     await client.query(
       "INSERT INTO sessions (user_id, session_token, expires_at, role) VALUES ($1, $2, $3, $4)",
       [userId, sessionToken, expiresAt, role],

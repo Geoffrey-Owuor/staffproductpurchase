@@ -201,7 +201,7 @@ export default function ViewPurchase({ params }) {
                 label="Date"
                 value={
                   purchase.createdat
-                    ? new Date(purchase.createdat).toLocaleDateString()
+                    ? new Date(purchase.createdat).toLocaleDateString("en-GB")
                     : "N/A"
                 }
               />

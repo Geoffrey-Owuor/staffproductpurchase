@@ -5,6 +5,7 @@ import { ArrowLeft, Save, X } from "lucide-react";
 import StaffInfoSection from "@/components/FormEditComponents/StaffInfoSection";
 import ProductDetailsSection from "@/components/FormEditComponents/ProductDetailsSection";
 import Alert from "@/components/Alert";
+import ConfirmationDialog from "@/components/Reusables/ConfirmationDialog";
 import EditFormSkeleton from "@/components/skeletons/EditFormSkeleton";
 
 export default function EditPurchaseForm({ params }) {
@@ -27,6 +28,7 @@ export default function EditPurchaseForm({ params }) {
   });
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const [alertType, setAlertType] = useState("success");
 
   useEffect(() => {
@@ -102,9 +104,14 @@ export default function EditPurchaseForm({ params }) {
   }, [formData.tdprice, formData.discountrate]);
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
+    setShowConfirmation(true); // Show confirmation dialog instead of submitting directly
+  };
+
+  const handleConfirmSubmit = async () => {
+    setShowConfirmation(false);
     setIsSubmitting(true);
     const { id } = await params;
-    e.preventDefault();
 
     try {
       const response = await fetch(`/api/staffviewpurchases/${id}`, {
@@ -127,12 +134,12 @@ export default function EditPurchaseForm({ params }) {
       // Redirect back after 2 seconds
       setTimeout(() => {
         router.push(`/staffdashboard/purchase-history/purchases/${id}`);
-      }, 2000);
+      }, 500);
     } catch (err) {
       console.error("Error updating purchase:", err);
       setAlertMessage("Failed to update purchase. Please try again.");
       setAlertType("error");
-      setShowAlert(false);
+      setShowAlert(true);
     } finally {
       setIsSubmitting(false);
     }
@@ -183,6 +190,15 @@ export default function EditPurchaseForm({ params }) {
           </button>
         </div>
       </form>
+
+      {/* Confirmation Dialogue */}
+      {showConfirmation && (
+        <ConfirmationDialog
+          message="Are you sure you want to submit these changes?"
+          onConfirm={handleConfirmSubmit}
+          onCancel={() => setShowConfirmation(false)}
+        />
+      )}
 
       {/* Alert Component */}
       {showAlert && (

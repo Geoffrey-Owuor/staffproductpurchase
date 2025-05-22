@@ -197,7 +197,7 @@ export default function ViewPurchase({ params }) {
                 label="Date"
                 value={
                   purchase.createdat
-                    ? new Date(purchase.createdat).toLocaleDateString()
+                    ? new Date(purchase.createdat).toLocaleDateString("en-GB")
                     : "N/A"
                 }
               />
@@ -236,7 +236,9 @@ export default function ViewPurchase({ params }) {
               label="Date Approved"
               value={
                 purchase.hr_approval_date
-                  ? new Date(purchase.hr_approval_date).toLocaleDateString()
+                  ? new Date(purchase.hr_approval_date).toLocaleDateString(
+                      "en-GB",
+                    )
                   : "N/A"
               }
             />

@@ -197,7 +197,7 @@ export default function ViewPurchase({ params }) {
                 label="Date"
                 value={
                   purchase.createdat
-                    ? new Date(purchase.createdat).toLocaleDateString()
+                    ? new Date(purchase.createdat).toLocaleDateString("en-GB")
                     : "N/A"
                 }
               />
@@ -236,7 +236,9 @@ export default function ViewPurchase({ params }) {
               label="Date Approved"
               value={
                 purchase.hr_approval_date
-                  ? new Date(purchase.hr_approval_date).toLocaleDateString()
+                  ? new Date(purchase.hr_approval_date).toLocaleDateString(
+                      "en-GB",
+                    )
                   : "N/A"
               }
             />
@@ -308,7 +310,9 @@ export default function ViewPurchase({ params }) {
                 label="Approval Date"
                 value={
                   purchase.cc_approval_date
-                    ? new Date(purchase.cc_approval_date).toLocaleDateString()
+                    ? new Date(purchase.cc_approval_date).toLocaleDateString(
+                        "en-GB",
+                      )
                     : "n/a"
                 }
               />
@@ -326,7 +330,7 @@ export default function ViewPurchase({ params }) {
               label="Date of Invoice"
               value={
                 purchase.invoice_date
-                  ? new Date(purchase.invoice_date).toLocaleDateString()
+                  ? new Date(purchase.invoice_date).toLocaleDateString("en-GB")
                   : "n/a"
               }
             />
@@ -351,9 +355,9 @@ export default function ViewPurchase({ params }) {
               label="Date Recorded"
               value={
                 purchase.invoice_recorded_date
-                  ? new Date(
-                      purchase.invoice_recorded_date,
-                    ).toLocaleDateString()
+                  ? new Date(purchase.invoice_recorded_date).toLocaleDateString(
+                      "en-GB",
+                    )
                   : "n/a"
               }
             />
@@ -378,7 +382,7 @@ export default function ViewPurchase({ params }) {
               label="Payment Date"
               value={
                 purchase.payment_date
-                  ? new Date(purchase.payment_date).toLocaleDateString()
+                  ? new Date(purchase.payment_date).toLocaleDateString("en-GB")
                   : "n/a"
               }
             />

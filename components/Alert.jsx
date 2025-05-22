@@ -29,7 +29,7 @@ const Alert = ({ message, type, onClose }) => {
         <div className="flex justify-center">
           <button
             onClick={onClose}
-            className={`cursor-pointer rounded-3xl px-4 py-2 ${
+            className={`cursor-pointer rounded-3xl px-6 py-2 ${
               type === "success"
                 ? "bg-green-600 text-white hover:bg-green-700"
                 : "bg-red-600 text-white hover:bg-red-700"
