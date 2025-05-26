@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function RegisterPage() {
@@ -12,7 +11,6 @@ export default function RegisterPage() {
   });
   const [redirect, setRedirect] = useState(false);
   const [registrationError, setRegistrationError] = useState("");
-  const router = useRouter();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,15 +32,20 @@ export default function RegisterPage() {
 
       if (response.ok) {
         const data = await response.json();
+        // Determine dashboard path based on role
+        let dashboardPath;
         if (data.role === "hr") {
-          router.push("/hrdashboard");
+          dashboardPath = "/hrdashboard";
         } else if (data.role === "cc") {
-          router.push("/ccdashboard");
+          dashboardPath = "/ccdashboard";
         } else if (data.role === "bi") {
-          router.push("/bidashboard");
+          dashboardPath = "/bidashboard";
         } else {
-          router.push("/staffdashboard");
+          dashboardPath = "/staffdashboard";
         }
+
+        // Redirect with page reload
+        window.location.href = dashboardPath;
       } else {
         const data = await response.json();
         setRegistrationError("Registration Failed" || data.message);

@@ -13,7 +13,7 @@ export async function GET(request) {
     let query = {
       text: `SELECT id, itemname, itemstatus, productcode, 
              tdprice, discountedvalue, createdat, staffname, payrollno, cc_approval 
-             FROM purchasesinfo WHERE createdat >= NOW() - INTERVAL '4 days'`,
+             FROM purchasesinfo WHERE createdat >= NOW() - INTERVAL '12 days'`,
       values: [],
     };
 

@@ -16,7 +16,7 @@ export async function GET() {
       `SELECT id, itemname, itemstatus, productcode, 
               tdprice, discountedvalue, createdat, hr_approval, cc_approval, bi_approval 
        FROM purchasesinfo 
-       WHERE user_id = $1 AND createdat >= NOW() - INTERVAL '4 days'
+       WHERE user_id = $1 AND createdat >= NOW() - INTERVAL '12 days'
        ORDER BY createdat DESC`,
       [user.id],
     );

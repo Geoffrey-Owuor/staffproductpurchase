@@ -51,8 +51,7 @@ const CCHeader = ({ isSidebarOpen, toggleSidebar }) => {
       });
 
       if (response.ok) {
-        router.push("/login");
-        router.refresh();
+        window.location.href = "/login";
       }
     } catch (error) {
       console.error("Logout failed:", error);

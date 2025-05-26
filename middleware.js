@@ -9,11 +9,14 @@ const protectedPaths = {
   "/bidashboard": ["bi"],
 };
 
+// Paths to redirect if already logged in
+const redirectIfLoggedInPaths = ["/", "/login", "/register"];
+
 export default async function middleware(request) {
   const { pathname } = request.nextUrl;
 
-  // 1. ✅ Redirect from homepage based on role if already logged in
-  if (pathname === "/") {
+  // 1. ✅ Redirect from homepage,login, or register based on role if already logged in
+  if (redirectIfLoggedInPaths.includes(pathname)) {
     const sessionToken = request.cookies.get("session_token")?.value;
 
     if (sessionToken) {
@@ -70,5 +73,5 @@ export default async function middleware(request) {
 
 // Apply to all routes except static/public/api ones
 export const config = {
-  matcher: ["/((?!api|login|register|_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 };

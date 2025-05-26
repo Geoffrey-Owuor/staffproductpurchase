@@ -1,9 +1,10 @@
 "use client";
-import { ArrowLeft, ArrowUpRight, Edit, X } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Edit, X, Download } from "lucide-react";
 import ApprovalStatus from "@/components/Reusables/ApprovalStatus";
 import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import PurchaseDetailSkeleton from "@/components/skeletons/PurchaseDetailsSkeleton";
+import { generatePurchasePDF } from "@/utils/generatePurchasePDF";
 import DetailField from "@/components/Reusables/DetailField";
 
 export default function ViewPurchase({ params }) {
@@ -11,6 +12,7 @@ export default function ViewPurchase({ params }) {
   const [purchase, setPurchase] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [error, setError] = useState(null);
   const router = useRouter();
@@ -31,6 +33,18 @@ export default function ViewPurchase({ params }) {
 
     fetchPurchaseDetails();
   }, [id]);
+
+  //Generate pdf document version of the data
+  const handleDownload = async () => {
+    setIsDownloading(true);
+    try {
+      await generatePurchasePDF(purchase);
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -114,7 +128,19 @@ export default function ViewPurchase({ params }) {
           </button>
         )}
 
-        <div className="flex items-center">
+        <div className="flex items-center gap-4">
+          <button
+            onClick={handleDownload}
+            className={`relative flex items-center justify-center gap-1 rounded-full bg-gray-100 p-2 text-sm text-black shadow-sm hover:bg-gray-200`}
+            disabled={isDownloading}
+          >
+            {isDownloading && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="h-6 w-6 animate-spin rounded-full border border-t-transparent"></div>
+              </div>
+            )}
+            <Download className="relative z-10 h-4 w-4" />
+          </button>
           <button
             onClick={() => router.push("/bidashboard/purchases-history")}
             className="flex cursor-pointer items-center text-red-900 hover:text-red-700"

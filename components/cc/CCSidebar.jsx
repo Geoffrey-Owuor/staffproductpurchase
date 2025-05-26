@@ -8,13 +8,11 @@ import {
 } from "lucide-react";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 export default function CCSidebar({ isOpen }) {
   const [loggingOut, setLoggingOut] = useState(false);
-  const router = useRouter();
   const handleLogout = async () => {
     setLoggingOut(true);
     try {
@@ -23,8 +21,7 @@ export default function CCSidebar({ isOpen }) {
       });
 
       if (response.ok) {
-        router.push("/login");
-        router.refresh();
+        window.location.href = "/login";
       }
     } catch (error) {
       console.error("Logout failed:", error);
