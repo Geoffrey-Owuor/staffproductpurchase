@@ -337,7 +337,7 @@ export const generatePurchasePDF = async (purchase) => {
       heightLeft -= pageHeight;
     }
 
-    const filename = `Purchase_${purchase.productcode || purchase._id}_${new Date().toISOString().split("T")[0]}.pdf`;
+    const filename = `Purchase_${purchase.staffname || purchase.payrollno}_${new Date().toISOString().split("T")[0]}.pdf`;
     pdf.save(filename);
   } catch (error) {
     console.error("Error generating PDF:", error);

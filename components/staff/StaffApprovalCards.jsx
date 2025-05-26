@@ -60,7 +60,9 @@ export default function StaffApprovalCards() {
             <Clock className="h-6 w-6 text-yellow-600" />
           </div>
         </div>
-        <p className="mt-4 text-sm text-yellow-700">Awaiting approvals</p>
+        <p className="mt-4 text-sm text-yellow-700">
+          Awaiting approval from invoicing
+        </p>
       </div>
 
       {/* Declined Card */}
@@ -76,7 +78,9 @@ export default function StaffApprovalCards() {
             <XCircle className="h-6 w-6 text-red-600" />
           </div>
         </div>
-        <p className="mt-4 text-sm text-red-700">Requests declined</p>
+        <p className="mt-4 text-sm text-red-700">
+          Requests declined by invoicing
+        </p>
       </div>
 
       {/* Approved Card */}
@@ -92,7 +96,9 @@ export default function StaffApprovalCards() {
             <CheckCircle2 className="h-6 w-6 text-green-600" />
           </div>
         </div>
-        <p className="mt-4 text-sm text-green-700">Requests approved</p>
+        <p className="mt-4 text-sm text-green-700">
+          Requests approved by invoicing
+        </p>
       </div>
     </div>
   );

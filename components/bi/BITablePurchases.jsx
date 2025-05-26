@@ -186,18 +186,20 @@ export default function BITablePurchases() {
                             <Eye className="h-4 w-4" />
                           )}
                         </button>
-                        <button
-                          onClick={() => handleEditClick(purchase.id)}
-                          className="cursor-pointer rounded-full bg-red-700 p-1.5 text-white hover:bg-red-600"
-                          title="Edit"
-                          disabled={goingTo === purchase.id}
-                        >
-                          {goingTo === purchase.id ? (
-                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-                          ) : (
-                            <Pencil className="h-4 w-4" />
-                          )}
-                        </button>
+                        {purchase.bi_approval !== "approved" && (
+                          <button
+                            onClick={() => handleEditClick(purchase.id)}
+                            className="cursor-pointer rounded-full bg-red-100 p-1.5 text-black hover:bg-red-200"
+                            title="Edit"
+                            disabled={goingTo === purchase.id}
+                          >
+                            {goingTo === purchase.id ? (
+                              <div className="h-4 w-4 animate-spin rounded-full border border-black border-t-transparent"></div>
+                            ) : (
+                              <Pencil className="h-4 w-4" />
+                            )}
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>
