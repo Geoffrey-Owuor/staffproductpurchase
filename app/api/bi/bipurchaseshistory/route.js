@@ -12,7 +12,7 @@ export async function GET(request) {
     // Base query with parameterized input
     let query = {
       text: `SELECT id, itemname, itemstatus, productcode, 
-             tdprice, discountedvalue, createdat, staffname, payrollno, bi_approval 
+             tdprice, discountedvalue, createdat, staffname, payrollno, hr_approval, cc_approval, bi_approval 
              FROM purchasesinfo`,
       values: [],
     };

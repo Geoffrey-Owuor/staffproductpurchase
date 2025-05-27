@@ -54,28 +54,25 @@ export default function StaffPurchaseHistory() {
           <table className="min-w-full divide-y divide-red-200">
             <thead className="bg-red-900 text-white">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider uppercase">
+                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
                   Item
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider uppercase">
+                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
                   Status
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider uppercase">
+                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
                   Code
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider uppercase">
-                  Price
+                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
+                  HR Approval
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider uppercase">
-                  Value
+                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
+                  CC Approval
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider uppercase">
-                  Date
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider uppercase">
+                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
                   BI Approval
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider uppercase">
+                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
                   Actions
                 </th>
               </tr>
@@ -93,14 +90,31 @@ export default function StaffPurchaseHistory() {
                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
                       {purchase.productcode}
                     </td>
-                    <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
-                      Ksh {Number(purchase.tdprice).toFixed(2)}
+                    <td className="px-6 py-4 text-sm whitespace-nowrap">
+                      <span
+                        className={`inline-flex rounded-full px-2 py-1 text-xs leading-5 font-semibold ${
+                          purchase.hr_approval === "approved"
+                            ? "bg-green-100 text-green-800"
+                            : purchase.hr_approval === "declined"
+                              ? "bg-red-100 text-red-800"
+                              : "bg-yellow-100 text-yellow-800"
+                        }`}
+                      >
+                        {purchase.hr_approval}
+                      </span>
                     </td>
-                    <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
-                      Ksh {Number(purchase.discountedvalue).toFixed(2)}
-                    </td>
-                    <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
-                      {new Date(purchase.createdat).toLocaleDateString("en-GB")}
+                    <td className="px-6 py-4 text-sm whitespace-nowrap">
+                      <span
+                        className={`inline-flex rounded-full px-2 py-1 text-xs leading-5 font-semibold ${
+                          purchase.cc_approval === "approved"
+                            ? "bg-green-100 text-green-800"
+                            : purchase.cc_approval === "declined"
+                              ? "bg-red-100 text-red-800"
+                              : "bg-yellow-100 text-yellow-800"
+                        }`}
+                      >
+                        {purchase.cc_approval}
+                      </span>
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap">
                       <span

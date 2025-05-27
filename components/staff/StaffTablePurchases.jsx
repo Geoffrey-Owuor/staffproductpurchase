@@ -60,28 +60,25 @@ export default function StaffTablePurchases() {
           <table className="min-w-full divide-y divide-red-200">
             <thead className="bg-red-900 text-white">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider uppercase">
+                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
                   Item
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider uppercase">
+                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
                   Status
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider uppercase">
+                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
                   Code
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider uppercase">
-                  Price
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider uppercase">
+                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
                   HR Approval
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider uppercase">
+                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
                   CC Approval
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider uppercase">
+                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
                   BI Approval
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider uppercase">
+                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
                   Actions
                 </th>
               </tr>
@@ -98,9 +95,6 @@ export default function StaffTablePurchases() {
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
                       {purchase.productcode}
-                    </td>
-                    <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
-                      Ksh {Number(purchase.tdprice).toFixed(2)}
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap">
                       <span
