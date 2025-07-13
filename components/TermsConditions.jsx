@@ -1,6 +1,6 @@
 const TermsConditions = () => {
   return (
-    <div className="mx-2 mt-8 mb-2 rounded-2xl border border-red-200 bg-gray-100 p-4 text-sm shadow-md">
+    <div className="mx-2 mt-8 mb-2 rounded-xl bg-gray-100 p-4 text-sm">
       <h3 className="text-center text-2xl font-bold">Terms & Conditions</h3>
       <ul className="my-2 list-disc pl-5">
         <li className="mb-2">

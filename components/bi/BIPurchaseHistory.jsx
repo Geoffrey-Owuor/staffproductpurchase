@@ -1,8 +1,15 @@
 "use client";
-import { Eye, Search } from "lucide-react";
+import {
+  Eye,
+  Search,
+  ChevronLeft,
+  ChevronRight,
+  MoreHorizontal,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import TableSkeleton from "../skeletons/TableSkeleton";
+import { LoadingBar } from "../Reusables/LoadingBar";
 
 export default function BIPurchaseHistory() {
   const [purchases, setPurchases] = useState([]);
@@ -10,7 +17,12 @@ export default function BIPurchaseHistory() {
   const [navigatingTo, setNavigatingTo] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [showPageDropdown, setShowPageDropdown] = useState(false);
   const router = useRouter();
+
+  const rowsPerPage = 7; //total number of rows per page
 
   // Debounce search term
   useEffect(() => {
@@ -43,8 +55,13 @@ export default function BIPurchaseHistory() {
         if (!Array.isArray(data)) {
           console.warn("Data is not an array:", data);
           setPurchases([]);
+          setTotalPages(1);
         } else {
           setPurchases(data);
+          setTotalPages(Math.ceil(data.length / rowsPerPage));
+
+          //Reset to page 1 when search changes
+          setCurrentPage(1);
         }
       } catch (err) {
         console.error("Error fetching purchases:", err);
@@ -56,8 +73,93 @@ export default function BIPurchaseHistory() {
     fetchPurchases();
   }, [debouncedSearchTerm]);
 
+  //Get current rows for the current page
+  const currentPurchases = purchases.slice(
+    (currentPage - 1) * rowsPerPage,
+    currentPage * rowsPerPage,
+  );
+
+  //handling page changes
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    setShowPageDropdown(false);
+  };
+
+  //Showing the page numbers (rendering the page numbers)
+  const renderPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(
+          <button
+            key={i}
+            onClick={() => handlePageChange(i)}
+            className={`mx-1 flex h-8 w-8 items-center justify-center rounded-full ${currentPage === i ? "bg-red-900 text-white" : "bg-white text-red-900 hover:bg-red-100"}`}
+          >
+            {i}
+          </button>,
+        );
+      }
+    } else {
+      //Show first 3 pages, then dropdown, then last page
+      for (let i; i <= 3; i++) {
+        pages.push(
+          <button
+            key={i}
+            onClick={() => handlePageChange(i)}
+            className={`mx-1 flex h-8 w-8 items-center justify-center rounded-full ${currentPage === i ? "bg-red-900 text-white" : "bg-white text-red-900 hover:bg-red-100"}`}
+          >
+            {i}
+          </button>,
+        );
+      }
+
+      //Add dropdown button
+      pages.push(
+        <div key="dropdown" className="relative mx-1">
+          <button
+            onClick={() => setShowPageDropdown(!showPageDropdown)}
+            className={`flex h-8 w-8 items-center justify-center rounded-full ${showPageDropdown ? "bg-red-900 text-white" : "bg-white text-red-900 hover:bg-red-100"}`}
+          >
+            <MoreHorizontal className="h-4 w-4" />
+          </button>
+          {showPageDropdown && (
+            <div className="absolute top-full left-0 z-10 mt-1 w-16 rounded-lg bg-white shadow-lg">
+              {Array.from({ length: totalPages - 4 }, (_, i) => i + 4).map(
+                (page) => (
+                  <button
+                    key={page}
+                    onClick={() => handlePageChange(page)}
+                    className={`block w-full px-3 py-1 text-center text-sm ${currentPage === page ? "bg-red-100 text-red-900" : "hover:bg-red-50"}`}
+                  >
+                    {page}
+                  </button>
+                ),
+              )}
+            </div>
+          )}
+        </div>,
+      );
+      //Add last page
+      pages.push(
+        <button
+          key={totalPages}
+          onClick={() => handlePageChange(totalPages)}
+          className={`mx-1 flex h-8 w-8 items-center justify-center rounded-full ${currentPage === totalPages ? "bg-red-900 text-white" : "bg-white text-red-900 hover:bg-red-100"}`}
+        >
+          {totalPages}
+        </button>,
+      );
+    }
+
+    return pages;
+  };
+
   return (
     <div className="p-2">
+      {navigatingTo && <LoadingBar isLoading={true} />}
       <h2 className="mb-6 text-center text-2xl font-bold text-red-900">
         Staff Purchase Requests History
       </h2>
@@ -101,37 +203,37 @@ export default function BIPurchaseHistory() {
       {loading ? (
         <TableSkeleton />
       ) : (
-        <div className="overflow-x-auto rounded-2xl border border-red-200 shadow">
-          <table className="min-w-full divide-y divide-red-200">
-            <thead className="bg-red-900 text-white">
+        <div className="overflow-x-auto">
+          <table className="min-w-full">
+            <thead className="bg-red-50 text-black">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
+                <th className="px-6 py-3 text-left text-sm font-semibold">
                   Item
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
+                <th className="px-6 py-3 text-left text-sm font-semibold">
                   Staff
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
+                <th className="px-6 py-3 text-left text-sm font-semibold">
                   Payroll
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
+                <th className="px-6 py-3 text-left text-sm font-semibold">
                   HR Approval
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
+                <th className="px-6 py-3 text-left text-sm font-semibold">
                   CC Approval
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
+                <th className="px-6 py-3 text-left text-sm font-semibold">
                   BI Approval
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
+                <th className="px-6 py-3 text-left text-sm font-semibold">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-red-200 bg-white">
-              {purchases.length > 0 ? (
-                purchases.map((purchase) => (
-                  <tr key={purchase.id} className="hover:bg-red-50">
+            <tbody className="divide-y divide-red-100 bg-white">
+              {currentPurchases.length > 0 ? (
+                currentPurchases.map((purchase) => (
+                  <tr key={purchase.id} className="odd:bg-white even:bg-red-50">
                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
                       {purchase.itemname}
                     </td>
@@ -188,11 +290,7 @@ export default function BIPurchaseHistory() {
                           title="View"
                           disabled={navigatingTo === purchase.id}
                         >
-                          {navigatingTo === purchase.id ? (
-                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-                          ) : (
-                            <Eye className="h-4 w-4" />
-                          )}
+                          <Eye className="h-4 w-4" />
                         </button>
                       </div>
                     </td>
@@ -212,6 +310,30 @@ export default function BIPurchaseHistory() {
               )}
             </tbody>
           </table>
+          {/* Pagination */}
+          {purchases.length > rowsPerPage && (
+            <div className="mt-4 flex items-center justify-center">
+              <button
+                onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                disabled={currentPage === 1}
+                className="mx-1 flex h-8 w-8 items-center justify-center rounded-full bg-white text-red-900 hover:bg-red-100 disabled:opacity-50"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+
+              {renderPageNumbers()}
+
+              <button
+                onClick={() =>
+                  handlePageChange(Math.min(totalPages, currentPage + 1))
+                }
+                disabled={currentPage === totalPages}
+                className="mx-1 flex h-8 w-8 items-center justify-center rounded-full bg-white text-red-900 hover:bg-red-100 disabled:opacity-50"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>

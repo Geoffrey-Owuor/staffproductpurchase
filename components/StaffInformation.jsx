@@ -1,7 +1,7 @@
 const StaffInformation = ({ formData, handleChange }) => {
   return (
-    <div className="mb-8 rounded-2xl border border-red-200 bg-white shadow-md">
-      <div className="rounded-t-2xl bg-red-900 px-6 py-3 text-lg font-bold text-white">
+    <div className="mb-8 rounded-xl border border-red-200 bg-white">
+      <div className="rounded-t-xl bg-red-900 px-6 py-3 text-lg font-bold text-white">
         STAFF INFORMATION
       </div>
       <div className="p-6">

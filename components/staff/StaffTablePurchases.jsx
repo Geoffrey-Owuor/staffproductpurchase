@@ -3,6 +3,7 @@ import { Eye, Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import TableSkeleton from "../skeletons/TableSkeleton";
+import { LoadingBar } from "../Reusables/LoadingBar";
 
 export default function StaffTablePurchases() {
   const [purchases, setPurchases] = useState([]);
@@ -49,6 +50,7 @@ export default function StaffTablePurchases() {
 
   return (
     <div className="p-2">
+      {(navigatingTo || goingTo) && <LoadingBar isLoading={true} />}
       <h2 className="mb-6 text-center text-2xl font-bold text-red-900">
         Recent Purchase Requests
       </h2>
@@ -56,37 +58,37 @@ export default function StaffTablePurchases() {
       {loading ? (
         <TableSkeleton />
       ) : (
-        <div className="overflow-x-auto rounded-2xl border border-red-200 shadow">
-          <table className="min-w-full divide-y divide-red-200">
-            <thead className="bg-red-900 text-white">
+        <div className="overflow-x-auto">
+          <table className="min-w-full">
+            <thead className="bg-red-50 text-black">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
+                <th className="px-6 py-3 text-left text-sm font-semibold">
                   Item
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
+                <th className="px-6 py-3 text-left text-sm font-semibold">
                   Status
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
+                <th className="px-6 py-3 text-left text-sm font-semibold">
                   Code
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
+                <th className="px-6 py-3 text-left text-sm font-semibold">
                   HR Approval
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
+                <th className="px-6 py-3 text-left text-sm font-semibold">
                   CC Approval
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
+                <th className="px-6 py-3 text-left text-sm font-semibold">
                   BI Approval
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
+                <th className="px-6 py-3 text-left text-sm font-semibold">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-red-200 bg-white">
+            <tbody className="divide-y divide-red-100 bg-white">
               {purchases.length > 0 ? (
                 purchases.map((purchase) => (
-                  <tr key={purchase.id} className="hover:bg-red-50">
+                  <tr key={purchase.id} className="odd:bg-white even:bg-red-50">
                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
                       {purchase.itemname}
                     </td>
@@ -143,11 +145,7 @@ export default function StaffTablePurchases() {
                           title="View"
                           disabled={navigatingTo === purchase.id}
                         >
-                          {navigatingTo === purchase.id ? (
-                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-                          ) : (
-                            <Eye className="h-4 w-4" />
-                          )}
+                          <Eye className="h-4 w-4" />
                         </button>
                         {purchase.bi_approval !== "approved" && (
                           <button
@@ -156,11 +154,7 @@ export default function StaffTablePurchases() {
                             title="Edit"
                             disabled={goingTo === purchase.id}
                           >
-                            {goingTo === purchase.id ? (
-                              <div className="h-4 w-4 animate-spin rounded-full border border-black border-t-transparent"></div>
-                            ) : (
-                              <Pencil className="h-4 w-4" />
-                            )}
+                            <Pencil className="h-4 w-4" />
                           </button>
                         )}
                       </div>

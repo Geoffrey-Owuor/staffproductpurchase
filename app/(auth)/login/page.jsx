@@ -72,7 +72,7 @@ export default function LoginPage() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-5" autoComplete="off">
           <div>
             <label
               htmlFor="email"
@@ -88,7 +88,6 @@ export default function LoginPage() {
               onChange={handleChange}
               className="w-full rounded-xl border border-gray-300 px-4 py-3 focus:border-transparent focus:ring-2 focus:ring-red-500"
               required
-              autoComplete="username"
             />
           </div>
 
@@ -108,7 +107,6 @@ export default function LoginPage() {
               className="w-full rounded-xl border border-gray-300 px-4 py-3 focus:border-transparent focus:ring-2 focus:ring-red-500"
               minLength="8"
               required
-              autoComplete="current-password"
             />
           </div>
 

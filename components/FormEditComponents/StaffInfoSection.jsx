@@ -1,6 +1,7 @@
-export default function StaffInfoSection({ formData, handleChange }) {
+export default function StaffInfoSection({ formData, handleChange, userRole }) {
+  const isReadOnly = userRole != "staff";
   return (
-    <div className="overflow-hidden rounded-2xl border border-red-200 shadow">
+    <div className="overflow-hidden rounded-xl border border-red-200">
       <div className="bg-red-900 px-6 py-3 text-white">
         <h3 className="text-lg font-medium">Staff Information</h3>
       </div>
@@ -18,7 +19,8 @@ export default function StaffInfoSection({ formData, handleChange }) {
             name="staffname"
             value={formData.staffname}
             onChange={handleChange}
-            className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
+            readOnly={isReadOnly}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             required
           />
         </div>
@@ -35,7 +37,8 @@ export default function StaffInfoSection({ formData, handleChange }) {
             name="payrollno"
             value={formData.payrollno}
             onChange={handleChange}
-            className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
+            readOnly={isReadOnly}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             required
           />
         </div>
@@ -52,7 +55,8 @@ export default function StaffInfoSection({ formData, handleChange }) {
             name="department"
             value={formData.department}
             onChange={handleChange}
-            className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
+            readOnly={isReadOnly}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             required
           />
         </div>

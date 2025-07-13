@@ -10,6 +10,7 @@ import EditFormSkeleton from "@/components/skeletons/EditFormSkeleton";
 
 export default function EditPurchaseForm({ params }) {
   const router = useRouter();
+  const [userRole, setUserRole] = useState(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
@@ -24,7 +25,6 @@ export default function EditPurchaseForm({ params }) {
     discountedvalue: "",
     createdat: "",
     employee_payment_terms: "",
-    signature: "",
   });
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
@@ -32,6 +32,23 @@ export default function EditPurchaseForm({ params }) {
   const [alertType, setAlertType] = useState("success");
 
   useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch("/api/validate-session");
+        const data = await response.json();
+
+        if (response.ok && data.valid) {
+          setUserRole(data.role);
+        } else {
+          setUserRole("guest"); //Fallback Role
+        }
+      } catch (error) {
+        console.error("Failed to fetch user role:", error);
+        setUserRole("guest");
+      }
+    };
+    fetchUser();
+
     const fetchPurchaseData = async () => {
       const { id } = await params;
       try {
@@ -62,7 +79,6 @@ export default function EditPurchaseForm({ params }) {
           discountedvalue: data.discountedvalue || "",
           createdat: data.createdat ? data.createdat.split("T")[0] : "",
           employee_payment_terms: data.employee_payment_terms || "",
-          signature: data.signature || "",
         });
         setLoading(false);
       } catch (err) {
@@ -165,11 +181,16 @@ export default function EditPurchaseForm({ params }) {
         <div className="w-24"></div> {/* Spacer for alignment */}
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <StaffInfoSection formData={formData} handleChange={handleChange} />
+      <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
+        <StaffInfoSection
+          formData={formData}
+          handleChange={handleChange}
+          userRole={userRole}
+        />
         <ProductDetailsSection
           formData={formData}
           handleChange={handleChange}
+          userRole={userRole}
         />
 
         <div className="flex justify-center space-x-4">

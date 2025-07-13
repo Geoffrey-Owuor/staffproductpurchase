@@ -71,7 +71,7 @@ export default function RegisterPage() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-5" autoComplete="off">
           <div>
             <label
               htmlFor="name"

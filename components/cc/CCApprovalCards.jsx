@@ -38,7 +38,7 @@ export default function CCApprovalCards() {
         {[1, 2, 3].map((i) => (
           <div
             key={i}
-            className="h-39 animate-pulse rounded-3xl bg-gray-100"
+            className="h-39 animate-pulse rounded-2xl bg-gray-100"
           ></div>
         ))}
       </div>
@@ -48,7 +48,7 @@ export default function CCApprovalCards() {
   return (
     <div className="mx-4 mb-8 grid grid-cols-1 gap-4 pt-4 md:grid-cols-3">
       {/* Pending Card */}
-      <div className="rounded-3xl border border-yellow-200 bg-yellow-50 p-6 shadow-sm">
+      <div className="rounded-2xl bg-yellow-50 p-6">
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-lg font-medium text-yellow-800">Pending</h3>
@@ -64,7 +64,7 @@ export default function CCApprovalCards() {
       </div>
 
       {/* Declined Card */}
-      <div className="rounded-3xl border border-red-200 bg-red-50 p-6 shadow-sm">
+      <div className="rounded-2xl bg-red-50 p-6">
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-lg font-medium text-red-800">Declined</h3>
@@ -80,7 +80,7 @@ export default function CCApprovalCards() {
       </div>
 
       {/* Approved Card */}
-      <div className="rounded-3xl border border-green-200 bg-green-50 p-6 shadow-sm">
+      <div className="rounded-2xl bg-green-50 p-6">
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-lg font-medium text-green-800">Approved</h3>

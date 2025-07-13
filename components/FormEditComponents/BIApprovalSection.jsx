@@ -1,6 +1,11 @@
-export default function BIApprovalSection({ formData, handleChange }) {
+export default function BIApprovalSection({
+  formData,
+  handleChange,
+  userRole,
+}) {
+  const isReadOnly = userRole != "bi";
   return (
-    <div className="overflow-hidden rounded-2xl border border-red-200 shadow">
+    <div className="overflow-hidden rounded-xl border border-red-200">
       {/* Invoicing Details Section */}
       <div className="border-b border-red-200">
         <div className="bg-red-900 px-6 py-3 text-white">
@@ -20,7 +25,8 @@ export default function BIApprovalSection({ formData, handleChange }) {
               name="invoice_date"
               value={formData.invoice_date}
               onChange={handleChange}
-              className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500"
+              readOnly={isReadOnly}
+              className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             />
           </div>
 
@@ -37,7 +43,8 @@ export default function BIApprovalSection({ formData, handleChange }) {
               name="invoice_number"
               value={formData.invoice_number}
               onChange={handleChange}
-              className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500"
+              readOnly={isReadOnly}
+              className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
               placeholder="Enter invoice number"
             />
           </div>
@@ -57,7 +64,8 @@ export default function BIApprovalSection({ formData, handleChange }) {
               onChange={handleChange}
               step="0.01"
               min="0"
-              className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500"
+              readOnly={isReadOnly}
+              className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
               placeholder="Enter invoice amount"
             />
           </div>
@@ -67,15 +75,16 @@ export default function BIApprovalSection({ formData, handleChange }) {
               htmlFor="bi_signature"
               className="mb-1 block text-sm font-medium text-gray-700"
             >
-              Invoiced By (Signature)
+              Invoiced By
             </label>
             <input
               type="text"
-              id="bi_signature"
-              name="bi_signature"
-              value={formData.bi_signature}
+              id="bi_approver_name"
+              name="bi_approver_name"
+              value={formData.bi_approver_name}
               onChange={handleChange}
-              className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500"
+              readOnly={isReadOnly}
+              className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
               placeholder="Enter invoicer name"
             />
           </div>
@@ -93,7 +102,8 @@ export default function BIApprovalSection({ formData, handleChange }) {
               name="invoice_recorded_date"
               value={formData.invoice_recorded_date}
               onChange={handleChange}
-              className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500"
+              readOnly={isReadOnly}
+              className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             />
           </div>
         </div>
@@ -117,7 +127,8 @@ export default function BIApprovalSection({ formData, handleChange }) {
               name="payment_method"
               value={formData.payment_method}
               onChange={handleChange}
-              className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500"
+              disabled={isReadOnly}
+              className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             >
               <option value="">Select method</option>
               <option value="cash">Cash</option>
@@ -141,7 +152,8 @@ export default function BIApprovalSection({ formData, handleChange }) {
               name="payment_reference"
               value={formData.payment_reference}
               onChange={handleChange}
-              className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500"
+              readOnly={isReadOnly}
+              className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
               placeholder="Enter reference details"
             />
           </div>
@@ -159,7 +171,8 @@ export default function BIApprovalSection({ formData, handleChange }) {
               name="payment_date"
               value={formData.payment_date}
               onChange={handleChange}
-              className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500"
+              readOnly={isReadOnly}
+              className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             />
           </div>
 
@@ -178,7 +191,8 @@ export default function BIApprovalSection({ formData, handleChange }) {
               onChange={handleChange}
               step="0.01"
               min="0"
-              className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500"
+              readOnly={isReadOnly}
+              className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
               placeholder="Enter amount received"
             />
           </div>
@@ -194,7 +208,8 @@ export default function BIApprovalSection({ formData, handleChange }) {
               name="bi_approval"
               value={formData.bi_approval}
               onChange={handleChange}
-              className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500"
+              disabled={isReadOnly}
+              className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             >
               <option value="">Select status</option>
               <option value="approved">Approved</option>

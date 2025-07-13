@@ -13,6 +13,7 @@ import EditFormSkeleton from "@/components/skeletons/EditFormSkeleton";
 
 export default function EditPurchaseForm({ params }) {
   const router = useRouter();
+  const [userRole, setUserRole] = useState(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
@@ -27,20 +28,18 @@ export default function EditPurchaseForm({ params }) {
     discountedvalue: "",
     createdat: "",
     employee_payment_terms: "",
-    signature: "",
     is_employed: "",
     on_probation: "",
     hr_comments: "",
     hr_approval: "",
     hr_approver_name: "",
     hr_approval_date: "",
-    hr_signature: "",
     credit_period: "",
     one_third_rule: "",
     purchase_history_comments: "",
     pending_invoices: "",
     cc_approval: "",
-    cc_signature: "",
+    cc_approver_name: "",
     cc_approval_date: "",
     invoice_date: "",
     invoice_number: "",
@@ -50,7 +49,7 @@ export default function EditPurchaseForm({ params }) {
     payment_reference: "",
     payment_date: "",
     amount: "",
-    bi_signature: "",
+    bi_approver_name: "",
     bi_approval: "",
   });
   const [showAlert, setShowAlert] = useState(false);
@@ -59,6 +58,23 @@ export default function EditPurchaseForm({ params }) {
   const [alertType, setAlertType] = useState("success");
 
   useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch("/api/validate-session");
+        const data = await response.json();
+
+        if (response.ok && data.valid) {
+          setUserRole(data.role);
+        } else {
+          setUserRole("guest"); //Fallback Role
+        }
+      } catch (error) {
+        console.error("Failed to fetch user role:", error);
+        setUserRole("guest");
+      }
+    };
+    fetchUser();
+
     const fetchPurchaseData = async () => {
       const { id } = await params;
       try {
@@ -89,7 +105,6 @@ export default function EditPurchaseForm({ params }) {
           discountedvalue: data.discountedvalue || "",
           createdat: data.createdat ? data.createdat.split("T")[0] : "",
           employee_payment_terms: data.employee_payment_terms || "",
-          signature: data.signature || "",
           is_employed: data.is_employed || "",
           on_probation: data.on_probation || "",
           hr_comments: data.hr_comments || "",
@@ -98,13 +113,12 @@ export default function EditPurchaseForm({ params }) {
           hr_approval_date: data.hr_approval_date
             ? data.hr_approval_date.split("T")[0]
             : "",
-          hr_signature: data.hr_signature || "",
           credit_period: data.credit_period || "",
           one_third_rule: data.one_third_rule || "",
           purchase_history_comments: data.purchase_history_comments || "",
           pending_invoices: data.pending_invoices || "",
           cc_approval: data.cc_approval || "",
-          cc_signature: data.cc_signature || "",
+          cc_approver_name: data.cc_approver_name || "",
           cc_approval_date: data.cc_approval_date
             ? data.cc_approval_date.split("T")[0]
             : "",
@@ -122,7 +136,7 @@ export default function EditPurchaseForm({ params }) {
             ? data.payment_date.split("T")[0]
             : "",
           amount: data.amount || "",
-          bi_signature: data.bi_signature || "",
+          bi_approver_name: data.bi_approver_name || "",
           bi_approval: data.bi_approval || "",
         });
         setLoading(false);
@@ -226,15 +240,32 @@ export default function EditPurchaseForm({ params }) {
         <div className="w-24"></div> {/* Spacer for alignment */}
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <StaffInfoSection formData={formData} handleChange={handleChange} />
+      <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
+        <StaffInfoSection
+          formData={formData}
+          handleChange={handleChange}
+          userRole={userRole}
+        />
         <ProductDetailsSection
           formData={formData}
           handleChange={handleChange}
+          userRole={userRole}
         />
-        <HRApprovalSection formData={formData} handleChange={handleChange} />
-        <CreditControlSection formData={formData} handleChange={handleChange} />
-        <BIApprovalSection formData={formData} handleChange={handleChange} />
+        <HRApprovalSection
+          formData={formData}
+          handleChange={handleChange}
+          userRole={userRole}
+        />
+        <CreditControlSection
+          formData={formData}
+          handleChange={handleChange}
+          userRole={userRole}
+        />
+        <BIApprovalSection
+          formData={formData}
+          handleChange={handleChange}
+          userRole={userRole}
+        />
 
         <div className="flex justify-center space-x-4">
           <button

@@ -10,7 +10,7 @@ export default function PurchaseDetailSkeleton() {
       </div>
 
       {/* Card Skeleton */}
-      <div className="rounded-2xl border border-gray-200 bg-white shadow-md">
+      <div className="bg-white">
         {/* Staff Information Section */}
         <div className="border-b border-gray-200 p-6">
           <div className="mb-4 h-6 w-48 rounded bg-gray-200"></div>

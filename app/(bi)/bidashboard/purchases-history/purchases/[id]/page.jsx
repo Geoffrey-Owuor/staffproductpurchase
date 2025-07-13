@@ -4,8 +4,9 @@ import ApprovalStatus from "@/components/Reusables/ApprovalStatus";
 import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import PurchaseDetailSkeleton from "@/components/skeletons/PurchaseDetailsSkeleton";
-import { generatePurchasePDF } from "@/utils/generatePurchasePDF";
+import { generateClientPDF } from "@/utils/returnPurchasePDF";
 import DetailField from "@/components/Reusables/DetailField";
+import { LoadingBar } from "@/components/Reusables/LoadingBar";
 
 export default function ViewPurchase({ params }) {
   const { id } = use(params);
@@ -38,7 +39,7 @@ export default function ViewPurchase({ params }) {
   const handleDownload = async () => {
     setIsDownloading(true);
     try {
-      await generatePurchasePDF(purchase);
+      await generateClientPDF(purchase);
     } catch (error) {
       console.error("Error generating PDF:", error);
     } finally {
@@ -75,7 +76,7 @@ export default function ViewPurchase({ params }) {
           className="mt-4 inline-flex items-center gap-1 rounded-full bg-red-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700"
         >
           <ArrowLeft className="h-4 w-4" />
-          Back to Dashboard
+          Back to Home
         </button>
       </div>
     );
@@ -92,7 +93,7 @@ export default function ViewPurchase({ params }) {
           className="mt-4 inline-flex items-center gap-1 rounded-full bg-red-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700"
         >
           <ArrowLeft className="h-4 w-4" />
-          Back to Dashboard
+          Back to Home
         </button>
       </div>
     );
@@ -100,6 +101,7 @@ export default function ViewPurchase({ params }) {
 
   return (
     <div className="mx-auto p-2">
+      {(isEditing || isClosing) && <LoadingBar isLoading={true} />}
       {/* Header with back button */}
       <div className="mb-6 flex items-center justify-between">
         <button
@@ -117,14 +119,8 @@ export default function ViewPurchase({ params }) {
             disabled={isEditing}
             className="flex cursor-pointer items-center justify-center gap-1 rounded-full bg-red-900 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-red-700"
           >
-            {isEditing ? (
-              <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-            ) : (
-              <>
-                <Edit className="h-4 w-4" />
-                Edit
-              </>
-            )}
+            <Edit className="h-4 w-4" />
+            Edit
           </button>
         )}
 
@@ -152,7 +148,7 @@ export default function ViewPurchase({ params }) {
       </div>
 
       {/* Details Card */}
-      <div className="rounded-2xl border border-red-200 bg-white shadow-md">
+      <div className="bg-white">
         {/* Staff Information Section */}
         <div className="border-b border-red-200 p-6">
           <h2 className="mb-4 text-lg font-bold text-red-900">
@@ -227,7 +223,7 @@ export default function ViewPurchase({ params }) {
                     : "N/A"
                 }
               />
-              <DetailField label="Signature" value={purchase.signature} />
+
               <DetailField
                 label="Payment Terms/Options"
                 value={purchase.employee_payment_terms}
@@ -268,10 +264,7 @@ export default function ViewPurchase({ params }) {
                   : "N/A"
               }
             />
-            <DetailField
-              label="Signature"
-              value={purchase.hr_signature || "N/A"}
-            />
+
             <div className="col-span-full">
               <DetailField
                 label="HR Comments"
@@ -327,7 +320,7 @@ export default function ViewPurchase({ params }) {
             <div>
               <DetailField
                 label="Checked By"
-                value={purchase.cc_signature || "n/a"}
+                value={purchase.cc_approver_name || "n/a"}
               />
             </div>
 
@@ -375,7 +368,7 @@ export default function ViewPurchase({ params }) {
 
             <DetailField
               label="Invoiced By"
-              value={purchase.bi_signature || "n/a"}
+              value={purchase.bi_approver_name || "n/a"}
             />
             <DetailField
               label="Date Recorded"
@@ -436,14 +429,8 @@ export default function ViewPurchase({ params }) {
             disabled={isEditing}
             className="inline-flex cursor-pointer items-center justify-center gap-1 rounded-full bg-red-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700"
           >
-            {isEditing ? (
-              <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-            ) : (
-              <>
-                <Edit className="h-4 w-4" />
-                Edit
-              </>
-            )}
+            <Edit className="h-4 w-4" />
+            Edit
           </button>
         )}
         <button
@@ -451,14 +438,8 @@ export default function ViewPurchase({ params }) {
           disabled={isClosing}
           className="inline-flex cursor-pointer items-center justify-center gap-1 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
         >
-          {isClosing ? (
-            <div className="h-4 w-4 animate-spin rounded-full border-2 border-gray-700 border-t-transparent"></div>
-          ) : (
-            <>
-              <X className="h-4 w-4" />
-              Close
-            </>
-          )}
+          <X className="h-4 w-4" />
+          Close
         </button>
       </div>
     </div>

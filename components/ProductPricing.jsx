@@ -1,7 +1,7 @@
 const ProductPricing = ({ formData, handleChange }) => {
   return (
-    <div className="mb-8 rounded-2xl border border-red-200 bg-white shadow-md">
-      <div className="rounded-t-2xl bg-red-900 px-6 py-3 text-lg font-bold text-white">
+    <div className="mb-8 rounded-xl border border-red-200 bg-white">
+      <div className="rounded-t-xl bg-red-900 px-6 py-3 text-lg font-bold text-white">
         PRODUCT & PRICING DETAILS
       </div>
       <div className="overflow-x-auto p-6">
@@ -119,7 +119,7 @@ const ProductPricing = ({ formData, handleChange }) => {
               <option value="MPESA">Mpesa</option>
             </select>
           </div>
-          <div>
+          {/* <div>
             <label
               htmlFor="signature"
               className="mb-2 block font-medium text-red-900"
@@ -135,7 +135,7 @@ const ProductPricing = ({ formData, handleChange }) => {
               className="w-full rounded-xl border border-red-200 p-3 focus:border-red-500 focus:ring-2 focus:ring-red-200"
               required
             />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

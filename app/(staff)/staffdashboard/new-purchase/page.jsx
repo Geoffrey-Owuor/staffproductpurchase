@@ -19,7 +19,6 @@ export default function NewPurchase() {
     discountrate: "",
     discountedvalue: "",
     employee_payment_terms: "",
-    signature: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -89,7 +88,6 @@ export default function NewPurchase() {
         discountrate: "",
         discountedvalue: "",
         employee_payment_terms: "",
-        signature: "",
       });
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -111,13 +109,13 @@ export default function NewPurchase() {
           </h1>
         </div>
 
-        <form id="staffInformation" onSubmit={handleSubmit}>
+        <form id="staffInformation" onSubmit={handleSubmit} autoComplete="off">
           <StaffInformation formData={formData} handleChange={handleChange} />
           <ProductPricing formData={formData} handleChange={handleChange} />
           <button
             type="submit"
             disabled={isSubmitting}
-            className={`mx-auto my-8 block cursor-pointer rounded-xl px-6 py-3 text-lg text-white transition-colors ${
+            className={`mx-auto my-8 block cursor-pointer rounded-xl px-6 py-3 text-sm text-white transition-colors ${
               isSubmitting
                 ? "cursor-not-allowed bg-gray-400"
                 : "bg-red-800 hover:bg-red-900"

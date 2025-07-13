@@ -12,7 +12,7 @@ export default function EditFormSkeleton() {
       {/* Form Sections Skeleton */}
       <div className="space-y-6">
         {/* Staff Info Section Skeleton */}
-        <div className="rounded-lg border border-gray-200 p-6">
+        <div className="rounded-xl border border-gray-200 p-6">
           <div className="mb-4 h-6 w-48 rounded bg-gray-200"></div>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {[...Array(3)].map((_, i) => (
@@ -25,7 +25,7 @@ export default function EditFormSkeleton() {
         </div>
 
         {/* Product Details Section Skeleton */}
-        <div className="rounded-lg border border-gray-200 p-6">
+        <div className="rounded-xl border border-gray-200 p-6">
           <div className="mb-4 h-6 w-48 rounded bg-gray-200"></div>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {[...Array(6)].map((_, i) => (

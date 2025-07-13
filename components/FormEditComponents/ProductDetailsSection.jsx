@@ -1,6 +1,14 @@
-export default function ProductDetailsSection({ formData, handleChange }) {
+export default function ProductDetailsSection({
+  formData,
+  handleChange,
+  userRole,
+}) {
+  const isReadOnly = userRole != "staff";
+  const isRequired = userRole === "cc";
+  const editableRoles = ["cc", "staff"];
+  const isReadOnlyGeneral = !editableRoles.includes(userRole);
   return (
-    <div className="overflow-hidden rounded-2xl border border-red-200 shadow">
+    <div className="overflow-hidden rounded-xl border border-red-200">
       <div className="bg-red-900 px-6 py-3 text-white">
         <h3 className="text-lg font-medium">Product and Pricing Details</h3>
       </div>
@@ -18,7 +26,8 @@ export default function ProductDetailsSection({ formData, handleChange }) {
             name="itemname"
             value={formData.itemname}
             onChange={handleChange}
-            className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
+            readOnly={isReadOnlyGeneral}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             required
           />
         </div>
@@ -35,7 +44,8 @@ export default function ProductDetailsSection({ formData, handleChange }) {
             name="itemstatus"
             value={formData.itemstatus}
             onChange={handleChange}
-            className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
+            disabled={isReadOnly}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             required
           >
             <option value="">Select status</option>
@@ -57,7 +67,9 @@ export default function ProductDetailsSection({ formData, handleChange }) {
             name="productcode"
             value={formData.productcode}
             onChange={handleChange}
-            className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
+            readOnly={isReadOnlyGeneral}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            required={isRequired}
           />
         </div>
 
@@ -74,9 +86,11 @@ export default function ProductDetailsSection({ formData, handleChange }) {
             name="tdprice"
             value={formData.tdprice}
             onChange={handleChange}
+            readOnly={isReadOnlyGeneral}
             step="0.01"
             min="0"
-            className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            required={isRequired}
           />
         </div>
 
@@ -96,7 +110,9 @@ export default function ProductDetailsSection({ formData, handleChange }) {
             step="0.01"
             min="0"
             max="100"
-            className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
+            readOnly={isReadOnlyGeneral}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            required={isRequired}
           />
         </div>
 
@@ -134,7 +150,6 @@ export default function ProductDetailsSection({ formData, handleChange }) {
             onChange={handleChange}
             readOnly
             className="w-full rounded-xl border border-gray-300 bg-gray-100 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
-            required
           />
         </div>
 
@@ -150,7 +165,8 @@ export default function ProductDetailsSection({ formData, handleChange }) {
             name="employee_payment_terms"
             value={formData.employee_payment_terms}
             onChange={handleChange}
-            className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
+            disabled={isReadOnly}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             required
           >
             <option value="">No payment option selected</option>
@@ -161,7 +177,7 @@ export default function ProductDetailsSection({ formData, handleChange }) {
           </select>
         </div>
 
-        <div>
+        {/* <div>
           <label
             htmlFor="signature"
             className="mb-1 block text-sm font-medium text-gray-700"
@@ -174,10 +190,11 @@ export default function ProductDetailsSection({ formData, handleChange }) {
             name="signature"
             value={formData.signature}
             onChange={handleChange}
-            className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
+            readOnly={isReadOnly}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             required
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -51,7 +51,6 @@ export async function PUT(request, { params }) {
       discountrate,
       discountedvalue,
       employee_payment_terms,
-      signature,
     } = await request.json();
 
     client = await pool.connect();
@@ -68,9 +67,8 @@ export async function PUT(request, { params }) {
         tdprice = $7,
         discountrate = $8,
         discountedvalue = $9,
-        employee_payment_terms = $10,
-        signature = $11
-      WHERE id = $12 AND user_id = $13
+        employee_payment_terms = $10
+      WHERE id = $11 AND user_id = $12
       `,
       [
         staffname || null,
@@ -83,7 +81,6 @@ export async function PUT(request, { params }) {
         discountrate || null,
         discountedvalue || null,
         employee_payment_terms || null,
-        signature || null,
         id,
         user.id,
       ],
