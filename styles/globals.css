@@ -24,4 +24,58 @@
       #ef4444
     );
   }
+
+  .dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 9999px;
+    display: inline-block;
+  }
+
+  /* Red-themed gradient */
+  .gradient-dot {
+    background: linear-gradient(135deg, #ff4d4f, #ff7a7a, #ff9472);
+    background-size: 200% 200%;
+    animation: gradient-shift 3s ease infinite;
+  }
+
+  /* Bounce animation */
+  @keyframes custom-bounce {
+    0%,
+    80%,
+    100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-20px);
+    }
+  }
+
+  .animate-custom-bounce {
+    animation: custom-bounce 1.2s infinite ease-in-out;
+  }
+
+  /* Optional subtle gradient movement */
+  @keyframes gradient-shift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  /* Animation delays for staggered bounce */
+  .animation-delay-0 {
+    animation-delay: 0s;
+  }
+  .animation-delay-150 {
+    animation-delay: 0.15s;
+  }
+  .animation-delay-300 {
+    animation-delay: 0.3s;
+  }
 }

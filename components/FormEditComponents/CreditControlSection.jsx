@@ -103,9 +103,11 @@ export default function CreditControlSection({
             value={formData.cc_approval}
             onChange={handleChange}
             disabled={isReadOnly}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-50 ${formData.cc_approval === "pending" ? "text-gray-400" : "text-black"}0 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
           >
-            <option value="">Select status</option>
+            <option value="pending" disabled>
+              Pending
+            </option>
             <option value="approved">Approved</option>
             <option value="declined">Declined</option>
           </select>

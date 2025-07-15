@@ -49,15 +49,32 @@ const StaffInformation = ({ formData, handleChange }) => {
             >
               Department
             </label>
-            <input
-              type="text"
+            <select
               id="department"
               name="department"
               value={formData.department}
               onChange={handleChange}
-              className="w-full rounded-xl border border-red-200 p-3 focus:border-red-500 focus:ring-2 focus:ring-red-200"
+              className={`w-full rounded-xl border border-red-200 p-3 focus:border-red-500 focus:ring-2 focus:ring-red-200 ${
+                formData.department === "" ? "text-gray-400" : "text-black"
+              }`}
               required
-            />
+            >
+              <option value="" disabled>
+                Select a department
+              </option>
+              <option value="Engineering">Engineering</option>
+              <option value="Marketing">Marketing</option>
+              <option value="HR & Admin">HR & Admin</option>
+              <option value="IT & Projects">IT & Projects</option>
+              <option value="Finance">Finance</option>
+              <option value="Retail">Retail</option>
+              <option value="B2B">B2B</option>
+              <option value="Service Center">Service Center</option>
+              <option value="Modern Trade">Modern Trade</option>
+              <option value="Commercial">Commercial</option>
+              <option value="Imports">Imports</option>
+              <option value="Warehouse">Warehouse</option>
+            </select>
           </div>
         </div>
       </div>

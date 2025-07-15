@@ -21,6 +21,7 @@ export default function StaffInfoSection({ formData, handleChange, userRole }) {
             onChange={handleChange}
             readOnly={isReadOnly}
             className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            placeholder="Enter staff name"
             required
           />
         </div>
@@ -39,6 +40,7 @@ export default function StaffInfoSection({ formData, handleChange, userRole }) {
             onChange={handleChange}
             readOnly={isReadOnly}
             className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            placeholder="Enter payroll number"
             required
           />
         </div>
@@ -49,16 +51,33 @@ export default function StaffInfoSection({ formData, handleChange, userRole }) {
           >
             Department
           </label>
-          <input
-            type="text"
+          <select
             id="department"
             name="department"
             value={formData.department}
             onChange={handleChange}
-            readOnly={isReadOnly}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            disabled={isReadOnly}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${
+              formData.department === "" ? "text-gray-400" : "text-black"
+            } ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             required
-          />
+          >
+            <option value="" disabled>
+              Select a department
+            </option>
+            <option value="Engineering">Engineering</option>
+            <option value="Marketing">Marketing</option>
+            <option value="HR & Admin">HR & Admin</option>
+            <option value="IT & Projects">IT & Projects</option>
+            <option value="Finance">Finance</option>
+            <option value="Retail">Retail</option>
+            <option value="B2B">B2B</option>
+            <option value="Service Center">Service Center</option>
+            <option value="Modern Trade">Modern Trade</option>
+            <option value="Commercial">Commercial</option>
+            <option value="Imports">Imports</option>
+            <option value="Warehouse">Warehouse</option>
+          </select>
         </div>
       </div>
     </div>

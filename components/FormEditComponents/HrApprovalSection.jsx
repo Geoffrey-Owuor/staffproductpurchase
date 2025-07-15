@@ -24,9 +24,11 @@ export default function HRApprovalSection({
             onChange={handleChange}
             required
             disabled={isReadOnly}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${formData.is_employed === "" ? "text-gray-400" : "text-black"} ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
           >
-            <option value="">select status</option>
+            <option value="" disabled>
+              select status
+            </option>
             <option value="contract">Contract</option>
             <option value="permanent">Permanent</option>
           </select>
@@ -46,9 +48,11 @@ export default function HRApprovalSection({
             onChange={handleChange}
             required
             disabled={isReadOnly}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500${formData.on_probation === "" ? "text-gray-400" : "text-black"} ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
           >
-            <option value="">select status</option>
+            <option value="" disabled>
+              select status
+            </option>
             <option value="yes">Yes</option>
             <option value="no">No</option>
           </select>
@@ -68,9 +72,11 @@ export default function HRApprovalSection({
             onChange={handleChange}
             disabled={isReadOnly}
             required
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${formData.hr_approval === "pending" ? "text-gray-400" : "text-black"} ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
           >
-            <option value="">select status</option>
+            <option value="pending" disabled>
+              Pending
+            </option>
             <option value="approved">Approved</option>
             <option value="declined">Declined</option>
           </select>
@@ -92,6 +98,7 @@ export default function HRApprovalSection({
             readOnly={isReadOnly}
             required
             className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            placeholder="Enter HR Approver Name"
           />
         </div>
 
@@ -114,25 +121,6 @@ export default function HRApprovalSection({
           />
         </div>
 
-        {/* <div>
-          <label
-            htmlFor="hr_signature"
-            className="mb-1 block text-sm font-medium text-gray-700"
-          >
-            HR Signature
-          </label>
-          <input
-            type="text"
-            id="hr_signature"
-            name="hr_signature"
-            value={formData.hr_signature}
-            onChange={handleChange}
-            readOnly={isReadOnly}
-            required
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
-          />
-        </div> */}
-
         <div className="md:col-span-2">
           <label
             htmlFor="hr_comments"
@@ -148,6 +136,7 @@ export default function HRApprovalSection({
             onChange={handleChange}
             readOnly={isReadOnly}
             className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            placeholder="Enter HR Comments"
           />
         </div>
       </div>

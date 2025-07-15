@@ -128,9 +128,11 @@ export default function BIApprovalSection({
               value={formData.payment_method}
               onChange={handleChange}
               disabled={isReadOnly}
-              className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+              className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${formData.payment_method === "" ? "text-gray-400" : "text-black"} ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             >
-              <option value="">Select method</option>
+              <option value="" disabled>
+                Select method
+              </option>
               <option value="cash">Cash</option>
               <option value="bank">Bank</option>
               <option value="card">Card</option>
@@ -209,9 +211,11 @@ export default function BIApprovalSection({
               value={formData.bi_approval}
               onChange={handleChange}
               disabled={isReadOnly}
-              className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+              className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${formData.bi_approval === "pending" ? "text-gray-400" : "text-black"} ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             >
-              <option value="">Select status</option>
+              <option value="pending" disabled>
+                Pending
+              </option>
               <option value="approved">Approved</option>
               <option value="declined">Declined</option>
             </select>

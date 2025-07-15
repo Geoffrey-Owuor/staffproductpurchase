@@ -28,6 +28,7 @@ export default function ProductDetailsSection({
             onChange={handleChange}
             readOnly={isReadOnlyGeneral}
             className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            placeholder="Enter item name"
             required
           />
         </div>
@@ -45,10 +46,12 @@ export default function ProductDetailsSection({
             value={formData.itemstatus}
             onChange={handleChange}
             disabled={isReadOnly}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${formData.itemstatus === "" ? "text-gray-400" : "text-black"} ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             required
           >
-            <option value="">Select status</option>
+            <option value="" disabled>
+              Select status
+            </option>
             <option value="New">New</option>
             <option value="RHD2">RHD2</option>
           </select>
@@ -69,6 +72,7 @@ export default function ProductDetailsSection({
             onChange={handleChange}
             readOnly={isReadOnlyGeneral}
             className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            placeholder="Enter product code"
             required={isRequired}
           />
         </div>
@@ -90,6 +94,7 @@ export default function ProductDetailsSection({
             step="0.01"
             min="0"
             className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            placeholder="Enter TD price"
             required={isRequired}
           />
         </div>
@@ -112,6 +117,7 @@ export default function ProductDetailsSection({
             max="100"
             readOnly={isReadOnlyGeneral}
             className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            placeholder="Enter discount rate"
             required={isRequired}
           />
         </div>
@@ -166,35 +172,18 @@ export default function ProductDetailsSection({
             value={formData.employee_payment_terms}
             onChange={handleChange}
             disabled={isReadOnly}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${formData.employee_payment_terms === "" ? "text-gray-400" : "text-black"} ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             required
           >
-            <option value="">No payment option selected</option>
+            <option value="" disabled>
+              No payment option selected
+            </option>
             <option value="CREDIT">Credit</option>
             <option value="CASH">Cash</option>
             <option value="BANK">Bank</option>
             <option value="MPESA">Mpesa</option>
           </select>
         </div>
-
-        {/* <div>
-          <label
-            htmlFor="signature"
-            className="mb-1 block text-sm font-medium text-gray-700"
-          >
-            Signature
-          </label>
-          <input
-            type="text"
-            id="signature"
-            name="signature"
-            value={formData.signature}
-            onChange={handleChange}
-            readOnly={isReadOnly}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
-            required
-          />
-        </div> */}
       </div>
     </div>
   );

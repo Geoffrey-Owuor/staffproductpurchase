@@ -45,10 +45,12 @@ const ProductPricing = ({ formData, handleChange }) => {
                   name="itemstatus"
                   value={formData.itemstatus}
                   onChange={handleChange}
-                  className="w-full rounded-xl border border-red-200 p-2 focus:border-red-500 focus:ring-2 focus:ring-red-200"
+                  className={`w-full rounded-xl border border-red-200 p-2 focus:border-red-500 focus:ring-2 focus:ring-red-200`}
                   required
                 >
-                  <option value="">Select</option>
+                  <option value="" disabled>
+                    Select
+                  </option>
                   <option value="New">New</option>
                   <option value="RHD2">RHD2</option>
                 </select>
@@ -109,33 +111,18 @@ const ProductPricing = ({ formData, handleChange }) => {
               name="employee_payment_terms"
               value={formData.employee_payment_terms}
               onChange={handleChange}
-              className="w-full rounded-xl border border-red-200 p-3 focus:border-red-500 focus:ring-2 focus:ring-red-200"
+              className={`w-full rounded-xl border border-red-200 p-3 focus:border-red-500 focus:ring-2 focus:ring-red-200 ${formData.employee_payment_terms === "" ? "text-gray-400" : "text-black"}`}
               required
             >
-              <option value="">Select a payment option</option>
+              <option value="" disabled>
+                Select a payment option
+              </option>
               <option value="CREDIT">Credit</option>
               <option value="CASH">Cash</option>
               <option value="BANK">Bank</option>
               <option value="MPESA">Mpesa</option>
             </select>
           </div>
-          {/* <div>
-            <label
-              htmlFor="signature"
-              className="mb-2 block font-medium text-red-900"
-            >
-              Signature
-            </label>
-            <input
-              type="text"
-              id="signature"
-              name="signature"
-              value={formData.signature}
-              onChange={handleChange}
-              className="w-full rounded-xl border border-red-200 p-3 focus:border-red-500 focus:ring-2 focus:ring-red-200"
-              required
-            />
-          </div> */}
         </div>
       </div>
     </div>
