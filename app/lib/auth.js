@@ -78,7 +78,7 @@ export const verifyPassword = async (password, hashedPassword) => {
 
 //Create JWT and set it as httpOnly cookie
 export const createSession = async (userId, role, name, email) => {
-  const expiresAt = Math.floor(Date.now() / 1000) + 2 * 60;
+  const expiresAt = Math.floor(Date.now() / 1000) + 2 * 60 * 60;
   const token = await new SignJWT({ userId, role, name, email })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
@@ -91,7 +91,7 @@ export const createSession = async (userId, role, name, email) => {
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
-    maxAge: 2 * 60, //2 Minutes
+    maxAge: 2 * 60 * 60, //2 Minutes
   });
 };
 
