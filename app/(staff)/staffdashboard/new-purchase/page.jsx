@@ -4,6 +4,8 @@ import StaffInformation from "@/components/StaffInformation";
 import ProductPricing from "@/components/ProductPricing";
 import TermsConditions from "@/components/TermsConditions";
 import Alert from "@/components/Alert";
+import { LoadingBarWave } from "@/components/Reusables/LoadingBar";
+
 export default function NewPurchase() {
   const [formData, setFormData] = useState({
     // Staff Information
@@ -110,6 +112,8 @@ export default function NewPurchase() {
         </div>
 
         <form id="staffInformation" onSubmit={handleSubmit} autoComplete="off">
+          {isSubmitting && <LoadingBarWave isLoading={true} />}
+
           <StaffInformation formData={formData} handleChange={handleChange} />
           <ProductPricing formData={formData} handleChange={handleChange} />
           <button
@@ -121,7 +125,7 @@ export default function NewPurchase() {
                 : "bg-red-800 hover:bg-red-900"
             }`}
           >
-            {isSubmitting ? "Submitting..." : "Submit Form"}
+            Submit Purchase
           </button>
         </form>
 

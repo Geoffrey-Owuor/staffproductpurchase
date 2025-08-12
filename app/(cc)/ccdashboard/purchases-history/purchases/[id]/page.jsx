@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import PurchaseDetailSkeleton from "@/components/skeletons/PurchaseDetailsSkeleton";
 import DetailField from "@/components/Reusables/DetailField";
 import { LoadingBar } from "@/components/Reusables/LoadingBar";
+import { formatDateLong } from "@/public/assets";
 
 export default function ViewPurchase({ params }) {
   const { id } = use(params);
@@ -190,12 +191,8 @@ export default function ViewPurchase({ params }) {
             <h2 className="mb-4 text-lg font-bold text-red-900">Metadata</h2>
             <div className="space-y-4">
               <DetailField
-                label="Date"
-                value={
-                  purchase.createdat
-                    ? new Date(purchase.createdat).toLocaleDateString("en-GB")
-                    : "N/A"
-                }
+                label="Date Created"
+                value={formatDateLong(purchase.createdat)}
               />
               {/* <DetailField label="Signature" value={purchase.signature} /> */}
               <DetailField
@@ -229,14 +226,8 @@ export default function ViewPurchase({ params }) {
               value={purchase.hr_approver_name || "N/A"}
             />
             <DetailField
-              label="Date Approved"
-              value={
-                purchase.hr_approval_date
-                  ? new Date(purchase.hr_approval_date).toLocaleDateString(
-                      "en-GB",
-                    )
-                  : "N/A"
-              }
+              label="HR Approval Date"
+              value={formatDateLong(purchase.hr_approval_date)}
             />
 
             <div className="col-span-full">
@@ -300,14 +291,8 @@ export default function ViewPurchase({ params }) {
 
             <div>
               <DetailField
-                label="Approval Date"
-                value={
-                  purchase.cc_approval_date
-                    ? new Date(purchase.cc_approval_date).toLocaleDateString(
-                        "en-GB",
-                      )
-                    : "n/a"
-                }
+                label="CC Approval Date"
+                value={formatDateLong(purchase.cc_approval_date)}
               />
             </div>
           </div>

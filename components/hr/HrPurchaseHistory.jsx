@@ -20,9 +20,8 @@ export default function HrPurchaseHistory() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [showPageDropdown, setShowPageDropdown] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const router = useRouter();
-
-  const rowsPerPage = 7; //total number of rows per page
 
   // Debounce search term
   useEffect(() => {
@@ -55,12 +54,8 @@ export default function HrPurchaseHistory() {
         if (!Array.isArray(data)) {
           console.warn("Data is not an array:", data);
           setPurchases([]);
-          setTotalPages(1);
         } else {
           setPurchases(data);
-          setTotalPages(Math.ceil(data.length / rowsPerPage));
-          // Reset to page 1 when search changes
-          setCurrentPage(1);
         }
       } catch (err) {
         console.error("Error fetching purchases:", err);
@@ -71,6 +66,12 @@ export default function HrPurchaseHistory() {
 
     fetchPurchases();
   }, [debouncedSearchTerm]);
+
+  // Recalculate total pages when purchases or rowsPerPage changes
+  useEffect(() => {
+    setTotalPages(Math.ceil(purchases.length / rowsPerPage));
+    setCurrentPage(1); // Optional: Reset to first page when rows per page changes
+  }, [rowsPerPage, purchases]);
 
   //Get current rows for the current page
   const currentPurchases = purchases.slice(
@@ -233,7 +234,7 @@ export default function HrPurchaseHistory() {
               {currentPurchases.length > 0 ? (
                 currentPurchases.map((purchase) => (
                   <tr key={purchase.id} className="odd:bg-white even:bg-red-50">
-                    <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
+                    <td className="max-w-[200px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900">
                       {purchase.itemname}
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
@@ -310,29 +311,49 @@ export default function HrPurchaseHistory() {
             </tbody>
           </table>
           {/* Pagination */}
-          {purchases.length > rowsPerPage && (
-            <div className="mt-4 flex items-center justify-center">
-              <button
-                onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
-                disabled={currentPage === 1}
-                className="mx-1 flex h-8 w-8 items-center justify-center rounded-full bg-white text-red-900 hover:bg-red-100 disabled:opacity-50"
+          <div className="mt-4 mb-1 flex items-center justify-center space-x-7">
+            {/* Rows Per Page Drop Down */}
+            <div className="flex items-center">
+              <span className="mr-2 text-sm text-gray-700">Rows per page:</span>
+              <select
+                value={rowsPerPage}
+                onChange={(e) => {
+                  setRowsPerPage(Number(e.target.value));
+                  setCurrentPage(1); // Reset to first page when changing rows per page
+                }}
+                className="rounded-md border border-gray-300 bg-white px-2 py-1 text-sm text-gray-700 focus:border-red-500 focus:ring-1 focus:ring-red-500 focus:outline-none"
               >
-                <ChevronLeft className="h-4 w-4" />
-              </button>
-
-              {renderPageNumbers()}
-
-              <button
-                onClick={() =>
-                  handlePageChange(Math.min(totalPages, currentPage + 1))
-                }
-                disabled={currentPage === totalPages}
-                className="mx-1 flex h-8 w-8 items-center justify-center rounded-full bg-white text-red-900 hover:bg-red-100 disabled:opacity-50"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </button>
+                {[10, 20, 50, 100].map((size) => (
+                  <option key={size} value={size}>
+                    {size}
+                  </option>
+                ))}
+              </select>
             </div>
-          )}
+            {purchases.length > rowsPerPage && (
+              <div className="flex items-center">
+                <button
+                  onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                  disabled={currentPage === 1}
+                  className="mx-1 flex h-8 w-8 items-center justify-center rounded-full bg-white text-red-900 hover:bg-red-100 disabled:opacity-50"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </button>
+
+                {renderPageNumbers()}
+
+                <button
+                  onClick={() =>
+                    handlePageChange(Math.min(totalPages, currentPage + 1))
+                  }
+                  disabled={currentPage === totalPages}
+                  className="mx-1 flex h-8 w-8 items-center justify-center rounded-full bg-white text-red-900 hover:bg-red-100 disabled:opacity-50"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>

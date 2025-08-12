@@ -7,6 +7,7 @@ import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import PurchaseDetailSkeleton from "@/components/skeletons/PurchaseDetailsSkeleton";
 import { LoadingBar } from "@/components/Reusables/LoadingBar";
+import { formatDateLong } from "@/public/assets";
 
 export default function ViewPurchase({ params }) {
   const { id } = use(params);
@@ -194,12 +195,8 @@ export default function ViewPurchase({ params }) {
             <h2 className="mb-4 text-lg font-bold text-red-900">Metadata</h2>
             <div className="space-y-4">
               <DetailField
-                label="Date"
-                value={
-                  purchase.createdat
-                    ? new Date(purchase.createdat).toLocaleDateString("en-GB")
-                    : "N/A"
-                }
+                label="Date Created"
+                value={formatDateLong(purchase.createdat)}
               />
               {/* <DetailField label="Signature" value={purchase.signature} /> */}
               <DetailField

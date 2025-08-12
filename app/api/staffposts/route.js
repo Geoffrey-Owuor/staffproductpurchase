@@ -72,6 +72,9 @@ const generatePurchaseEmailHTML = (purchaseDetails) => {
                       </table>
                       
                       <p style="color: #555555; font-size: 15px;">Please log in to the Staff Purchase Portal to review and approve this request.</p>
+                      <div style="text-align: center; margin-top: 20px;">
+                        <a href="${process.env.NEXT_PUBLIC_BASE_URL}" style="display:inline-block; background-color: #B71C1C; color: white !important; padding: 12px 24px; text-decoration: none !important; border-radius: 15px; font-weight: bold;">Review Request</a>
+                      </div>
                     </td>
                   </tr>
                 </table>
@@ -147,7 +150,7 @@ export async function POST(request) {
     };
 
     const emailHtml = generatePurchaseEmailHTML(purchaseDetails);
-    const hrEmail = "gt009@hotpoint.co.ke";
+    const hrEmail = process.env.HR_APPROVER;
 
     await sendEmail({
       to: hrEmail,

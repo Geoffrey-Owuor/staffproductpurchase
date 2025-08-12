@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { Eye, EyeClosed } from "lucide-react";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ export default function LoginPage() {
 
   const [redirect, setRedirect] = useState(false);
   const [loginError, setLoginError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -67,47 +69,53 @@ export default function LoginPage() {
         </h1>
 
         {loginError && (
-          <div className="mb-4 rounded-xl bg-red-100 p-3 text-center text-red-700">
-            {loginError}
-          </div>
+          <div className="mb-4 p-3 text-center text-red-700">{loginError}</div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-5" autoComplete="off">
-          <div>
-            <label
-              htmlFor="email"
-              className="mb-1 block text-sm font-medium text-gray-700"
-            >
-              Email
-            </label>
+          <div className="relative">
             <input
               type="email"
-              id="email"
               name="email"
+              id="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 focus:border-transparent focus:ring-2 focus:ring-red-500"
               required
+              placeholder=" " // <-- important to trigger :placeholder-shown behavior
+              className="peer w-full rounded-xl border border-gray-300 px-4 py-3 placeholder-transparent focus:border-blue-600 focus:outline-none"
             />
+            <label
+              htmlFor="email"
+              className="absolute -top-3 left-4 bg-white px-1 text-sm text-blue-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-blue-600"
+            >
+              Email Address
+            </label>
           </div>
 
-          <div>
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              id="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              placeholder=" " // <-- important to trigger :placeholder-shown behavior
+              className="peer w-full rounded-xl border border-gray-300 px-4 py-3 placeholder-transparent focus:border-blue-600 focus:outline-none"
+            />
             <label
               htmlFor="password"
-              className="mb-1 block text-sm font-medium text-gray-700"
+              className="absolute -top-3 left-4 bg-white px-1 text-sm text-blue-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-blue-600"
             >
               Password
             </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 focus:border-transparent focus:ring-2 focus:ring-red-500"
-              minLength="8"
-              required
-            />
+            {/* Eye Icon */}
+            <div
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer text-gray-500 hover:text-gray-700"
+            >
+              {showPassword ? <EyeClosed size={20} /> : <Eye size={20} />}
+            </div>
           </div>
 
           <div className="flex items-center justify-between">
@@ -144,7 +152,7 @@ export default function LoginPage() {
             {redirect ? (
               <>
                 <div className="flex items-center justify-center gap-2">
-                  Redirecting...
+                  Logging in...
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
                 </div>
               </>

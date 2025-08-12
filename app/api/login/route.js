@@ -9,13 +9,13 @@ export async function POST(request) {
 
     // Find user by email
     const { rows } = await client.query(
-      "SELECT id, password, role FROM users WHERE email = $1 LIMIT 1",
+      "SELECT id, password, name, role FROM users WHERE email = $1 LIMIT 1",
       [email],
     );
 
     if (!rows.length) {
       return Response.json(
-        { success: false, message: "Invalid Credentials" },
+        { success: false, message: "Email not found" },
         { status: 401 },
       );
     }
@@ -25,19 +25,19 @@ export async function POST(request) {
     const isValid = await verifyPassword(password, user.password);
     if (!isValid) {
       return Response.json(
-        { success: false, message: "Invalid credentials" },
+        { success: false, message: "Wrong password, please try again" },
         { status: 401 },
       );
     }
 
     // Create Session
-    await createSession(user.id, user.role);
+    await createSession(user.id, user.role, user.name, email);
 
     return Response.json({ success: true, role: user.role });
   } catch (error) {
     console.error("Login Error:", error);
     return Response.json(
-      { success: false, message: "Login Failed" },
+      { success: false, message: "Server error. Please try again" },
       { status: 500 },
     );
   } finally {

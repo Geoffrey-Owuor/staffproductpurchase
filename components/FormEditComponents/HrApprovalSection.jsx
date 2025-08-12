@@ -1,3 +1,5 @@
+import { formatDateLong } from "@/public/assets";
+
 export default function HRApprovalSection({
   formData,
   handleChange,
@@ -107,17 +109,16 @@ export default function HRApprovalSection({
             htmlFor="hr_approval_date"
             className="mb-1 block text-sm font-medium text-gray-700"
           >
-            Approval Date
+            HR Approval Date
           </label>
           <input
-            type="date"
+            type="text"
             id="hr_approval_date"
             name="hr_approval_date"
-            value={formData.hr_approval_date}
+            value={formatDateLong(formData.hr_approval_date)}
             onChange={handleChange}
-            readOnly={isReadOnly}
-            required
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            readOnly
+            className="w-full rounded-xl border border-gray-300 bg-gray-100 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500"
           />
         </div>
 

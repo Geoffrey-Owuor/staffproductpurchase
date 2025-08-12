@@ -9,11 +9,14 @@ import HRApprovalSection from "@/components/FormEditComponents/HrApprovalSection
 import CreditControlSection from "@/components/FormEditComponents/CreditControlSection";
 import ConfirmationDialog from "@/components/Reusables/ConfirmationDialog";
 import EditFormSkeleton from "@/components/skeletons/EditFormSkeleton";
+import UnauthorizedEdit from "@/components/Reusables/UnauthorizedEdit";
+import { LoadingBarWave } from "@/components/Reusables/LoadingBar";
 
 export default function EditPurchaseForm({ params }) {
   const router = useRouter();
   const [userRole, setUserRole] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [biApproval, setBiApproval] = useState(null);
   const [submitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     staffname: "",
@@ -49,7 +52,7 @@ export default function EditPurchaseForm({ params }) {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch("/api/validate-session");
+        const response = await fetch("/api/current-user");
         const data = await response.json();
 
         if (response.ok && data.valid) {
@@ -74,13 +77,7 @@ export default function EditPurchaseForm({ params }) {
           throw new Error("Failed to fetch purchase data");
         }
 
-        // Check if bi_approval is 'approved'
-        if (data.bi_approval === "approved") {
-          router.push(
-            `/ccdashboard/purchases-history/purchases/${id}/unauthorized`,
-          );
-          return;
-        }
+        setBiApproval(data.bi_approval);
 
         setFormData({
           staffname: data.staffname || "",
@@ -92,30 +89,26 @@ export default function EditPurchaseForm({ params }) {
           tdprice: data.tdprice || "",
           discountrate: data.discountrate || "",
           discountedvalue: data.discountedvalue || "",
-          createdat: data.createdat ? data.createdat.split("T")[0] : "",
+          createdat: data.createdat || "",
           employee_payment_terms: data.employee_payment_terms || "",
           is_employed: data.is_employed || "",
           on_probation: data.on_probation || "",
           hr_comments: data.hr_comments || "",
           hr_approval: data.hr_approval || "",
           hr_approver_name: data.hr_approver_name || "",
-          hr_approval_date: data.hr_approval_date
-            ? data.hr_approval_date.split("T")[0]
-            : "",
+          hr_approval_date: data.hr_approval_date || "",
           credit_period: data.credit_period || "",
           one_third_rule: data.one_third_rule || "",
           purchase_history_comments: data.purchase_history_comments || "",
           pending_invoices: data.pending_invoices || "",
           cc_approval: data.cc_approval || "",
           cc_approver_name: data.cc_approver_name || "",
-          cc_approval_date: data.cc_approval_date
-            ? data.cc_approval_date.split("T")[0]
-            : "",
+          cc_approval_date: data.cc_approval_date || "",
         });
         setLoading(false);
       } catch (err) {
         console.error("Error fetching purchase data:", err);
-        setAlertMessage("Error Fetching Purchase Data");
+        setAlertMessage("Error fetching purchase data");
         setAlertType("error");
         setShowAlert(true);
         setLoading(false);
@@ -174,7 +167,7 @@ export default function EditPurchaseForm({ params }) {
         throw new Error("Failed to update purchase");
       }
 
-      setAlertMessage("Details Updated Successfully");
+      setAlertMessage("Details updated successfully");
       setAlertType("success");
       setShowAlert(true);
 
@@ -182,10 +175,10 @@ export default function EditPurchaseForm({ params }) {
       // Redirect back after 2 seconds
       setTimeout(() => {
         router.push(`/ccdashboard/purchases-history/purchases/${id}`);
-      }, 200);
+      }, 2000);
     } catch (err) {
       console.error("Error updating purchase:", err);
-      setAlertMessage("Failed to update purchase. Please try again.");
+      setAlertMessage("Failed to update purchase");
       setAlertType("error");
       setShowAlert(true);
     } finally {
@@ -195,6 +188,10 @@ export default function EditPurchaseForm({ params }) {
 
   if (loading) {
     return <EditFormSkeleton />;
+  }
+
+  if (biApproval === "approved") {
+    return <UnauthorizedEdit role={userRole} />;
   }
 
   return (
@@ -214,6 +211,7 @@ export default function EditPurchaseForm({ params }) {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
+        {submitting && <LoadingBarWave isLoading={true} />}
         <StaffInfoSection
           formData={formData}
           handleChange={handleChange}
@@ -249,7 +247,7 @@ export default function EditPurchaseForm({ params }) {
             className="inline-flex cursor-pointer items-center rounded-full border border-transparent bg-red-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none"
           >
             <Save className="mr-2 h-4 w-4" />
-            {submitting ? "Saving..." : "Save Changes"}
+            Save changes
           </button>
         </div>
       </form>

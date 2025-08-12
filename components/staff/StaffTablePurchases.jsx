@@ -89,7 +89,7 @@ export default function StaffTablePurchases() {
               {purchases.length > 0 ? (
                 purchases.map((purchase) => (
                   <tr key={purchase.id} className="odd:bg-white even:bg-red-50">
-                    <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
+                    <td className="max-w-[200px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900">
                       {purchase.itemname}
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">

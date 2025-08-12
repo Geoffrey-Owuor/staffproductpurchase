@@ -67,6 +67,10 @@ const generateCreditControlDeclinedEmailHTML = (purchaseDetails) => {
                           <td width="150" style="padding: 12px 0 0 15px; font-weight: bold; color: #666666;">Requested Amount:</td>
                           <td style="padding: 12px 15px 0 0;">${purchaseDetails.discountedvalue || "n/a"}</td>
                         </tr>
+                        <tr>
+                          <td width="150" style="padding: 12px 0 0 15px; font-weight: bold; color: #666666;">Credit Control Approver:</td>
+                          <td style="padding: 12px 15px 0 0;">${purchaseDetails.cc_approver_name || "n/a"}</td>
+                        </tr>
                       </table>
                       
                       <p style="color: #555555; font-size: 15px;">Please contact Credit Control if you have any questions or wish to discuss this decision.</p>
@@ -163,7 +167,7 @@ const generateBIApproverEmailHTML = (purchaseDetails) => {
                       <p style="color: #555555; font-size: 15px;">Please review this request in the Staff Purchase Portal at your earliest convenience.</p>
                       
                       <div style="text-align: center; margin-top: 20px;">
-                        <a href="http://localhost:3000" style="display:inline-block; background-color: #B71C1C; color: white !important; padding: 12px 24px; text-decoration: none !important; border-radius: 15px; font-weight: bold;">Review Request</a>
+                        <a href="${process.env.NEXT_PUBLIC_BASE_URL}" style="display:inline-block; background-color: #B71C1C; color: white !important; padding: 12px 24px; text-decoration: none !important; border-radius: 15px; font-weight: bold;">Review Request</a>
                       </div>
                     </td>
                   </tr>
@@ -232,14 +236,12 @@ export async function PUT(request, { params }) {
       hr_comments,
       hr_approval,
       hr_approver_name,
-      hr_approval_date,
       credit_period,
       one_third_rule,
       purchase_history_comments,
       pending_invoices,
       cc_approval,
       cc_approver_name,
-      cc_approval_date,
     } = await request.json();
 
     client = await pool.connect();
@@ -276,18 +278,17 @@ export async function PUT(request, { params }) {
          hr_comments = $13,
          hr_approval = $14,
          hr_approver_name = $15,
-         hr_approval_date = $16,
-         credit_period = $17,
-         one_third_rule = $18,
-         purchase_history_comments = $19,
-         pending_invoices = $20,
-         cc_approval = $21,
-         cc_signature = $22,
-         cc_approver_name = $23,
-         cc_approval_date = $24,
-         cc_approver_id = $25,
-         cc_approver_email = $26
-       WHERE id = $27`,
+         credit_period = $16,
+         one_third_rule = $17,
+         purchase_history_comments = $18,
+         pending_invoices = $19,
+         cc_approval = $20,
+         cc_signature = $21,
+         cc_approver_name = $22,
+         cc_approval_date = CURRENT_TIMESTAMP,
+         cc_approver_id = $23,
+         cc_approver_email = $24
+       WHERE id = $25`,
       [
         staffname || currentPurchase[0].staffname,
         payrollno || currentPurchase[0].payrollno,
@@ -304,7 +305,6 @@ export async function PUT(request, { params }) {
         hr_comments || currentPurchase[0].hr_comments,
         hr_approval || currentPurchase[0].hr_approval,
         hr_approver_name || currentPurchase[0].hr_approver_name,
-        hr_approval_date || currentPurchase[0].hr_approval_date,
         credit_period || currentPurchase[0].credit_period,
         one_third_rule || currentPurchase[0].one_third_rule,
         purchase_history_comments ||
@@ -313,7 +313,6 @@ export async function PUT(request, { params }) {
         cc_approval || currentPurchase[0].cc_approval,
         user.name,
         cc_approver_name || user.name,
-        cc_approval_date || new Date().toISOString(),
         user.id,
         user.email,
         id,
@@ -337,17 +336,19 @@ export async function PUT(request, { params }) {
           discountrate: discountrate || currentPurchase[0].discountrate,
           discountedvalue:
             discountedvalue || currentPurchase[0].discountedvalue,
-          purchase_history_comments: purchase_history_comments || null,
+          purchase_history_comments:
+            purchase_history_comments ||
+            currentPurchase[0].purchase_history_comments,
           cc_approver_name: cc_approver_name || user.name,
           createdat: currentPurchase[0].createdat,
-          cc_approval_date: cc_approval_date || new Date(),
+          cc_approval_date: new Date(),
           id: id, // Ensure request ID is included
         },
       };
 
       if (cc_approval === "approved") {
         // Send to BI department
-        const biApprovalEmail = "lapspotify2@gmail.com"; // Replace with actual email
+        const biApprovalEmail = process.env.BI_APPROVER;
 
         await sendEmail({
           to: biApprovalEmail,

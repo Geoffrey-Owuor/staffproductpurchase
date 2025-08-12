@@ -79,6 +79,10 @@ const generateBIDeclinedEmailHTML = (purchaseDetails) => {
                           <td width="150" style="padding: 12px 0 0 15px; font-weight: bold; color: #666666;">Requested Amount:</td>
                           <td style="padding: 12px 15px 0 0;">${purchaseDetails.discountedvalue || "n/a"}</td>
                         </tr>
+                        <tr>
+                          <td width="150" style="padding: 12px 0 0 15px; font-weight: bold; color: #666666;">Billing Invoice Approver:</td>
+                          <td style="padding: 12px 15px 0 0;">${purchaseDetails.bi_approver_name || "n/a"}</td>
+                        </tr>
                       </table>
                       
                       <p style="color: #555555; font-size: 15px;">Please contact Billing & Invoice department if you have any questions or wish to discuss this decision.</p>
@@ -153,13 +157,17 @@ const generateBIApprovedEmailHTML = (purchaseDetails) => {
                           <td width="150" style="padding: 12px 0 12px 15px; font-weight: bold; color: #666666;">Payment Method:</td>
                           <td style="padding: 12px 15px 12px 0;">${purchaseDetails.payment_method || "n/a"}</td>
                         </tr>
-                        <tr>
-                          <td width="150" style="padding: 12px 0 0 15px; font-weight: bold; color: #666666;">Final Approval Date:</td>
-                          <td style="padding: 12px 15px 0 0;">${new Date(purchaseDetails.bi_approval_date || new Date()).toLocaleDateString()}</td>
+                        <tr class="detail-row">
+                          <td width="150" style="padding: 12px 0 12px 15px; font-weight: bold; color: #666666;">Final Approval Date:</td>
+                          <td style="padding: 12px 15px 12px 0;">${new Date(purchaseDetails.bi_approval_date || new Date()).toLocaleDateString()}</td>
                         </tr>
-                        <tr>
-                          <td width="150" style="padding: 12px 0 0 15px; font-weight: bold; color: #666666;">Approval Time:</td>
-                          <td style="padding: 12px 15px 0 0;">
+                        <tr class="detail-row">
+                          <td width="150" style="padding: 12px 0 12px 15px; font-weight: bold; color: #666666;">Billing Invoice Approver:</td>
+                          <td style="padding: 12px 15px 12px 0;">${purchaseDetails.bi_approver_name || "n/a"}</td>
+                        </tr>
+                        <tr class="detail-row">
+                          <td width="150" style="padding: 12px 0 12px 15px; font-weight: bold; color: #666666;">Approval Time:</td>
+                          <td style="padding: 12px 15px 12px 0;">
                             ${calculateDaysDifference(purchaseDetails.createdat, purchaseDetails.bi_approval_date)}
                           </td>
                         </tr>
@@ -234,14 +242,12 @@ export async function PUT(request, { params }) {
       hr_comments,
       hr_approval,
       hr_approver_name,
-      hr_approval_date,
       credit_period,
       one_third_rule,
       purchase_history_comments,
       pending_invoices,
       cc_approval,
       cc_approver_name,
-      cc_approval_date,
       invoice_date,
       invoice_number,
       invoice_amount,
@@ -288,29 +294,27 @@ export async function PUT(request, { params }) {
          hr_comments = $13,
          hr_approval = $14,
          hr_approver_name = $15,
-         hr_approval_date = $16,
-         credit_period = $17,
-         one_third_rule = $18,
-         purchase_history_comments = $19,
-         pending_invoices = $20,
-         cc_approval = $21,
-         cc_approver_name = $22,
-         cc_approval_date = $23,
-         invoice_date = $24,
-         invoice_number = $25,
-         invoice_amount = $26,
-         invoice_recorded_date = $27,
-         payment_method = $28,
-         payment_reference = $29,
-         payment_date = $30,
-         amount = $31,
-         bi_signature = $32,
-         bi_approver_name = $33,
-         bi_approval = $34,
-         bi_approver_id = $35,
+         credit_period = $16,
+         one_third_rule = $17,
+         purchase_history_comments = $18,
+         pending_invoices = $19,
+         cc_approval = $20,
+         cc_approver_name = $21,
+         invoice_date = $22,
+         invoice_number = $23,
+         invoice_amount = $24,
+         invoice_recorded_date = $25,
+         payment_method = $26,
+         payment_reference = $27,
+         payment_date = $28,
+         amount = $29,
+         bi_signature = $30,
+         bi_approver_name = $31,
+         bi_approval = $32,
+         bi_approver_id = $33,
          bi_approval_date = CURRENT_TIMESTAMP,
-         bi_approver_email = $36
-       WHERE id = $37`,
+         bi_approver_email = $34
+       WHERE id = $35`,
       [
         staffname || currentPurchase[0].staffname,
         payrollno || currentPurchase[0].payrollno,
@@ -327,7 +331,6 @@ export async function PUT(request, { params }) {
         hr_comments || currentPurchase[0].hr_comments,
         hr_approval || currentPurchase[0].hr_approval,
         hr_approver_name || currentPurchase[0].hr_approver_name,
-        hr_approval_date || currentPurchase[0].hr_approval_date,
         credit_period || currentPurchase[0].credit_period,
         one_third_rule || currentPurchase[0].one_third_rule,
         purchase_history_comments ||
@@ -335,18 +338,17 @@ export async function PUT(request, { params }) {
         pending_invoices || currentPurchase[0].pending_invoices,
         cc_approval || currentPurchase[0].cc_approval,
         cc_approver_name || currentPurchase[0].cc_approver_name,
-        cc_approval_date || currentPurchase[0].cc_approval_date,
         invoice_date || currentPurchase[0].invoice_date,
         invoice_number || currentPurchase[0].invoice_number,
         invoice_amount || currentPurchase[0].invoice_amount,
         invoice_recorded_date || currentPurchase[0].invoice_recorded_date,
-        payment_method || currentPurchase[0].payment_method,
-        payment_reference || currentPurchase[0].payment_reference,
-        payment_date || currentPurchase[0].payment_date,
-        amount || currentPurchase[0].amount,
+        payment_method || currentPurchase[0].payment_method || null,
+        payment_reference || currentPurchase[0].payment_reference || null,
+        payment_date || currentPurchase[0].payment_date || null,
+        amount || currentPurchase[0].amount || null,
         user.name,
         bi_approver_name || user.name,
-        bi_approval || currentPurchase[0].bi_approval,
+        bi_approval || currentPurchase[0].bi_approval || null,
         user.id,
         user.email,
         id,
@@ -380,8 +382,7 @@ export async function PUT(request, { params }) {
           hr_approval: hr_approval || currentPurchase[0].hr_approval,
           hr_approver_name:
             hr_approver_name || currentPurchase[0].hr_approver_name,
-          hr_approval_date:
-            hr_approval_date || currentPurchase[0].hr_approval_date,
+          hr_approval_date: currentPurchase[0].hr_approval_date,
           credit_period: credit_period || currentPurchase[0].credit_period,
           one_third_rule: one_third_rule || currentPurchase[0].one_third_rule,
           pending_invoices:
@@ -389,8 +390,7 @@ export async function PUT(request, { params }) {
           cc_approval: cc_approval || currentPurchase[0].cc_approval,
           cc_approver_name:
             cc_approver_name || currentPurchase[0].cc_approver_name,
-          cc_approval_date:
-            cc_approval_date || currentPurchase[0].cc_approval_date,
+          cc_approval_date: currentPurchase[0].cc_approval_date,
           invoice_date: invoice_date || currentPurchase[0].invoice_date,
           invoice_amount: invoice_amount || currentPurchase[0].invoice_amount,
           invoice_recorded_date:

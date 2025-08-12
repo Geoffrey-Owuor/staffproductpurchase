@@ -1,3 +1,5 @@
+import { formatDateLong } from "@/public/assets";
+
 export default function BIApprovalSection({
   formData,
   handleChange,
@@ -27,6 +29,7 @@ export default function BIApprovalSection({
               onChange={handleChange}
               readOnly={isReadOnly}
               className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+              required
             />
           </div>
 
@@ -46,6 +49,7 @@ export default function BIApprovalSection({
               readOnly={isReadOnly}
               className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
               placeholder="Enter invoice number"
+              required
             />
           </div>
 
@@ -67,25 +71,7 @@ export default function BIApprovalSection({
               readOnly={isReadOnly}
               className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
               placeholder="Enter invoice amount"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="bi_signature"
-              className="mb-1 block text-sm font-medium text-gray-700"
-            >
-              Invoiced By
-            </label>
-            <input
-              type="text"
-              id="bi_approver_name"
-              name="bi_approver_name"
-              value={formData.bi_approver_name}
-              onChange={handleChange}
-              readOnly={isReadOnly}
-              className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
-              placeholder="Enter invoicer name"
+              required
             />
           </div>
 
@@ -104,6 +90,7 @@ export default function BIApprovalSection({
               onChange={handleChange}
               readOnly={isReadOnly}
               className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+              required
             />
           </div>
         </div>
@@ -219,6 +206,41 @@ export default function BIApprovalSection({
               <option value="approved">Approved</option>
               <option value="declined">Declined</option>
             </select>
+          </div>
+          <div>
+            <label
+              htmlFor="bi_approver_name"
+              className="mb-1 block text-sm font-medium text-gray-700"
+            >
+              Invoiced By
+            </label>
+            <input
+              type="text"
+              id="bi_approver_name"
+              name="bi_approver_name"
+              value={formData.bi_approver_name}
+              onChange={handleChange}
+              readOnly={isReadOnly}
+              className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+              placeholder="Enter invoicer name"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="bi_approval_date"
+              className="mb-1 block text-sm font-medium text-gray-700"
+            >
+              Bi Approval Date
+            </label>
+            <input
+              type="text"
+              id="bi_approval_date"
+              name="bi_approval_date"
+              value={formatDateLong(formData.bi_approval_date)}
+              onChange={handleChange}
+              readOnly
+              className="w-full rounded-xl border border-gray-300 bg-gray-100 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500"
+            />
           </div>
         </div>
       </div>

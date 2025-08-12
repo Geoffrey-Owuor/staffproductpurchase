@@ -1,3 +1,5 @@
+import { formatDateLong } from "@/public/assets";
+
 export default function ProductDetailsSection({
   formData,
   handleChange,
@@ -149,10 +151,10 @@ export default function ProductDetailsSection({
             Date
           </label>
           <input
-            type="createdat"
+            type="text"
             id="createdat"
             name="createdat"
-            value={formData.createdat}
+            value={formatDateLong(formData.createdat)}
             onChange={handleChange}
             readOnly
             className="w-full rounded-xl border border-gray-300 bg-gray-100 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"

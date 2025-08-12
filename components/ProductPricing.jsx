@@ -45,7 +45,7 @@ const ProductPricing = ({ formData, handleChange }) => {
                   name="itemstatus"
                   value={formData.itemstatus}
                   onChange={handleChange}
-                  className={`w-full rounded-xl border border-red-200 p-2 focus:border-red-500 focus:ring-2 focus:ring-red-200`}
+                  className={`w-full rounded-xl border border-red-200 p-2 focus:border-red-500 focus:ring-2 focus:ring-red-200 ${formData.itemstatus === "" ? "text-gray-400" : "text-black"}`}
                   required
                 >
                   <option value="" disabled>

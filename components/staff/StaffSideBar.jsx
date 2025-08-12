@@ -25,6 +25,7 @@ export default function Sidebar({ isOpen }) {
       }
     } catch (error) {
       console.error("Logout failed:", error);
+      setLoggingOut(false);
     }
   };
 
@@ -33,11 +34,11 @@ export default function Sidebar({ isOpen }) {
     if (href === "/staffdashboard") {
       return pathname === href
         ? "bg-red-700 font-semibold"
-        : "hover:text-gray-200";
+        : "hover:bg-red-800";
     }
     return pathname.startsWith(href)
       ? "bg-red-700 font-semibold"
-      : "hover:text-gray-200";
+      : "hover:bg-red-800";
   };
 
   return (
@@ -96,7 +97,7 @@ export default function Sidebar({ isOpen }) {
         <button
           onClick={handleLogout}
           disabled={loggingOut}
-          className="flex w-full cursor-pointer items-center gap-2 rounded-xl p-3 text-white transition-colors hover:bg-red-700"
+          className="flex w-full cursor-pointer items-center gap-2 rounded-xl p-3 text-white transition-colors hover:bg-red-800"
         >
           {loggingOut ? (
             <>

@@ -67,6 +67,10 @@ const generateStaffDeclinedEmailHTML = (purchaseDetails) => {
                           <td width="150" style="padding: 12px 0 0 15px; font-weight: bold; color: #666666;">Requested Amount:</td>
                           <td style="padding: 12px 15px 0 0;">${purchaseDetails.discountedvalue || "n/a"}</td>
                         </tr>
+                        <tr>
+                          <td width="150" style="padding: 12px 0 0 15px; font-weight: bold; color: #666666;">HR Approver: </td>
+                          <td style="padding: 12px 15px 0 0;">${purchaseDetails.hr_approver_name || "n/a"}</td>
+                        </tr>
                       </table>
                       
                       <p style="color: #555555; font-size: 15px;">Please contact HR if you have any questions or wish to discuss this decision.</p>
@@ -163,7 +167,7 @@ const generateNextApproverEmailHTML = (purchaseDetails) => {
                       <p style="color: #555555; font-size: 15px;">Please review this request in the Staff Purchase Portal at your earliest convenience.</p>
                       
                       <div style="text-align: center; margin-top: 20px;">
-                        <a href="http://localhost:3000" style="display:inline-block; background-color: #B71C1C; color: white !important; padding: 12px 24px; text-decoration: none !important; border-radius: 15px; font-weight: bold;">Review Request</a>
+                        <a href="${process.env.NEXT_PUBLIC_BASE_URL}" style="display:inline-block; background-color: #B71C1C; color: white !important; padding: 12px 24px; text-decoration: none !important; border-radius: 15px; font-weight: bold;">Review Request</a>
                       </div>
                     </td>
                   </tr>
@@ -232,7 +236,6 @@ export async function PUT(request, { params }) {
       hr_comments,
       hr_approval,
       hr_approver_name,
-      hr_approval_date,
     } = await request.json();
 
     client = await pool.connect();
@@ -269,11 +272,11 @@ export async function PUT(request, { params }) {
          hr_comments = $13,
          hr_approval = $14,
          hr_approver_name = $15,
-         hr_approval_date = $16,
-         hr_approver_id = $17,
-         hr_approver_email = $18,
-         hr_signature = $19
-       WHERE id = $20`,
+         hr_approval_date = CURRENT_TIMESTAMP,
+         hr_approver_id = $16,
+         hr_approver_email = $17,
+         hr_signature = $18
+       WHERE id = $19`,
       [
         staffname || currentPurchase[0].staffname,
         payrollno || currentPurchase[0].payrollno,
@@ -288,10 +291,9 @@ export async function PUT(request, { params }) {
 
         is_employed || currentPurchase[0].is_employed,
         on_probation || currentPurchase[0].on_probation,
-        hr_comments || currentPurchase[0].hr_comments,
+        hr_comments || currentPurchase[0].hr_comments || null,
         hr_approval || currentPurchase[0].hr_approval,
         hr_approver_name || user.name,
-        hr_approval_date || new Date().toISOString(),
         user.id,
         user.email,
         user.name,
@@ -316,17 +318,17 @@ export async function PUT(request, { params }) {
           discountrate: discountrate || currentPurchase[0].discountrate,
           discountedvalue:
             discountedvalue || currentPurchase[0].discountedvalue,
-          hr_comments: hr_comments || null,
+          hr_comments: hr_comments || currentPurchase[0].hr_comments || null,
           hr_approver_name: hr_approver_name || user.name,
           createdat: currentPurchase[0].createdat,
-          hr_approval_date: hr_approval_date || new Date(),
+          hr_approval_date: new Date(),
           id: id, // Ensure request ID is included
         },
       };
 
       if (hr_approval === "approved") {
         // Send to Credit Control department
-        const creditControlEmail = "lapspotify2@gmail.com"; // Replace with actual email
+        const creditControlEmail = process.env.CC_APPROVER; // Replace with actual email
 
         await sendEmail({
           to: creditControlEmail,

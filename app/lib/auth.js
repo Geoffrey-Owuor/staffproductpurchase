@@ -1,8 +1,73 @@
-import { cookies } from "next/headers";
-import { pool } from "@/lib/db";
-import bcrypt from "bcryptjs";
-import { v4 as uuidv4 } from "uuid";
+// import { cookies } from "next/headers";
+// import { pool } from "@/lib/db";
+// import bcrypt from "bcryptjs";
+// import { v4 as uuidv4 } from "uuid";
 
+// export const hashPassword = async (password) => {
+//   return await bcrypt.hash(password, 10);
+// };
+
+// export const verifyPassword = async (password, hashedPassword) => {
+//   return await bcrypt.compare(password, hashedPassword);
+// };
+
+// export const createSession = async (userId, role) => {
+//   const sessionToken = uuidv4();
+//   const expiresAt = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000); // 2 days
+
+//   const client = await pool.connect();
+//   try {
+//     //Delete previous sessions for that particular userId
+//     await client.query("DELETE FROM sessions WHERE user_id = $1", [userId]);
+//     await client.query(
+//       "INSERT INTO sessions (user_id, session_token, expires_at, role) VALUES ($1, $2, $3, $4)",
+//       [userId, sessionToken, expiresAt, role],
+//     );
+
+//     const cookieStore = await cookies();
+
+//     cookieStore.set("session_token", sessionToken, {
+//       expires: expiresAt,
+//       httpOnly: true,
+//       secure: process.env.NODE_ENV === "production",
+//       sameSite: "lax",
+//       path: "/",
+//     });
+//   } finally {
+//     client.release();
+//   }
+// };
+
+// export const getCurrentUser = async () => {
+//   const cookieStore = await cookies();
+//   const sessionToken = cookieStore.get("session_token")?.value;
+//   if (!sessionToken) return null;
+
+//   const client = await pool.connect();
+//   try {
+//     const { rows } = await client.query(
+//       `SELECT users.*, sessions.role
+//        FROM users
+//        JOIN sessions ON users.id = sessions.user_id
+//        WHERE sessions.session_token = $1
+//        AND sessions.expires_at > NOW()`,
+//       [sessionToken],
+//     );
+//     return rows[0] || null;
+//   } finally {
+//     client.release();
+//   }
+// };
+
+import { cookies } from "next/headers";
+import bcrypt from "bcryptjs";
+import { SignJWT, jwtVerify } from "jose";
+
+const SECRET = new TextEncoder().encode(
+  process.env.JWT_SECRET || "supersecret",
+);
+
+// Password Hashing (Node.js only)
 export const hashPassword = async (password) => {
   return await bcrypt.hash(password, 10);
 };
@@ -11,50 +76,42 @@ export const verifyPassword = async (password, hashedPassword) => {
   return await bcrypt.compare(password, hashedPassword);
 };
 
-export const createSession = async (userId, role) => {
-  const sessionToken = uuidv4();
-  const expiresAt = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000); // 2 days
+//Create JWT and set it as httpOnly cookie
+export const createSession = async (userId, role, name, email) => {
+  const expiresAt = Math.floor(Date.now() / 1000) + 2 * 60;
+  const token = await new SignJWT({ userId, role, name, email })
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt()
+    .setExpirationTime(expiresAt)
+    .sign(SECRET);
 
-  const client = await pool.connect();
-  try {
-    //Delete previous sessions for that particular userId
-    await client.query("DELETE FROM sessions WHERE user_id = $1", [userId]);
-    await client.query(
-      "INSERT INTO sessions (user_id, session_token, expires_at, role) VALUES ($1, $2, $3, $4)",
-      [userId, sessionToken, expiresAt, role],
-    );
-
-    const cookieStore = await cookies();
-
-    cookieStore.set("session_token", sessionToken, {
-      expires: expiresAt,
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-    });
-  } finally {
-    client.release();
-  }
+  const cookieStore = await cookies();
+  cookieStore.set("session_token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: 2 * 60, //2 Minutes
+  });
 };
 
+//Verify JWT (returns user info or null)
 export const getCurrentUser = async () => {
   const cookieStore = await cookies();
-  const sessionToken = cookieStore.get("session_token")?.value;
-  if (!sessionToken) return null;
+  const token = cookieStore.get("session_token")?.value;
+  if (!token) return null;
 
-  const client = await pool.connect();
   try {
-    const { rows } = await client.query(
-      `SELECT users.*, sessions.role 
-       FROM users 
-       JOIN sessions ON users.id = sessions.user_id 
-       WHERE sessions.session_token = $1 
-       AND sessions.expires_at > NOW()`,
-      [sessionToken],
-    );
-    return rows[0] || null;
-  } finally {
-    client.release();
+    const { payload } = await jwtVerify(token, SECRET);
+    return {
+      valid: true,
+      id: payload.userId,
+      role: payload.role,
+      name: payload.name,
+      email: payload.email,
+      expiresAt: payload.exp * 1000, // Convert to ms for JS
+    };
+  } catch {
+    return { valid: false };
   }
 };

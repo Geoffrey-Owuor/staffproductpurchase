@@ -7,6 +7,7 @@ import PurchaseDetailSkeleton from "@/components/skeletons/PurchaseDetailsSkelet
 import { generateClientPDF } from "@/utils/returnPurchasePDF";
 import DetailField from "@/components/Reusables/DetailField";
 import { LoadingBar } from "@/components/Reusables/LoadingBar";
+import { formatDateLong } from "@/public/assets";
 
 export default function ViewPurchase({ params }) {
   const { id } = use(params);
@@ -216,12 +217,8 @@ export default function ViewPurchase({ params }) {
             <h2 className="mb-4 text-lg font-bold text-red-900">Metadata</h2>
             <div className="space-y-4">
               <DetailField
-                label="Date"
-                value={
-                  purchase.createdat
-                    ? new Date(purchase.createdat).toLocaleDateString("en-GB")
-                    : "N/A"
-                }
+                label="Date Created"
+                value={formatDateLong(purchase.createdat)}
               />
 
               <DetailField
@@ -255,14 +252,8 @@ export default function ViewPurchase({ params }) {
               value={purchase.hr_approver_name || "N/A"}
             />
             <DetailField
-              label="Date Approved"
-              value={
-                purchase.hr_approval_date
-                  ? new Date(purchase.hr_approval_date).toLocaleDateString(
-                      "en-GB",
-                    )
-                  : "N/A"
-              }
+              label="HR Approval Date"
+              value={formatDateLong(purchase.hr_approval_date)}
             />
 
             <div className="col-span-full">
@@ -326,14 +317,8 @@ export default function ViewPurchase({ params }) {
 
             <div>
               <DetailField
-                label="Approval Date"
-                value={
-                  purchase.cc_approval_date
-                    ? new Date(purchase.cc_approval_date).toLocaleDateString(
-                        "en-GB",
-                      )
-                    : "n/a"
-                }
+                label="CC Approval Date"
+                value={formatDateLong(purchase.cc_approval_date)}
               />
             </div>
           </div>
@@ -347,11 +332,7 @@ export default function ViewPurchase({ params }) {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             <DetailField
               label="Date of Invoice"
-              value={
-                purchase.invoice_date
-                  ? new Date(purchase.invoice_date).toLocaleDateString("en-GB")
-                  : "n/a"
-              }
+              value={formatDateLong(purchase.invoice_date)}
             />
             <DetailField
               label="Invoice No"
@@ -372,13 +353,7 @@ export default function ViewPurchase({ params }) {
             />
             <DetailField
               label="Date Recorded"
-              value={
-                purchase.invoice_recorded_date
-                  ? new Date(purchase.invoice_recorded_date).toLocaleDateString(
-                      "en-GB",
-                    )
-                  : "n/a"
-              }
+              value={formatDateLong(purchase.invoice_recorded_date)}
             />
           </div>
         </div>
@@ -399,11 +374,7 @@ export default function ViewPurchase({ params }) {
             />
             <DetailField
               label="Payment Date"
-              value={
-                purchase.payment_date
-                  ? new Date(purchase.payment_date).toLocaleDateString("en-GB")
-                  : "n/a"
-              }
+              value={formatDateLong(purchase.payment_date)}
             />
             <DetailField
               label="Amount"
@@ -416,6 +387,10 @@ export default function ViewPurchase({ params }) {
             <ApprovalStatus
               label="Approval Status"
               status={purchase.bi_approval || "n/a"}
+            />
+            <DetailField
+              label="BI Approval Date"
+              value={formatDateLong(purchase.bi_approval_date)}
             />
           </div>
         </div>

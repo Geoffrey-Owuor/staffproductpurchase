@@ -2,8 +2,20 @@
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export default function UnauthorizedEdit() {
+export default function UnauthorizedEdit({ role }) {
   const router = useRouter();
+
+  const dashBoardRoutes = {
+    staff: "/staffdashboard",
+    hr: "/hrdashboard",
+    cc: "/ccdashboard",
+    bi: "/bidashboard",
+  };
+
+  const handleRedirect = () => {
+    const targetRoute = dashBoardRoutes[role] || "/";
+    router.push(targetRoute);
+  };
 
   return (
     <div className="flex h-screen flex-col items-center justify-center bg-gray-50 p-4">
@@ -34,7 +46,7 @@ export default function UnauthorizedEdit() {
           </p>
           <div className="mt-6">
             <button
-              onClick={() => router.push("/staffdashboard")}
+              onClick={handleRedirect}
               className="inline-flex items-center rounded-lg border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
