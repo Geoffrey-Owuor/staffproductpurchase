@@ -1,4 +1,5 @@
 export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
 
 import { redirect } from "next/navigation";
 import { pool } from "@/lib/db";
