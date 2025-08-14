@@ -1,10 +1,11 @@
+export const dynamic = "force-dynamic";
+
 import { redirect } from "next/navigation";
 import { pool } from "@/lib/db";
 import VerifyCodeComponent from "@/components/RegistrationComponents/VerifyCodeComponent";
 
 export default async function Step2Page({ searchParams }) {
-  const params = await searchParams;
-  const email = params.email;
+  const { email } = await searchParams;
 
   if (!email) {
     redirect("/register");

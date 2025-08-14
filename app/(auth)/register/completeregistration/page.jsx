@@ -1,10 +1,11 @@
+export const dynamic = "force-dynamic";
+
 import { redirect } from "next/navigation";
 import { pool } from "@/lib/db";
 import CompleteRegistrationComponent from "@/components/RegistrationComponents/CompleteRegistrationComponent";
 
 export default async function Step3Page({ searchParams }) {
-  const params = await searchParams;
-  const email = params.email;
+  const { email } = await searchParams;
 
   if (!email) {
     redirect("/register");
