@@ -1,32 +1,15 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-
-import {
-  User,
-  LogOut,
-  ChevronLeft,
-  SidebarClose,
-  SidebarOpen,
-} from "lucide-react";
+import UserMenu from "../Reusables/UserMenu";
+import { LogOut, ChevronLeft, SidebarClose, SidebarOpen } from "lucide-react";
 
 const HrHeader = ({ isSidebarOpen, toggleSidebar }) => {
   const router = useRouter();
-  const [userName, setUserName] = useState("User"); // Default to "User"
   const [isScrolled, setIsScrolled] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await fetch("/api/current-user");
-        const data = await response.json();
-        if (data?.name) setUserName(data.name);
-      } catch (error) {
-        console.error("Failed to fetch user:", error);
-      }
-    };
-
     const handleScroll = () => {
       if (window.scrollY > 10) {
         setIsScrolled(true);
@@ -35,7 +18,6 @@ const HrHeader = ({ isSidebarOpen, toggleSidebar }) => {
       }
     };
 
-    fetchUser();
     window.addEventListener("scroll", handleScroll);
 
     return () => {
@@ -75,11 +57,8 @@ const HrHeader = ({ isSidebarOpen, toggleSidebar }) => {
         )}
       </button>
 
-      {/* Left side - Greeting */}
-      <div className="flex items-center rounded-full bg-red-100 px-3 py-2 text-black">
-        <User className="mr-2 h-5 w-5" />
-        <span className="text-sm">Hello, {userName}</span>
-      </div>
+      {/* User Menu */}
+      <UserMenu />
 
       {/* Right side - Actions */}
       <div className="ml-auto flex items-center space-x-4">

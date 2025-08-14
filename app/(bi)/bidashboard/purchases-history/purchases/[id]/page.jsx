@@ -149,7 +149,7 @@ export default function ViewPurchase({ params }) {
       </div>
 
       {/* Details Card */}
-      <div className="bg-white">
+      <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
         {/* Staff Information Section */}
         <div className="border-b border-red-200 p-6">
           <h2 className="mb-4 text-lg font-bold text-red-900">

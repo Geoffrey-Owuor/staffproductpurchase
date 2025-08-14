@@ -14,3 +14,13 @@ export const formatDateLong = (dateString) => {
     day: "numeric",
   });
 };
+
+export const clearFormData = (setFormData) => {
+  setFormData((prev) => {
+    const cleared = {};
+    Object.keys(prev).forEach((key) => {
+      cleared[key] = ""; // Reset each field to empty string
+    });
+    return cleared;
+  });
+};

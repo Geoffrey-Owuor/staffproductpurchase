@@ -48,7 +48,7 @@
 "use client";
 
 import { XIcon } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Alert = ({ message, type, onClose }) => {
   const [isClosing, setIsClosing] = useState(false);
@@ -57,6 +57,15 @@ const Alert = ({ message, type, onClose }) => {
     setIsClosing(true);
     setTimeout(() => onClose(), 200); // Match this with animation duration
   };
+
+  //Auto close after 3 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      handleClose();
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const bgColor = type === "success" ? "bg-green-100" : "bg-red-100";
   const textColor = type === "success" ? "text-green-700" : "text-red-700";

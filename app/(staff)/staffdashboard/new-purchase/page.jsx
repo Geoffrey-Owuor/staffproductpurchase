@@ -5,6 +5,7 @@ import ProductPricing from "@/components/ProductPricing";
 import TermsConditions from "@/components/TermsConditions";
 import Alert from "@/components/Alert";
 import { LoadingBarWave } from "@/components/Reusables/LoadingBar";
+import { ClipboardList } from "lucide-react";
 
 export default function NewPurchase() {
   const [formData, setFormData] = useState({
@@ -105,7 +106,8 @@ export default function NewPurchase() {
   return (
     <>
       <div className="mx-auto p-2 font-sans leading-relaxed">
-        <div className="mb-5 text-center">
+        <div className="mb-5 flex items-center justify-center gap-2">
+          <ClipboardList className="h-6 w-6 text-red-900" />
           <h1 className="text-xl font-bold text-red-900">
             PURCHASE FORM (Staff Information & Product Details)
           </h1>

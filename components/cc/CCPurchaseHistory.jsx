@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import TableSkeleton from "../skeletons/TableSkeleton";
 import { LoadingBar } from "../Reusables/LoadingBar";
+import PurchasesHistoryHeading from "../Reusables/Headings/PurchasesHistoryHeading";
 
 export default function CCPurchaseHistory() {
   const [purchases, setPurchases] = useState([]);
@@ -158,11 +159,10 @@ export default function CCPurchaseHistory() {
   };
 
   return (
-    <div className="p-2">
+    <div className="m-2 rounded-xl border border-gray-200 px-2 pt-2 pb-4 shadow-sm">
       {navigatingTo && <LoadingBar isLoading={true} />}
-      <h2 className="mb-6 text-center text-2xl font-bold text-red-900">
-        Staff Purchase Requests History
-      </h2>
+      {/* Heading */}
+      <PurchasesHistoryHeading />
 
       {/* Search Bar */}
       <div className="mx-auto mb-4 max-w-md">

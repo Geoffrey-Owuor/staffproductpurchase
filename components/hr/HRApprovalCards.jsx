@@ -1,6 +1,8 @@
 "use client";
 import { Clock, XCircle, CheckCircle2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import ApprovalCardsSkeleton from "../skeletons/ApprovalCardsSkeleton";
+import CardHeadings from "../Reusables/Headings/CardHeadings";
 
 export default function HRApprovalCards() {
   const [counts, setCounts] = useState({
@@ -32,68 +34,70 @@ export default function HRApprovalCards() {
     fetchApprovalCounts();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="mx-4 mb-8 grid grid-cols-1 gap-4 pt-4 md:grid-cols-3">
-        {[1, 2, 3].map((i) => (
-          <div
-            key={i}
-            className="h-39 animate-pulse rounded-2xl bg-gray-100"
-          ></div>
-        ))}
-      </div>
-    );
-  }
-
   return (
-    <div className="mx-4 mb-8 grid grid-cols-1 gap-4 pt-4 md:grid-cols-3">
-      {/* Pending Card */}
-      <div className="rounded-2xl bg-yellow-50 p-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-lg font-medium text-yellow-800">Pending</h3>
-            <p className="mt-2 text-3xl font-bold text-yellow-900">
-              {counts.pending}
-            </p>
-          </div>
-          <div className="rounded-full bg-yellow-100 p-3">
-            <Clock className="h-6 w-6 text-yellow-600" />
-          </div>
-        </div>
-        <p className="mt-4 text-sm text-yellow-700">Awaiting your approval</p>
-      </div>
+    <div className="mx-2 mt-4 mb-8 rounded-xl border border-gray-200 px-2 pt-2 pb-6 shadow-sm">
+      {/* Card Heading */}
+      <CardHeadings />
 
-      {/* Declined Card */}
-      <div className="rounded-2xl bg-red-50 p-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-lg font-medium text-red-800">Declined</h3>
-            <p className="mt-2 text-3xl font-bold text-red-900">
-              {counts.declined}
+      {loading ? (
+        <ApprovalCardsSkeleton />
+      ) : (
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          {/* Pending Card */}
+          <div className="rounded-2xl bg-yellow-50 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-medium text-yellow-800">Pending</h3>
+                <p className="mt-2 text-3xl font-bold text-yellow-900">
+                  {counts.pending}
+                </p>
+              </div>
+              <div className="rounded-full bg-yellow-100 p-3">
+                <Clock className="h-6 w-6 text-yellow-600" />
+              </div>
+            </div>
+            <p className="mt-4 text-sm text-yellow-700">
+              Awaiting your approval
             </p>
           </div>
-          <div className="rounded-full bg-red-100 p-3">
-            <XCircle className="h-6 w-6 text-red-600" />
-          </div>
-        </div>
-        <p className="mt-4 text-sm text-red-700">Requests you've declined</p>
-      </div>
 
-      {/* Approved Card */}
-      <div className="rounded-2xl bg-green-50 p-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-lg font-medium text-green-800">Approved</h3>
-            <p className="mt-2 text-3xl font-bold text-green-900">
-              {counts.approved}
+          {/* Declined Card */}
+          <div className="rounded-2xl bg-red-50 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-medium text-red-800">Declined</h3>
+                <p className="mt-2 text-3xl font-bold text-red-900">
+                  {counts.declined}
+                </p>
+              </div>
+              <div className="rounded-full bg-red-100 p-3">
+                <XCircle className="h-6 w-6 text-red-600" />
+              </div>
+            </div>
+            <p className="mt-4 text-sm text-red-700">
+              Requests you've declined
             </p>
           </div>
-          <div className="rounded-full bg-green-100 p-3">
-            <CheckCircle2 className="h-6 w-6 text-green-600" />
+
+          {/* Approved Card */}
+          <div className="rounded-2xl bg-green-50 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-medium text-green-800">Approved</h3>
+                <p className="mt-2 text-3xl font-bold text-green-900">
+                  {counts.approved}
+                </p>
+              </div>
+              <div className="rounded-full bg-green-100 p-3">
+                <CheckCircle2 className="h-6 w-6 text-green-600" />
+              </div>
+            </div>
+            <p className="mt-4 text-sm text-green-700">
+              Requests you've approved
+            </p>
           </div>
         </div>
-        <p className="mt-4 text-sm text-green-700">Requests you've approved</p>
-      </div>
+      )}
     </div>
   );
 }

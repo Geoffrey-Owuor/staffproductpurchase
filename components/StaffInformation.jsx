@@ -1,8 +1,8 @@
 const StaffInformation = ({ formData, handleChange }) => {
   return (
-    <div className="mb-8 rounded-xl border border-red-200 bg-white">
+    <div className="mb-8 rounded-xl border border-red-200 bg-white shadow-sm">
       <div className="rounded-t-xl bg-red-900 px-6 py-3 text-lg font-bold text-white">
-        STAFF INFORMATION
+        Staff Information
       </div>
       <div className="p-6">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">

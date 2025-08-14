@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import TableSkeleton from "../skeletons/TableSkeleton";
 import { LoadingBar } from "../Reusables/LoadingBar";
+import RecentPurchasesHeading from "../Reusables/Headings/RecentPurchasesHeading";
 
 export default function HrTablePurchases() {
   const [purchases, setPurchases] = useState([]);
@@ -165,14 +166,14 @@ export default function HrTablePurchases() {
   };
 
   return (
-    <div className="p-2">
+    <div className="m-2 rounded-xl border border-gray-200 px-2 pt-2 pb-4 shadow-sm">
       {(navigatingTo || goingTo) && <LoadingBar isLoading={true} />}
-      <h2 className="mb-6 text-center text-2xl font-bold text-red-900">
-        Recent Staff Purchase Requests
-      </h2>
+
+      {/* Heading */}
+      <RecentPurchasesHeading />
 
       {/* Search Bar */}
-      <div className="mx-auto mb-4 max-w-md">
+      <div className="mx-auto mt-6 mb-4 max-w-md">
         <div className="relative">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
             <Search className="h-5 w-5 text-gray-400" />

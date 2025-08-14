@@ -11,6 +11,8 @@ import ConfirmationDialog from "@/components/Reusables/ConfirmationDialog";
 import EditFormSkeleton from "@/components/skeletons/EditFormSkeleton";
 import UnauthorizedEdit from "@/components/Reusables/UnauthorizedEdit";
 import { LoadingBarWave } from "@/components/Reusables/LoadingBar";
+import { clearFormData } from "@/public/assets";
+import { FilePen } from "lucide-react";
 
 export default function EditPurchaseForm({ params }) {
   const router = useRouter();
@@ -170,12 +172,13 @@ export default function EditPurchaseForm({ params }) {
       setAlertMessage("Details updated successfully");
       setAlertType("success");
       setShowAlert(true);
+      clearFormData(setFormData);
 
       setIsSubmitting(false);
       // Redirect back after 2 seconds
-      setTimeout(() => {
-        router.push(`/ccdashboard/purchases-history/purchases/${id}`);
-      }, 2000);
+      // setTimeout(() => {
+      //   router.push(`/ccdashboard/purchases-history/purchases/${id}`);
+      // }, 2000);
     } catch (err) {
       console.error("Error updating purchase:", err);
       setAlertMessage("Failed to update purchase");
@@ -204,9 +207,12 @@ export default function EditPurchaseForm({ params }) {
           <ArrowLeft className="mr-1 h-5 w-5" />
           Go Back
         </button>
-        <h2 className="text-2xl font-bold text-red-900">
-          Edit Purchase Request
-        </h2>
+        <div className="flex items-center gap-2">
+          <FilePen className="h-6 w-6 text-red-900" />
+          <h2 className="text-2xl font-bold text-red-900">
+            Edit Purchase Request
+          </h2>
+        </div>
         <div className="w-24"></div> {/* Spacer for alignment */}
       </div>
 
@@ -240,7 +246,7 @@ export default function EditPurchaseForm({ params }) {
             className="inline-flex cursor-pointer items-center rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none"
           >
             <X className="mr-2 h-4 w-4" />
-            Cancel
+            Close
           </button>
           <button
             type="submit"

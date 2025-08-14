@@ -22,7 +22,13 @@ export async function GET() {
       return NextResponse.json({ error: "Not Authenticated" }, { status: 401 });
     }
     return NextResponse.json(
-      { name: user.name, role: user.role, id: user.id, valid: true },
+      {
+        name: user.name,
+        role: user.role,
+        email: user.email,
+        id: user.id,
+        valid: true,
+      },
       { status: 200 },
     );
   } catch (error) {

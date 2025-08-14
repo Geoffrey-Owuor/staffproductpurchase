@@ -1,8 +1,8 @@
 const ProductPricing = ({ formData, handleChange }) => {
   return (
-    <div className="mb-8 rounded-xl border border-red-200 bg-white">
+    <div className="mb-8 rounded-xl border border-red-200 bg-white shadow-sm">
       <div className="rounded-t-xl bg-red-900 px-6 py-3 text-lg font-bold text-white">
-        PRODUCT & PRICING DETAILS
+        Product & Pricing Details
       </div>
       <div className="overflow-x-auto p-6">
         <table className="w-full border-collapse">

@@ -23,7 +23,7 @@ export default function StaffLayoutShell({ user, children }) {
           <main
             className={`flex-1 overflow-x-hidden ${sidebarOpen ? "ml-56" : "ml-0"}`}
           >
-            <div className="mt-12">{children}</div>
+            <div className="mt-16">{children}</div>
           </main>
         </div>
         <DashboardFooter isSidebarOpen={sidebarOpen} />
