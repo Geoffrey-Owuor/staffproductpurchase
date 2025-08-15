@@ -185,9 +185,7 @@ import { NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 import { cookies } from "next/headers";
 
-const SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || "supersecret",
-);
+const SECRET = new TextEncoder().encode(process.env.JWT_SECRET);
 
 // ✅ Verify JWT
 async function verifyEdgeJWT(token) {

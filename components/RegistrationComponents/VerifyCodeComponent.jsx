@@ -25,9 +25,7 @@ export default function VerifyCodeComponent({ email }) {
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || "Verification failed");
 
-      router.push(
-        `/register/completeregistration?email=${encodeURIComponent(email)}`,
-      );
+      router.push("/register/completeregistration");
     } catch (err) {
       setError(err.message);
       setLoading(false);

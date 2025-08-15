@@ -63,9 +63,7 @@ import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import { SignJWT, jwtVerify } from "jose";
 
-const SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || "supersecret",
-);
+const SECRET = new TextEncoder().encode(process.env.JWT_SECRET);
 
 // Password Hashing (Node.js only)
 export const hashPassword = async (password) => {
@@ -91,7 +89,7 @@ export const createSession = async (userId, role, name, email) => {
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
-    maxAge: 2 * 60 * 60, //2 Minutes
+    maxAge: 2 * 60 * 60, //2 Hours
   });
 };
 

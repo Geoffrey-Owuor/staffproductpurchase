@@ -1,30 +1,38 @@
-export const dynamic = "force-dynamic";
-export const fetchCache = "force-no-store";
-
 import { redirect } from "next/navigation";
 import { pool } from "@/lib/db";
+import { jwtVerify } from "jose";
+import { cookies } from "next/headers";
 import CompleteRegistrationComponent from "@/components/RegistrationComponents/CompleteRegistrationComponent";
 
-export default async function Step3Page({ searchParams }) {
-  const { email } = await searchParams;
+export default async function Step3Page() {
+  const cookieStore = await cookies();
+  const cookie = cookieStore.get("verify_email")?.value;
+  if (!cookie) redirect("/register");
 
-  if (!email) {
-    redirect("/register");
-  }
+  try {
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+    const { payload } = await jwtVerify(cookie, secret);
+    const email = payload.email;
 
-  const client = await pool.connect();
+    if (!email) redirect("/register");
 
-  const { rows: results } = await client.query(
-    `SELECT * FROM verification_codes
+    const client = await pool.connect();
+
+    const { rows: results } = await client.query(
+      `SELECT * FROM verification_codes
      WHERE email = $1 AND verified = 1 AND expires_at > NOW()`,
-    [email],
-  );
+      [email],
+    );
 
-  client.release();
+    client.release();
 
-  if (results.length === 0) {
+    if (results.length === 0) {
+      redirect("/register");
+    }
+
+    return <CompleteRegistrationComponent email={email} />;
+  } catch (error) {
+    console.error(error);
     redirect("/register");
   }
-
-  return <CompleteRegistrationComponent email={email} />;
 }

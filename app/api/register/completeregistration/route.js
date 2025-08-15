@@ -1,6 +1,7 @@
 // app/api/register/completeregistration/route.js
 import { hashPassword, createSession } from "@/app/lib/auth";
 import { pool } from "@/lib/db";
+import { cookies } from "next/headers";
 
 const getRoleFromEmail = (email) => {
   const prefix = email.split("@")[0].toLowerCase();
@@ -58,6 +59,15 @@ export async function POST(request) {
 
     await createSession(userResult[0].id, role, name, email);
 
+    // Delete the verify_email cookie now that it's no longer needed
+    const cookieStore = await cookies();
+    cookieStore.set({
+      name: "verify_email",
+      value: "",
+      path: "/",
+      maxAge: 0, // Immediately expires
+    });
+
     return Response.json(
       {
         success: true,
@@ -68,15 +78,6 @@ export async function POST(request) {
     );
   } catch (error) {
     console.error("Complete registration error:", error);
-
-    if (error.code === "23505") {
-      // PostgreSQL unique_violation
-      return Response.json(
-        { success: false, message: "Email already registered" },
-        { status: 400 },
-      );
-    }
-
     return Response.json(
       { success: false, message: "Registration failed" },
       { status: 500 },

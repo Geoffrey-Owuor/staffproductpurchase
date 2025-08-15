@@ -239,7 +239,7 @@ export default function Step1Page() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || "Failed to send code");
 
-      router.push(`/register/verifycode?email=${encodeURIComponent(email)}`);
+      router.push("/register/verifycode");
     } catch (err) {
       setError(err.message);
       setLoading(false);
