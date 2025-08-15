@@ -34,15 +34,14 @@ export async function POST(request) {
 
     // Generate 6-digit code
     const code = crypto.randomInt(100000, 999999).toString();
-    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
     // Store or update verification code
     await client.query(
       `INSERT INTO verification_codes (email, code, expires_at)
-       VALUES ($1, $2, $3)
+       VALUES ($1, $2, NOW() + INTERVAL '5 minutes')
        ON CONFLICT (email) 
-       DO UPDATE SET code = EXCLUDED.code, expires_at = EXCLUDED.expires_at, verified = 0`,
-      [email, code, expiresAt],
+       DO UPDATE SET code = EXCLUDED.code, expires_at = NOW() + INTERVAL '5 minutes', verified = 0`,
+      [email, code],
     );
 
     //Sign the JWT
@@ -57,8 +56,8 @@ export async function POST(request) {
     cookieStore.set("verify_email", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
+      sameSite: "strict",
+      path: "/register",
       maxAge: 300, // 5 Minutes
     });
 
