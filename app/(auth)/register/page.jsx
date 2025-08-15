@@ -277,7 +277,7 @@ export default function Step1Page() {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full rounded-xl px-4 py-3 font-medium text-white transition duration-200 ${
+            className={`w-full cursor-pointer rounded-xl px-4 py-3 font-medium text-white transition duration-200 ${
               loading
                 ? "cursor-not-allowed bg-red-400"
                 : "bg-red-600 hover:bg-red-700"

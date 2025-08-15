@@ -46,7 +46,7 @@ export default function CompleteRegistrationComponent({ email }) {
       if (data.role === "hr") dashboardPath = "/hrdashboard";
       else if (data.role === "cc") dashboardPath = "/ccdashboard";
       else if (data.role === "bi") dashboardPath = "/bidashboard";
-      else dashboardPath = "/";
+      else dashboardPath = "/staffdashboard";
 
       window.location.href = dashboardPath;
     } catch (err) {
@@ -66,7 +66,7 @@ export default function CompleteRegistrationComponent({ email }) {
 
         <form onSubmit={handleSubmit} className="space-y-5" autoComplete="off">
           <div className="text-center text-green-600">
-            Verification successfull!
+            Email verified successfully!
           </div>
 
           <div className="relative">
@@ -134,7 +134,7 @@ export default function CompleteRegistrationComponent({ email }) {
               (formData.confirmPassword &&
                 formData.password !== formData.confirmPassword)
             }
-            className={`w-full rounded-xl px-4 py-3 font-medium text-white transition duration-200 ${
+            className={`w-full cursor-pointer rounded-xl px-4 py-3 font-medium text-white transition duration-200 ${
               loading ||
               (formData.confirmPassword &&
                 formData.password !== formData.confirmPassword)

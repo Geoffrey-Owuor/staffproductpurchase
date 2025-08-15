@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import AlertPopup from "../Reusables/AlertPopup";
 
 export default function VerifyCodeComponent({ email }) {
   const router = useRouter();
@@ -9,6 +10,7 @@ export default function VerifyCodeComponent({ email }) {
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
 
   const handleCodeSubmit = async (e) => {
     e.preventDefault();
@@ -39,17 +41,26 @@ export default function VerifyCodeComponent({ email }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
-    } catch {
-      // Ignore resend error
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 4000);
+    } catch (error) {
+      console.error("Resend failed", error);
     }
   };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-red-50 to-red-100">
+      <AlertPopup message="Verification code resent!" show={showAlert} />
+
       <div className="w-full max-w-md rounded-3xl bg-white p-8 shadow-lg">
         <h1 className="mb-6 text-center text-3xl font-bold text-red-800">
-          Enter Verification Code
+          Verification Code
         </h1>
+
+        <p className="mb-8 text-center text-sm text-gray-600">
+          If the email exists, a 6-digit verification code has been sent to{" "}
+          <span className="font-semibold">{email}</span>
+        </p>
 
         {error && <div className="mb-4 text-center text-red-700">{error}</div>}
 
@@ -58,11 +69,6 @@ export default function VerifyCodeComponent({ email }) {
           className="space-y-5"
           autoComplete="off"
         >
-          <div className="text-center text-gray-600">
-            Enter the 6-digit code sent to{" "}
-            <span className="font-semibold">{email}</span>
-          </div>
-
           <div className="relative">
             <input
               type="text"
@@ -74,14 +80,14 @@ export default function VerifyCodeComponent({ email }) {
               className="peer w-full rounded-xl border border-gray-300 px-4 py-3 text-center text-xl tracking-widest placeholder-transparent focus:border-blue-600 focus:outline-none"
             />
             <label className="absolute -top-3 left-4 bg-white px-1 text-sm text-blue-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-blue-600">
-              Verification Code
+              Enter verification code
             </label>
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className={`w-full rounded-xl px-4 py-3 font-medium text-white transition duration-200 ${
+            className={`w-full cursor-pointer rounded-xl px-4 py-3 font-medium text-white transition duration-200 ${
               loading
                 ? "cursor-not-allowed bg-red-400"
                 : "bg-red-600 hover:bg-red-700"
@@ -104,7 +110,7 @@ export default function VerifyCodeComponent({ email }) {
             <button
               type="button"
               onClick={resendCode}
-              className="font-medium text-red-600 hover:underline"
+              className="cursor-pointer font-medium text-red-600 hover:underline"
             >
               Resend
             </button>
