@@ -14,9 +14,10 @@ export async function GET() {
 
     const [rows] = await connection.execute(
       `SELECT id, itemName, itemStatus, productCode, 
-              tdPrice, discountedValue, date, HR_Approval, CC_Approval, BI_Approval 
+              tdPrice, discountedValue, createdAt, HR_Approval, CC_Approval, BI_Approval 
        FROM purchasesInfo 
        WHERE user_id = ? 
+        AND createdAt >= NOW() - INTERVAL 12 DAY
        ORDER BY createdAt DESC`,
       [user.id],
     );

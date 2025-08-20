@@ -8,13 +8,18 @@ import ProductDetailsSection from "@/components/FormEditComponents/ProductDetail
 import HRApprovalSection from "@/components/FormEditComponents/HrApprovalSection";
 import CreditControlSection from "@/components/FormEditComponents/CreditControlSection";
 import BIApprovalSection from "@/components/FormEditComponents/BIApprovalSection";
+import ConfirmationDialog from "@/components/Reusables/ConfirmationDialog";
 import EditFormSkeleton from "@/components/skeletons/EditFormSkeleton";
-
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+import UnauthorizedEdit from "@/components/Reusables/UnauthorizedEdit";
+import { LoadingBarWave } from "@/components/Reusables/LoadingBar";
+import { clearFormData } from "@/public/assets";
+import { FilePen } from "lucide-react";
 
 export default function EditPurchaseForm({ params }) {
+  const [userRole, setUserRole] = useState(null);
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [biApproval, setBiApproval] = useState(null);
   const [submitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     staffName: "",
@@ -22,25 +27,26 @@ export default function EditPurchaseForm({ params }) {
     department: "",
     itemName: "",
     itemStatus: "",
+    productPolicy: "",
     productCode: "",
     tdPrice: "",
     discountRate: "",
     discountedValue: "",
-    date: "",
-    signature: "",
+    createdAt: "",
+    employee_payment_terms: "",
+    user_credit_period: "",
     is_employed: "",
     on_probation: "",
     hr_comments: "",
     HR_Approval: "",
     hr_approver_name: "",
     hr_approval_date: "",
-    hr_signature: "",
     credit_period: "",
     one_third_rule: "",
     purchase_history_comments: "",
     pending_invoices: "",
     CC_Approval: "",
-    cc_signature: "",
+    cc_approver_name: "",
     cc_approval_date: "",
     invoice_date: "",
     invoice_number: "",
@@ -50,25 +56,44 @@ export default function EditPurchaseForm({ params }) {
     payment_reference: "",
     payment_date: "",
     amount: "",
-    bi_signature: "",
+    bi_approver_name: "",
+    bi_approval_date: "",
     BI_Approval: "",
   });
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const [alertType, setAlertType] = useState("success");
 
   useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch("/api/current-user");
+        const data = await response.json();
+
+        if (response.ok && data.valid) {
+          setUserRole(data.role);
+        } else {
+          setUserRole("guest"); //Fallback Role
+        }
+      } catch (error) {
+        console.error("Failed to fetch user role:", error);
+        setUserRole("guest");
+      }
+    };
+    fetchUser();
+
     const fetchPurchaseData = async () => {
       const { id } = await params;
       try {
-        const response = await fetch(
-          `${BASE_URL}/api/bi/biviewpurchases/${id}`,
-        );
+        const response = await fetch(`/api/bi/biviewpurchases/${id}`);
         const data = await response.json();
 
         if (!response.ok) {
           throw new Error("Failed to fetch purchase data");
         }
+
+        setBiApproval(data.BI_Approval);
 
         setFormData({
           staffName: data.staffName || "",
@@ -76,30 +101,27 @@ export default function EditPurchaseForm({ params }) {
           department: data.department || "",
           itemName: data.itemName || "",
           itemStatus: data.itemStatus || "",
+          productPolicy: data.productPolicy || "",
           productCode: data.productCode || "",
           tdPrice: data.tdPrice || "",
           discountRate: data.discountRate || "",
           discountedValue: data.discountedValue || "",
-          date: data.date ? data.date.split("T")[0] : "",
-          signature: data.signature || "",
+          createdAt: data.createdAt || "",
+          employee_payment_terms: data.employee_payment_terms || "",
+          user_credit_period: data.user_credit_period || "",
           is_employed: data.is_employed || "",
           on_probation: data.on_probation || "",
           hr_comments: data.hr_comments || "",
           HR_Approval: data.HR_Approval || "",
           hr_approver_name: data.hr_approver_name || "",
-          hr_approval_date: data.hr_approval_date
-            ? data.hr_approval_date.split("T")[0]
-            : "",
-          hr_signature: data.hr_signature || "",
+          hr_approval_date: data.hr_approval_date || "",
           credit_period: data.credit_period || "",
           one_third_rule: data.one_third_rule || "",
           purchase_history_comments: data.purchase_history_comments || "",
           pending_invoices: data.pending_invoices || "",
           CC_Approval: data.CC_Approval || "",
-          cc_signature: data.cc_signature || "",
-          cc_approval_date: data.cc_approval_date
-            ? data.cc_approval_date.split("T")[0]
-            : "",
+          cc_approver_name: data.cc_approver_name || "",
+          cc_approval_date: data.cc_approval_date || "",
           invoice_date: data.invoice_date
             ? data.invoice_date.split("T")[0]
             : "",
@@ -114,15 +136,16 @@ export default function EditPurchaseForm({ params }) {
             ? data.payment_date.split("T")[0]
             : "",
           amount: data.amount || "",
-          bi_signature: data.bi_signature || "",
+          bi_approver_name: data.bi_approver_name || "",
+          bi_approval_date: data.bi_approval_date || "",
           BI_Approval: data.BI_Approval || "",
         });
+        setLoading(false);
       } catch (err) {
         console.error("Error fetching purchase data:", err);
-        setAlertMessage("Error Fetching Purchase Data");
+        setAlertMessage("Error fetching purchase Data");
         setAlertType("error");
         setShowAlert(true);
-      } finally {
         setLoading(false);
       }
     };
@@ -157,12 +180,17 @@ export default function EditPurchaseForm({ params }) {
   }, [formData.tdPrice, formData.discountRate]);
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
+    setShowConfirmation(true); // Show confirmation dialog instead of submitting directly
+  };
+
+  const handleConfirmSubmit = async () => {
+    setShowConfirmation(false);
     setIsSubmitting(true);
     const { id } = await params;
-    e.preventDefault();
 
     try {
-      const response = await fetch(`${BASE_URL}/api/bi/biviewpurchases/${id}`, {
+      const response = await fetch(`/api/bi/biviewpurchases/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -171,27 +199,32 @@ export default function EditPurchaseForm({ params }) {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to update purchase");
+        throw new Error("failed to update purchase");
       }
 
-      setAlertMessage("Details Updated Successfully");
+      setAlertMessage("Details updated successfully");
       setAlertType("success");
       setShowAlert(true);
+      clearFormData(setFormData);
 
       setIsSubmitting(false);
       // Redirect back after 2 seconds
-      setTimeout(() => {
-        router.push(`/bidashboard/purchases-history/purchases/${id}`);
-      }, 2000);
+      // setTimeout(() => {
+      //   router.push(`/bidashboard/purchases-history/purchases/${id}`);
+      // }, 2000);
     } catch (err) {
       console.error("Error updating purchase:", err);
-      setAlertMessage("Failed to update purchase. Please try again.");
+      setAlertMessage("Failed to update purchase");
       setAlertType("error");
-      setShowAlert(false);
+      setShowAlert(true);
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  if (biApproval === "approved") {
+    return <UnauthorizedEdit role={userRole} />;
+  }
 
   if (loading) {
     return <EditFormSkeleton />;
@@ -207,21 +240,43 @@ export default function EditPurchaseForm({ params }) {
           <ArrowLeft className="mr-1 h-5 w-5" />
           Go Back
         </button>
-        <h2 className="text-2xl font-bold text-red-900">
-          Edit Purchase Request
-        </h2>
+        <div className="flex items-center gap-2">
+          <FilePen className="h-6 w-6 text-red-900" />
+          <h2 className="text-2xl font-bold text-red-900">
+            Edit Purchase Request
+          </h2>
+        </div>
         <div className="w-24"></div> {/* Spacer for alignment */}
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <StaffInfoSection formData={formData} handleChange={handleChange} />
+      <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
+        {submitting && <LoadingBarWave isLoading={true} />}
+        <StaffInfoSection
+          formData={formData}
+          handleChange={handleChange}
+          userRole={userRole}
+        />
         <ProductDetailsSection
           formData={formData}
           handleChange={handleChange}
+          userRole={userRole}
+          setFormData={setFormData}
         />
-        <HRApprovalSection formData={formData} handleChange={handleChange} />
-        <CreditControlSection formData={formData} handleChange={handleChange} />
-        <BIApprovalSection formData={formData} handleChange={handleChange} />
+        <HRApprovalSection
+          formData={formData}
+          handleChange={handleChange}
+          userRole={userRole}
+        />
+        <CreditControlSection
+          formData={formData}
+          handleChange={handleChange}
+          userRole={userRole}
+        />
+        <BIApprovalSection
+          formData={formData}
+          handleChange={handleChange}
+          userRole={userRole}
+        />
 
         <div className="flex justify-center space-x-4">
           <button
@@ -230,17 +285,26 @@ export default function EditPurchaseForm({ params }) {
             className="inline-flex cursor-pointer items-center rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none"
           >
             <X className="mr-2 h-4 w-4" />
-            Cancel
+            Close
           </button>
           <button
             type="submit"
             className="inline-flex cursor-pointer items-center rounded-full border border-transparent bg-red-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none"
           >
             <Save className="mr-2 h-4 w-4" />
-            {submitting ? "Saving..." : "Save Changes"}
+            Save changes
           </button>
         </div>
       </form>
+
+      {/* Confirmation Dialogue */}
+      {showConfirmation && (
+        <ConfirmationDialog
+          message="Are you sure you want to submit these changes?"
+          onConfirm={handleConfirmSubmit}
+          onCancel={() => setShowConfirmation(false)}
+        />
+      )}
 
       {/* Alert Component */}
       {showAlert && (

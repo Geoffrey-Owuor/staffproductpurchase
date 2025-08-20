@@ -1,24 +1,28 @@
 "use client";
-import { ArrowLeft, ArrowUpRight, Edit, X } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Edit, X, Download } from "lucide-react";
 import ApprovalStatus from "@/components/Reusables/ApprovalStatus";
 import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import PurchaseDetailSkeleton from "@/components/skeletons/PurchaseDetailsSkeleton";
 import DetailField from "@/components/Reusables/DetailField";
-
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+import { generateClientPDF } from "@/utils/returnPurchasePDF";
+import { LoadingBar } from "@/components/Reusables/LoadingBar";
+import { formatDateLong } from "@/public/assets";
 
 export default function ViewPurchase({ params }) {
   const { id } = use(params);
   const [purchase, setPurchase] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
   const [error, setError] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
     const fetchPurchaseDetails = async () => {
       try {
-        const res = await fetch(`${BASE_URL}/api/bi/biviewpurchases/${id}`);
+        const res = await fetch(`/api/bi/biviewpurchases/${id}`);
         if (!res.ok) throw new Error("Failed to fetch purchase");
         const data = await res.json();
         setPurchase(data);
@@ -31,6 +35,32 @@ export default function ViewPurchase({ params }) {
 
     fetchPurchaseDetails();
   }, [id]);
+
+  //Generate pdf document version of the data
+  const handleDownload = async () => {
+    setIsDownloading(true);
+    try {
+      await generateClientPDF(purchase);
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+    setTimeout(() => {
+      router.push(`/bidashboard/purchases-history/purchases/${id}/edit`);
+    }, 100); // Short delay to show the spinner
+  };
+
+  const handleCloseClick = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      router.push("/bidashboard");
+    }, 100); // Short delay to show the spinner
+  };
 
   if (loading) {
     return <PurchaseDetailSkeleton />;
@@ -47,7 +77,7 @@ export default function ViewPurchase({ params }) {
           className="mt-4 inline-flex items-center gap-1 rounded-full bg-red-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700"
         >
           <ArrowLeft className="h-4 w-4" />
-          Back to Dashboard
+          Back to Home
         </button>
       </div>
     );
@@ -64,7 +94,7 @@ export default function ViewPurchase({ params }) {
           className="mt-4 inline-flex items-center gap-1 rounded-full bg-red-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700"
         >
           <ArrowLeft className="h-4 w-4" />
-          Back to Dashboard
+          Back to Home
         </button>
       </div>
     );
@@ -72,6 +102,7 @@ export default function ViewPurchase({ params }) {
 
   return (
     <div className="mx-auto p-2">
+      {(isEditing || isClosing) && <LoadingBar isLoading={true} />}
       {/* Header with back button */}
       <div className="mb-6 flex items-center justify-between">
         <button
@@ -83,17 +114,31 @@ export default function ViewPurchase({ params }) {
         </button>
 
         {/* Middle Edit Button */}
-        <button
-          onClick={() =>
-            router.push(`/bidashboard/purchases-history/purchases/${id}/edit`)
-          }
-          className="flex cursor-pointer items-center gap-1 rounded-full bg-red-900 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-red-700"
-        >
-          <Edit className="h-4 w-4" />
-          Edit
-        </button>
+        {purchase.BI_Approval !== "approved" && (
+          <button
+            onClick={handleEditClick}
+            disabled={isEditing}
+            className="flex cursor-pointer items-center justify-center gap-1 rounded-full bg-red-900 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-red-700"
+          >
+            <Edit className="h-4 w-4" />
+            Edit
+          </button>
+        )}
 
-        <div className="flex items-center">
+        <div className="flex items-center gap-4">
+          <button
+            onClick={handleDownload}
+            className={`relative flex items-center justify-center gap-1 rounded-full bg-gray-100 p-2 text-sm text-black shadow-sm hover:bg-gray-200`}
+            disabled={isDownloading}
+          >
+            {isDownloading && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="h-6 w-6 animate-spin rounded-full border border-t-transparent"></div>
+              </div>
+            )}
+            <Download className="relative z-10 h-4 w-4" />
+          </button>
+
           <button
             onClick={() => router.push("/bidashboard/purchases-history")}
             className="flex cursor-pointer items-center text-red-900 hover:text-red-700"
@@ -105,7 +150,7 @@ export default function ViewPurchase({ params }) {
       </div>
 
       {/* Details Card */}
-      <div className="rounded-2xl border border-red-200 bg-white shadow-md">
+      <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
         {/* Staff Information Section */}
         <div className="border-b border-red-200 p-6">
           <h2 className="mb-4 text-lg font-bold text-red-900">
@@ -140,7 +185,7 @@ export default function ViewPurchase({ params }) {
             />
             <DetailField
               label="Discount Rate"
-              value={`${purchase.discountRate}%`}
+              value={`${Number(purchase.discountRate).toFixed(2)}%`}
             />
             <DetailField
               label="Discounted Value"
@@ -173,14 +218,14 @@ export default function ViewPurchase({ params }) {
             <h2 className="mb-4 text-lg font-bold text-red-900">Metadata</h2>
             <div className="space-y-4">
               <DetailField
-                label="Date"
-                value={
-                  purchase.date
-                    ? new Date(purchase.date).toLocaleDateString()
-                    : "N/A"
-                }
+                label="Date Created"
+                value={formatDateLong(purchase.createdAt)}
               />
-              <DetailField label="Signature" value={purchase.signature} />
+
+              <DetailField
+                label="Payment Terms/Options"
+                value={purchase.employee_payment_terms}
+              />
             </div>
           </div>
         </div>
@@ -208,17 +253,10 @@ export default function ViewPurchase({ params }) {
               value={purchase.hr_approver_name || "N/A"}
             />
             <DetailField
-              label="Date Approved"
-              value={
-                purchase.hr_approval_date
-                  ? new Date(purchase.hr_approval_date).toLocaleDateString()
-                  : "N/A"
-              }
+              label="HR Approval Date"
+              value={formatDateLong(purchase.hr_approval_date)}
             />
-            <DetailField
-              label="Signature"
-              value={purchase.hr_signature || "N/A"}
-            />
+
             <div className="col-span-full">
               <DetailField
                 label="HR Comments"
@@ -274,18 +312,14 @@ export default function ViewPurchase({ params }) {
             <div>
               <DetailField
                 label="Checked By"
-                value={purchase.cc_signature || "n/a"}
+                value={purchase.cc_approver_name || "n/a"}
               />
             </div>
 
             <div>
               <DetailField
-                label="Approval Date"
-                value={
-                  purchase.cc_approval_date
-                    ? new Date(purchase.cc_approval_date).toLocaleDateString()
-                    : "n/a"
-                }
+                label="CC Approval Date"
+                value={formatDateLong(purchase.cc_approval_date)}
               />
             </div>
           </div>
@@ -299,11 +333,7 @@ export default function ViewPurchase({ params }) {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             <DetailField
               label="Date of Invoice"
-              value={
-                purchase.invoice_date
-                  ? new Date(purchase.invoice_date).toLocaleDateString()
-                  : "n/a"
-              }
+              value={formatDateLong(purchase.invoice_date)}
             />
             <DetailField
               label="Invoice No"
@@ -320,17 +350,11 @@ export default function ViewPurchase({ params }) {
 
             <DetailField
               label="Invoiced By"
-              value={purchase.bi_signature || "n/a"}
+              value={purchase.bi_approver_name || "n/a"}
             />
             <DetailField
               label="Date Recorded"
-              value={
-                purchase.invoice_recorded_date
-                  ? new Date(
-                      purchase.invoice_recorded_date,
-                    ).toLocaleDateString()
-                  : "n/a"
-              }
+              value={formatDateLong(purchase.invoice_recorded_date)}
             />
           </div>
         </div>
@@ -351,11 +375,7 @@ export default function ViewPurchase({ params }) {
             />
             <DetailField
               label="Payment Date"
-              value={
-                purchase.payment_date
-                  ? new Date(purchase.payment_date).toLocaleDateString()
-                  : "n/a"
-              }
+              value={formatDateLong(purchase.payment_date)}
             />
             <DetailField
               label="Amount"
@@ -369,23 +389,30 @@ export default function ViewPurchase({ params }) {
               label="Approval Status"
               status={purchase.BI_Approval || "n/a"}
             />
+            <DetailField
+              label="BI Approval Date"
+              value={formatDateLong(purchase.bi_approval_date)}
+            />
           </div>
         </div>
       </div>
+
       {/* Bottom Buttons - Centered */}
       <div className="mt-6 flex justify-center gap-4">
+        {purchase.BI_Approval !== "approved" && (
+          <button
+            onClick={handleEditClick}
+            disabled={isEditing}
+            className="inline-flex cursor-pointer items-center justify-center gap-1 rounded-full bg-red-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700"
+          >
+            <Edit className="h-4 w-4" />
+            Edit
+          </button>
+        )}
         <button
-          onClick={() =>
-            router.push(`/bidashboard/purchases-history/purchases/${id}/edit`)
-          }
-          className="inline-flex cursor-pointer items-center gap-1 rounded-full bg-red-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700"
-        >
-          <Edit className="h-4 w-4" />
-          Edit
-        </button>
-        <button
-          onClick={() => router.back()}
-          className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
+          onClick={handleCloseClick}
+          disabled={isClosing}
+          className="inline-flex cursor-pointer items-center justify-center gap-1 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
         >
           <X className="h-4 w-4" />
           Close

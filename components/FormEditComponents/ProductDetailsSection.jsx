@@ -1,6 +1,41 @@
-export default function ProductDetailsSection({ formData, handleChange }) {
+import { formatDateLong } from "@/public/assets";
+import { useEffect } from "react";
+
+const discountPolicy = {
+  "Von Hotpoint on Account": { New: 10, RHD2: 15 },
+  "Von Hotpoint on Cash Payment": { New: 12.5, RHD2: 17.5 },
+  "Non Von Hotpoint on Cash Payment": { New: 10, RHD2: 15 },
+  "Non Von Hotpoint on Account": { New: 7.5, RHD2: 12.5 },
+  "Samsung Brand on Cash payment": { New: 5, RHD2: 7.5 },
+  "Samsung Brand on Account": { New: 2.5, RHD2: 5 },
+};
+
+export default function ProductDetailsSection({
+  formData,
+  handleChange,
+  userRole,
+  setFormData,
+}) {
+  useEffect(() => {
+    const { itemStatus, productPolicy } = formData;
+    if (itemStatus && productPolicy && discountPolicy[productPolicy]) {
+      const rate = discountPolicy[productPolicy][itemStatus];
+      if (rate !== undefined) {
+        setFormData((prev) => ({
+          ...prev,
+          discountRate: rate,
+        }));
+      }
+    }
+  }, [formData.itemStatus, formData.productPolicy]);
+
+  const isReadOnly = userRole != "staff";
+  const ccReadOnly = userRole != "cc";
+  const isRequired = userRole === "cc";
+  const editableRoles = ["cc", "staff"];
+  const isReadOnlyGeneral = !editableRoles.includes(userRole);
   return (
-    <div className="overflow-hidden rounded-2xl border border-red-200 shadow">
+    <div className="overflow-hidden rounded-xl border border-red-200">
       <div className="bg-red-900 px-6 py-3 text-white">
         <h3 className="text-lg font-medium">Product and Pricing Details</h3>
       </div>
@@ -18,9 +53,38 @@ export default function ProductDetailsSection({ formData, handleChange }) {
             name="itemName"
             value={formData.itemName}
             onChange={handleChange}
-            className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
+            readOnly={isReadOnlyGeneral}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            placeholder="Enter item name"
             required
           />
+        </div>
+
+        <div>
+          <label
+            htmlFor="productPolicy"
+            className="mb-1 block text-sm font-medium text-gray-700"
+          >
+            Item Policy
+          </label>
+          <select
+            id="productPolicy"
+            name="productPolicy"
+            value={formData.productPolicy}
+            onChange={handleChange}
+            disabled={isReadOnlyGeneral}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${formData.itemStatus === "" ? "text-gray-400" : "text-black"} ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            required
+          >
+            <option value="" disabled>
+              Select Policy
+            </option>
+            {Object.keys(discountPolicy).map((policy) => (
+              <option key={policy} value={policy}>
+                {policy}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div>
@@ -35,10 +99,13 @@ export default function ProductDetailsSection({ formData, handleChange }) {
             name="itemStatus"
             value={formData.itemStatus}
             onChange={handleChange}
-            className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
+            disabled={isReadOnlyGeneral}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             required
           >
-            <option value="">Select status</option>
+            <option value="" disabled>
+              Select status
+            </option>
             <option value="New">New</option>
             <option value="RHD2">RHD2</option>
           </select>
@@ -57,8 +124,10 @@ export default function ProductDetailsSection({ formData, handleChange }) {
             name="productCode"
             value={formData.productCode}
             onChange={handleChange}
-            className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
-            required
+            readOnly={isReadOnlyGeneral}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            placeholder="Enter product code"
+            required={isRequired}
           />
         </div>
 
@@ -75,10 +144,12 @@ export default function ProductDetailsSection({ formData, handleChange }) {
             name="tdPrice"
             value={formData.tdPrice}
             onChange={handleChange}
+            readOnly={isReadOnlyGeneral}
             step="0.01"
             min="0"
-            className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
-            required
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            placeholder="Enter TD price"
+            required={isRequired}
           />
         </div>
 
@@ -98,8 +169,10 @@ export default function ProductDetailsSection({ formData, handleChange }) {
             step="0.01"
             min="0"
             max="100"
-            className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
-            required
+            readOnly={ccReadOnly}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${ccReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            placeholder="Enter discount rate"
+            required={isRequired}
           />
         </div>
 
@@ -118,46 +191,81 @@ export default function ProductDetailsSection({ formData, handleChange }) {
             step="0.01"
             min="0"
             readOnly
-            className="w-full rounded-xl border border-gray-300 bg-gray-100 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
-            required
+            className="w-full cursor-not-allowed rounded-xl border border-gray-300 bg-gray-100 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
           />
         </div>
 
         <div>
           <label
-            htmlFor="date"
+            htmlFor="createdAt"
             className="mb-1 block text-sm font-medium text-gray-700"
           >
-            Date
-          </label>
-          <input
-            type="date"
-            id="date"
-            name="date"
-            value={formData.date}
-            onChange={handleChange}
-            className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
-            required
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="signature"
-            className="mb-1 block text-sm font-medium text-gray-700"
-          >
-            Signature
+            Date Submitted
           </label>
           <input
             type="text"
-            id="signature"
-            name="signature"
-            value={formData.signature}
+            id="createdAt"
+            name="createdAt"
+            value={formatDateLong(formData.createdAt)}
             onChange={handleChange}
-            className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
-            required
+            readOnly
+            className="w-full cursor-not-allowed rounded-xl border border-gray-300 bg-gray-100 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
           />
         </div>
+        <div>
+          <label
+            htmlFor="employee_payment_terms"
+            className="mb-1 block text-sm font-medium text-gray-700"
+          >
+            Payment Terms/Options
+          </label>
+          <select
+            id="employee_payment_terms"
+            name="employee_payment_terms"
+            value={formData.employee_payment_terms}
+            onChange={handleChange}
+            disabled={isReadOnly}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            required
+          >
+            <option value="" disabled>
+              Select a payment option
+            </option>
+            <option value="CREDIT">Credit</option>
+            <option value="CASH">Cash</option>
+            <option value="BANK">Bank</option>
+            <option value="MPESA">Mpesa</option>
+          </select>
+        </div>
+
+        {/* Conditional field to appear when user selects the credit option in payment terms/options */}
+        {formData.employee_payment_terms === "CREDIT" && (
+          <div>
+            <label
+              htmlFor="user_credit_period"
+              className="mb-1 block text-sm font-medium text-gray-700"
+            >
+              Credit Period
+            </label>
+            <select
+              id="user_credit_period"
+              name="user_credit_period"
+              value={formData.user_credit_period || ""}
+              onChange={handleChange}
+              disabled={isReadOnly}
+              className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+              required
+            >
+              <option value="" disabled>
+                Select period
+              </option>
+              <option value="1">1 Month</option>
+              <option value="2">2 Months</option>
+              <option value="3">3 Months</option>
+              <option value="4">4 Months</option>
+            </select>
+          </div>
+        )}
       </div>
     </div>
   );

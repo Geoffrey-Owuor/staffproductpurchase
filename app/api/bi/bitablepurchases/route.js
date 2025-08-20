@@ -10,13 +10,13 @@ export async function GET(request) {
     connection = await pool.getConnection();
 
     let query = `SELECT id, itemName, itemStatus, productCode, 
-                tdPrice, discountedValue, date, staffName, payrollNo, BI_Approval 
-         FROM purchasesInfo`;
+                tdPrice, discountedValue, createdAt, staffName, payrollNo, HR_Approval, CC_Approval, BI_Approval 
+         FROM purchasesInfo WHERE createdAt >= NOW() - INTERVAL 12 DAY`;
 
     let params = [];
 
     if (searchQuery) {
-      query += ` WHERE staffName LIKE ?`;
+      query += ` AND staffName LIKE ?`;
       params.push(`%${searchQuery}%`);
     }
 

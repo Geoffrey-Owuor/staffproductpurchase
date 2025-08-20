@@ -1,83 +1,90 @@
-import { hashPassword, createSession } from "@/app/lib/auth";
-import pool from "@/lib/db";
+// //REGISTER API
+// import { hashPassword, createSession } from "@/app/lib/auth";
+// import pool from "@/lib/db";
 
-const getRoleFromEmail = (email) => {
-  // Ensure email ends with @hotpoint.co.ke
-  if (!email.endsWith("@hotpoint.co.ke")) {
-    return "staff"; // Default role for non-company emails
-  }
+// const getRoleFromEmail = (email) => {
+//   // Extract the prefix before the @ symbol
+//   const prefix = email.split("@")[0].toLowerCase();
 
-  // Extract the prefix before the @ symbol
-  const prefix = email.split("@")[0].toLowerCase();
+//   // Define role mappings based on prefixes
+//   const roleMappings = {
+//     hr: "hr",
+//     cc: "cc",
+//     bi: "bi",
+//     admin: "admin",
+//   };
 
-  // Define role mappings based on prefixes
-  const roleMappings = {
-    hr: "hr",
-    cc: "cc",
-    bi: "bi",
-    admin: "admin",
-  };
+//   // Check if prefix matches any role
+//   for (const [key, role] of Object.entries(roleMappings)) {
+//     if (prefix.startsWith(key)) {
+//       return role;
+//     }
+//   }
 
-  // Check if prefix matches any role
-  for (const [key, role] of Object.entries(roleMappings)) {
-    if (prefix.startsWith(key)) {
-      return role;
-    }
-  }
+//   return "staff"; // Default role if no prefix matches
+// };
 
-  return "staff"; // Default role if no prefix matches
-};
+// export async function POST(request) {
+//   try {
+//     const { name, email, password } = await request.json();
 
-export async function POST(request) {
-  try {
-    const { name, email, password } = await request.json();
+//     //Validate email domain first
+//     if (!email.endsWith("@hotpoint.co.ke")) {
+//       return Response.json(
+//         {
+//           success: false,
+//           message: "Only Hotpoint emails are allowed to register.",
+//         },
+//         { status: 400 },
+//       );
+//     }
 
-    const conn = await pool.getConnection();
+//     const conn = await pool.getConnection();
 
-    const [existingUsers] = await conn.execute(
-      "SELECT id FROM users WHERE email = ? ",
-      [email],
-    );
+//     const [existingUsers] = await conn.execute(
+//       "SELECT id FROM users WHERE email = ? ",
+//       [email],
+//     );
 
-    if (existingUsers.length > 0) {
-      conn.release();
-      return Response.json(
-        { success: false, message: "Email already registered" },
-        { status: 400 },
-      );
-    }
+//     if (existingUsers.length > 0) {
+//       conn.release();
+//       return Response.json(
+//         { success: false, message: "Email already registered" },
+//         { status: 400 },
+//       );
+//     }
 
-    const role = getRoleFromEmail(email);
+//     const role = getRoleFromEmail(email);
 
-    const hashedPassword = await hashPassword(password);
+//     const hashedPassword = await hashPassword(password);
 
-    const [userResult] = await conn.execute(
-      `INSERT INTO users (name, email, password, role) VALUES(?,?,?,?)`,
-      [name, email, hashedPassword, role],
-    );
+//     const [userResult] = await conn.execute(
+//       `INSERT INTO users (name, email, password, role) VALUES(?,?,?,?)`,
+//       [name, email, hashedPassword, role],
+//     );
 
-    await createSession(userResult.insertId, role);
+//     await createSession(userResult.insertId, role, name, email);
 
-    conn.release();
+//     conn.release();
 
-    return Response.json(
-      { success: true, userId: userResult.insertId, role: role },
-      { status: 201 },
-    );
-  } catch (error) {
-    console.error("Registration error:", error); // Optional but useful for debugging
+//     return Response.json(
+//       { success: true, userId: userResult.insertId, role: role },
+//       { status: 201 },
+//     );
+//   } catch (error) {
+//     console.error("Registration error:", error); // Optional but useful for debugging
 
-    if (error.code === "ER_DUP_ENTRY") {
-      return Response.json(
-        { success: false, message: "Email already registered" },
-        { status: 400 },
-      );
-    }
+//     if (error.code === "ER_DUP_ENTRY") {
+//       return Response.json(
+//         { success: false, message: "Email already registered" },
+//         { status: 400 },
+//       );
+//     }
 
-    // 🔴 Always return a fallback response
-    return Response.json(
-      { success: false, message: "Server error. Please try again." },
-      { status: 500 },
-    );
-  }
-}
+//     // 🔴 Always return a fallback response
+//     return Response.json(
+//       { success: false, message: "Server error. Please try again." },
+//       { status: 500 },
+//     );
+//   }
+// }

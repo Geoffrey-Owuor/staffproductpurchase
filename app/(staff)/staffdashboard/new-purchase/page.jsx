@@ -4,6 +4,9 @@ import StaffInformation from "@/components/StaffInformation";
 import ProductPricing from "@/components/ProductPricing";
 import TermsConditions from "@/components/TermsConditions";
 import Alert from "@/components/Alert";
+import { LoadingBarWave } from "@/components/Reusables/LoadingBar";
+import { ClipboardList } from "lucide-react";
+
 export default function NewPurchase() {
   const [formData, setFormData] = useState({
     // Staff Information
@@ -14,12 +17,13 @@ export default function NewPurchase() {
     // Product & Pricing
     itemName: "",
     itemStatus: "",
+    productPolicy: "",
     productCode: "",
     tdPrice: "",
     discountRate: "",
     discountedValue: "",
-    date: "",
-    signature: "",
+    employee_payment_terms: "",
+    user_credit_period: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -84,12 +88,13 @@ export default function NewPurchase() {
         department: "",
         itemName: "",
         itemStatus: "",
+        productPolicy: "",
         productCode: "",
         tdPrice: "",
         discountRate: "",
         discountedValue: "",
-        date: "",
-        signature: "",
+        employee_payment_terms: "",
+        user_credit_period: "",
       });
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -102,28 +107,36 @@ export default function NewPurchase() {
       setIsSubmitting(false);
     }
   };
+
   return (
     <>
       <div className="mx-auto p-2 font-sans leading-relaxed">
-        <div className="mb-5 text-center">
+        <div className="mb-5 flex items-center justify-center gap-2">
+          <ClipboardList className="h-6 w-6 text-red-900" />
           <h1 className="text-xl font-bold text-red-900">
             PURCHASE FORM (Staff Information & Product Details)
           </h1>
         </div>
 
-        <form id="staffInformation" onSubmit={handleSubmit}>
+        <form id="staffInformation" onSubmit={handleSubmit} autoComplete="off">
+          {isSubmitting && <LoadingBarWave isLoading={true} />}
+
           <StaffInformation formData={formData} handleChange={handleChange} />
-          <ProductPricing formData={formData} handleChange={handleChange} />
+          <ProductPricing
+            formData={formData}
+            handleChange={handleChange}
+            setFormData={setFormData}
+          />
           <button
             type="submit"
             disabled={isSubmitting}
-            className={`mx-auto my-8 block cursor-pointer rounded-full px-6 py-3 text-lg text-white transition-colors ${
+            className={`mx-auto my-8 block cursor-pointer rounded-xl px-6 py-3 text-sm text-white transition-colors ${
               isSubmitting
                 ? "cursor-not-allowed bg-gray-400"
-                : "bg-green-600 hover:bg-green-700"
+                : "bg-red-800 hover:bg-red-900"
             }`}
           >
-            {isSubmitting ? "Submitting..." : "Submit Form"}
+            Submit Purchase
           </button>
         </form>
 

@@ -1,19 +1,28 @@
 import pool from "@/lib/db";
+import { getCurrentUser } from "@/app/lib/auth";
 
 export async function GET(request, { params }) {
   let connection;
 
   try {
+    const user = await getCurrentUser();
+
+    if (!user) {
+      return Response.json("No User Found", { status: 200 });
+    }
     const { id } = await params;
     connection = await pool.getConnection();
 
     const [rows] = await connection.execute(
-      `SELECT * FROM purchasesInfo WHERE id= ?`,
-      [id],
+      `SELECT * FROM purchasesInfo WHERE id= ? AND user_id = ? `,
+      [id, user.id],
     );
 
     if (rows.length === 0) {
-      return Response.json({ error: "Purchase not found" }, { status: 404 });
+      return Response.json(
+        { error: "Purchase Not Found Under Current User" },
+        { status: 404 },
+      );
     }
     return Response.json(rows[0]);
   } catch (error) {
@@ -26,7 +35,13 @@ export async function GET(request, { params }) {
 
 export async function PUT(request, { params }) {
   let connection;
+
   try {
+    const user = await getCurrentUser();
+
+    if (!user) {
+      return Response.json("No User Found", { status: 200 });
+    }
     const { id } = await params;
     const {
       staffName,
@@ -34,12 +49,13 @@ export async function PUT(request, { params }) {
       department,
       itemName,
       itemStatus,
+      productPolicy,
       productCode,
       tdPrice,
       discountRate,
       discountedValue,
-      date,
-      signature,
+      employee_payment_terms,
+      user_credit_period,
     } = await request.json();
     connection = await pool.getConnection();
 
@@ -51,13 +67,14 @@ export async function PUT(request, { params }) {
        department = ?,
        itemName = ?, 
        itemStatus = ?,
+       productPolicy = ?,
        productCode = ?,
        tdPrice = ?,
        discountRate= ?,
        discountedValue = ?,
-       date = ?,
-       signature = ?
-       WHERE id = ? 
+       employee_payment_terms = ?,
+       user_credit_period = ?
+       WHERE id = ? AND user_id = ?
        `,
       [
         staffName || null,
@@ -65,13 +82,15 @@ export async function PUT(request, { params }) {
         department || null,
         itemName || null,
         itemStatus || null,
+        productPolicy || null,
         productCode || null,
         tdPrice || null,
         discountRate || null,
         discountedValue || null,
-        date || null,
-        signature || null,
-        id || null,
+        employee_payment_terms || null,
+        user_credit_period || null,
+        id,
+        user.id,
       ],
     );
 

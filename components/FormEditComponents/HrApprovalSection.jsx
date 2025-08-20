@@ -1,6 +1,13 @@
-export default function HRApprovalSection({ formData, handleChange }) {
+import { formatDateLong } from "@/public/assets";
+
+export default function HRApprovalSection({
+  formData,
+  handleChange,
+  userRole,
+}) {
+  const isReadOnly = userRole != "hr";
   return (
-    <div className="overflow-hidden rounded-2xl border border-red-200 shadow">
+    <div className="overflow-hidden rounded-xl border border-red-200">
       <div className="bg-red-900 px-6 py-3 text-white">
         <h3 className="text-lg font-medium">HR/Payroll Approval</h3>
       </div>
@@ -17,10 +24,13 @@ export default function HRApprovalSection({ formData, handleChange }) {
             name="is_employed"
             value={formData.is_employed}
             onChange={handleChange}
+            disabled={isReadOnly}
             required
-            className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500"
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
           >
-            <option value="">select status</option>
+            <option value="" disabled>
+              select status
+            </option>
             <option value="contract">Contract</option>
             <option value="permanent">Permanent</option>
           </select>
@@ -38,10 +48,13 @@ export default function HRApprovalSection({ formData, handleChange }) {
             name="on_probation"
             value={formData.on_probation}
             onChange={handleChange}
+            disabled={isReadOnly}
             required
-            className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500"
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
           >
-            <option value="">select status</option>
+            <option value="" disabled>
+              select status
+            </option>
             <option value="yes">Yes</option>
             <option value="no">No</option>
           </select>
@@ -59,10 +72,13 @@ export default function HRApprovalSection({ formData, handleChange }) {
             name="HR_Approval"
             value={formData.HR_Approval}
             onChange={handleChange}
+            disabled={isReadOnly}
             required
-            className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500"
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
           >
-            <option value="">select status</option>
+            <option value="pending" disabled>
+              Pending
+            </option>
             <option value="approved">Approved</option>
             <option value="declined">Declined</option>
           </select>
@@ -81,8 +97,10 @@ export default function HRApprovalSection({ formData, handleChange }) {
             name="hr_approver_name"
             value={formData.hr_approver_name}
             onChange={handleChange}
+            readOnly={isReadOnly}
             required
-            className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500"
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            placeholder="Enter HR approver name"
           />
         </div>
 
@@ -91,34 +109,16 @@ export default function HRApprovalSection({ formData, handleChange }) {
             htmlFor="hr_approval_date"
             className="mb-1 block text-sm font-medium text-gray-700"
           >
-            Approval Date
-          </label>
-          <input
-            type="date"
-            id="hr_approval_date"
-            name="hr_approval_date"
-            value={formData.hr_approval_date}
-            onChange={handleChange}
-            required
-            className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500"
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="hr_signature"
-            className="mb-1 block text-sm font-medium text-gray-700"
-          >
-            HR Signature
+            HR Approval Date
           </label>
           <input
             type="text"
-            id="hr_signature"
-            name="hr_signature"
-            value={formData.hr_signature}
+            id="hr_approval_date"
+            name="hr_approval_date"
+            value={formatDateLong(formData.hr_approval_date)}
             onChange={handleChange}
-            required
-            className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500"
+            readOnly
+            className="w-full rounded-xl border border-gray-300 bg-gray-100 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500"
           />
         </div>
 
@@ -135,7 +135,9 @@ export default function HRApprovalSection({ formData, handleChange }) {
             rows={3}
             value={formData.hr_comments}
             onChange={handleChange}
-            className="w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500"
+            readOnly={isReadOnly}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            placeholder="Enter HR comments"
           />
         </div>
       </div>

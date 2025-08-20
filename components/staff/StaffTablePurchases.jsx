@@ -2,7 +2,9 @@
 import { Eye, Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { LoadingBar } from "../Reusables/LoadingBar";
 import TableSkeleton from "../skeletons/TableSkeleton";
+import RecentPurchasesHeading from "../Reusables/Headings/RecentPurchasesHeading";
 
 export default function StaffTablePurchases() {
   const [purchases, setPurchases] = useState([]);
@@ -48,49 +50,47 @@ export default function StaffTablePurchases() {
   }, []);
 
   return (
-    <div className="p-2">
-      <h2 className="mb-6 text-center text-2xl font-bold text-red-900">
-        Recent Purchase Requests
-      </h2>
+    <div className="m-2 rounded-xl border border-gray-200 px-2 pt-2 pb-4 shadow-sm">
+      {(navigatingTo || goingTo) && <LoadingBar isLoading={true} />}
+
+      {/* Heading */}
+      <RecentPurchasesHeading />
 
       {loading ? (
         <TableSkeleton />
       ) : (
-        <div className="overflow-x-auto rounded-2xl border border-red-200 shadow">
-          <table className="min-w-full divide-y divide-red-200">
-            <thead className="bg-red-900 text-white">
+        <div className="overflow-x-auto">
+          <table className="min-w-full">
+            <thead className="bg-red-50 text-black">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider uppercase">
+                <th className="px-6 py-3 text-left text-sm font-semibold">
                   Item
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider uppercase">
+                <th className="px-6 py-3 text-left text-sm font-semibold">
                   Status
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider uppercase">
+                <th className="px-6 py-3 text-left text-sm font-semibold">
                   Code
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider uppercase">
-                  Price
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider uppercase">
+                <th className="px-6 py-3 text-left text-sm font-semibold">
                   HR Approval
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider uppercase">
+                <th className="px-6 py-3 text-left text-sm font-semibold">
                   CC Approval
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider uppercase">
+                <th className="px-6 py-3 text-left text-sm font-semibold">
                   BI Approval
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider uppercase">
+                <th className="px-6 py-3 text-left text-sm font-semibold">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-red-200 bg-white">
+            <tbody className="divide-y divide-red-100 bg-white">
               {purchases.length > 0 ? (
                 purchases.map((purchase) => (
-                  <tr key={purchase.id} className="hover:bg-red-50">
-                    <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
+                  <tr key={purchase.id} className="odd:bg-white even:bg-red-50">
+                    <td className="max-w-[200px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900">
                       {purchase.itemName}
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
@@ -98,9 +98,6 @@ export default function StaffTablePurchases() {
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
                       {purchase.productCode}
-                    </td>
-                    <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
-                      Ksh {Number(purchase.tdPrice).toFixed(2)}
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap">
                       <span
@@ -149,24 +146,18 @@ export default function StaffTablePurchases() {
                           title="View"
                           disabled={navigatingTo === purchase.id}
                         >
-                          {navigatingTo === purchase.id ? (
-                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-                          ) : (
-                            <Eye className="h-4 w-4" />
-                          )}
+                          <Eye className="h-4 w-4" />
                         </button>
-                        <button
-                          onClick={() => handleEditClick(purchase.id)}
-                          className="cursor-pointer rounded-full bg-red-700 p-1.5 text-white hover:bg-red-600"
-                          title="Edit"
-                          disabled={goingTo === purchase.id}
-                        >
-                          {goingTo === purchase.id ? (
-                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-                          ) : (
+                        {purchase.BI_Approval !== "approved" && (
+                          <button
+                            onClick={() => handleEditClick(purchase.id)}
+                            className="cursor-pointer rounded-full bg-red-100 p-1.5 text-black hover:bg-red-200"
+                            title="Edit"
+                            disabled={goingTo === purchase.id}
+                          >
                             <Pencil className="h-4 w-4" />
-                          )}
-                        </button>
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>

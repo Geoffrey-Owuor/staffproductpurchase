@@ -6,20 +6,22 @@ import DetailField from "@/components/Reusables/DetailField";
 import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import PurchaseDetailSkeleton from "@/components/skeletons/PurchaseDetailsSkeleton";
-
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+import { LoadingBar } from "@/components/Reusables/LoadingBar";
+import { formatDateLong } from "@/public/assets";
 
 export default function ViewPurchase({ params }) {
   const { id } = use(params);
   const [purchase, setPurchase] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     const fetchPurchaseDetails = async () => {
       try {
-        const res = await fetch(`${BASE_URL}/api/staffviewpurchases/${id}`);
+        const res = await fetch(`/api/staffviewpurchases/${id}`);
         if (!res.ok) throw new Error("Failed to fetch purchase");
         const data = await res.json();
         setPurchase(data);
@@ -32,6 +34,20 @@ export default function ViewPurchase({ params }) {
 
     fetchPurchaseDetails();
   }, [id]);
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+    setTimeout(() => {
+      router.push(`/staffdashboard/purchase-history/purchases/${id}/edit`);
+    }, 100); // Short delay to show the spinner
+  };
+
+  const handleCloseClick = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      router.push("/staffdashboard");
+    }, 100); // Short delay to show the spinner
+  };
 
   if (loading) {
     return <PurchaseDetailSkeleton />;
@@ -48,7 +64,7 @@ export default function ViewPurchase({ params }) {
           className="mt-4 inline-flex items-center gap-1 rounded-full bg-red-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700"
         >
           <ArrowLeft className="h-4 w-4" />
-          Back to Dashboard
+          Back to Home
         </button>
       </div>
     );
@@ -65,7 +81,7 @@ export default function ViewPurchase({ params }) {
           className="mt-4 inline-flex items-center gap-1 rounded-full bg-red-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700"
         >
           <ArrowLeft className="h-4 w-4" />
-          Back to Dashboard
+          Back to Home
         </button>
       </div>
     );
@@ -73,6 +89,7 @@ export default function ViewPurchase({ params }) {
 
   return (
     <div className="mx-auto p-2">
+      {(isEditing || isClosing) && <LoadingBar isLoading={true} />}
       {/* Header with back button */}
       <div className="mb-6 flex items-center justify-between">
         <button
@@ -84,15 +101,16 @@ export default function ViewPurchase({ params }) {
         </button>
 
         {/* Middle Edit Button */}
-        <button
-          onClick={() =>
-            router.push(`/staffdashboard/purchase-history/purchases/${id}/edit`)
-          }
-          className="flex cursor-pointer items-center gap-1 rounded-full bg-red-900 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-red-700"
-        >
-          <Edit className="h-4 w-4" />
-          Edit
-        </button>
+        {purchase.BI_Approval !== "approved" && (
+          <button
+            onClick={handleEditClick}
+            disabled={isEditing}
+            className="flex cursor-pointer items-center justify-center gap-1 rounded-full bg-red-900 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-red-700"
+          >
+            <Edit className="h-4 w-4" />
+            Edit
+          </button>
+        )}
 
         <div className="flex items-center">
           <button
@@ -106,7 +124,7 @@ export default function ViewPurchase({ params }) {
       </div>
 
       {/* Details Card */}
-      <div className="rounded-2xl border border-red-200 bg-white shadow-md">
+      <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
         {/* Staff Information Section */}
         <div className="border-b border-red-200 p-6">
           <h2 className="mb-4 text-lg font-bold text-red-900">
@@ -143,7 +161,7 @@ export default function ViewPurchase({ params }) {
             />
             <DetailField
               label="Discount Rate"
-              value={`${purchase.discountRate}%`}
+              value={`${Number(purchase.discountRate).toFixed(2)}%`}
             />
             <DetailField
               label="Discounted Value"
@@ -177,14 +195,14 @@ export default function ViewPurchase({ params }) {
             <h2 className="mb-4 text-lg font-bold text-red-900">Metadata</h2>
             <div className="space-y-4">
               <DetailField
-                label="Date"
-                value={
-                  purchase.date
-                    ? new Date(purchase.date).toLocaleDateString()
-                    : "N/A"
-                }
+                label="Date Created"
+                value={formatDateLong(purchase.createdAt)}
               />
-              <DetailField label="Signature" value={purchase.signature} />
+
+              <DetailField
+                label="Payment Terms/Options"
+                value={purchase.employee_payment_terms}
+              />
             </div>
           </div>
         </div>
@@ -192,18 +210,20 @@ export default function ViewPurchase({ params }) {
 
       {/* Bottom Buttons - Centered */}
       <div className="mt-6 flex justify-center gap-4">
+        {purchase.BI_Approval !== "approved" && (
+          <button
+            onClick={handleEditClick}
+            disabled={isEditing}
+            className="inline-flex cursor-pointer items-center justify-center gap-1 rounded-full bg-red-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700"
+          >
+            <Edit className="h-4 w-4" />
+            Edit
+          </button>
+        )}
         <button
-          onClick={() =>
-            router.push(`/staffdashboard/purchase-history/purchases/${id}/edit`)
-          }
-          className="inline-flex cursor-pointer items-center gap-1 rounded-full bg-red-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700"
-        >
-          <Edit className="h-4 w-4" />
-          Edit
-        </button>
-        <button
-          onClick={() => router.back()}
-          className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
+          onClick={handleCloseClick}
+          disabled={isClosing}
+          className="inline-flex cursor-pointer items-center justify-center gap-1 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
         >
           <X className="h-4 w-4" />
           Close

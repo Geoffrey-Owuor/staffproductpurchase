@@ -1,31 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Host: 127.0.0.1
--- Generation Time: May 07, 2025 at 03:54 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Database: `staffpurchases`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `purchasesinfo`
---
 
 CREATE TABLE `purchasesinfo` (
   `id` int(11) NOT NULL,
@@ -35,11 +7,11 @@ CREATE TABLE `purchasesinfo` (
   `department` varchar(255) NOT NULL,
   `itemName` varchar(255) NOT NULL,
   `itemStatus` varchar(255) NOT NULL,
-  `productCode` varchar(255) NOT NULL,
-  `tdPrice` decimal(10,2) NOT NULL,
-  `discountRate` decimal(5,2) NOT NULL,
-  `discountedValue` decimal(10,2) NOT NULL,
-  `date` date NOT NULL,
+  `productCode` varchar(255) DEFAULT NULL,
+  `tdPrice` decimal(10,2) DEFAULT NULL,
+  `discountRate` decimal(5,2) DEFAULT NULL,
+  `discountedValue` decimal(10,2) DEFAULT NULL,
+  `employee_purchase_terms` varchar(55) DEFAULT NULL,
   `signature` varchar(255) NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
   `HR_Approval` varchar(50) DEFAULT NULL,
@@ -69,13 +41,13 @@ CREATE TABLE `purchasesinfo` (
   `amount` decimal(10,2) DEFAULT NULL,
   `bi_signature` varchar(100) DEFAULT NULL,
   `bi_approver_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+)
 
 --
 -- Dumping data for table `purchasesinfo`
 --
 
-INSERT INTO `purchasesinfo` (`id`, `staffName`, `user_id`, `payrollNo`, `department`, `itemName`, `itemStatus`, `productCode`, `tdPrice`, `discountRate`, `discountedValue`, `date`, `signature`, `createdAt`, `HR_Approval`, `CC_Approval`, `BI_Approval`, `is_employed`, `on_probation`, `hr_comments`, `hr_approver_name`, `hr_approver_id`, `hr_approval_date`, `hr_signature`, `credit_period`, `one_third_rule`, `purchase_history_comments`, `pending_invoices`, `cc_signature`, `cc_approval_date`, `cc_approver_id`, `invoice_date`, `invoice_number`, `invoice_amount`, `invoice_recorded_date`, `payment_method`, `payment_reference`, `payment_date`, `amount`, `bi_signature`, `bi_approver_id`) VALUES
+INSERT INTO `purchasesinfo` (`id`, `staffName`, `user_id`, `payrollNo`, `department`, `itemName`, `itemStatus`, `productCode`, `tdPrice`, `discountRate`, `discountedValue`, `employee_purchase_terms`, `signature`, `createdAt`, `HR_Approval`, `CC_Approval`, `BI_Approval`, `is_employed`, `on_probation`, `hr_comments`, `hr_approver_name`, `hr_approver_id`, `hr_approval_date`, `hr_signature`, `credit_period`, `one_third_rule`, `purchase_history_comments`, `pending_invoices`, `cc_signature`, `cc_approval_date`, `cc_approver_id`, `invoice_date`, `invoice_number`, `invoice_amount`, `invoice_recorded_date`, `payment_method`, `payment_reference`, `payment_date`, `amount`, `bi_signature`, `bi_approver_id`) VALUES
 (6, 'Humphrey Odhiambo', 3, '112268', 'HR', 'Von Fridge', 'New', 'p675234', 15000.00, 0.05, 14568.00, '2025-05-19', 'HUMPHREY ODHIAMBO', '2025-05-03 09:08:29', 'approved', 'declined', 'pending', 'contract', 'yes', 'No current comment', 'Cerah Imani', 2, '2025-06-05', 'CERAH IMANI', 'Bad purchase history, no credit period given. ', '1/3 rule Observed', 'Bad Purchase History', '1 pending invoice', 'CREDIT CONTROL', '2025-05-29', 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (7, 'Lapspot Ify', 4, '674581', 'ENGINEERING & HVAC', 'Ramtoms Cooker', 'RHD2', 'r567123', 446667.90, 4.19, 436542.80, '2025-05-18', 'LAPSPOT IFY', '2025-05-05 06:23:01', 'approved', 'approved', 'approved', 'permanent', 'no', 'Staff Purchase Form Approved for Lapspot Ify', 'Cerah Imani', 2, '2025-05-18', 'CERAH IMANI', 'Credit Period is good', 'Third Rule Assessment has been met', 'Employee has a good purchase history', 'No pending invoices', 'CREDIT CONTROL', '2025-05-30', 5, '2025-05-29', '4551233446', 45678.00, '2025-05-31', 'cash', 'Cash Payment', '2025-06-07', 47000.00, 'BILLING INVOICE', 6);
 
@@ -92,7 +64,7 @@ CREATE TABLE `sessions` (
   `role` varchar(55) NOT NULL,
   `expires_at` datetime NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+)
 
 -- --------------------------------------------------------
 
@@ -109,7 +81,7 @@ CREATE TABLE `users` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `reset_token` varchar(255) DEFAULT NULL,
   `reset_token_expiry` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) 
 
 --
 -- Dumping data for table `users`
@@ -190,8 +162,10 @@ ALTER TABLE `purchasesinfo`
 --
 ALTER TABLE `sessions`
   ADD CONSTRAINT `sessions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+
