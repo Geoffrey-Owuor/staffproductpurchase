@@ -6,6 +6,7 @@ import TermsConditions from "@/components/TermsConditions";
 import Alert from "@/components/Alert";
 import { LoadingBarWave } from "@/components/Reusables/LoadingBar";
 import { ClipboardList } from "lucide-react";
+import ConfirmationDialog from "@/components/Reusables/ConfirmationDialog";
 
 export default function NewPurchase() {
   const [formData, setFormData] = useState({
@@ -30,6 +31,7 @@ export default function NewPurchase() {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("success");
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -58,7 +60,7 @@ export default function NewPurchase() {
   }, [formData.tdPrice, formData.discountRate]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e?.preventDefault();
     setIsSubmitting(true);
 
     try {
@@ -73,9 +75,6 @@ export default function NewPurchase() {
       if (!response.ok) {
         throw new Error("Failed to submit form");
       }
-
-      const data = await response.json();
-      console.log("Form submitted successfully:", data);
 
       setAlertMessage("Details Submitted Successfully");
       setAlertType("success");
@@ -110,7 +109,7 @@ export default function NewPurchase() {
 
   return (
     <>
-      <div className="mx-auto p-2 font-sans leading-relaxed">
+      <div className="mx-auto p-2 leading-relaxed">
         <div className="mb-5 flex items-center justify-center gap-2">
           <ClipboardList className="h-6 w-6 text-red-900" />
           <h1 className="text-xl font-bold text-red-900">
@@ -118,7 +117,14 @@ export default function NewPurchase() {
           </h1>
         </div>
 
-        <form id="staffInformation" onSubmit={handleSubmit} autoComplete="off">
+        <form
+          id="staffInformation"
+          onSubmit={(e) => {
+            e.preventDefault();
+            setShowConfirmDialog(true);
+          }}
+          autoComplete="off"
+        >
           {isSubmitting && <LoadingBarWave isLoading={true} />}
 
           <StaffInformation formData={formData} handleChange={handleChange} />
@@ -149,6 +155,16 @@ export default function NewPurchase() {
           />
         )}
       </div>
+      {showConfirmDialog && (
+        <ConfirmationDialog
+          message="Are you sure you want to submit this purchase request?"
+          onConfirm={() => {
+            setShowConfirmDialog(false);
+            handleSubmit();
+          }}
+          onCancel={() => setShowConfirmDialog(false)}
+        />
+      )}
       <TermsConditions />
     </>
   );

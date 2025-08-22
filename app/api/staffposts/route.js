@@ -132,7 +132,7 @@ export async function POST(request) {
         parseNumber(body.discountRate),
         parseNumber(body.discountedValue),
         body.employee_payment_terms,
-        body.user_credit_period,
+        parseNumber(body.user_credit_period),
         user.name,
       ],
     );
