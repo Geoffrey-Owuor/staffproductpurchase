@@ -115,9 +115,9 @@ export async function POST(request) {
     // Execute the query using PostgreSQL syntax
     const { rows } = await client.query(
       `INSERT INTO purchasesinfo 
-       (staffname, user_id, user_email, payrollno, department, itemname, itemstatus, productcode, 
-        tdprice, discountrate, discountedvalue, employee_payment_terms, signature, hr_approval, cc_approval, bi_approval) 
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, 'pending', 'pending', 'pending')
+       (staffname, user_id, user_email, payrollno, department, itemname, itemstatus, productpolicy, productcode, 
+        tdprice, discountrate, discountedvalue, employee_payment_terms, user_credit_period, signature, hr_approval, cc_approval, bi_approval) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, 'pending', 'pending', 'pending')
        RETURNING id`, // PostgreSQL returns the inserted ID using RETURNING
       [
         body.staffname,
@@ -127,11 +127,13 @@ export async function POST(request) {
         body.department,
         body.itemname,
         body.itemstatus,
+        body.productpolicy,
         body.productcode,
         parseNumber(body.tdprice),
         parseNumber(body.discountrate),
         parseNumber(body.discountedvalue),
         body.employee_payment_terms,
+        parseNumber(body.user_credit_period),
         user.name,
       ],
     );

@@ -6,6 +6,7 @@ import TermsConditions from "@/components/TermsConditions";
 import Alert from "@/components/Alert";
 import { LoadingBarWave } from "@/components/Reusables/LoadingBar";
 import { ClipboardList } from "lucide-react";
+import ConfirmationDialog from "@/components/Reusables/ConfirmationDialog";
 
 export default function NewPurchase() {
   const [formData, setFormData] = useState({
@@ -17,17 +18,20 @@ export default function NewPurchase() {
     // Product & Pricing
     itemname: "",
     itemstatus: "",
+    productpolicy: "",
     productcode: "",
     tdprice: "",
     discountrate: "",
     discountedvalue: "",
     employee_payment_terms: "",
+    user_credit_period: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("success");
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,7 +60,7 @@ export default function NewPurchase() {
   }, [formData.tdprice, formData.discountrate]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e?.preventDefault();
     setIsSubmitting(true);
 
     try {
@@ -86,11 +90,13 @@ export default function NewPurchase() {
         department: "",
         itemname: "",
         itemstatus: "",
+        productpolicy: "",
         productcode: "",
         tdprice: "",
         discountrate: "",
         discountedvalue: "",
         employee_payment_terms: "",
+        user_credit_period: "",
       });
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -105,7 +111,7 @@ export default function NewPurchase() {
   };
   return (
     <>
-      <div className="mx-auto p-2 font-sans leading-relaxed">
+      <div className="mx-auto p-2 leading-relaxed">
         <div className="mb-5 flex items-center justify-center gap-2">
           <ClipboardList className="h-6 w-6 text-red-900" />
           <h1 className="text-xl font-bold text-red-900">
@@ -113,11 +119,22 @@ export default function NewPurchase() {
           </h1>
         </div>
 
-        <form id="staffInformation" onSubmit={handleSubmit} autoComplete="off">
+        <form
+          id="staffInformation"
+          onSubmit={(e) => {
+            e.preventDefault();
+            setShowConfirmDialog(true);
+          }}
+          autoComplete="off"
+        >
           {isSubmitting && <LoadingBarWave isLoading={true} />}
 
           <StaffInformation formData={formData} handleChange={handleChange} />
-          <ProductPricing formData={formData} handleChange={handleChange} />
+          <ProductPricing
+            formData={formData}
+            handleChange={handleChange}
+            setFormData={setFormData}
+          />
           <button
             type="submit"
             disabled={isSubmitting}
@@ -140,6 +157,17 @@ export default function NewPurchase() {
           />
         )}
       </div>
+
+      {showConfirmDialog && (
+        <ConfirmationDialog
+          message="Are you sure you want to submit this purchase request?"
+          onConfirm={() => {
+            setShowConfirmDialog(false);
+            handleSubmit();
+          }}
+          onCancel={() => setShowConfirmDialog(false)}
+        />
+      )}
       <TermsConditions />
     </>
   );

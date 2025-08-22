@@ -26,7 +26,7 @@ export default function HRApprovalSection({
             onChange={handleChange}
             required
             disabled={isReadOnly}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${formData.is_employed === "" ? "text-gray-400" : "text-black"} ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
           >
             <option value="" disabled>
               select status
@@ -50,7 +50,7 @@ export default function HRApprovalSection({
             onChange={handleChange}
             required
             disabled={isReadOnly}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500${formData.on_probation === "" ? "text-gray-400" : "text-black"} ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
           >
             <option value="" disabled>
               select status
@@ -74,7 +74,7 @@ export default function HRApprovalSection({
             onChange={handleChange}
             disabled={isReadOnly}
             required
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${formData.hr_approval === "pending" ? "text-gray-400" : "text-black"} ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
           >
             <option value="pending" disabled>
               Pending

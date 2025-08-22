@@ -1,12 +1,38 @@
 import { formatDateLong } from "@/public/assets";
+import { useEffect } from "react";
+
+const discountpolicy = {
+  "Von Hotpoint on Account": { New: 10, RHD2: 15 },
+  "Von Hotpoint on Cash Payment": { New: 12.5, RHD2: 17.5 },
+  "Non Von Hotpoint on Cash Payment": { New: 10, RHD2: 15 },
+  "Non Von Hotpoint on Account": { New: 7.5, RHD2: 12.5 },
+  "Samsung Brand on Cash payment": { New: 5, RHD2: 7.5 },
+  "Samsung Brand on Account": { New: 2.5, RHD2: 5 },
+};
 
 export default function ProductDetailsSection({
   formData,
   handleChange,
   userRole,
+  setFormData,
 }) {
+  // Auto-calculate discountRate when itemStatus or productpolicy changes
+  useEffect(() => {
+    const { itemstatus, productpolicy } = formData;
+    if (itemstatus && productpolicy && discountpolicy[productpolicy]) {
+      const rate = discountpolicy[productpolicy][itemstatus];
+      if (rate !== undefined) {
+        setFormData((prev) => ({
+          ...prev,
+          discountrate: rate,
+        }));
+      }
+    }
+  }, [formData.itemstatus, formData.productpolicy]);
+
   const isReadOnly = userRole != "staff";
   const isRequired = userRole === "cc";
+  const ccReadOnly = userRole != "cc";
   const editableRoles = ["cc", "staff"];
   const isReadOnlyGeneral = !editableRoles.includes(userRole);
   return (
@@ -47,8 +73,8 @@ export default function ProductDetailsSection({
             name="itemstatus"
             value={formData.itemstatus}
             onChange={handleChange}
-            disabled={isReadOnly}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${formData.itemstatus === "" ? "text-gray-400" : "text-black"} ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            disabled={isReadOnlyGeneral}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             required
           >
             <option value="" disabled>
@@ -56,6 +82,33 @@ export default function ProductDetailsSection({
             </option>
             <option value="New">New</option>
             <option value="RHD2">RHD2</option>
+          </select>
+        </div>
+
+        <div>
+          <label
+            htmlFor="productpolicy"
+            className="mb-1 block text-sm font-medium text-gray-700"
+          >
+            Item Policy
+          </label>
+          <select
+            id="productpolicy"
+            name="productpolicy"
+            value={formData.productpolicy}
+            onChange={handleChange}
+            disabled={isReadOnlyGeneral}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${formData.itemStatus === "" ? "text-gray-400" : "text-black"} ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            required
+          >
+            <option value="" disabled>
+              Select Policy
+            </option>
+            {Object.keys(discountpolicy).map((policy) => (
+              <option key={policy} value={policy}>
+                {policy}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -117,8 +170,8 @@ export default function ProductDetailsSection({
             step="0.01"
             min="0"
             max="100"
-            readOnly={isReadOnlyGeneral}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            readOnly={ccReadOnly}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${ccReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             placeholder="Enter discount rate"
             required={isRequired}
           />
@@ -174,7 +227,7 @@ export default function ProductDetailsSection({
             value={formData.employee_payment_terms}
             onChange={handleChange}
             disabled={isReadOnly}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${formData.employee_payment_terms === "" ? "text-gray-400" : "text-black"} ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             required
           >
             <option value="" disabled>
@@ -186,6 +239,35 @@ export default function ProductDetailsSection({
             <option value="MPESA">Mpesa</option>
           </select>
         </div>
+
+        {/* Conditional field to appear when user selects the credit option in payment terms/options */}
+        {formData.employee_payment_terms === "CREDIT" && (
+          <div>
+            <label
+              htmlFor="user_credit_period"
+              className="mb-1 block text-sm font-medium text-gray-700"
+            >
+              Credit Period
+            </label>
+            <select
+              id="user_credit_period"
+              name="user_credit_period"
+              value={formData.user_credit_period || ""}
+              onChange={handleChange}
+              disabled={isReadOnly}
+              className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+              required
+            >
+              <option value="" disabled>
+                Select period
+              </option>
+              <option value="1">1 Month</option>
+              <option value="2">2 Months</option>
+              <option value="3">3 Months</option>
+              <option value="4">4 Months</option>
+            </select>
+          </div>
+        )}
       </div>
     </div>
   );

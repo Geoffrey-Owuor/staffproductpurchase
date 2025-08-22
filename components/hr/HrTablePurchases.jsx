@@ -245,7 +245,7 @@ export default function HrTablePurchases() {
                     <td className="max-w-[200px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900">
                       {purchase.itemname}
                     </td>
-                    <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">
+                    <td className="max-w-[150px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900">
                       {purchase.staffname}
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900">

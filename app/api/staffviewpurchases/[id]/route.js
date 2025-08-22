@@ -46,11 +46,13 @@ export async function PUT(request, { params }) {
       department,
       itemname,
       itemstatus,
+      productpolicy,
       productcode,
       tdprice,
       discountrate,
       discountedvalue,
       employee_payment_terms,
+      user_credit_period,
     } = await request.json();
 
     client = await pool.connect();
@@ -63,12 +65,14 @@ export async function PUT(request, { params }) {
         department = $3,
         itemname = $4,
         itemstatus = $5,
-        productcode = $6,
-        tdprice = $7,
-        discountrate = $8,
-        discountedvalue = $9,
-        employee_payment_terms = $10
-      WHERE id = $11 AND user_id = $12
+        productpolicy = $6,
+        productcode = $7,
+        tdprice = $8,
+        discountrate = $9,
+        discountedvalue = $10,
+        employee_payment_terms = $11,
+        user_credit_period = $12
+      WHERE id = $13 AND user_id = $14
       `,
       [
         staffname || null,
@@ -76,11 +80,13 @@ export async function PUT(request, { params }) {
         department || null,
         itemname || null,
         itemstatus || null,
+        productpolicy || null,
         productcode || null,
         tdprice || null,
         discountrate || null,
         discountedvalue || null,
         employee_payment_terms || null,
+        user_credit_period || null,
         id,
         user.id,
       ],

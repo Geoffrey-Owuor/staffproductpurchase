@@ -26,12 +26,14 @@ export default function EditPurchaseForm({ params }) {
     department: "",
     itemname: "",
     itemstatus: "",
+    productpolicy: "",
     productcode: "",
     tdprice: "",
     discountrate: "",
     discountedvalue: "",
     createdat: "",
     employee_payment_terms: "",
+    user_credit_period: "",
     is_employed: "",
     on_probation: "",
     hr_comments: "",
@@ -87,12 +89,14 @@ export default function EditPurchaseForm({ params }) {
           department: data.department || "",
           itemname: data.itemname || "",
           itemstatus: data.itemstatus || "",
+          productpolicy: data.productpolicy || "",
           productcode: data.productcode || "",
           tdprice: data.tdprice || "",
           discountrate: data.discountrate || "",
           discountedvalue: data.discountedvalue || "",
           createdat: data.createdat || "",
           employee_payment_terms: data.employee_payment_terms || "",
+          user_credit_period: data.user_credit_period || "",
           is_employed: data.is_employed || "",
           on_probation: data.on_probation || "",
           hr_comments: data.hr_comments || "",
@@ -227,6 +231,7 @@ export default function EditPurchaseForm({ params }) {
           formData={formData}
           handleChange={handleChange}
           userRole={userRole}
+          setFormData={setFormData}
         />
         <HRApprovalSection
           formData={formData}

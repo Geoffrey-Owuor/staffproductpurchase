@@ -57,9 +57,7 @@ export default function StaffInfoSection({ formData, handleChange, userRole }) {
             value={formData.department}
             onChange={handleChange}
             disabled={isReadOnly}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${
-              formData.department === "" ? "text-gray-400" : "text-black"
-            } ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             required
           >
             <option value="" disabled>
@@ -75,7 +73,7 @@ export default function StaffInfoSection({ formData, handleChange, userRole }) {
             <option value="Service Center">Service Center</option>
             <option value="Modern Trade">Modern Trade</option>
             <option value="Commercial">Commercial</option>
-            <option value="Imports">Imports</option>
+            <option value="Imports">Imports & Exports</option>
             <option value="Warehouse">Warehouse</option>
           </select>
         </div>

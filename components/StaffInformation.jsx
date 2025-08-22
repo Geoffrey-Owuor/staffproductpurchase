@@ -54,9 +54,7 @@ const StaffInformation = ({ formData, handleChange }) => {
               name="department"
               value={formData.department}
               onChange={handleChange}
-              className={`w-full rounded-xl border border-red-200 p-3 focus:border-red-500 focus:ring-2 focus:ring-red-200 ${
-                formData.department === "" ? "text-gray-400" : "text-black"
-              }`}
+              className={`w-full rounded-xl border border-red-200 p-3 focus:border-red-500 focus:ring-2 focus:ring-red-200`}
               required
             >
               <option value="" disabled>
@@ -72,7 +70,7 @@ const StaffInformation = ({ formData, handleChange }) => {
               <option value="Service Center">Service Center</option>
               <option value="Modern Trade">Modern Trade</option>
               <option value="Commercial">Commercial</option>
-              <option value="Imports">Imports</option>
+              <option value="Imports">Imports & Exports</option>
               <option value="Warehouse">Warehouse</option>
             </select>
           </div>
