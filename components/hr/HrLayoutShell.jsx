@@ -17,13 +17,13 @@ export default function HrLayoutShell({ user, children }) {
     <>
       {expired && <ExpiredSessionOverlay />}
       <div className="flex min-h-screen flex-col">
-        <HrHeader isSidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+        <HrHeader toggleSidebar={toggleSidebar} />
         <div className="flex flex-1">
           <HrSidebar isOpen={sidebarOpen} />
           <main
-            className={`flex-1 overflow-x-hidden ${sidebarOpen ? "ml-56" : "ml-0"}`}
+            className={`flex-1 overflow-x-hidden transition-all duration-200 ${sidebarOpen ? "ml-56" : "ml-0"}`}
           >
-            <div className="mt-16">{children}</div>
+            <div className="mt-20">{children}</div>
           </main>
         </div>
         <DashboardFooter isSidebarOpen={sidebarOpen} />

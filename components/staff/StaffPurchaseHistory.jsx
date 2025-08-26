@@ -153,7 +153,7 @@ export default function StaffPurchaseHistory() {
   };
 
   return (
-    <div className="m-2 rounded-xl border border-gray-200 px-2 pt-2 pb-4 shadow-sm">
+    <div className="m-2 rounded-xl border border-gray-200 px-2 pt-2 pb-4">
       {navigatingTo && <LoadingBar isLoading={true} />}
 
       {/* Heading */}

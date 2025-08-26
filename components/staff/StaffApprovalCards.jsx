@@ -34,10 +34,10 @@ export default function StaffApprovalCards() {
   }, []);
 
   return (
-    <div className="mx-2 mt-4 mb-8 rounded-xl border border-gray-200 px-2 pt-2 pb-6 shadow-sm">
+    <div className="mx-2 mt-4 mb-8 rounded-xl border border-gray-200 px-2 pt-2 pb-6">
       {/* Heading */}
       <div className="mt-3 mb-2 px-1 pb-3">
-        <h2 className="text-xl font-semibold text-gray-800">Approval status</h2>
+        <h2 className="text-xl font-semibold text-red-900">Approval status</h2>
         <p className="text-sm text-gray-500">
           Summary of all approval requests sent to billing & invoicing
         </p>

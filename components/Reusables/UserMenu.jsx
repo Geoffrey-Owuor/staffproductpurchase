@@ -45,7 +45,7 @@ export default function UserMenu() {
       {/* Toggle button */}
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className="flex items-center gap-2 rounded-full bg-red-100 px-3 py-2 text-black transition hover:bg-red-200"
+        className="flex items-center gap-2 rounded-full border border-gray-200 px-3 py-2 text-black transition hover:bg-gray-100"
       >
         <User className="h-5 w-5" />
         <ChevronDown
