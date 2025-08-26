@@ -14,7 +14,7 @@ export async function POST(request) {
 
     if (users.length === 0) {
       return Response.json(
-        { mesage: " Invalid or expired token" },
+        { message: " Invalid or expired token" },
         { status: 400 },
       );
     }

@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -28,34 +29,54 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50">
-      <div className="w-full max-w-md rounded-2xl border border-gray-50 bg-white p-8 shadow">
-        <div className="mb-6 text-center">
-          <h1 className="text-2xl font-bold">Forgot Password</h1>
+    <div className="flex min-h-screen flex-col items-center justify-center bg-white">
+      {/* Logo */}
+      <Image
+        src="/hotpoint_logo.png"
+        alt="Company Logo"
+        width={150}
+        height={150}
+        className="mx-auto h-20 w-auto"
+        priority
+      />
+      <div className="w-full max-w-[400px] px-8">
+        <div className="mb-7 text-center">
+          <h1 className="text-2xl font-semibold text-red-800">
+            Forgot Password
+          </h1>
           <p className="mt-2 text-sm text-gray-600">
             Enter your email to receive a password reset link
           </p>
         </div>
 
+        {message && (
+          <p className="mb-6 text-center text-sm text-green-600">{message}</p>
+        )}
+
         <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
-          <div className="space-y-2">
-            <label htmlFor="email" className="block font-medium">
-              Email Address
-            </label>
+          <div className="relative">
             <input
-              id="email"
               type="email"
+              name="email"
+              id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-xl border p-3 focus:border-red-300 focus:ring-2 focus:ring-red-200 focus:ring-offset-1"
               required
+              placeholder=" " // <-- important to trigger :placeholder-shown behavior
+              className="peer w-full rounded-full border border-gray-300 px-4 py-3 placeholder-transparent focus:outline-none"
             />
+            <label
+              htmlFor="email"
+              className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600"
+            >
+              Email Address
+            </label>
           </div>
 
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full rounded-xl bg-red-600 p-3 font-medium text-white transition-colors hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:bg-red-400"
+            className="w-full rounded-full bg-red-600 p-3 font-medium text-white transition-colors hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:bg-red-400"
           >
             {isLoading ? (
               <span className="flex items-center justify-center gap-2">
@@ -81,10 +102,6 @@ export default function ForgotPassword() {
             )}
           </button>
         </form>
-
-        {message && (
-          <p className="mt-4 text-center text-sm text-gray-600">{message}</p>
-        )}
 
         <div className="mt-6 text-center">
           <Link href="/login" className="text-sm text-red-600 hover:underline">

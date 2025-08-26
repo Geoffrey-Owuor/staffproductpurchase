@@ -107,7 +107,7 @@ export default function ViewPurchase({ params }) {
       <div className="mb-6 flex items-center justify-between">
         <button
           onClick={() => router.push("/bidashboard")}
-          className="flex cursor-pointer items-center text-red-900 hover:text-red-700"
+          className="ml-4 flex cursor-pointer items-center text-red-900 hover:text-red-700"
         >
           <ArrowLeft className="mr-2 h-5 w-5" />
           Back to Home
@@ -125,7 +125,7 @@ export default function ViewPurchase({ params }) {
           </button>
         )}
 
-        <div className="flex items-center gap-4">
+        <div className="mr-4 flex items-center gap-4">
           <button
             onClick={handleDownload}
             className={`relative flex items-center justify-center gap-1 rounded-full bg-gray-100 p-2 text-sm text-black shadow-sm hover:bg-gray-200`}
@@ -150,10 +150,10 @@ export default function ViewPurchase({ params }) {
       </div>
 
       {/* Details Card */}
-      <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
+      <div className="rounded-xl border border-gray-200 bg-white">
         {/* Staff Information Section */}
         <div className="border-b border-red-200 p-6">
-          <h2 className="mb-4 text-lg font-bold text-red-900">
+          <h2 className="mb-4 text-lg font-semibold text-red-900">
             Staff Information
           </h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -164,7 +164,7 @@ export default function ViewPurchase({ params }) {
         </div>
         {/* Product Information Section */}
         <div className="border-b border-red-200 p-6">
-          <h2 className="mb-4 text-lg font-bold text-red-900">
+          <h2 className="mb-4 text-lg font-semibold text-red-900">
             Product Information
           </h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -175,7 +175,7 @@ export default function ViewPurchase({ params }) {
         </div>
         {/* Pricing Section */}
         <div className="border-b border-red-200 p-6">
-          <h2 className="mb-4 text-lg font-bold text-red-900">
+          <h2 className="mb-4 text-lg font-semibold text-red-900">
             Pricing Details
           </h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -196,7 +196,7 @@ export default function ViewPurchase({ params }) {
         {/* Approval & Metadata Section */}
         <div className="grid grid-cols-1 gap-6 p-6 md:grid-cols-2">
           <div>
-            <h2 className="mb-4 text-lg font-bold text-red-900">
+            <h2 className="mb-4 text-lg font-semibold text-red-900">
               Approval Statuses
             </h2>
             <div className="space-y-4">
@@ -215,7 +215,9 @@ export default function ViewPurchase({ params }) {
             </div>
           </div>
           <div>
-            <h2 className="mb-4 text-lg font-bold text-red-900">Metadata</h2>
+            <h2 className="mb-4 text-lg font-semibold text-red-900">
+              Metadata
+            </h2>
             <div className="space-y-4">
               <DetailField
                 label="Date Created"
@@ -232,7 +234,7 @@ export default function ViewPurchase({ params }) {
 
         {/* Payroll/HR Approval Section */}
         <div className="border-t border-red-200 p-6">
-          <h2 className="mb-4 text-lg font-bold text-red-900">
+          <h2 className="mb-4 text-lg font-semibold text-red-900">
             Payroll/HR Approval
           </h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -268,7 +270,7 @@ export default function ViewPurchase({ params }) {
 
         {/* Credit Control Verification Section */}
         <div className="border-t border-red-200 p-6">
-          <h2 className="mb-4 text-lg font-bold text-red-900">
+          <h2 className="mb-4 text-lg font-semibold text-red-900">
             Credit Control Verification and Approval
           </h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -327,7 +329,7 @@ export default function ViewPurchase({ params }) {
 
         {/* Invoicing Details Section */}
         <div className="border-t border-red-200 p-6">
-          <h2 className="mb-4 text-lg font-bold text-red-900">
+          <h2 className="mb-4 text-lg font-semibold text-red-900">
             Invoicing Details
           </h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -361,7 +363,7 @@ export default function ViewPurchase({ params }) {
 
         {/* Payment Received Section */}
         <div className="border-t border-red-200 p-6">
-          <h2 className="mb-4 text-lg font-bold text-red-900">
+          <h2 className="mb-4 text-lg font-semibold text-red-900">
             Payment Received
           </h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">

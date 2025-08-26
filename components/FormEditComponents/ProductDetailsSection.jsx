@@ -35,9 +35,11 @@ export default function ProductDetailsSection({
   const editableRoles = ["cc", "staff"];
   const isReadOnlyGeneral = !editableRoles.includes(userRole);
   return (
-    <div className="overflow-hidden rounded-xl border border-red-200">
-      <div className="bg-red-900 px-6 py-3 text-white">
-        <h3 className="text-lg font-medium">Product and Pricing Details</h3>
+    <div className="overflow-hidden rounded-xl border border-gray-200">
+      <div className="px-6 py-3">
+        <h3 className="text-lg font-medium text-red-900">
+          Product and Pricing Details
+        </h3>
       </div>
       <div className="grid grid-cols-1 gap-6 bg-white p-6 md:grid-cols-2">
         <div className="md:col-span-2">
@@ -54,7 +56,7 @@ export default function ProductDetailsSection({
             value={formData.itemName}
             onChange={handleChange}
             readOnly={isReadOnlyGeneral}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             placeholder="Enter item name"
             required
           />
@@ -73,7 +75,7 @@ export default function ProductDetailsSection({
             value={formData.productPolicy}
             onChange={handleChange}
             disabled={isReadOnlyGeneral}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${formData.itemStatus === "" ? "text-gray-400" : "text-black"} ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${formData.itemStatus === "" ? "text-gray-400" : "text-black"} ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             required
           >
             <option value="" disabled>
@@ -100,7 +102,7 @@ export default function ProductDetailsSection({
             value={formData.itemStatus}
             onChange={handleChange}
             disabled={isReadOnlyGeneral}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             required
           >
             <option value="" disabled>
@@ -125,7 +127,7 @@ export default function ProductDetailsSection({
             value={formData.productCode}
             onChange={handleChange}
             readOnly={isReadOnlyGeneral}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             placeholder="Enter product code"
             required={isRequired}
           />
@@ -147,7 +149,7 @@ export default function ProductDetailsSection({
             readOnly={isReadOnlyGeneral}
             step="0.01"
             min="0"
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             placeholder="Enter TD price"
             required={isRequired}
           />
@@ -170,7 +172,7 @@ export default function ProductDetailsSection({
             min="0"
             max="100"
             readOnly={ccReadOnly}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${ccReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${ccReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             placeholder="Enter discount rate"
             required={isRequired}
           />
@@ -191,7 +193,7 @@ export default function ProductDetailsSection({
             step="0.01"
             min="0"
             readOnly
-            className="w-full cursor-not-allowed rounded-xl border border-gray-300 bg-gray-100 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
+            className="w-full cursor-not-allowed rounded-xl border border-gray-300 bg-gray-100 px-3 py-2 focus:border-red-500 focus:outline-none"
           />
         </div>
 
@@ -209,7 +211,7 @@ export default function ProductDetailsSection({
             value={formatDateLong(formData.createdAt)}
             onChange={handleChange}
             readOnly
-            className="w-full cursor-not-allowed rounded-xl border border-gray-300 bg-gray-100 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none"
+            className="w-full cursor-not-allowed rounded-xl border border-gray-300 bg-gray-100 px-3 py-2 focus:border-red-500 focus:outline-none"
           />
         </div>
         <div>
@@ -225,7 +227,7 @@ export default function ProductDetailsSection({
             value={formData.employee_payment_terms}
             onChange={handleChange}
             disabled={isReadOnly}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             required
           >
             <option value="" disabled>
@@ -253,7 +255,7 @@ export default function ProductDetailsSection({
               value={formData.user_credit_period || ""}
               onChange={handleChange}
               disabled={isReadOnly}
-              className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+              className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
               required
             >
               <option value="" disabled>

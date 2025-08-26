@@ -30,7 +30,7 @@ export default function Header() {
           <a href="#">
             <div className="flex items-center space-x-2 text-3xl font-bold">
               <ShoppingBag className="h-8 w-8 text-red-600" />
-              Hot<span className="text-red-600">point</span>
+              Hot<span className="text-red-600">p</span>oint
             </div>
           </a>
 
