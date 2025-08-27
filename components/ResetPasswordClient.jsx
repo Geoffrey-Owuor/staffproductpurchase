@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
+import { Eye, EyeClosed } from "lucide-react";
 
 export default function ResetPasswordClient() {
   const searchParams = useSearchParams();
@@ -12,6 +14,7 @@ export default function ResetPasswordClient() {
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [passwordError, setPasswordError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
@@ -26,7 +29,7 @@ export default function ResetPasswordClient() {
     setConfirmPassword(value);
 
     if (value && password !== value) {
-      setPasswordError("Passwords do not match");
+      setPasswordError("passwords do not match");
     } else {
       setPasswordError("");
     }
@@ -51,7 +54,17 @@ export default function ResetPasswordClient() {
       });
 
       const data = await res.json();
-      setMessage(data.message);
+      setPassword("");
+      setConfirmPassword("");
+
+      if (res.ok) {
+        setMessage(data.message || "Password reset successful!");
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 500);
+      } else {
+        setMessage(data.message || "Failed to reset password");
+      }
     } catch (error) {
       setMessage("Failed to reset password");
     } finally {
@@ -61,9 +74,18 @@ export default function ResetPasswordClient() {
 
   if (!token) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50">
-        <div className="w-full max-w-md rounded-2xl border border-gray-50 bg-white p-8 shadow">
-          <h1 className="mb-4 text-center text-2xl font-bold text-red-600">
+      <div className="flex min-h-screen flex-col items-center justify-center bg-white">
+        {/* Logo */}
+        <Image
+          src="/hotpoint_logo.png"
+          alt="Company Logo"
+          width={150}
+          height={150}
+          className="mx-auto h-20 w-auto"
+          priority
+        />
+        <div className="w-full max-w-[400px] px-8">
+          <h1 className="mb-4 text-center text-2xl font-semibold text-red-700">
             Invalid Token
           </h1>
           <p className="mb-4 text-center text-gray-600">
@@ -71,51 +93,90 @@ export default function ResetPasswordClient() {
           </p>
           <Link
             href="/forgot-password"
-            className="block w-full rounded-xl bg-red-600 p-2 text-center text-white hover:bg-red-700"
+            className="block w-full rounded-full bg-red-600 p-3 text-center text-white hover:bg-red-700"
           >
             Request new reset link
           </Link>
+          <div className="mt-4 text-center">
+            <Link href="/login" className="text-red-600 hover:underline">
+              Back to login
+            </Link>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50">
-      <div className="w-full max-w-md rounded-2xl border border-gray-50 bg-white p-8 shadow">
-        <h1 className="mb-6 text-center text-2xl font-bold">Reset Password</h1>
-        <form onSubmit={handleSubmit} className="space-y-4" autoComplete="off">
-          <div className="space-y-2">
-            <label className="block font-medium">New Password</label>
+    <div className="flex min-h-screen flex-col items-center justify-center bg-white">
+      {/* Logo */}
+      <Image
+        src="/hotpoint_logo.png"
+        alt="Company Logo"
+        width={150}
+        height={150}
+        className="mx-auto h-20 w-auto"
+        priority
+      />
+      <div className="w-full max-w-[400px] px-8">
+        <h1 className="mb-7 text-center text-2xl font-semibold text-red-800">
+          Reset Your Password
+        </h1>
+        {message && (
+          <p className="mb-5 text-center text-sm text-green-600">{message}</p>
+        )}
+        <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
+          <div className="relative">
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
+              name="password"
+              id="password"
               value={password}
               onChange={handlePasswordChange}
-              className="w-full rounded-xl border p-2"
-              minLength="8"
               required
+              placeholder=" " // <-- important to trigger :placeholder-shown behavior
+              minLength="8"
+              className="peer w-full rounded-full border border-gray-300 px-4 py-3 placeholder-transparent focus:outline-none"
             />
+            <label
+              htmlFor="password"
+              className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600"
+            >
+              Password
+            </label>
+
+            {/* Eye Icon */}
+            <div
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer text-gray-500 hover:text-gray-700"
+            >
+              {showPassword ? <EyeClosed size={20} /> : <Eye size={20} />}
+            </div>
           </div>
 
-          <div className="space-y-2">
-            <label className="block font-medium">Confirm Password</label>
+          {/* Confirm Password */}
+          <div className="relative">
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
+              name="confirmPassword"
               value={confirmPassword}
               onChange={handleConfirmPasswordChange}
-              className="w-full rounded-xl border p-2"
-              minLength="8"
               required
+              placeholder=" "
+              className="peer w-full rounded-full border border-gray-300 px-4 py-3 placeholder-transparent focus:outline-none"
             />
             {passwordError && (
-              <p className="text-sm text-red-600">{passwordError}</p>
+              <p className="ml-2 text-sm text-red-600">{passwordError}</p>
             )}
+            <label className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600">
+              Confirm Password
+            </label>
           </div>
 
           <button
             type="submit"
             disabled={isLoading || passwordError}
-            className="w-full cursor-pointer rounded-xl bg-red-600 p-2 text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-red-400"
+            className="w-full cursor-pointer rounded-full bg-red-600 p-3 text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-red-400"
           >
             {isLoading ? (
               <span className="flex items-center justify-center gap-2">
@@ -141,9 +202,7 @@ export default function ResetPasswordClient() {
             )}
           </button>
         </form>
-        {message && (
-          <p className="mt-4 text-center text-sm text-gray-600">{message}</p>
-        )}
+
         <div className="mt-4 text-center">
           <Link href="/login" className="text-red-600 hover:underline">
             Back to Login

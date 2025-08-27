@@ -34,7 +34,8 @@ export default function Step1Page() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-red-50 to-red-100">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-white">
+      {/* Company Logo */}
       <Image
         src="/hotpoint_logo.png"
         alt="Company Logo"
@@ -43,20 +44,25 @@ export default function Step1Page() {
         className="mx-auto h-20 w-auto"
         priority
       />
-      <div className="w-full max-w-md rounded-3xl bg-white p-8 shadow-lg">
+
+      {/* Card */}
+      <div className="w-full max-w-[400px] px-8">
         <h1 className="mb-4 text-center text-2xl font-semibold text-red-800">
           Verify Your Email
         </h1>
-        {/* Disclaimer */}
-        <p className="mb-4 text-center text-sm text-gray-500">
-          Enter a valid email address
+
+        {/* Small note */}
+        <p className="mb-6 text-center text-sm text-gray-500">
+          Enter your email to receive a verification code
         </p>
 
-        {error && <div className="mb-4 text-center text-red-700">{error}</div>}
+        {error && (
+          <div className="mb-4 text-center text-sm text-red-700">{error}</div>
+        )}
 
         <form
           onSubmit={handleEmailSubmit}
-          className="space-y-5"
+          className="space-y-6"
           autoComplete="off"
         >
           <div className="relative">
@@ -66,7 +72,7 @@ export default function Step1Page() {
               onChange={(e) => setEmail(e.target.value)}
               required
               placeholder=" "
-              className="peer w-full rounded-xl border border-gray-300 px-4 py-3 placeholder-transparent focus:outline-none"
+              className="peer w-full rounded-full border border-gray-300 px-4 py-3 placeholder-transparent focus:outline-none"
             />
             <label className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600">
               Email Address
@@ -76,36 +82,37 @@ export default function Step1Page() {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full cursor-pointer rounded-xl px-4 py-3 font-medium text-white transition duration-200 ${
+            className={`w-full rounded-full px-4 py-3 font-medium text-white transition duration-200 ${
               loading
                 ? "cursor-not-allowed bg-red-400"
-                : "bg-red-600 hover:bg-red-700"
+                : "cursor-pointer bg-red-600 hover:bg-red-700"
             }`}
           >
             {loading ? (
-              <>
-                <div className="flex items-center justify-center gap-2">
-                  Sending...
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-                </div>
-              </>
+              <div className="flex items-center justify-center gap-2">
+                Sending...
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+              </div>
             ) : (
               <>Send Verification Code</>
             )}
           </button>
         </form>
 
-        <div className="mt-4 text-center">
-          <p className="text-sm text-gray-600">
-            Already have an account?{" "}
-            <Link
-              href="/login"
-              className="font-medium text-red-600 hover:underline"
-            >
-              login
-            </Link>
-          </p>
+        <div className="mt-6 text-center text-sm text-gray-600">
+          Already have an account?{" "}
+          <Link
+            href="/login"
+            className="font-medium text-red-600 hover:underline"
+          >
+            Login
+          </Link>
         </div>
+
+        {/* Security note (same as login) */}
+        <p className="mt-4 text-center text-xs text-gray-400">
+          Secure company login • Do not share your credentials
+        </p>
       </div>
     </div>
   );

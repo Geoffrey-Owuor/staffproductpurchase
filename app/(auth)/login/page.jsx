@@ -63,7 +63,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-red-50 to-red-100">
+    <div className="mt-12 flex min-h-screen flex-col items-center bg-white">
       {/* Company Logo */}
 
       <Image
@@ -76,16 +76,18 @@ export default function LoginPage() {
       />
 
       {/* Login Card */}
-      <div className="w-full max-w-md rounded-3xl bg-white p-8 shadow-lg">
-        <h1 className="mb-4 text-center text-2xl font-semibold text-red-800">
+      <div className="w-full max-w-[400px] px-8">
+        <h1 className="mb-6 text-center text-2xl font-semibold text-red-800">
           Welcome Back
         </h1>
 
         {loginError && (
-          <div className="mb-4 text-center text-red-700">{loginError}</div>
+          <div className="mb-4 text-center text-sm text-red-700">
+            {loginError}
+          </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5" autoComplete="off">
+        <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
           <div className="relative">
             <input
               type="email"
@@ -95,7 +97,7 @@ export default function LoginPage() {
               onChange={handleChange}
               required
               placeholder=" " // <-- important to trigger :placeholder-shown behavior
-              className="peer w-full rounded-xl border border-gray-300 px-4 py-3 placeholder-transparent focus:outline-none"
+              className="peer w-full rounded-full border border-gray-300 px-4 py-3 placeholder-transparent focus:outline-none"
             />
             <label
               htmlFor="email"
@@ -114,7 +116,7 @@ export default function LoginPage() {
               onChange={handleChange}
               required
               placeholder=" " // <-- important to trigger :placeholder-shown behavior
-              className="peer w-full rounded-xl border border-gray-300 px-4 py-3 placeholder-transparent focus:outline-none"
+              className="peer w-full rounded-full border border-gray-300 px-4 py-3 placeholder-transparent focus:outline-none"
             />
             <label
               htmlFor="password"
@@ -132,36 +134,10 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <input
-                id="remember-me"
-                name="remember-me"
-                type="checkbox"
-                className="h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-500"
-              />
-              <label
-                htmlFor="remember-me"
-                className="ml-2 block text-sm text-gray-700"
-              >
-                Remember me
-              </label>
-            </div>
-
-            <div className="text-sm">
-              <Link
-                href="/forgot-password"
-                className="text-red-600 hover:underline"
-              >
-                Forgot password?
-              </Link>
-            </div>
-          </div>
-
           <button
             type="submit"
             disabled={redirect}
-            className={`w-full rounded-xl px-4 py-3 font-medium text-white transition duration-200 ${redirect ? "cursor-not-allowed bg-red-400" : "cursor-pointer bg-red-600 hover:bg-red-700"}`}
+            className={`w-full rounded-full px-4 py-3 font-medium text-white transition duration-200 ${redirect ? "cursor-not-allowed bg-red-400" : "cursor-pointer bg-red-600 hover:bg-red-700"}`}
           >
             {redirect ? (
               <>
@@ -174,6 +150,17 @@ export default function LoginPage() {
               <>Login</>
             )}
           </button>
+
+          <div className="flex items-center justify-center">
+            <div className="text-sm">
+              <Link
+                href="/forgot-password"
+                className="text-red-600 hover:underline"
+              >
+                Forgot password?
+              </Link>
+            </div>
+          </div>
         </form>
 
         <div className="mt-6 text-center text-sm text-gray-600">
