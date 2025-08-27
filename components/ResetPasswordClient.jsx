@@ -56,7 +56,15 @@ export default function ResetPasswordClient() {
       const data = await res.json();
       setPassword("");
       setConfirmPassword("");
-      setMessage(data.message);
+
+      if (res.ok) {
+        setMessage(data.message || "Password reset successful!");
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 500);
+      } else {
+        setMessage(data.message || "Failed to reset password");
+      }
     } catch (error) {
       setMessage("Failed to reset password");
     } finally {
