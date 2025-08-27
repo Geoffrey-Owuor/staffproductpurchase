@@ -35,7 +35,7 @@ export default function CCApprovalCards() {
   }, []);
 
   return (
-    <div className="mx-2 mt-4 mb-8 rounded-xl border border-gray-200 px-2 pt-2 pb-6 shadow-sm">
+    <div className="mx-2 mt-4 mb-8 rounded-xl border border-gray-200 px-2 pt-2 pb-6">
       {/* Heading */}
       <CardHeadings />
 

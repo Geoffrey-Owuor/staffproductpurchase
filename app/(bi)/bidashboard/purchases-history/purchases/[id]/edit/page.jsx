@@ -235,18 +235,19 @@ export default function EditPurchaseForm({ params }) {
       <div className="mb-6 flex items-center justify-between">
         <button
           onClick={() => router.back()}
-          className="flex cursor-pointer items-center text-red-900 hover:text-red-700"
+          className="ml-4 flex cursor-pointer items-center text-red-900 hover:text-red-700"
         >
           <ArrowLeft className="mr-1 h-5 w-5" />
           Go Back
         </button>
         <div className="flex items-center gap-2">
           <FilePen className="h-6 w-6 text-red-900" />
-          <h2 className="text-2xl font-bold text-red-900">
+          <h2 className="text-xl font-semibold text-red-900">
             Edit Purchase Request
           </h2>
         </div>
-        <div className="w-24"></div> {/* Spacer for alignment */}
+
+        <div className="w-24"></div>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
@@ -303,6 +304,7 @@ export default function EditPurchaseForm({ params }) {
           message="Are you sure you want to submit these changes?"
           onConfirm={handleConfirmSubmit}
           onCancel={() => setShowConfirmation(false)}
+          title="Confirm Changes"
         />
       )}
 
