@@ -115,7 +115,7 @@ export default function ResetPasswordClient() {
           Reset Your Password
         </h1>
         {message && (
-          <p className="mb-5 text-center text-sm text-blue-500">{message}</p>
+          <p className="mb-5 text-center text-sm text-green-600">{message}</p>
         )}
         <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
           <div className="relative">

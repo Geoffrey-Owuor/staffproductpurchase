@@ -50,7 +50,7 @@ export default function ForgotPassword() {
         </div>
 
         {message && (
-          <p className="mb-6 text-center text-sm text-blue-500">{message}</p>
+          <p className="mb-6 text-center text-sm text-green-600">{message}</p>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">

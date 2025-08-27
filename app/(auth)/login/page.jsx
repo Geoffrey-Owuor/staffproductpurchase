@@ -82,7 +82,9 @@ export default function LoginPage() {
         </h1>
 
         {loginError && (
-          <div className="mb-4 text-center text-red-700">{loginError}</div>
+          <div className="mb-4 text-center text-sm text-red-700">
+            {loginError}
+          </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
