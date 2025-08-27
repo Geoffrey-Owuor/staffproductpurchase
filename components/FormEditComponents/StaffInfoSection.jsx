@@ -1,9 +1,9 @@
 export default function StaffInfoSection({ formData, handleChange, userRole }) {
   const isReadOnly = userRole != "staff";
   return (
-    <div className="overflow-hidden rounded-xl border border-red-200">
-      <div className="bg-red-900 px-6 py-3 text-white">
-        <h3 className="text-lg font-medium">Staff Information</h3>
+    <div className="overflow-hidden rounded-xl border border-gray-200">
+      <div className="px-6 py-3">
+        <h3 className="text-lg font-medium text-red-900">Staff Information</h3>
       </div>
       <div className="grid grid-cols-1 gap-6 bg-white p-6 md:grid-cols-3">
         <div>
@@ -20,7 +20,7 @@ export default function StaffInfoSection({ formData, handleChange, userRole }) {
             value={formData.staffname}
             onChange={handleChange}
             readOnly={isReadOnly}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             placeholder="Enter staff name"
             required
           />
@@ -39,7 +39,7 @@ export default function StaffInfoSection({ formData, handleChange, userRole }) {
             value={formData.payrollno}
             onChange={handleChange}
             readOnly={isReadOnly}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             placeholder="Enter payroll number"
             required
           />
@@ -57,7 +57,7 @@ export default function StaffInfoSection({ formData, handleChange, userRole }) {
             value={formData.department}
             onChange={handleChange}
             disabled={isReadOnly}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             required
           >
             <option value="" disabled>

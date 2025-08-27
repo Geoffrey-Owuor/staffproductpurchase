@@ -1,5 +1,4 @@
 "use client";
-
 import {
   HomeIcon,
   LogOutIcon,
@@ -12,54 +11,46 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 
 export default function Sidebar({ isOpen }) {
-  const [loggingOut, setLoggingOut] = useState(false);
-  const handleLogout = async () => {
-    setLoggingOut(true);
-    try {
-      const response = await fetch("/api/logout", {
-        method: "POST",
-      });
+  const [loggingOut, setIsLoggingOut] = useState(false);
+  const pathname = usePathname();
 
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    try {
+      const response = await fetch("/api/logout", { method: "POST" });
       if (response.ok) {
         window.location.href = "/login";
       }
     } catch (error) {
       console.error("Logout failed:", error);
-      setLoggingOut(false);
+      setIsLoggingOut(false);
     }
   };
 
-  const pathname = usePathname();
   const isActive = (href) => {
-    if (href === "/staffdashboard") {
-      return pathname === href
-        ? "bg-red-700 font-semibold"
-        : "hover:bg-red-800";
-    }
-    return pathname.startsWith(href)
-      ? "bg-red-700 font-semibold"
-      : "hover:bg-red-800";
+    const active =
+      href === "/staffdashboard"
+        ? pathname === href
+        : pathname.startsWith(href);
+
+    return active
+      ? "bg-red-100 text-red-700 font-medium"
+      : "text-gray-700 hover:bg-gray-100 hover:text-red-600";
   };
 
   return (
     <div
-      className={`fixed top-0 left-0 flex h-full w-56 flex-col bg-red-900 text-white ${
+      className={`fixed top-20 bottom-0 left-0 flex w-56 flex-col bg-white transition-all duration-200 ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
-      {/* Logo Section */}
-      <div className="mt-1.5 flex items-center pb-5.5 pl-5 text-3xl font-bold">
-        <ShoppingBagIcon className="h-8 w-8 text-white" />
-        <span className="text-white">Hotpoint</span>
-      </div>
-
       {/* Navigation Links */}
-      <nav className="flex-grow px-4 pt-0">
-        <ul className="space-y-2">
+      <nav className="flex-grow px-3">
+        <ul className="space-y-1">
           <li>
             <Link
               href="/staffdashboard"
-              className={`flex items-center gap-2 rounded-xl p-3 transition-colors ${isActive(
+              className={`flex items-center gap-2 rounded-xl px-3 py-2 text-sm transition-colors ${isActive(
                 "/staffdashboard",
               )}`}
             >
@@ -70,7 +61,7 @@ export default function Sidebar({ isOpen }) {
           <li>
             <Link
               href="/staffdashboard/new-purchase"
-              className={`flex items-center gap-2 rounded-xl p-3 transition-colors ${isActive(
+              className={`flex items-center gap-2 rounded-xl px-3 py-2 text-sm transition-colors ${isActive(
                 "/staffdashboard/new-purchase",
               )}`}
             >
@@ -81,7 +72,7 @@ export default function Sidebar({ isOpen }) {
           <li>
             <Link
               href="/staffdashboard/purchase-history"
-              className={`flex items-center gap-2 rounded-xl p-3 transition-colors ${isActive(
+              className={`flex items-center gap-2 rounded-xl px-3 py-2 text-sm transition-colors ${isActive(
                 "/staffdashboard/purchase-history",
               )}`}
             >
@@ -97,11 +88,11 @@ export default function Sidebar({ isOpen }) {
         <button
           onClick={handleLogout}
           disabled={loggingOut}
-          className="flex w-full cursor-pointer items-center gap-2 rounded-xl p-3 text-white transition-colors hover:bg-red-800"
+          className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-100 hover:text-red-600"
         >
           {loggingOut ? (
             <>
-              <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-red-500 border-t-transparent"></div>
               Logging Out...
             </>
           ) : (

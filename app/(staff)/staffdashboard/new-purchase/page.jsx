@@ -114,7 +114,7 @@ export default function NewPurchase() {
       <div className="mx-auto p-2 leading-relaxed">
         <div className="mb-5 flex items-center justify-center gap-2">
           <ClipboardList className="h-6 w-6 text-red-900" />
-          <h1 className="text-xl font-bold text-red-900">
+          <h1 className="text-xl font-semibold text-red-900">
             PURCHASE FORM (Staff Information & Product Details)
           </h1>
         </div>
@@ -138,11 +138,7 @@ export default function NewPurchase() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className={`mx-auto my-8 block cursor-pointer rounded-xl px-6 py-3 text-sm text-white transition-colors ${
-              isSubmitting
-                ? "cursor-not-allowed bg-gray-400"
-                : "bg-red-800 hover:bg-red-900"
-            }`}
+            className="mx-auto my-8 block cursor-pointer rounded-xl bg-red-800 px-6 py-3 text-sm text-white transition-colors hover:bg-red-900"
           >
             Submit Purchase
           </button>
@@ -166,6 +162,7 @@ export default function NewPurchase() {
             handleSubmit();
           }}
           onCancel={() => setShowConfirmDialog(false)}
+          title="Submit Purchase"
         />
       )}
       <TermsConditions />

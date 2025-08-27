@@ -7,9 +7,11 @@ export default function HRApprovalSection({
 }) {
   const isReadOnly = userRole != "hr";
   return (
-    <div className="overflow-hidden rounded-xl border border-red-200">
-      <div className="bg-red-900 px-6 py-3 text-white">
-        <h3 className="text-lg font-medium">HR/Payroll Approval</h3>
+    <div className="overflow-hidden rounded-xl border border-gray-200">
+      <div className="px-6 py-3">
+        <h3 className="text-lg font-medium text-red-900">
+          HR/Payroll Approval
+        </h3>
       </div>
       <div className="grid grid-cols-1 gap-6 bg-white p-6 md:grid-cols-2">
         <div>
@@ -26,7 +28,7 @@ export default function HRApprovalSection({
             onChange={handleChange}
             required
             disabled={isReadOnly}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
           >
             <option value="" disabled>
               select status
@@ -50,7 +52,7 @@ export default function HRApprovalSection({
             onChange={handleChange}
             required
             disabled={isReadOnly}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
           >
             <option value="" disabled>
               select status
@@ -74,7 +76,7 @@ export default function HRApprovalSection({
             onChange={handleChange}
             disabled={isReadOnly}
             required
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
           >
             <option value="pending" disabled>
               Pending
@@ -99,7 +101,7 @@ export default function HRApprovalSection({
             onChange={handleChange}
             readOnly={isReadOnly}
             required
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             placeholder="Enter HR Approver Name"
           />
         </div>
@@ -118,7 +120,7 @@ export default function HRApprovalSection({
             value={formatDateLong(formData.hr_approval_date)}
             onChange={handleChange}
             readOnly
-            className="w-full rounded-xl border border-gray-300 bg-gray-100 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500"
+            className="w-full rounded-xl border border-gray-300 bg-gray-100 px-3 py-2 focus:border-red-500 focus:outline-none"
           />
         </div>
 
@@ -136,7 +138,7 @@ export default function HRApprovalSection({
             value={formData.hr_comments}
             onChange={handleChange}
             readOnly={isReadOnly}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             placeholder="Enter HR Comments"
           />
         </div>

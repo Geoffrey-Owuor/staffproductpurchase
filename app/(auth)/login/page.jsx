@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Eye, EyeClosed } from "lucide-react";
+import Image from "next/image";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -62,14 +63,26 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-red-50 to-red-100">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-red-50 to-red-100">
+      {/* Company Logo */}
+
+      <Image
+        src="/hotpoint_logo.png"
+        alt="Company Logo"
+        width={150}
+        height={150}
+        className="mx-auto h-20 w-auto"
+        priority
+      />
+
+      {/* Login Card */}
       <div className="w-full max-w-md rounded-3xl bg-white p-8 shadow-lg">
-        <h1 className="mb-6 text-center text-3xl font-bold text-red-800">
+        <h1 className="mb-4 text-center text-2xl font-semibold text-red-800">
           Welcome Back
         </h1>
 
         {loginError && (
-          <div className="mb-4 p-3 text-center text-red-700">{loginError}</div>
+          <div className="mb-4 text-center text-red-700">{loginError}</div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-5" autoComplete="off">
@@ -82,11 +95,11 @@ export default function LoginPage() {
               onChange={handleChange}
               required
               placeholder=" " // <-- important to trigger :placeholder-shown behavior
-              className="peer w-full rounded-xl border border-gray-300 px-4 py-3 placeholder-transparent focus:border-blue-600 focus:outline-none"
+              className="peer w-full rounded-xl border border-gray-300 px-4 py-3 placeholder-transparent focus:outline-none"
             />
             <label
               htmlFor="email"
-              className="absolute -top-3 left-4 bg-white px-1 text-sm text-blue-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-blue-600"
+              className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600"
             >
               Email Address
             </label>
@@ -101,14 +114,15 @@ export default function LoginPage() {
               onChange={handleChange}
               required
               placeholder=" " // <-- important to trigger :placeholder-shown behavior
-              className="peer w-full rounded-xl border border-gray-300 px-4 py-3 placeholder-transparent focus:border-blue-600 focus:outline-none"
+              className="peer w-full rounded-xl border border-gray-300 px-4 py-3 placeholder-transparent focus:outline-none"
             />
             <label
               htmlFor="password"
-              className="absolute -top-3 left-4 bg-white px-1 text-sm text-blue-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-blue-600"
+              className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600"
             >
               Password
             </label>
+
             {/* Eye Icon */}
             <div
               onClick={() => setShowPassword(!showPassword)}
@@ -171,6 +185,10 @@ export default function LoginPage() {
             Sign up
           </Link>
         </div>
+        {/* Security note */}
+        <p className="mt-4 text-center text-xs text-gray-400">
+          Secure company login • Do not share your credentials
+        </p>
       </div>
     </div>
   );
