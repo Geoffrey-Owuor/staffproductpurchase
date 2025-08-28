@@ -12,13 +12,17 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "HAL Purchase Form",
-  description: "Automating Staff Purchase Form",
+  title: "HAL Purchase Portal",
+  description:
+    "Hotpoint Staff Purchase Portal for streamlining staff product purchases online",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" data-scroll-behavior="smooth" className="smooth-scrolling">
+      <head>
+        <meta name="apple-mobile-web-app-title" content="Hotpoint" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

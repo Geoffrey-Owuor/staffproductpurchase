@@ -164,10 +164,10 @@ export default function EditPurchaseForm({ params }) {
       clearFormData(setFormData);
 
       setIsSubmitting(false);
-      // Redirect back after 2 seconds
-      // setTimeout(() => {
-      //   router.push(`/hrdashboard/requests-history/requests/${id}`);
-      // }, 2000);
+      //Redirect after 2 seconds
+      setTimeout(() => {
+        window.location.href = `/hrdashboard/requests-history/requests/${id}`;
+      }, 2000);
     } catch (err) {
       console.error("Error updating purchase:", err);
       setAlertMessage("Failed to update purchase");

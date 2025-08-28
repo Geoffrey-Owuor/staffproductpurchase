@@ -10,9 +10,7 @@
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.3.0",
-    "html2canvas": "^1.4.1",
     "jose": "^6.0.12",
-    "jspdf": "^3.0.1",
     "lucide-react": "^0.503.0",
     "mysql2": "^3.14.1",
     "next": "^15.4.3",
