@@ -1,4 +1,5 @@
 import hotpoint_logo from "./hotpoint_logo.svg";
+import Image from "next/image";
 
 export const assets = {
   hotpoint_logo,
