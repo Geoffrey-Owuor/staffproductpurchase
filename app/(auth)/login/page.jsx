@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Eye, EyeClosed } from "lucide-react";
-import Image from "next/image";
+import { HotpointSvgLogo } from "@/public/assets";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -65,15 +65,7 @@ export default function LoginPage() {
   return (
     <div className="mt-12 flex min-h-screen flex-col items-center bg-white">
       {/* Company Logo */}
-
-      <Image
-        src="/hotpoint_logo.png"
-        alt="Company Logo"
-        width={150}
-        height={150}
-        className="mx-auto h-20 w-auto"
-        priority
-      />
+      <HotpointSvgLogo />
 
       {/* Login Card */}
       <div className="w-full max-w-[400px] px-8">

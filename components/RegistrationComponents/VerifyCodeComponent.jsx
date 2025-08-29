@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import AlertPopup from "../Reusables/AlertPopup";
-import Image from "next/image";
+import { HotpointSvgLogo } from "@/public/assets";
 
 export default function VerifyCodeComponent({ email }) {
   const router = useRouter();
@@ -52,14 +52,8 @@ export default function VerifyCodeComponent({ email }) {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-white">
       {/* Logo */}
-      <Image
-        src="/hotpoint_logo.png"
-        alt="Company Logo"
-        width={150}
-        height={150}
-        className="mx-auto h-20 w-auto"
-        priority
-      />
+      <HotpointSvgLogo />
+
       <AlertPopup message="Verification code resent!" show={showAlert} />
 
       {/* Card */}
