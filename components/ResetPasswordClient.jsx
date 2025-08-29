@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
+import { HotpointSvgLogo } from "@/public/assets";
 import { Eye, EyeClosed } from "lucide-react";
 
 export default function ResetPasswordClient() {
@@ -76,14 +76,8 @@ export default function ResetPasswordClient() {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-white">
         {/* Logo */}
-        <Image
-          src="/hotpoint_logo.png"
-          alt="Company Logo"
-          width={150}
-          height={150}
-          className="mx-auto h-20 w-auto"
-          priority
-        />
+        <HotpointSvgLogo />
+
         <div className="w-full max-w-[400px] px-8">
           <h1 className="mb-4 text-center text-2xl font-semibold text-red-700">
             Invalid Token

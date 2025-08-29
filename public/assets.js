@@ -1,4 +1,4 @@
-import hotpoint_logo from "./hotpoint_logo.png";
+import hotpoint_logo from "./hotpoint_logo.svg";
 
 export const assets = {
   hotpoint_logo,
@@ -23,4 +23,17 @@ export const clearFormData = (setFormData) => {
     });
     return cleared;
   });
+};
+
+export const HotpointSvgLogo = () => {
+  return (
+    <Image
+      src={assets.hotpoint_logo}
+      alt="Company Logo"
+      width={150}
+      height={150}
+      className="mx-auto h-20 w-auto"
+      priority
+    />
+  );
 };

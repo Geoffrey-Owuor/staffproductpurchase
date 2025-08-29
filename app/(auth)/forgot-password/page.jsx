@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { HotpointSvgLogo } from "@/public/assets";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -41,14 +42,8 @@ export default function ForgotPassword() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-white">
       {/* Logo */}
-      <Image
-        src="/hotpoint_logo.png"
-        alt="Company Logo"
-        width={150}
-        height={150}
-        className="mx-auto h-20 w-auto"
-        priority
-      />
+      <HotpointSvgLogo />
+
       <div className="w-full max-w-[400px] px-8">
         <div className="mb-7 text-center">
           <h1 className="text-2xl font-semibold text-red-800">

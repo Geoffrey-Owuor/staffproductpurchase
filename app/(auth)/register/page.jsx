@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
+import { HotpointSvgLogo } from "@/public/assets";
 
 export default function Step1Page() {
   const router = useRouter();
@@ -36,14 +36,7 @@ export default function Step1Page() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-white">
       {/* Company Logo */}
-      <Image
-        src="/hotpoint_logo.png"
-        alt="Company Logo"
-        width={150}
-        height={150}
-        className="mx-auto h-20 w-auto"
-        priority
-      />
+      <HotpointSvgLogo />
 
       {/* Card */}
       <div className="w-full max-w-[400px] px-8">
