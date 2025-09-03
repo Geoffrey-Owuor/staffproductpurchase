@@ -33,10 +33,7 @@ const generatePurchaseEmailHTML = (purchaseDetails) => {
                       <p style="color: #555555; font-size: 15px;">A new purchase request has been submitted and requires your approval.</p>
                       
                       <table width="100%" cellpadding="0" cellspacing="0" style="background: #f9f9f9; border: 1px solid #eeeeee; border-radius: 4px; margin: 20px 0; padding-bottom:12px;">
-                        <tr class="detail-row">
-                          <td width="150" style="padding: 12px 0 12px 15px; font-weight: bold; color: #666666;">Request ID:</td>
-                          <td style="padding: 12px 15px 12px 0;">${purchaseDetails.requestid}</td>
-                        </tr>
+                        
                         <tr class="detail-row">
                           <td width="150" style="padding: 12px 0 12px 15px; font-weight: bold; color: #666666;">Staff Name:</td>
                           <td style="padding: 12px 15px 12px 0;">${purchaseDetails.staffname}</td>
@@ -117,8 +114,7 @@ export async function POST(request) {
       `INSERT INTO purchasesinfo 
        (staffname, user_id, user_email, payrollno, department, itemname, itemstatus, productpolicy, productcode, 
         tdprice, discountrate, discountedvalue, employee_payment_terms, user_credit_period, signature, hr_approval, cc_approval, bi_approval) 
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, 'pending', 'pending', 'pending')
-       RETURNING id`, // PostgreSQL returns the inserted ID using RETURNING
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, 'pending', 'pending', 'pending')`,
       [
         body.staffname,
         user.id,
@@ -145,7 +141,6 @@ export async function POST(request) {
       department: body.department,
       itemname: body.itemname,
       productcode: body.productcode,
-      requestid: rows[0].id,
       tdprice: parseNumber(body.tdprice),
       discountrate: parseNumber(body.discountrate),
       discountedvalue: parseNumber(body.discountedvalue),
@@ -156,7 +151,7 @@ export async function POST(request) {
 
     await sendEmail({
       to: hrEmail,
-      subject: `New Purchase Request from ${body.staffname} ID: (${purchaseDetails.requestid})`,
+      subject: `New Purchase Request from ${body.staffname} PayrollNo: (${purchaseDetails.payrollno})`,
       html: emailHtml,
     });
 
