@@ -86,10 +86,7 @@ const generateBIDeclinedEmailHTML = (purchaseDetails) => {
                       }
                       
                       <table width="100%" cellpadding="0" cellspacing="0" style="background: #f9f9f9; border: 1px solid #eeeeee; border-radius: 4px; margin: 20px 0; padding-bottom:12px;">
-                        <tr class="detail-row">
-                          <td width="150" style="padding: 12px 0 12px 15px; font-weight: bold; color: #666666;">Request ID:</td>
-                          <td style="padding: 12px 15px 12px 0;">${purchaseDetails.id}</td>
-                        </tr>
+                       
                         <tr class="detail-row">
                           <td width="150" style="padding: 12px 0 12px 15px; font-weight: bold; color: #666666;">Item Name:</td>
                           <td style="padding: 12px 15px 12px 0;">${purchaseDetails.itemName}</td>
@@ -160,10 +157,7 @@ const generateBIApprovedEmailHTML = (purchaseDetails) => {
                       <p style="color: #555555; font-size: 15px;">We are pleased to inform you that your purchase request has been <strong>fully approved</strong> and is now being processed.</p>
                       
                       <table width="100%" cellpadding="0" cellspacing="0" style="background: #f9f9f9; border: 1px solid #eeeeee; border-radius: 4px; margin: 20px 0; padding-bottom:12px;">
-                        <tr class="detail-row">
-                          <td width="150" style="padding: 12px 0 12px 15px; font-weight: bold; color: #666666;">Request ID:</td>
-                          <td style="padding: 12px 15px 12px 0;">${purchaseDetails.id}</td>
-                        </tr>
+                        
                         <tr class="detail-row">
                           <td width="150" style="padding: 12px 0 12px 15px; font-weight: bold; color: #666666;">Item Name:</td>
                           <td style="padding: 12px 15px 12px 0;">${purchaseDetails.itemName}</td>
@@ -413,7 +407,7 @@ export async function PUT(request, { params }) {
           bi_approval_date: new Date(),
           invoice_number: invoice_number || currentPurchase[0].invoice_number,
           payment_method: payment_method || currentPurchase[0].payment_method,
-          id: id, // Ensure request ID is included
+          id: id, // Ensure request ID is included for ID in PDF
         },
       };
 
@@ -422,7 +416,7 @@ export async function PUT(request, { params }) {
         const pdfAttachment = await generatePurchasePDF(purchaseDetails);
         await sendEmail({
           to: staffEmail,
-          subject: `Your Purchase Request Has Been Approved (ID: ${purchaseDetails.id})`,
+          subject: `Your Purchase Request Has Been Approved (PayrollNo: ${purchaseDetails.payrollNo})`,
           html: generateBIApprovedEmailHTML(purchaseDetails),
           attachments: [pdfAttachment], //Attaching the generated pdf
         });
@@ -430,7 +424,7 @@ export async function PUT(request, { params }) {
         // Send decline email to staff
         await sendEmail({
           to: staffEmail,
-          subject: `Your Purchase Request Has Been Declined (ID: ${purchaseDetails.id})`,
+          subject: `Your Purchase Request Has Been Declined (PayrollNo: ${purchaseDetails.payrollNo})`,
           html: generateBIDeclinedEmailHTML(purchaseDetails),
         });
       }

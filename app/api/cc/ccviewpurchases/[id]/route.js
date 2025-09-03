@@ -74,10 +74,7 @@ const generateCreditControlDeclinedEmailHTML = (purchaseDetails) => {
                       }
                       
                       <table width="100%" cellpadding="0" cellspacing="0" style="background: #f9f9f9; border: 1px solid #eeeeee; border-radius: 4px; margin: 20px 0; padding-bottom:12px;">
-                        <tr class="detail-row">
-                          <td width="150" style="padding: 12px 0 12px 15px; font-weight: bold; color: #666666;">Request ID:</td>
-                          <td style="padding: 12px 15px 12px 0;">${purchaseDetails.id}</td>
-                        </tr>
+                        
                         <tr class="detail-row">
                           <td width="150" style="padding: 12px 0 12px 15px; font-weight: bold; color: #666666;">Item Name:</td>
                           <td style="padding: 12px 15px 12px 0;">${purchaseDetails.itemName}</td>
@@ -149,10 +146,7 @@ const generateBIApproverEmailHTML = (purchaseDetails) => {
                       <p style="color: #555555; font-size: 15px;">A new purchase request approved by Credit Control awaits your review and approval.</p>
                       
                       <table width="100%" cellpadding="0" cellspacing="0" style="background: #f9f9f9; border: 1px solid #eeeeee; border-radius: 4px; margin: 20px 0; padding-bottom:12px;">
-                        <tr class="detail-row">
-                          <td width="150" style="padding: 12px 0 12px 15px; font-weight: bold; color: #666666;">Request ID:</td>
-                          <td style="padding: 12px 15px 12px 0;">${purchaseDetails.id}</td>
-                        </tr>
+                        
                         <tr class="detail-row">
                           <td width="150" style="padding: 12px 0 12px 15px; font-weight: bold; color: #666666;">Staff Name:</td>
                           <td style="padding: 12px 15px 12px 0;">${purchaseDetails.staffName}</td>
@@ -333,6 +327,7 @@ export async function PUT(request, { params }) {
         ...currentPurchase[0],
         ...{
           staffName: staffName || currentPurchase[0].staffName,
+          payrollNo: payrollNo || currentPurchase[0].payrollNo,
           department: department || currentPurchase[0].department,
           itemName: itemName || currentPurchase[0].itemName,
           productCode: productCode || currentPurchase[0].productCode,
@@ -346,7 +341,6 @@ export async function PUT(request, { params }) {
           cc_approver_name: cc_approver_name || user.name,
           createdAt: currentPurchase[0].createdAt,
           cc_approval_date: new Date(),
-          id: id, // Ensure request ID is included
         },
       };
 
@@ -356,14 +350,14 @@ export async function PUT(request, { params }) {
 
         await sendEmail({
           to: biApprovalEmail,
-          subject: `Purchase Request Requires Approval (ID: ${purchaseDetails.id})`,
+          subject: `Purchase Request Requires Approval (PayrollNo: ${purchaseDetails.payrollNo})`,
           html: generateBIApproverEmailHTML(purchaseDetails),
         });
       } else if (CC_Approval === "declined") {
         // Send to staff who made the request
         await sendEmail({
           to: staffEmail,
-          subject: `Your Purchase Request Has Been Declined (ID: ${purchaseDetails.id})`,
+          subject: `Your Purchase Request Has Been Declined (PayrollNo: ${purchaseDetails.payrollNo})`,
           html: generateCreditControlDeclinedEmailHTML(purchaseDetails),
         });
       }

@@ -33,10 +33,7 @@ const generatePurchaseEmailHTML = (purchaseDetails) => {
                       <p style="color: #555555; font-size: 15px;">A new purchase request has been submitted and requires your approval.</p>
                       
                       <table width="100%" cellpadding="0" cellspacing="0" style="background: #f9f9f9; border: 1px solid #eeeeee; border-radius: 4px; margin: 20px 0; padding-bottom:12px;">
-                        <tr class="detail-row">
-                          <td width="150" style="padding: 12px 0 12px 15px; font-weight: bold; color: #666666;">Request ID:</td>
-                          <td style="padding: 12px 15px 12px 0;">${purchaseDetails.requestId}</td>
-                        </tr>
+                        
                         <tr class="detail-row">
                           <td width="150" style="padding: 12px 0 12px 15px; font-weight: bold; color: #666666;">Staff Name:</td>
                           <td style="padding: 12px 15px 12px 0;">${purchaseDetails.staffName}</td>
@@ -144,7 +141,6 @@ export async function POST(request) {
       department: body.department,
       itemName: body.itemName,
       productCode: body.productCode,
-      requestId: result.insertId,
       tdPrice: parseNumber(body.tdPrice),
       discountRate: parseNumber(body.discountRate),
       discountedValue: parseNumber(body.discountedValue),
@@ -157,7 +153,7 @@ export async function POST(request) {
 
     await sendEmail({
       to: hrEmail,
-      subject: `New Purchase Request from ${body.staffName} ID: (${purchaseDetails.requestId})`,
+      subject: `New Purchase Request from ${body.staffName} PayrollNo: (${purchaseDetails.payrollNo})`,
       html: emailHtml,
     });
 
