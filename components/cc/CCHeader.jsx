@@ -1,31 +1,14 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import UserMenu from "../Reusables/UserMenu";
+import HotpointLogo from "../Reusables/HotpointLogo";
 
-import { LogOut, ChevronLeft, SidebarClose, SidebarOpen } from "lucide-react";
+import { LogOut, ChevronLeft, Menu } from "lucide-react";
 
-const CCHeader = ({ isSidebarOpen, toggleSidebar }) => {
+const CCHeader = ({ toggleSidebar }) => {
   const router = useRouter();
-
-  const [isScrolled, setIsScrolled] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
 
   const handleLogout = async () => {
     setLoggingOut(true);
@@ -43,20 +26,17 @@ const CCHeader = ({ isSidebarOpen, toggleSidebar }) => {
   };
   return (
     <header
-      className={`fixed top-0 right-0 z-50 flex h-14 items-center pr-4 pl-2 ${
-        isSidebarOpen ? "left-56" : "left-0"
-      } ${isScrolled ? "border-b border-gray-200 bg-white shadow-xs" : "bg-white"}`}
+      className={`fixed top-0 right-0 left-0 z-50 flex h-14 items-center border-b border-gray-200 bg-white pr-4 pl-2 transition-all duration-200`}
     >
+      {/* Hotpoint Logo */}
+      <HotpointLogo />
+
       {/* Sidebar Toggle Button */}
       <button
         onClick={toggleSidebar}
-        className="mr-4 flex h-8 w-8 cursor-pointer items-center justify-center rounded-xl bg-red-200 hover:bg-red-300"
+        className="mr-10 flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200"
       >
-        {isSidebarOpen ? (
-          <SidebarClose className="h-5 w-5" />
-        ) : (
-          <SidebarOpen className="h-5 w-5" />
-        )}
+        <Menu className="h-4 w-4" />
       </button>
 
       {/* User Menu */}
@@ -67,13 +47,13 @@ const CCHeader = ({ isSidebarOpen, toggleSidebar }) => {
         {/* Go back Button */}
         <button
           onClick={() => router.back()}
-          className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-red-200 hover:bg-red-300"
+          className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200"
         >
           <ChevronLeft className="h-5 w-5" />
         </button>
         {/* Logout Button */}
         <button
-          className="flex cursor-pointer items-center rounded-full bg-red-100 px-3 py-2 transition-colors hover:bg-red-200"
+          className="flex items-center rounded-full border border-gray-200 px-3 py-2 transition-colors hover:bg-gray-100"
           onClick={handleLogout}
           disabled={loggingOut}
         >

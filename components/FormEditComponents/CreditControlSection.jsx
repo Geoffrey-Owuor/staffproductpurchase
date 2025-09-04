@@ -7,9 +7,9 @@ export default function CreditControlSection({
 }) {
   const isReadOnly = userRole != "cc";
   return (
-    <div className="overflow-hidden rounded-xl border border-red-200">
-      <div className="bg-red-900 px-6 py-3 text-white">
-        <h3 className="text-lg font-medium">
+    <div className="overflow-hidden rounded-xl border border-gray-200">
+      <div className="px-6 py-3">
+        <h3 className="text-lg font-medium text-red-900">
           Credit Control Verification and Approval
         </h3>
       </div>
@@ -29,7 +29,7 @@ export default function CreditControlSection({
             value={formData.credit_period}
             onChange={handleChange}
             readOnly={isReadOnly}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             placeholder="Enter credit period assessment (1-3 paragraphs)"
             required
           />
@@ -49,7 +49,7 @@ export default function CreditControlSection({
             value={formData.one_third_rule}
             onChange={handleChange}
             readOnly={isReadOnly}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             placeholder="Enter 1/3 rule compliance assessment"
             required
           />
@@ -69,7 +69,7 @@ export default function CreditControlSection({
             value={formData.purchase_history_comments}
             onChange={handleChange}
             readOnly={isReadOnly}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             placeholder="Enter comments on purchase history"
             required
           />
@@ -90,7 +90,7 @@ export default function CreditControlSection({
             value={formData.pending_invoices}
             onChange={handleChange}
             readOnly={isReadOnly}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             placeholder="Enter pending invoices details"
             required
           />
@@ -109,7 +109,7 @@ export default function CreditControlSection({
             value={formData.cc_approval}
             onChange={handleChange}
             disabled={isReadOnly}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-50 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             required
           >
             <option value="pending" disabled>
@@ -134,7 +134,7 @@ export default function CreditControlSection({
             value={formData.cc_approver_name}
             onChange={handleChange}
             readOnly={isReadOnly}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500 ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
             placeholder="Enter verifier's name"
             required
           />
@@ -154,7 +154,7 @@ export default function CreditControlSection({
             value={formatDateLong(formData.cc_approval_date)}
             onChange={handleChange}
             readOnly
-            className="w-full rounded-xl border border-gray-300 bg-gray-100 px-3 py-2 shadow-sm focus:border-red-500 focus:ring-red-500"
+            className="w-full rounded-xl border border-gray-300 bg-gray-100 px-3 py-2 focus:border-red-500 focus:outline-none"
           />
         </div>
       </div>

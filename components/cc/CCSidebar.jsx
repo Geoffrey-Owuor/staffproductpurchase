@@ -1,18 +1,18 @@
 "use client";
 
-import {
-  FileBarChart,
-  HomeIcon,
-  LogOutIcon,
-  ShoppingBagIcon,
-} from "lucide-react";
+import { FileBarChart, HomeIcon, LogOutIcon } from "lucide-react";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import LoadingLine from "../Reusables/LoadingLine";
+import { useFinishLoading } from "@/app/hooks/useFinishLoading";
 
 export default function CCSidebar({ isOpen }) {
   const [loggingOut, setLoggingOut] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const pathname = usePathname();
+
   const handleLogout = async () => {
     setLoggingOut(true);
     try {
@@ -25,82 +25,85 @@ export default function CCSidebar({ isOpen }) {
       }
     } catch (error) {
       console.error("Logout failed:", error);
+      setLoggingOut(false);
     }
   };
 
-  const pathname = usePathname();
   const isActive = (href) => {
-    if (href === "/ccdashboard") {
-      return pathname === href
-        ? "bg-red-700 font-semibold"
-        : "hover:bg-red-800";
-    }
-    return pathname.startsWith(href)
-      ? "bg-red-700 font-semibold"
-      : "hover:bg-red-800";
+    const active =
+      href === "/ccdashboard" ? pathname === href : pathname.startsWith(href);
+
+    return active
+      ? "bg-red-100 text-red-700 font-medium"
+      : "text-gray-700 hover:bg-gray-100 hover:text-red-600";
   };
+
+  const handleLinkClick = () => {
+    setIsLoading(true);
+  };
+
+  useFinishLoading(isLoading, setIsLoading, pathname);
 
   return (
-    <div
-      className={`fixed top-0 left-0 flex h-full w-56 flex-col bg-red-900 text-white ${
-        isOpen ? "translate-x-0" : "-translate-x-full"
-      }`}
-    >
-      {/* Logo Section */}
-      <div className="mt-1.5 flex items-center pb-5.5 pl-5 text-3xl font-bold">
-        <ShoppingBagIcon className="h-8 w-8 text-white" />
-        <span className="text-white">Hotpoint</span>
+    <>
+      <LoadingLine isLoading={isLoading} />
+      <div
+        className={`fixed top-20 bottom-0 left-0 flex w-56 flex-col bg-white transition-all duration-200 ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        {/* Navigation Links */}
+        <nav className="flex-grow px-3">
+          <ul className="space-y-1">
+            <li>
+              <Link
+                href="/ccdashboard"
+                onClick={handleLinkClick}
+                className={`flex items-center gap-2 rounded-xl px-3 py-2 text-sm transition-colors ${isActive(
+                  "/ccdashboard",
+                )}`}
+              >
+                <HomeIcon className="h-4 w-4" />
+                Home
+              </Link>
+            </li>
+
+            <li>
+              <Link
+                href="/ccdashboard/purchases-history"
+                onClick={handleLinkClick}
+                className={`flex items-center gap-2 rounded-xl px-3 py-2 text-sm transition-colors ${isActive(
+                  "/ccdashboard/purchases-history",
+                )}`}
+              >
+                <FileBarChart className="h-4 w-4" />
+                Purchases History
+              </Link>
+            </li>
+          </ul>
+        </nav>
+
+        {/* Logout Button at Bottom */}
+        <div className="p-3">
+          <button
+            onClick={handleLogout}
+            disabled={loggingOut}
+            className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-100 hover:text-red-600"
+          >
+            {loggingOut ? (
+              <>
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-red-500 border-t-transparent"></div>
+                Logging Out...
+              </>
+            ) : (
+              <>
+                <LogOutIcon className="h-4 w-4" />
+                Logout
+              </>
+            )}
+          </button>
+        </div>
       </div>
-
-      {/* Navigation Links */}
-      <nav className="flex-grow px-4 pt-0">
-        <ul className="space-y-2">
-          <li>
-            <Link
-              href="/ccdashboard"
-              className={`flex items-center gap-2 rounded-xl p-3 transition-colors ${isActive(
-                "/ccdashboard",
-              )}`}
-            >
-              <HomeIcon className="h-4 w-4" />
-              Home
-            </Link>
-          </li>
-
-          <li>
-            <Link
-              href="/ccdashboard/purchases-history"
-              className={`flex items-center gap-2 rounded-xl p-3 transition-colors ${isActive(
-                "/ccdashboard/purchases-history",
-              )}`}
-            >
-              <FileBarChart className="h-4 w-4" />
-              Purchases History
-            </Link>
-          </li>
-        </ul>
-      </nav>
-
-      {/* Logout Button at Bottom */}
-      <div className="p-3">
-        <button
-          onClick={handleLogout}
-          disabled={loggingOut}
-          className="flex w-full cursor-pointer items-center gap-2 rounded-xl p-3 text-white transition-colors hover:bg-red-800"
-        >
-          {loggingOut ? (
-            <>
-              <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-              Logging Out...
-            </>
-          ) : (
-            <>
-              <LogOutIcon className="h-4 w-4" />
-              Logout
-            </>
-          )}
-        </button>
-      </div>
-    </div>
+    </>
   );
 }

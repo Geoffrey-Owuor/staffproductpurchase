@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Eye, EyeClosed } from "lucide-react";
+import { HotpointSvgLogo } from "@/public/assets";
 
 export default function CompleteRegistrationComponent({ email }) {
   const [formData, setFormData] = useState({
@@ -56,19 +57,26 @@ export default function CompleteRegistrationComponent({ email }) {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-red-50 to-red-100">
-      <div className="w-full max-w-md rounded-3xl bg-white p-8 shadow-lg">
-        <h1 className="mb-6 text-center text-3xl font-bold text-red-800">
+    <div className="mt-12 flex min-h-screen flex-col items-center bg-white">
+      {/* Logo */}
+      <HotpointSvgLogo />
+
+      {/* Card */}
+      <div className="w-full max-w-[400px] px-8">
+        <h1 className="mb-6 text-center text-2xl font-semibold text-red-800">
           Complete Registration
         </h1>
 
-        {error && <div className="mb-4 text-center text-red-700">{error}</div>}
+        {error && (
+          <div className="mb-4 text-center text-sm text-red-700">{error}</div>
+        )}
 
-        <form onSubmit={handleSubmit} className="space-y-5" autoComplete="off">
-          <div className="text-center text-green-600">
+        <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
+          <div className="text-center text-sm text-green-600">
             Email verified successfully!
           </div>
 
+          {/* Full Name */}
           <div className="relative">
             <input
               type="text"
@@ -77,13 +85,14 @@ export default function CompleteRegistrationComponent({ email }) {
               onChange={handleChange}
               required
               placeholder=" "
-              className="peer w-full rounded-xl border border-gray-300 px-4 py-3 placeholder-transparent focus:border-blue-600 focus:outline-none"
+              className="peer w-full rounded-full border border-gray-300 px-4 py-3 placeholder-transparent focus:outline-none"
             />
-            <label className="absolute -top-3 left-4 bg-white px-1 text-sm text-blue-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-blue-600">
+            <label className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600">
               Full Name
             </label>
           </div>
 
+          {/* Password */}
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
@@ -91,11 +100,11 @@ export default function CompleteRegistrationComponent({ email }) {
               value={formData.password}
               onChange={handleChange}
               required
-              placeholder=" "
               minLength="8"
-              className="peer w-full rounded-xl border border-gray-300 px-4 py-3 placeholder-transparent focus:border-blue-600 focus:outline-none"
+              placeholder=" "
+              className="peer w-full rounded-full border border-gray-300 px-4 py-3 placeholder-transparent focus:outline-none"
             />
-            <label className="absolute -top-3 left-4 bg-white px-1 text-sm text-blue-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-blue-600">
+            <label className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600">
               Password
             </label>
             <div
@@ -106,6 +115,7 @@ export default function CompleteRegistrationComponent({ email }) {
             </div>
           </div>
 
+          {/* Confirm Password */}
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
@@ -114,15 +124,15 @@ export default function CompleteRegistrationComponent({ email }) {
               onChange={handleChange}
               required
               placeholder=" "
-              className="peer w-full rounded-xl border border-gray-300 px-4 py-3 placeholder-transparent focus:border-blue-600 focus:outline-none"
+              className="peer w-full rounded-full border border-gray-300 px-4 py-3 placeholder-transparent focus:outline-none"
             />
             {formData.confirmPassword &&
               formData.password !== formData.confirmPassword && (
                 <p className="mt-1 text-sm text-red-600">
-                  Passwords do not match
+                  passwords do not match
                 </p>
               )}
-            <label className="absolute -top-3 left-4 bg-white px-1 text-sm text-blue-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-blue-600">
+            <label className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600">
               Confirm Password
             </label>
           </div>
@@ -134,26 +144,29 @@ export default function CompleteRegistrationComponent({ email }) {
               (formData.confirmPassword &&
                 formData.password !== formData.confirmPassword)
             }
-            className={`w-full cursor-pointer rounded-xl px-4 py-3 font-medium text-white transition duration-200 ${
+            className={`w-full rounded-full px-4 py-3 font-medium text-white transition duration-200 ${
               loading ||
               (formData.confirmPassword &&
                 formData.password !== formData.confirmPassword)
                 ? "cursor-not-allowed bg-red-400"
-                : "bg-red-600 hover:bg-red-700"
+                : "cursor-pointer bg-red-600 hover:bg-red-700"
             }`}
           >
             {loading ? (
-              <>
-                <div className="flex items-center justify-center gap-2">
-                  Completing...
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-                </div>
-              </>
+              <div className="flex items-center justify-center gap-2">
+                Completing...
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+              </div>
             ) : (
               <>Complete</>
             )}
           </button>
         </form>
+
+        {/* Security note */}
+        <p className="mt-4 text-center text-xs text-gray-400">
+          Secure company login • Do not share your credentials
+        </p>
       </div>
     </div>
   );

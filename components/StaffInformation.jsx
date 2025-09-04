@@ -1,15 +1,15 @@
 const StaffInformation = ({ formData, handleChange }) => {
   return (
-    <div className="mb-8 rounded-xl border border-red-200 bg-white shadow-sm">
-      <div className="rounded-t-xl bg-red-900 px-6 py-3 text-lg font-bold text-white">
+    <div className="mb-8 rounded-xl border border-gray-200 bg-white">
+      <div className="rounded-t-xl px-6 py-3 text-lg font-semibold text-red-900">
         Staff Information
       </div>
-      <div className="p-6">
+      <div className="px-6 py-4">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           <div>
             <label
               htmlFor="staffname"
-              className="mb-2 block font-medium text-red-900"
+              className="mb-2 block text-sm font-medium text-gray-700"
             >
               Staff Name
             </label>
@@ -19,7 +19,7 @@ const StaffInformation = ({ formData, handleChange }) => {
               name="staffname"
               value={formData.staffname}
               onChange={handleChange}
-              className="w-full rounded-xl border border-red-200 p-3 focus:border-red-500 focus:ring-2 focus:ring-red-200"
+              className="w-full rounded-xl border border-gray-200 p-2 focus:border-red-500 focus:outline-none"
               required
             />
           </div>
@@ -27,7 +27,7 @@ const StaffInformation = ({ formData, handleChange }) => {
           <div>
             <label
               htmlFor="payrollno"
-              className="mb-2 block font-medium text-red-900"
+              className="mb-2 block text-sm font-medium text-gray-700"
             >
               Payroll No
             </label>
@@ -37,15 +37,14 @@ const StaffInformation = ({ formData, handleChange }) => {
               name="payrollno"
               value={formData.payrollno}
               onChange={handleChange}
-              className="w-full rounded-xl border border-red-200 p-3 focus:border-red-500 focus:ring-2 focus:ring-red-200"
+              className="w-full rounded-xl border border-gray-200 p-2 focus:border-red-500 focus:outline-none"
               required
             />
           </div>
-
           <div>
             <label
               htmlFor="department"
-              className="mb-2 block font-medium text-red-900"
+              className="mb-2 block text-sm font-medium text-gray-700"
             >
               Department
             </label>
@@ -54,7 +53,7 @@ const StaffInformation = ({ formData, handleChange }) => {
               name="department"
               value={formData.department}
               onChange={handleChange}
-              className={`w-full rounded-xl border border-red-200 p-3 focus:border-red-500 focus:ring-2 focus:ring-red-200`}
+              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-red-500 focus:outline-none`}
               required
             >
               <option value="" disabled>
