@@ -15,7 +15,7 @@ export async function POST(request) {
     if (!users.length) {
       conn.release();
       return Response.json(
-        { success: false, message: "Email not found" },
+        { success: false, message: "Wrong username or password" },
         { status: 401 },
       );
     }
@@ -27,7 +27,7 @@ export async function POST(request) {
       conn.release();
 
       return Response.json(
-        { success: false, message: "Wrong password, please try again" },
+        { success: false, message: "Wrong username or password" },
         { status: 401 },
       );
     }
