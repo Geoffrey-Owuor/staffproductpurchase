@@ -101,7 +101,7 @@ export default function StaffTablePurchases() {
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap">
                       <span
-                        className={`inline-flex rounded-full px-2 py-1 text-xs leading-5 font-semibold ${
+                        className={`inline-flex rounded-lg px-2 py-1 text-xs leading-5 font-semibold ${
                           purchase.hr_approval === "approved"
                             ? "bg-green-100 text-green-800"
                             : purchase.hr_approval === "declined"
@@ -114,7 +114,7 @@ export default function StaffTablePurchases() {
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap">
                       <span
-                        className={`inline-flex rounded-full px-2 py-1 text-xs leading-5 font-semibold ${
+                        className={`inline-flex rounded-lg px-2 py-1 text-xs leading-5 font-semibold ${
                           purchase.cc_approval === "approved"
                             ? "bg-green-100 text-green-800"
                             : purchase.cc_approval === "declined"
@@ -127,7 +127,7 @@ export default function StaffTablePurchases() {
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap">
                       <span
-                        className={`inline-flex rounded-full px-2 py-1 text-xs leading-5 font-semibold ${
+                        className={`inline-flex rounded-lg px-2 py-1 text-xs leading-5 font-semibold ${
                           purchase.bi_approval === "approved"
                             ? "bg-green-100 text-green-800"
                             : purchase.bi_approval === "declined"

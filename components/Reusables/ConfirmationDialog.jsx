@@ -4,8 +4,8 @@ import { XCircleIcon } from "lucide-react";
 
 const ConfirmationDialog = ({ message, onConfirm, onCancel, title }) => {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="mx-auto max-w-md rounded-3xl border-2 border-gray-300 bg-white p-4 shadow-lg">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/70">
+      <div className="mx-auto max-w-md rounded-2xl border border-gray-200 bg-gray-50 p-4 shadow-2xl">
         <div className="flex items-start justify-between">
           <h3 className="mb-3 text-xl font-bold text-gray-700">{title}</h3>
           <button

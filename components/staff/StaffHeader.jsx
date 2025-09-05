@@ -39,7 +39,7 @@ const Header = ({ toggleSidebar }) => {
   return (
     <>
       <header
-        className={`fixed top-0 right-0 left-0 z-50 flex h-14 items-center border-b border-gray-200 bg-white pr-4 pl-2 transition-all duration-200`}
+        className={`fixed top-0 right-0 left-0 z-50 flex h-14 items-center border-b border-gray-200 bg-white pr-2 pl-2 transition-all duration-200`}
       >
         {/* Hotpoint Logo */}
         <HotpointLogo />
@@ -67,7 +67,7 @@ const Header = ({ toggleSidebar }) => {
           {/* New Purchase Link */}
           <button
             onClick={() => handleLinkClick("/staffdashboard/new-purchase")}
-            className={`flex items-center rounded-full bg-red-50 px-3 py-2 transition-colors hover:bg-red-100`}
+            className={`flex items-center rounded-xl bg-red-50 px-3 py-2 transition-colors hover:bg-red-100`}
           >
             <PlusCircle className="mr-2 h-4 w-4" />
             <span className="text-sm">New Purchase</span>
@@ -75,7 +75,7 @@ const Header = ({ toggleSidebar }) => {
 
           {/* Logout Button */}
           <button
-            className="flex items-center rounded-full border border-gray-200 px-3 py-2 transition-colors hover:bg-gray-100"
+            className="flex items-center rounded-xl border border-gray-200 px-3 py-2 transition-colors hover:bg-gray-100"
             onClick={handleLogout}
             disabled={loggingOut}
           >

@@ -73,7 +73,7 @@ export default function StaffInfoSection({ formData, handleChange, userRole }) {
             <option value="Service Center">Service Center</option>
             <option value="Modern Trade">Modern Trade</option>
             <option value="Commercial">Commercial</option>
-            <option value="Imports">Imports & Exports</option>
+            <option value="Imports & Exports">Imports & Exports</option>
             <option value="Warehouse">Warehouse</option>
           </select>
         </div>
