@@ -48,12 +48,12 @@ export default function CCSidebar({ isOpen }) {
     <>
       <LoadingLine isLoading={isLoading} />
       <div
-        className={`fixed top-20 bottom-0 left-0 flex w-56 flex-col bg-white transition-all duration-200 ${
+        className={`fixed top-0 bottom-0 left-0 flex w-56 flex-col border-r border-gray-200 bg-white transition-all duration-200 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         {/* Navigation Links */}
-        <nav className="flex-grow px-3">
+        <nav className="mt-20 flex-grow px-3">
           <ul className="space-y-1">
             <li>
               <Link

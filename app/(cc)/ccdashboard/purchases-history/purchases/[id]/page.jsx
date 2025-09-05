@@ -118,7 +118,7 @@ export default function ViewPurchase({ params }) {
             <button
               onClick={handleEditClick}
               disabled={isEditing}
-              className="flex cursor-pointer items-center justify-center gap-1 rounded-full bg-red-900 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-red-700"
+              className="flex cursor-pointer items-center justify-center gap-1 rounded-xl bg-red-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700"
             >
               <Edit className="h-4 w-4" />
               Edit
@@ -323,7 +323,7 @@ export default function ViewPurchase({ params }) {
             <button
               onClick={handleEditClick}
               disabled={isEditing}
-              className="inline-flex cursor-pointer items-center justify-center gap-1 rounded-full bg-red-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700"
+              className="inline-flex cursor-pointer items-center justify-center gap-1 rounded-xl bg-red-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700"
             >
               <Edit className="h-4 w-4" />
               Edit
@@ -332,7 +332,7 @@ export default function ViewPurchase({ params }) {
           <button
             onClick={handleCloseClick}
             disabled={isClosing}
-            className="inline-flex cursor-pointer items-center justify-center gap-1 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
+            className="inline-flex cursor-pointer items-center justify-center gap-1 rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
           >
             <X className="h-4 w-4" />
             Close
