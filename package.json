@@ -1,0 +1,30 @@
+{
+  "name": "staff-purchase-form",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.0.0",
+    "@react-pdf/renderer": "^4.3.0",
+    "bcryptjs": "^3.0.2",
+    "jose": "^6.0.12",
+    "lucide-react": "^0.503.0",
+    "next": "^15.4.4",
+    "next-themes": "^0.4.6",
+    "nodemailer": "^7.0.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "prettier": "^3.5.3",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "tailwindcss": "^4"
+  }
+}
