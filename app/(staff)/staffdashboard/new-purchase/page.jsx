@@ -79,7 +79,7 @@ export default function NewPurchase() {
       const data = await response.json();
       console.log("Form submitted successfully:", data);
 
-      setAlertMessage("Details Submitted Successfully");
+      setAlertMessage("Purchase request sent");
       setAlertType("success");
       setShowAlert(true);
 

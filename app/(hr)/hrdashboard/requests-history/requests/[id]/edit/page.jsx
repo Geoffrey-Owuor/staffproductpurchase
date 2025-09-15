@@ -156,7 +156,7 @@ export default function EditPurchaseForm({ params }) {
         throw new Error("Failed to update purchase");
       }
 
-      setAlertMessage("Details updated successfully");
+      setAlertMessage("Request updated successfully");
       setAlertType("success");
       setShowAlert(true);
       clearFormData(setFormData);
