@@ -76,7 +76,7 @@ export default function NewPurchase() {
         throw new Error("Failed to submit form");
       }
 
-      setAlertMessage("Details Submitted Successfully");
+      setAlertMessage("Purchase request sent");
       setAlertType("success");
       setShowAlert(true);
 
