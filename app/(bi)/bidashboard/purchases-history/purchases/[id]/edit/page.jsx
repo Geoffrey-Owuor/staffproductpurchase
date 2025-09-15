@@ -1,7 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { ArrowLeft, Save, X } from "lucide-react";
 import Alert from "@/components/Alert";
 import StaffInfoSection from "@/components/FormEditComponents/StaffInfoSection";
 import ProductDetailsSection from "@/components/FormEditComponents/ProductDetailsSection";
@@ -13,10 +11,10 @@ import EditFormSkeleton from "@/components/skeletons/EditFormSkeleton";
 import UnauthorizedEdit from "@/components/Reusables/UnauthorizedEdit";
 import { LoadingBarWave } from "@/components/Reusables/LoadingBar";
 import { clearFormData } from "@/public/assets";
-import { FilePen } from "lucide-react";
+import EditPurchaseHeading from "@/components/EditPurchaseComponent/EditPurchaseHeading";
+import SaveCloseComponent from "@/components/EditPurchaseComponent/SaveCloseComponent";
 
 export default function EditPurchaseForm({ params }) {
-  const router = useRouter();
   const [userRole, setUserRole] = useState(null);
   const [loading, setLoading] = useState(true);
   const [biApproval, setBiApproval] = useState(null);
@@ -202,7 +200,7 @@ export default function EditPurchaseForm({ params }) {
         throw new Error("Failed to update purchase");
       }
 
-      setAlertMessage("Details updated successfully");
+      setAlertMessage("Request updated successfully");
       setAlertType("success");
       setShowAlert(true);
       clearFormData(setFormData);
@@ -233,22 +231,7 @@ export default function EditPurchaseForm({ params }) {
 
   return (
     <div className="mx-auto p-2">
-      <div className="mb-6 flex items-center justify-between">
-        <button
-          onClick={() => router.back()}
-          className="ml-4 flex cursor-pointer items-center text-red-900 hover:text-red-700"
-        >
-          <ArrowLeft className="mr-1 h-5 w-5" />
-          Go Back
-        </button>
-        <div className="flex items-center gap-2">
-          <FilePen className="h-6 w-6 text-red-900" />
-          <h2 className="text-xl font-semibold text-red-900">
-            Edit Purchase Request
-          </h2>
-        </div>
-        <div className="w-24"></div> {/* Spacer for alignment */}
-      </div>
+      <EditPurchaseHeading />
 
       <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
         {submitting && <LoadingBarWave isLoading={true} />}
@@ -279,23 +262,7 @@ export default function EditPurchaseForm({ params }) {
           userRole={userRole}
         />
 
-        <div className="flex justify-center space-x-4">
-          <button
-            type="button"
-            onClick={() => router.back()}
-            className="inline-flex cursor-pointer items-center rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none"
-          >
-            <X className="mr-2 h-4 w-4" />
-            Close
-          </button>
-          <button
-            type="submit"
-            className="inline-flex cursor-pointer items-center rounded-full border border-transparent bg-red-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none"
-          >
-            <Save className="mr-2 h-4 w-4" />
-            Save changes
-          </button>
-        </div>
+        <SaveCloseComponent />
       </form>
 
       {/* Confirmation Dialogue */}

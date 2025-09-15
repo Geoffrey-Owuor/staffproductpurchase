@@ -16,7 +16,6 @@ export default function ProductDetailsSection({
   userRole,
   setFormData,
 }) {
-  // Auto-calculate discountRate when itemStatus or productpolicy changes
   useEffect(() => {
     const { itemstatus, productpolicy } = formData;
     if (itemstatus && productpolicy && discountpolicy[productpolicy]) {
@@ -35,18 +34,21 @@ export default function ProductDetailsSection({
   const ccReadOnly = userRole != "cc";
   const editableRoles = ["cc", "staff"];
   const isReadOnlyGeneral = !editableRoles.includes(userRole);
+
   return (
-    <div className="overflow-hidden rounded-xl border border-gray-200">
+    <div className="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700">
       <div className="px-6 py-3">
-        <h3 className="text-lg font-medium text-red-900">
+        <h3 className="text-lg font-medium text-gray-900 dark:text-white">
           Product and Pricing Details
         </h3>
       </div>
-      <div className="grid grid-cols-1 gap-6 bg-white p-6 md:grid-cols-2">
+
+      <div className="grid grid-cols-1 gap-6 bg-white p-6 md:grid-cols-2 dark:bg-gray-950">
+        {/* Item Name */}
         <div className="md:col-span-2">
           <label
             htmlFor="itemname"
-            className="mb-1 block text-sm font-medium text-gray-700"
+            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
           >
             Item Name
           </label>
@@ -57,16 +59,21 @@ export default function ProductDetailsSection({
             value={formData.itemname}
             onChange={handleChange}
             readOnly={isReadOnlyGeneral}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${
+              isReadOnlyGeneral
+                ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800"
+                : "bg-white dark:bg-gray-950"
+            }`}
             placeholder="Enter item name"
             required
           />
         </div>
 
+        {/* Status */}
         <div>
           <label
             htmlFor="itemstatus"
-            className="mb-1 block text-sm font-medium text-gray-700"
+            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
           >
             Status
           </label>
@@ -76,7 +83,11 @@ export default function ProductDetailsSection({
             value={formData.itemstatus}
             onChange={handleChange}
             disabled={isReadOnlyGeneral}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${
+              isReadOnlyGeneral
+                ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800"
+                : "bg-white dark:bg-gray-950"
+            }`}
             required
           >
             <option value="" disabled>
@@ -87,10 +98,11 @@ export default function ProductDetailsSection({
           </select>
         </div>
 
+        {/* Policy */}
         <div>
           <label
             htmlFor="productpolicy"
-            className="mb-1 block text-sm font-medium text-gray-700"
+            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
           >
             Item Policy
           </label>
@@ -100,7 +112,15 @@ export default function ProductDetailsSection({
             value={formData.productpolicy}
             onChange={handleChange}
             disabled={isReadOnlyGeneral}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${formData.itemStatus === "" ? "text-gray-400" : "text-black"} ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${
+              formData.itemstatus === ""
+                ? "text-gray-400"
+                : "text-black dark:text-white"
+            } ${
+              isReadOnlyGeneral
+                ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800"
+                : "bg-white dark:bg-gray-950"
+            }`}
             required
           >
             <option value="" disabled>
@@ -114,10 +134,11 @@ export default function ProductDetailsSection({
           </select>
         </div>
 
+        {/* Product Code */}
         <div>
           <label
             htmlFor="productcode"
-            className="mb-1 block text-sm font-medium text-gray-700"
+            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
           >
             Product Code
           </label>
@@ -128,16 +149,21 @@ export default function ProductDetailsSection({
             value={formData.productcode}
             onChange={handleChange}
             readOnly={isReadOnlyGeneral}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${
+              isReadOnlyGeneral
+                ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800"
+                : "bg-white dark:bg-gray-950"
+            }`}
             placeholder="Enter product code"
             required={isRequired}
           />
         </div>
 
+        {/* TD Price */}
         <div>
           <label
             htmlFor="tdprice"
-            className="mb-1 block text-sm font-medium text-gray-700"
+            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
           >
             TD Price (Ksh)
           </label>
@@ -150,16 +176,21 @@ export default function ProductDetailsSection({
             readOnly={isReadOnlyGeneral}
             step="0.01"
             min="0"
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${
+              isReadOnlyGeneral
+                ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800"
+                : "bg-white dark:bg-gray-950"
+            }`}
             placeholder="Enter TD price"
             required={isRequired}
           />
         </div>
 
+        {/* Discount Rate */}
         <div>
           <label
             htmlFor="discountrate"
-            className="mb-1 block text-sm font-medium text-gray-700"
+            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
           >
             Discount Rate (%)
           </label>
@@ -173,16 +204,21 @@ export default function ProductDetailsSection({
             min="0"
             max="100"
             readOnly={ccReadOnly}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${ccReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 text-gray-500 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-gray-400 ${
+              ccReadOnly
+                ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800"
+                : "bg-white dark:bg-gray-950"
+            }`}
             placeholder="Enter discount rate"
             required={isRequired}
           />
         </div>
 
+        {/* Discounted Value */}
         <div>
           <label
             htmlFor="discountedvalue"
-            className="mb-1 block text-sm font-medium text-gray-700"
+            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
           >
             Discounted Value (Ksh)
           </label>
@@ -194,16 +230,17 @@ export default function ProductDetailsSection({
             step="0.01"
             min="0"
             readOnly
-            className="w-full rounded-xl border border-gray-300 bg-gray-100 px-3 py-2 focus:border-red-500 focus:outline-none"
+            className="w-full cursor-not-allowed rounded-xl border border-gray-300 bg-gray-100 px-3 py-2 text-gray-500 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
           />
         </div>
 
+        {/* Date */}
         <div>
           <label
             htmlFor="createdat"
-            className="mb-1 block text-sm font-medium text-gray-700"
+            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
           >
-            Date
+            Date Submitted
           </label>
           <input
             type="text"
@@ -212,14 +249,15 @@ export default function ProductDetailsSection({
             value={formatDateLong(formData.createdat)}
             onChange={handleChange}
             readOnly
-            className="w-full rounded-xl border border-gray-300 bg-gray-100 px-3 py-2 focus:border-red-500 focus:outline-none"
+            className="w-full cursor-not-allowed rounded-xl border border-gray-300 bg-gray-100 px-3 py-2 text-gray-500 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
           />
         </div>
 
+        {/* Payment Terms */}
         <div>
           <label
             htmlFor="employee_payment_terms"
-            className="mb-1 block text-sm font-medium text-gray-700"
+            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
           >
             Payment Terms/Options
           </label>
@@ -229,11 +267,15 @@ export default function ProductDetailsSection({
             value={formData.employee_payment_terms}
             onChange={handleChange}
             disabled={isReadOnly}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${
+              isReadOnly
+                ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800"
+                : "bg-white dark:bg-gray-950"
+            }`}
             required
           >
             <option value="" disabled>
-              No payment option selected
+              Select a payment option
             </option>
             <option value="CREDIT">Credit</option>
             <option value="CASH">Cash</option>
@@ -242,12 +284,12 @@ export default function ProductDetailsSection({
           </select>
         </div>
 
-        {/* Conditional field to appear when user selects the credit option in payment terms/options */}
+        {/* Credit Period if Credit chosen */}
         {formData.employee_payment_terms === "CREDIT" && (
           <div>
             <label
               htmlFor="user_credit_period"
-              className="mb-1 block text-sm font-medium text-gray-700"
+              className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
             >
               Credit Period
             </label>
@@ -257,7 +299,11 @@ export default function ProductDetailsSection({
               value={formData.user_credit_period || ""}
               onChange={handleChange}
               disabled={isReadOnly}
-              className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-red-500 focus:outline-none ${isReadOnly ? "cursor-not-allowed bg-gray-100" : "bg-white"}`}
+              className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${
+                isReadOnly
+                  ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800"
+                  : "bg-white dark:bg-gray-950"
+              }`}
               required
             >
               <option value="" disabled>

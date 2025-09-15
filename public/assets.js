@@ -1,8 +1,10 @@
-import hotpoint_logo from "./hotpoint_logo.svg";
-import Image from "next/image";
+import hotpoint_logo from "./hotpoint_logo.webp";
+import hotpoint_white_logo from "./hotpoint_white_logo.webp";
+import { ShoppingBag } from "lucide-react";
 
 export const assets = {
   hotpoint_logo,
+  hotpoint_white_logo,
 };
 
 export const formatDateLong = (dateString) => {
@@ -26,15 +28,15 @@ export const clearFormData = (setFormData) => {
   });
 };
 
-export const HotpointSvgLogo = () => {
+export const AuthPagesLogo = () => {
   return (
-    <Image
-      src={assets.hotpoint_logo}
-      alt="Company Logo"
-      width={150}
-      height={150}
-      className="mx-auto h-20 w-auto"
-      priority
-    />
+    <a href="/">
+      <div className="flex items-center space-x-2 text-3xl font-bold">
+        <ShoppingBag className="h-8 w-8 text-gray-950 dark:text-white" />
+        <span className="text-gray-900 dark:text-gray-100">
+          Hot<span className="text-red-600 dark:text-red-500">p</span>oint
+        </span>
+      </div>
+    </a>
   );
 };

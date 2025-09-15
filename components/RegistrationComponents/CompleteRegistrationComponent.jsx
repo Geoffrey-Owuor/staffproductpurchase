@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { Eye, EyeClosed } from "lucide-react";
-import { HotpointSvgLogo } from "@/public/assets";
+import { AuthPagesLogo } from "@/public/assets";
+import ThemeToggle from "../Reusables/ThemeProviders/ThemeToggle";
 
 export default function CompleteRegistrationComponent({ email }) {
   const [formData, setFormData] = useState({
@@ -57,25 +58,23 @@ export default function CompleteRegistrationComponent({ email }) {
   };
 
   return (
-    <div className="mt-12 flex min-h-screen flex-col items-center bg-white">
+    <div className="relative flex min-h-screen flex-col items-center justify-center bg-white text-gray-900 dark:bg-gray-950 dark:text-white">
       {/* Logo */}
-      <HotpointSvgLogo />
-
+      <div className="fixed top-3.5 left-4 z-50">
+        <AuthPagesLogo />
+      </div>
       {/* Card */}
       <div className="w-full max-w-[400px] px-8">
-        <h1 className="mb-6 text-center text-2xl font-semibold text-red-800">
+        <h1 className="mb-8 text-center text-3xl font-semibold">
           Complete Registration
         </h1>
-
         {error && (
           <div className="mb-4 text-center text-sm text-red-700">{error}</div>
         )}
-
         <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
-          <div className="text-center text-sm text-green-600">
+          <div className="text-center text-sm text-green-600 dark:text-green-400">
             Email verified successfully!
           </div>
-
           {/* Full Name */}
           <div className="relative">
             <input
@@ -85,13 +84,12 @@ export default function CompleteRegistrationComponent({ email }) {
               onChange={handleChange}
               required
               placeholder=" "
-              className="peer w-full rounded-full border border-gray-300 px-4 py-3 placeholder-transparent focus:outline-none"
+              className="peer w-full rounded-full border border-gray-300 bg-transparent px-4 py-3 placeholder-transparent focus:outline-none dark:border-gray-700 dark:text-white"
             />
-            <label className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600">
+            <label className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300">
               Full Name
             </label>
           </div>
-
           {/* Password */}
           <div className="relative">
             <input
@@ -102,9 +100,9 @@ export default function CompleteRegistrationComponent({ email }) {
               required
               minLength="8"
               placeholder=" "
-              className="peer w-full rounded-full border border-gray-300 px-4 py-3 placeholder-transparent focus:outline-none"
+              className="peer w-full rounded-full border border-gray-300 bg-transparent px-4 py-3 placeholder-transparent focus:outline-none dark:border-gray-700 dark:text-white"
             />
-            <label className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600">
+            <label className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300">
               Password
             </label>
             <div
@@ -114,7 +112,6 @@ export default function CompleteRegistrationComponent({ email }) {
               {showPassword ? <EyeClosed size={20} /> : <Eye size={20} />}
             </div>
           </div>
-
           {/* Confirm Password */}
           <div className="relative">
             <input
@@ -124,7 +121,7 @@ export default function CompleteRegistrationComponent({ email }) {
               onChange={handleChange}
               required
               placeholder=" "
-              className="peer w-full rounded-full border border-gray-300 px-4 py-3 placeholder-transparent focus:outline-none"
+              className="peer w-full rounded-full border border-gray-300 bg-transparent px-4 py-3 placeholder-transparent focus:outline-none dark:border-gray-700 dark:text-white"
             />
             {formData.confirmPassword &&
               formData.password !== formData.confirmPassword && (
@@ -132,11 +129,10 @@ export default function CompleteRegistrationComponent({ email }) {
                   passwords do not match
                 </p>
               )}
-            <label className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600">
+            <label className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300">
               Confirm Password
             </label>
           </div>
-
           <button
             type="submit"
             disabled={
@@ -148,25 +144,28 @@ export default function CompleteRegistrationComponent({ email }) {
               loading ||
               (formData.confirmPassword &&
                 formData.password !== formData.confirmPassword)
-                ? "cursor-not-allowed bg-red-400"
-                : "cursor-pointer bg-red-600 hover:bg-red-700"
+                ? "cursor-not-allowed disabled:bg-gray-400"
+                : "bg-gray-900 hover:bg-gray-700 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
             }`}
           >
             {loading ? (
               <div className="flex items-center justify-center gap-2">
                 Completing...
-                <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent dark:border-gray-900 dark:border-t-transparent"></div>
               </div>
             ) : (
               <>Complete</>
             )}
           </button>
         </form>
-
         {/* Security note */}
         <p className="mt-4 text-center text-xs text-gray-400">
           Secure company login • Do not share your credentials
         </p>
+      </div>
+      {/* Theme Toggle - Bottom Right */}
+      <div className="fixed right-4 bottom-4 z-50">
+        <ThemeToggle />
       </div>
     </div>
   );

@@ -2,7 +2,7 @@
 export default function TableSkeleton() {
   return (
     <div className="flex justify-center p-8">
-      <div className="h-8 w-8 animate-spin rounded-full border-4 border-red-900 border-t-transparent"></div>
+      <div className="h-12 w-12 animate-spin rounded-full border-4 border-gray-900 border-t-transparent dark:border-white dark:border-t-transparent"></div>
     </div>
   );
 }

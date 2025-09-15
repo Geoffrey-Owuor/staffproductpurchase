@@ -21,7 +21,7 @@ export default function CCLayoutShell({ user, children }) {
         <div className="flex flex-1">
           <CCSidebar isOpen={sidebarOpen} />
           <main
-            className={`flex-1 overflow-x-hidden transition-all duration-200 ${sidebarOpen ? "ml-56" : "ml-0"}`}
+            className={`flex-1 overflow-x-hidden px-4 transition-all duration-200 ${sidebarOpen ? "ml-56" : "mx-12"}`}
           >
             <div className="mt-20">{children}</div>
           </main>

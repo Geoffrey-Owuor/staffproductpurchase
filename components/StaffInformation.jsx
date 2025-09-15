@@ -1,7 +1,7 @@
 const StaffInformation = ({ formData, handleChange }) => {
   return (
-    <div className="mb-8 rounded-xl border border-gray-200 bg-white">
-      <div className="rounded-t-xl px-6 py-3 text-lg font-semibold text-red-900">
+    <div className="mb-8 rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-950">
+      <div className="rounded-t-xl px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white">
         Staff Information
       </div>
       <div className="px-6 py-4">
@@ -9,7 +9,7 @@ const StaffInformation = ({ formData, handleChange }) => {
           <div>
             <label
               htmlFor="staffname"
-              className="mb-2 block text-sm font-medium text-gray-700"
+              className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
             >
               Staff Name
             </label>
@@ -19,7 +19,7 @@ const StaffInformation = ({ formData, handleChange }) => {
               name="staffname"
               value={formData.staffname}
               onChange={handleChange}
-              className="w-full rounded-xl border border-gray-200 p-2 focus:border-red-500 focus:outline-none"
+              className="w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
               required
             />
           </div>
@@ -27,7 +27,7 @@ const StaffInformation = ({ formData, handleChange }) => {
           <div>
             <label
               htmlFor="payrollno"
-              className="mb-2 block text-sm font-medium text-gray-700"
+              className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
             >
               Payroll No
             </label>
@@ -37,14 +37,14 @@ const StaffInformation = ({ formData, handleChange }) => {
               name="payrollno"
               value={formData.payrollno}
               onChange={handleChange}
-              className="w-full rounded-xl border border-gray-200 p-2 focus:border-red-500 focus:outline-none"
+              className="w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
               required
             />
           </div>
           <div>
             <label
               htmlFor="department"
-              className="mb-2 block text-sm font-medium text-gray-700"
+              className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
             >
               Department
             </label>
@@ -53,7 +53,7 @@ const StaffInformation = ({ formData, handleChange }) => {
               name="department"
               value={formData.department}
               onChange={handleChange}
-              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-red-500 focus:outline-none`}
+              className="w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
               required
             >
               <option value="" disabled>
@@ -69,7 +69,7 @@ const StaffInformation = ({ formData, handleChange }) => {
               <option value="Service Center">Service Center</option>
               <option value="Modern Trade">Modern Trade</option>
               <option value="Commercial">Commercial</option>
-              <option value="Imports">Imports & Exports</option>
+              <option value="Imports & Exports">Imports & Exports</option>
               <option value="Warehouse">Warehouse</option>
             </select>
           </div>

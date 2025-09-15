@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Eye, EyeClosed } from "lucide-react";
-import { HotpointSvgLogo } from "@/public/assets";
+import ThemeToggle from "@/components/Reusables/ThemeProviders/ThemeToggle";
+import { AuthPagesLogo } from "@/public/assets";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -63,23 +64,26 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="mt-12 flex min-h-screen flex-col items-center bg-white">
+    <div className="relative flex min-h-screen flex-col items-center justify-center bg-white text-gray-900 dark:bg-gray-950 dark:text-white">
       {/* Company Logo */}
-      <HotpointSvgLogo />
+      <div className="fixed top-3.5 left-4 z-50">
+        <AuthPagesLogo />
+      </div>
 
       {/* Login Card */}
       <div className="w-full max-w-[400px] px-8">
-        <h1 className="mb-6 text-center text-2xl font-semibold text-red-800">
+        <h1 className="mb-10 text-center text-3xl font-semibold">
           Welcome Back
         </h1>
 
         {loginError && (
-          <div className="mb-4 text-center text-sm text-red-700">
+          <div className="mb-4 text-center text-sm text-red-600 dark:text-red-400">
             {loginError}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
+          {/* Email */}
           <div className="relative">
             <input
               type="email"
@@ -88,17 +92,18 @@ export default function LoginPage() {
               value={formData.email}
               onChange={handleChange}
               required
-              placeholder=" " // <-- important to trigger :placeholder-shown behavior
-              className="peer w-full rounded-full border border-gray-300 px-4 py-3 placeholder-transparent focus:outline-none"
+              placeholder=" "
+              className="peer w-full rounded-full border border-gray-300 bg-transparent px-4 py-3 text-gray-900 placeholder-transparent focus:outline-none dark:border-gray-700 dark:text-white"
             />
             <label
               htmlFor="email"
-              className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600"
+              className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300"
             >
               Email Address
             </label>
           </div>
 
+          {/* Password */}
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
@@ -107,12 +112,12 @@ export default function LoginPage() {
               value={formData.password}
               onChange={handleChange}
               required
-              placeholder=" " // <-- important to trigger :placeholder-shown behavior
-              className="peer w-full rounded-full border border-gray-300 px-4 py-3 placeholder-transparent focus:outline-none"
+              placeholder=" "
+              className="peer w-full rounded-full border border-gray-300 bg-transparent px-4 py-3 text-gray-900 placeholder-transparent focus:outline-none dark:border-gray-700 dark:text-white"
             />
             <label
               htmlFor="password"
-              className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600"
+              className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300"
             >
               Password
             </label>
@@ -120,34 +125,38 @@ export default function LoginPage() {
             {/* Eye Icon */}
             <div
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer text-gray-500 hover:text-gray-700"
+              className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
             >
               {showPassword ? <EyeClosed size={20} /> : <Eye size={20} />}
             </div>
           </div>
 
+          {/* Submit Button */}
           <button
             type="submit"
             disabled={redirect}
-            className={`w-full rounded-full px-4 py-3 font-medium text-white transition duration-200 ${redirect ? "cursor-not-allowed bg-red-400" : "cursor-pointer bg-red-600 hover:bg-red-700"}`}
+            className={`w-full rounded-full px-4 py-3 font-medium text-white transition duration-200 ${
+              redirect
+                ? "cursor-not-allowed bg-gray-400 dark:bg-gray-600"
+                : "bg-gray-900 hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
+            }`}
           >
             {redirect ? (
-              <>
-                <div className="flex items-center justify-center gap-2">
-                  Logging in...
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-                </div>
-              </>
+              <div className="flex items-center justify-center gap-2">
+                Logging in...
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+              </div>
             ) : (
               <>Login</>
             )}
           </button>
 
+          {/* Forgot Password */}
           <div className="flex items-center justify-center">
             <div className="text-sm">
               <Link
                 href="/forgot-password"
-                className="text-red-600 hover:underline"
+                className="text-gray-900 hover:underline dark:text-gray-200"
               >
                 Forgot password?
               </Link>
@@ -155,19 +164,25 @@ export default function LoginPage() {
           </div>
         </form>
 
-        <div className="mt-6 text-center text-sm text-gray-600">
-          Don't have an account?{" "}
+        {/* Sign Up */}
+        <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
+          Don&apos;t have an account?{" "}
           <Link
             href="/register"
-            className="font-medium text-red-600 hover:underline"
+            className="font-medium text-gray-900 hover:underline dark:text-white"
           >
             Sign up
           </Link>
         </div>
+
         {/* Security note */}
-        <p className="mt-4 text-center text-xs text-gray-400">
+        <p className="mt-4 text-center text-xs text-gray-400 dark:text-gray-500">
           Secure company login • Do not share your credentials
         </p>
+      </div>
+      {/* Theme Toggle - Bottom Right */}
+      <div className="fixed right-4 bottom-4 z-50">
+        <ThemeToggle />
       </div>
     </div>
   );

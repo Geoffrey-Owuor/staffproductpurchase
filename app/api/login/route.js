@@ -15,7 +15,7 @@ export async function POST(request) {
 
     if (!rows.length) {
       return Response.json(
-        { success: false, message: "Email not found" },
+        { success: false, message: "Wrong username or password" },
         { status: 401 },
       );
     }
@@ -25,7 +25,7 @@ export async function POST(request) {
     const isValid = await verifyPassword(password, user.password);
     if (!isValid) {
       return Response.json(
-        { success: false, message: "Wrong password, please try again" },
+        { success: false, message: "Wrong username or password" },
         { status: 401 },
       );
     }

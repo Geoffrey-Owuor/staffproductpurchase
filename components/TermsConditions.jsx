@@ -14,20 +14,22 @@ const TermsConditions = () => {
   ];
 
   return (
-    <div className="mx-2 mt-8 mb-2 rounded-2xl border border-gray-200 bg-white p-6 text-sm">
+    <div className="mx-2 mt-8 mb-2 rounded-2xl border border-gray-200 bg-white p-6 text-sm dark:border-gray-700 dark:bg-gray-950">
       <div className="mb-4 ml-0.5 flex items-center gap-2">
-        <FileSignature className="h-5 w-5 text-red-600" />
-        <h3 className="text-xl font-semibold text-gray-800">
+        <FileSignature className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+        <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200">
           Terms & Conditions
         </h3>
       </div>
       <div className="space-y-4">
         {terms.map((term, index) => (
           <div key={index} className="flex items-start">
-            <span className="mr-3 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-red-50 text-xs font-bold text-red-600">
+            <span className="mr-3 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gray-100 text-xs font-bold text-gray-600 dark:bg-gray-800 dark:text-gray-300">
               {index + 1}
             </span>
-            <p className="leading-relaxed text-gray-700">{term}</p>
+            <p className="leading-relaxed text-gray-700 dark:text-gray-400">
+              {term}
+            </p>
           </div>
         ))}
       </div>

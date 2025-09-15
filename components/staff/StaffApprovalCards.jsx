@@ -2,6 +2,7 @@
 import { Clock, XCircle, CheckCircle2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import ApprovalCardsSkeleton from "../skeletons/ApprovalCardsSkeleton";
+import { StatCard } from "../Reusables/StatCard";
 
 export default function StaffApprovalCards() {
   const [counts, setCounts] = useState({
@@ -34,74 +35,45 @@ export default function StaffApprovalCards() {
   }, []);
 
   return (
-    <div className="mx-2 mt-4 mb-8 rounded-xl border border-gray-200 px-2 pt-2 pb-6">
+    <div className="mx-2 mt-4 mb-8 rounded-xl border border-gray-200 px-2 pt-2 pb-6 dark:border-gray-700 dark:bg-gray-950">
       {/* Heading */}
       <div className="mt-3 mb-2 px-1 pb-3">
-        <h2 className="text-xl font-semibold text-red-900">Approval status</h2>
-        <p className="text-sm text-gray-500">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+          Approval status
+        </h2>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
           Summary of all approval requests sent to billing & invoicing
         </p>
       </div>
 
-      {/* Cards grid */}
+      {/* Cards Grid */}
 
       {loading ? (
         <ApprovalCardsSkeleton />
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {/* Pending Card */}
-          <div className="rounded-2xl bg-yellow-50 p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-lg font-medium text-yellow-800">Pending</h3>
-                <p className="mt-2 text-3xl font-bold text-yellow-900">
-                  {counts.pending}
-                </p>
-              </div>
-              <div className="rounded-full bg-yellow-100 p-3">
-                <Clock className="h-6 w-6 text-yellow-600" />
-              </div>
-            </div>
-            <p className="mt-4 text-sm text-yellow-700">
-              Awaiting approval from invoicing
-            </p>
-          </div>
-
+          <StatCard
+            title="Pending"
+            count={counts.pending}
+            description="Awaiting approval from invoicing"
+            IconComponent={Clock}
+          />
           {/* Declined Card */}
-          <div className="rounded-2xl bg-red-50 p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-lg font-medium text-red-800">Declined</h3>
-                <p className="mt-2 text-3xl font-bold text-red-900">
-                  {counts.declined}
-                </p>
-              </div>
-              <div className="rounded-full bg-red-100 p-3">
-                <XCircle className="h-6 w-6 text-red-600" />
-              </div>
-            </div>
-            <p className="mt-4 text-sm text-red-700">
-              Requests declined by invoicing
-            </p>
-          </div>
+          <StatCard
+            title="Declined"
+            count={counts.declined}
+            description="Requests declined by invoicing"
+            IconComponent={XCircle}
+          />
 
           {/* Approved Card */}
-          <div className="rounded-2xl bg-green-50 p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-lg font-medium text-green-800">Approved</h3>
-                <p className="mt-2 text-3xl font-bold text-green-900">
-                  {counts.approved}
-                </p>
-              </div>
-              <div className="rounded-full bg-green-100 p-3">
-                <CheckCircle2 className="h-6 w-6 text-green-600" />
-              </div>
-            </div>
-            <p className="mt-4 text-sm text-green-700">
-              Requests approved by invoicing
-            </p>
-          </div>
+          <StatCard
+            title="Approved"
+            count={counts.approved}
+            description="Requests approved by invoicing"
+            IconComponent={CheckCircle2}
+          />
         </div>
       )}
     </div>

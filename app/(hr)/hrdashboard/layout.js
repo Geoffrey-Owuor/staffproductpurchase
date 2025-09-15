@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/app/lib/auth";
 import HrLayoutShell from "@/components/hr/HrLayoutShell";
 import UnauthorizedPage from "@/components/Reusables/UnauthorizedPage";
+import { FirstLoader } from "@/components/Reusables/FirstLoader";
 
 export const metadata = {
   title: "HAL - HR Dashboard",
@@ -19,5 +20,10 @@ export default async function layout({ children }) {
     return <UnauthorizedPage />;
   }
 
-  return <HrLayoutShell user={user}>{children}</HrLayoutShell>;
+  return (
+    <>
+      <FirstLoader />
+      <HrLayoutShell user={user}>{children}</HrLayoutShell>
+    </>
+  );
 }

@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/app/lib/auth";
 import UnauthorizedPage from "@/components/Reusables/UnauthorizedPage";
 import BILayoutShell from "@/components/bi/BILayoutShell";
+import { FirstLoader } from "@/components/Reusables/FirstLoader";
 
 export const metadata = {
   title: "HAL - Billing & Invoice Dashboard",
@@ -19,5 +20,10 @@ export default async function layout({ children }) {
     return <UnauthorizedPage />;
   }
 
-  return <BILayoutShell user={user}>{children}</BILayoutShell>;
+  return (
+    <>
+      <FirstLoader />
+      <BILayoutShell user={user}>{children}</BILayoutShell>
+    </>
+  );
 }

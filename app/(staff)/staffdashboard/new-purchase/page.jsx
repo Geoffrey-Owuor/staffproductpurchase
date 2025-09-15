@@ -79,7 +79,7 @@ export default function NewPurchase() {
       const data = await response.json();
       console.log("Form submitted successfully:", data);
 
-      setAlertMessage("Details Submitted Successfully");
+      setAlertMessage("Purchase request sent");
       setAlertType("success");
       setShowAlert(true);
 
@@ -109,12 +109,13 @@ export default function NewPurchase() {
       setIsSubmitting(false);
     }
   };
+
   return (
     <>
-      <div className="mx-auto p-2 leading-relaxed">
+      <div className="mx-auto p-2 leading-relaxed dark:bg-gray-950">
         <div className="mb-5 flex items-center justify-center gap-2">
-          <ClipboardList className="h-6 w-6 text-red-900" />
-          <h1 className="text-xl font-semibold text-red-900">
+          <ClipboardList className="h-6 w-6 text-gray-900 dark:text-gray-200" />
+          <h1 className="text-xl font-semibold text-gray-900 dark:text-gray-200">
             PURCHASE FORM (Staff Information & Product Details)
           </h1>
         </div>
@@ -138,7 +139,7 @@ export default function NewPurchase() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="mx-auto my-8 block cursor-pointer rounded-xl bg-red-800 px-6 py-3 text-sm text-white transition-colors hover:bg-red-900"
+            className="mx-auto my-8 block rounded-xl bg-gray-900 px-6 py-2.5 text-sm text-white transition-colors hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
           >
             Submit Purchase
           </button>

@@ -62,13 +62,13 @@ export default function ViewPurchase({ params }) {
     return (
       <>
         <LoadingLine isLoading={isLoadingline} />
-        <div className="mx-auto p-6 text-center">
-          <div className="rounded-lg bg-red-100 p-4 text-red-700">
+        <div className="mx-auto p-6 text-center dark:bg-gray-950">
+          <div className="rounded-lg bg-red-100 p-4 text-red-700 dark:bg-red-900 dark:text-white">
             Error: {error}
           </div>
           <button
             onClick={() => handleRouterClick("/ccdashboard")}
-            className="mt-4 inline-flex cursor-pointer items-center gap-1 rounded-full bg-red-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700"
+            className="mt-4 inline-flex cursor-pointer items-center gap-1 rounded-full bg-gray-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to Home
@@ -82,13 +82,13 @@ export default function ViewPurchase({ params }) {
     return (
       <>
         <LoadingLine isLoading={isLoadingline} />
-        <div className="mx-auto p-6 text-center">
-          <div className="rounded-lg bg-yellow-100 p-4 text-yellow-700">
+        <div className="mx-auto p-6 text-center dark:bg-gray-950">
+          <div className="rounded-lg bg-yellow-100 p-4 text-yellow-700 dark:bg-yellow-900 dark:text-white">
             No purchase data found
           </div>
           <button
             onClick={() => handleRouterClick("/ccdashboard")}
-            className="mt-4 inline-flex cursor-pointer items-center gap-1 rounded-full bg-red-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700"
+            className="mt-4 inline-flex cursor-pointer items-center gap-1 rounded-full bg-gray-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to Home
@@ -101,13 +101,13 @@ export default function ViewPurchase({ params }) {
   return (
     <>
       <LoadingLine isLoading={isLoadingline} />
-      <div className="mx-auto p-2">
+      <div className="mx-auto p-2 dark:bg-gray-950">
         {isEditing && <LoadingBar isLoading={true} />}
         {/* Header with back button */}
         <div className="mb-6 flex items-center justify-between">
           <button
             onClick={() => handleRouterClick("/ccdashboard")}
-            className="ml-4 flex cursor-pointer items-center text-red-900 hover:text-red-700"
+            className="ml-4 flex cursor-pointer items-center text-gray-900 hover:text-gray-700 dark:text-white dark:hover:text-gray-400"
           >
             <ArrowLeft className="mr-2 h-5 w-5" />
             Back to Home
@@ -118,19 +118,19 @@ export default function ViewPurchase({ params }) {
             <button
               onClick={handleEditClick}
               disabled={isEditing}
-              className="flex cursor-pointer items-center justify-center gap-1 rounded-full bg-red-900 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-red-700"
+              className="flex items-center justify-center gap-1 rounded-xl bg-gray-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
             >
               <Edit className="h-4 w-4" />
               Edit
             </button>
           )}
 
-          <div className="flex items-center">
+          <div className="mr-4 flex items-center">
             <button
               onClick={() =>
                 handleRouterClick("/ccdashboard/purchases-history")
               }
-              className="mr-4 flex cursor-pointer items-center text-red-900 hover:text-red-700"
+              className="flex cursor-pointer items-center text-gray-900 hover:text-gray-700 dark:text-white dark:hover:text-gray-400"
             >
               Purchases History
               <ArrowUpRight className="h-4 w-4" />
@@ -139,10 +139,10 @@ export default function ViewPurchase({ params }) {
         </div>
 
         {/* Details Card */}
-        <div className="rounded-xl border border-gray-200 bg-white">
+        <div className="rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-950">
           {/* Staff Information Section */}
-          <div className="border-b border-red-200 p-6">
-            <h2 className="mb-4 text-lg font-semibold text-red-900">
+          <div className="border-b border-gray-200 p-6 dark:border-gray-700">
+            <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
               Staff Information
             </h2>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -152,8 +152,8 @@ export default function ViewPurchase({ params }) {
             </div>
           </div>
           {/* Product Information Section */}
-          <div className="border-b border-red-200 p-6">
-            <h2 className="mb-4 text-lg font-semibold text-red-900">
+          <div className="border-b border-gray-200 p-6 dark:border-gray-700">
+            <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
               Product Information
             </h2>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -163,8 +163,8 @@ export default function ViewPurchase({ params }) {
             </div>
           </div>
           {/* Pricing Section */}
-          <div className="border-b border-red-200 p-6">
-            <h2 className="mb-4 text-lg font-semibold text-red-900">
+          <div className="border-b border-gray-200 p-6 dark:border-gray-700">
+            <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
               Pricing Details
             </h2>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -185,7 +185,7 @@ export default function ViewPurchase({ params }) {
           {/* Approval & Metadata Section */}
           <div className="grid grid-cols-1 gap-6 p-6 md:grid-cols-2">
             <div>
-              <h2 className="mb-4 text-lg font-semibold text-red-900">
+              <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
                 Approval Statuses
               </h2>
               <div className="space-y-4">
@@ -204,7 +204,7 @@ export default function ViewPurchase({ params }) {
               </div>
             </div>
             <div>
-              <h2 className="mb-4 text-lg font-semibold text-red-900">
+              <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
                 Metadata
               </h2>
               <div className="space-y-4">
@@ -212,7 +212,7 @@ export default function ViewPurchase({ params }) {
                   label="Date Created"
                   value={formatDateLong(purchase.createdat)}
                 />
-                {/* <DetailField label="Signature" value={purchase.signature} /> */}
+
                 <DetailField
                   label="Payment Terms/Options"
                   value={purchase.employee_payment_terms}
@@ -222,8 +222,8 @@ export default function ViewPurchase({ params }) {
           </div>
 
           {/* Payroll/HR Approval Section */}
-          <div className="border-t border-red-200 p-6">
-            <h2 className="mb-4 text-lg font-semibold text-red-900">
+          <div className="border-t border-gray-200 p-6 dark:border-gray-700">
+            <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
               Payroll/HR Approval
             </h2>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -258,8 +258,8 @@ export default function ViewPurchase({ params }) {
           </div>
 
           {/* Credit Control Verification Section */}
-          <div className="border-t border-red-200 p-6">
-            <h2 className="mb-4 text-lg font-semibold text-red-900">
+          <div className="border-t border-gray-200 p-6 dark:border-gray-700">
+            <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
               Credit Control Verification and Approval
             </h2>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -323,7 +323,7 @@ export default function ViewPurchase({ params }) {
             <button
               onClick={handleEditClick}
               disabled={isEditing}
-              className="inline-flex cursor-pointer items-center justify-center gap-1 rounded-full bg-red-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700"
+              className="inline-flex items-center justify-center gap-1 rounded-xl bg-gray-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
             >
               <Edit className="h-4 w-4" />
               Edit
@@ -332,7 +332,7 @@ export default function ViewPurchase({ params }) {
           <button
             onClick={handleCloseClick}
             disabled={isClosing}
-            className="inline-flex cursor-pointer items-center justify-center gap-1 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
+            className="inline-flex items-center justify-center gap-1 rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-950 dark:text-gray-400 dark:hover:bg-gray-800"
           >
             <X className="h-4 w-4" />
             Close

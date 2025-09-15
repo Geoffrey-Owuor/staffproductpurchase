@@ -25,14 +25,14 @@ const ProductPricing = ({ formData, handleChange, setFormData }) => {
   }, [formData.itemstatus, formData.productpolicy]);
 
   return (
-    <div className="mb-8 rounded-xl border border-gray-200 bg-white">
-      <div className="rounded-t-xl px-6 py-3 text-lg font-semibold text-red-900">
+    <div className="mb-8 rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-950">
+      <div className="rounded-t-xl px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white">
         Product & Pricing Details
       </div>
       <div className="overflow-x-auto px-6 py-4">
         {/* Item Name Field Full Width */}
         <div className="mb-4">
-          <label className="mb-1 block text-sm font-medium text-gray-700">
+          <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400">
             Item Name
           </label>
           <input
@@ -40,43 +40,43 @@ const ProductPricing = ({ formData, handleChange, setFormData }) => {
             name="itemname"
             value={formData.itemname}
             onChange={handleChange}
-            className="w-full rounded-xl border border-gray-200 p-2 focus:border-red-500 focus:outline-none"
+            className="w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
             required
           />
         </div>
 
         <table className="w-full border-collapse">
           <thead>
-            <tr className="bg-gray-50">
-              <th className="border border-gray-200 p-2 text-left text-sm font-medium text-gray-700">
+            <tr className="bg-gray-50 dark:bg-gray-800">
+              <th className="border border-gray-200 p-2 text-left text-sm font-medium text-gray-700 dark:border-gray-700 dark:text-gray-300">
                 Status (New/RHD2)
               </th>
-              <th className="border border-gray-200 p-2 text-left text-sm font-medium text-gray-700">
+              <th className="border border-gray-200 p-2 text-left text-sm font-medium text-gray-700 dark:border-gray-700 dark:text-gray-300">
                 Item Policy Type
               </th>
-              <th className="border border-gray-200 p-2 text-left text-sm font-medium text-gray-700">
+              <th className="border border-gray-200 p-2 text-left text-sm font-medium text-gray-700 dark:border-gray-700 dark:text-gray-300">
                 Product Code
               </th>
-              <th className="border border-gray-200 p-2 text-left text-sm font-medium text-gray-700">
+              <th className="border border-gray-200 p-2 text-left text-sm font-medium text-gray-700 dark:border-gray-700 dark:text-gray-300">
                 TD Price
               </th>
-              <th className="border border-gray-200 p-2 text-left text-sm font-medium text-gray-700">
+              <th className="border border-gray-200 p-2 text-left text-sm font-medium text-gray-700 dark:border-gray-700 dark:text-gray-300">
                 Discount Rate
               </th>
-              <th className="border border-gray-200 p-2 text-left text-sm font-medium text-gray-700">
+              <th className="border border-gray-200 p-2 text-left text-sm font-medium text-gray-700 dark:border-gray-700 dark:text-gray-300">
                 Discounted Value
               </th>
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr className="bg-white odd:bg-white even:bg-gray-50 dark:odd:bg-gray-950 dark:even:bg-gray-900">
               {/* Status */}
-              <td className="border border-gray-200 p-2">
+              <td className="border border-gray-200 p-2 dark:border-gray-700">
                 <select
                   name="itemstatus"
                   value={formData.itemstatus}
                   onChange={handleChange}
-                  className={`w-full rounded-xl border border-gray-200 p-2 focus:border-red-500 focus:outline-none`}
+                  className="w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
                   required
                 >
                   <option value="" disabled>
@@ -88,12 +88,12 @@ const ProductPricing = ({ formData, handleChange, setFormData }) => {
               </td>
 
               {/* Product Policy Type */}
-              <td className="border border-gray-200 p-2">
+              <td className="border border-gray-200 p-2 dark:border-gray-700">
                 <select
                   name="productpolicy"
                   value={formData.productpolicy || ""}
                   onChange={handleChange}
-                  className="w-full rounded-xl border border-gray-200 p-2 focus:border-red-500 focus:outline-none"
+                  className="w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
                 >
                   <option value="" disabled>
                     Select Policy
@@ -107,49 +107,49 @@ const ProductPricing = ({ formData, handleChange, setFormData }) => {
               </td>
 
               {/* Product Code */}
-              <td className="border border-gray-200 p-2">
+              <td className="border border-gray-200 p-2 dark:border-gray-700">
                 <input
                   type="text"
                   name="productcode"
                   value={formData.productcode}
                   onChange={handleChange}
-                  className="w-full rounded-xl border border-gray-200 p-2 focus:border-red-500 focus:outline-none"
+                  className="w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
                 />
               </td>
 
               {/* TD Price */}
-              <td className="border border-gray-200 p-2">
+              <td className="border border-gray-200 p-2 dark:border-gray-700">
                 <input
                   type="number"
                   step="0.01"
                   name="tdprice"
                   value={formData.tdprice}
                   onChange={handleChange}
-                  className="w-full rounded-xl border border-gray-200 p-2 focus:border-red-500 focus:outline-none"
+                  className="w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
                 />
               </td>
 
               {/* Discount Rate - ReadOnly */}
-              <td className="border border-gray-200 p-2">
+              <td className="border border-gray-200 p-2 dark:border-gray-700">
                 <input
                   type="number"
                   step="0.01"
                   name="discountrate"
                   value={formData.discountrate}
                   readOnly
-                  className="w-full rounded-xl border border-gray-200 bg-gray-100 p-2 focus:border-red-500 focus:outline-none"
+                  className="w-full rounded-xl border border-gray-200 bg-gray-100 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white"
                 />
               </td>
 
               {/* Discounted Value - ReadOnly */}
-              <td className="border border-gray-200 p-2">
+              <td className="border border-gray-200 p-2 dark:border-gray-700">
                 <input
                   type="number"
                   step="0.01"
                   name="discountedvalue"
                   value={formData.discountedvalue}
                   readOnly
-                  className="w-full rounded-xl border border-gray-200 bg-gray-100 p-2 focus:border-red-500 focus:outline-none"
+                  className="w-full rounded-xl border border-gray-200 bg-gray-100 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white"
                 />
               </td>
             </tr>
@@ -161,7 +161,7 @@ const ProductPricing = ({ formData, handleChange, setFormData }) => {
           <div>
             <label
               htmlFor="employee_payment_terms"
-              className="mb-2 block text-sm font-medium text-gray-700"
+              className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
             >
               Payment Terms/Options
             </label>
@@ -170,7 +170,7 @@ const ProductPricing = ({ formData, handleChange, setFormData }) => {
               name="employee_payment_terms"
               value={formData.employee_payment_terms}
               onChange={handleChange}
-              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-red-500 focus:outline-none`}
+              className="w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
               required
             >
               <option value="" disabled>
@@ -188,7 +188,7 @@ const ProductPricing = ({ formData, handleChange, setFormData }) => {
             <div>
               <label
                 htmlFor="user_credit_period"
-                className="mb-2 block text-sm font-medium text-gray-700"
+                className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
               >
                 Credit Period
               </label>
@@ -197,7 +197,7 @@ const ProductPricing = ({ formData, handleChange, setFormData }) => {
                 name="user_credit_period"
                 value={formData.user_credit_period || ""}
                 onChange={handleChange}
-                className={`w-full rounded-xl border border-gray-200 p-2 focus:border-red-500 focus:outline-none`}
+                className="w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
                 required
               >
                 <option value="" disabled>

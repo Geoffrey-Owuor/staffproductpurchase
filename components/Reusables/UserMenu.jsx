@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { User, ChevronDown } from "lucide-react";
+import { UserRound, ChevronDown } from "lucide-react";
 
 export default function UserMenu() {
   const [user, setUser] = useState(null);
@@ -45,21 +45,24 @@ export default function UserMenu() {
       {/* Toggle button */}
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className="flex items-center gap-2 rounded-full border border-gray-200 px-3 py-2 text-black transition hover:bg-gray-100"
+        className="flex items-center gap-2 rounded-xl border border-gray-200 bg-transparent px-3 py-2 text-gray-900 transition hover:bg-gray-100 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800"
       >
-        <User className="h-5 w-5" />
+        <UserRound className="h-5 w-5" />
         <ChevronDown
           className={`h-4 w-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
         />
       </button>
-
       {/* Dropdown */}
       {isOpen && user && (
-        <div className="animate-dropdown absolute right-0 left-1 z-50 mt-2 w-56 rounded-lg border border-gray-200 bg-white shadow-lg">
-          <div className="border-b border-gray-100 px-4 py-3">
-            <p className="text-sm font-semibold text-gray-900">{user.name}</p>
-            <p className="text-xs text-gray-600">{user.email}</p>
-            <p className="text-xs text-gray-400">
+        <div className="absolute z-50 mt-2 w-56 rounded-lg border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-950">
+          <div className="border-b border-gray-100 px-4 py-3 dark:border-gray-800">
+            <p className="text-sm font-semibold text-gray-900 dark:text-white">
+              {user.name}
+            </p>
+            <p className="text-xs text-gray-600 dark:text-gray-400">
+              {user.email}
+            </p>
+            <p className="text-xs text-gray-400 dark:text-gray-500">
               {roleDisplayMap[user.role] ||
                 user.role.charAt(0).toUpperCase() + user.role.slice(1)}
             </p>
@@ -67,7 +70,7 @@ export default function UserMenu() {
           <div className="p-2">
             <a
               href="mailto:helpdesk@hotpoint.co.ke"
-              className="block w-full rounded-md px-3 py-2 text-left text-sm text-blue-600 hover:bg-blue-50"
+              className="block w-full rounded-md px-3 py-2 text-left text-blue-600 transition-colors hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-gray-800"
             >
               Help & Support
             </a>

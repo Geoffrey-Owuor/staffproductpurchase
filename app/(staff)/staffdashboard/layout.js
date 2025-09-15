@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/app/lib/auth";
 import UnauthorizedPage from "@/components/Reusables/UnauthorizedPage";
 import StaffLayoutShell from "@/components/staff/StaffLayoutShell";
+import { FirstLoader } from "@/components/Reusables/FirstLoader";
 
 export const metadata = {
   title: "HAL - Staff Dashboard",
@@ -19,5 +20,10 @@ export default async function layout({ children }) {
     return <UnauthorizedPage />;
   }
 
-  return <StaffLayoutShell user={user}>{children}</StaffLayoutShell>;
+  return (
+    <>
+      <FirstLoader />
+      <StaffLayoutShell user={user}>{children}</StaffLayoutShell>
+    </>
+  );
 }
