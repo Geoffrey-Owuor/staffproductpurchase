@@ -9,7 +9,7 @@ export async function POST(request) {
 
     // Find user by email
     const { rows } = await client.query(
-      "SELECT id, password, name, role FROM users WHERE email = $1 LIMIT 1",
+      "SELECT id, password, name, payrollno, department, role FROM users WHERE email = $1 LIMIT 1",
       [email],
     );
 
@@ -31,7 +31,14 @@ export async function POST(request) {
     }
 
     // Create Session
-    await createSession(user.id, user.role, user.name, email);
+    await createSession(
+      user.id,
+      user.role,
+      user.name,
+      email,
+      user.payrollno,
+      user.department,
+    );
 
     return Response.json({ success: true, role: user.role });
   } catch (error) {

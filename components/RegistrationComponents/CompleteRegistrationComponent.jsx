@@ -4,16 +4,20 @@ import { useState } from "react";
 import { Eye, EyeClosed } from "lucide-react";
 import { AuthPagesLogo } from "@/public/assets";
 import ThemeToggle from "../Reusables/ThemeProviders/ThemeToggle";
+import Alert from "../Alert";
 
 export default function CompleteRegistrationComponent({ email }) {
   const [formData, setFormData] = useState({
     name: "",
     password: "",
+    payrollno: "",
+    department: "",
     confirmPassword: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showAlert, setShowAlert] = useState(true);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,6 +42,8 @@ export default function CompleteRegistrationComponent({ email }) {
           email,
           name: formData.name,
           password: formData.password,
+          payrollno: formData.payrollno,
+          department: formData.department,
         }),
       });
 
@@ -59,6 +65,13 @@ export default function CompleteRegistrationComponent({ email }) {
 
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center bg-white text-gray-900 dark:bg-gray-950 dark:text-white">
+      {showAlert && (
+        <Alert
+          message="Email verified Successfully"
+          type="success"
+          onClose={() => setShowAlert(false)}
+        />
+      )}
       {/* Logo */}
       <div className="fixed top-3.5 left-4 z-50">
         <AuthPagesLogo />
@@ -72,9 +85,6 @@ export default function CompleteRegistrationComponent({ email }) {
           <div className="mb-4 text-center text-sm text-red-700">{error}</div>
         )}
         <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
-          <div className="text-center text-sm text-green-600 dark:text-green-400">
-            Email verified successfully!
-          </div>
           {/* Full Name */}
           <div className="relative">
             <input
@@ -88,6 +98,50 @@ export default function CompleteRegistrationComponent({ email }) {
             />
             <label className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300">
               Full Name
+            </label>
+          </div>
+          {/* Payroll Number */}
+          <div className="relative">
+            <input
+              type="text"
+              name="payrollno"
+              value={formData.payrollno}
+              onChange={handleChange}
+              required
+              placeholder=" "
+              className="peer w-full rounded-full border border-gray-300 bg-transparent px-4 py-3 placeholder-transparent focus:outline-none dark:border-gray-700 dark:text-white"
+            />
+            <label className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300">
+              Payroll Number
+            </label>
+          </div>
+          {/* Department */}
+          <div className="relative">
+            <select
+              name="department"
+              value={formData.department}
+              onChange={handleChange}
+              required
+              className="peer w-full appearance-none rounded-full border border-gray-300 bg-white px-4 py-3 focus:ring-0 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+            >
+              <option value="" disabled>
+                Select a department
+              </option>
+              <option value="Commercial">Commercial</option>
+              <option value="Finance">Finance</option>
+              <option value="HR & Admin">HR & Admin</option>
+              <option value="Marketing">Marketing</option>
+              <option value="B2B">B2B</option>
+              <option value="IT & Projects">IT & Projects</option>
+              <option value="Imports & Exports">Imports & Exports</option>
+              <option value="Warehouse">Warehouse</option>
+              <option value="Modern Trade">Modern Trade</option>
+              <option value="Retail">Retail</option>
+              <option value="Service Center">Service Center</option>
+              <option value="Engineering & HVAC">Engineering & HVAC</option>
+            </select>
+            <label className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-focus:-top-3 peer-focus:text-sm dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300">
+              Department
             </label>
           </div>
           {/* Password */}
@@ -125,7 +179,7 @@ export default function CompleteRegistrationComponent({ email }) {
             />
             {formData.confirmPassword &&
               formData.password !== formData.confirmPassword && (
-                <p className="mt-1 text-sm text-red-600">
+                <p className="mt-1 ml-2 text-sm text-red-600">
                   passwords do not match
                 </p>
               )}
@@ -140,18 +194,18 @@ export default function CompleteRegistrationComponent({ email }) {
               (formData.confirmPassword &&
                 formData.password !== formData.confirmPassword)
             }
-            className={`w-full rounded-full px-4 py-3 font-medium text-white transition duration-200 ${
+            className={`w-full rounded-full px-4 py-3 font-medium transition duration-200 ${
               loading ||
               (formData.confirmPassword &&
                 formData.password !== formData.confirmPassword)
-                ? "cursor-not-allowed disabled:bg-gray-400"
-                : "bg-gray-900 hover:bg-gray-700 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
+                ? "cursor-not-allowed bg-gray-300 text-gray-500 dark:bg-gray-700 dark:text-gray-400"
+                : "bg-gray-900 text-white hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
             }`}
           >
             {loading ? (
               <div className="flex items-center justify-center gap-2">
                 Completing...
-                <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent dark:border-gray-900 dark:border-t-transparent"></div>
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent dark:border-t-transparent"></div>
               </div>
             ) : (
               <>Complete</>

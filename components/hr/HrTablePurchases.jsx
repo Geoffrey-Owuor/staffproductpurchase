@@ -12,6 +12,7 @@ import { LoadingBar } from "../Reusables/LoadingBar";
 import RecentPurchasesHeading from "../Reusables/Headings/RecentPurchasesHeading";
 import { RecentActionButtons } from "../Reusables/RecentActionButtons/RecentActionButtons";
 import { TableApprovalStatus } from "../Reusables/TableApprovalStatus";
+import useDebounce from "../Reusables/Debouncing/useDebounce";
 
 export default function HrTablePurchases() {
   const [purchases, setPurchases] = useState([]);
@@ -19,7 +20,6 @@ export default function HrTablePurchases() {
   const [navigatingTo, setNavigatingTo] = useState(null);
   const [goingTo, setGoingTo] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -27,15 +27,7 @@ export default function HrTablePurchases() {
   const router = useRouter();
 
   // Debounce search term
-  useEffect(() => {
-    const timerId = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
-    }, 500);
-
-    return () => {
-      clearTimeout(timerId);
-    };
-  }, [searchTerm]);
+  const debouncedSearchTerm = useDebounce(searchTerm, 1000);
 
   const handleViewClick = (id) => {
     setNavigatingTo(id);

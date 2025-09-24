@@ -13,13 +13,13 @@ import TableSkeleton from "../skeletons/TableSkeleton";
 import { LoadingBar } from "../Reusables/LoadingBar";
 import PurchasesHistoryHeading from "../Reusables/Headings/PurchasesHistoryHeading";
 import { TableApprovalStatus } from "../Reusables/TableApprovalStatus";
+import useDebounce from "../Reusables/Debouncing/useDebounce";
 
 export default function CCPurchaseHistory() {
   const [purchases, setPurchases] = useState([]);
   const [loading, setLoading] = useState(true);
   const [navigatingTo, setNavigatingTo] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [showPageDropdown, setShowPageDropdown] = useState(false);
@@ -27,15 +27,7 @@ export default function CCPurchaseHistory() {
   const router = useRouter();
 
   // Debounce search term
-  useEffect(() => {
-    const timerId = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
-    }, 500);
-
-    return () => {
-      clearTimeout(timerId);
-    };
-  }, [searchTerm]);
+  const debouncedSearchTerm = useDebounce(searchTerm, 1000);
 
   const handleViewClick = (id) => {
     setNavigatingTo(id);

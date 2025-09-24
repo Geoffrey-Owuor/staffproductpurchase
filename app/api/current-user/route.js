@@ -13,6 +13,8 @@ export async function GET() {
         role: user.role,
         email: user.email,
         id: user.id,
+        payrollno: user.payrollno,
+        department: user.department,
         valid: true,
       },
       { status: 200 },

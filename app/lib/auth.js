@@ -14,9 +14,23 @@ export const verifyPassword = async (password, hashedPassword) => {
 };
 
 //Create JWT and set it as httpOnly cookie
-export const createSession = async (userId, role, name, email) => {
+export const createSession = async (
+  userId,
+  role,
+  name,
+  email,
+  payrollno,
+  department,
+) => {
   const expiresAt = Math.floor(Date.now() / 1000) + 2 * 60 * 60;
-  const token = await new SignJWT({ userId, role, name, email })
+  const token = await new SignJWT({
+    userId,
+    role,
+    name,
+    email,
+    payrollno,
+    department,
+  })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime(expiresAt)
@@ -46,6 +60,8 @@ export const getCurrentUser = async () => {
       role: payload.role,
       name: payload.name,
       email: payload.email,
+      payrollno: payload.payrollno,
+      department: payload.department,
       expiresAt: payload.exp * 1000, // Convert to ms for JS
     };
   } catch {

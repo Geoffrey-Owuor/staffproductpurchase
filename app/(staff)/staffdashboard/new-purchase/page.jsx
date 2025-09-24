@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import StaffInformation from "@/components/StaffInformation";
 import ProductPricing from "@/components/ProductPricing";
 import TermsConditions from "@/components/TermsConditions";
@@ -7,13 +7,15 @@ import Alert from "@/components/Alert";
 import { LoadingBarWave } from "@/components/Reusables/LoadingBar";
 import { ClipboardList } from "lucide-react";
 import ConfirmationDialog from "@/components/Reusables/ConfirmationDialog";
+import { useUser } from "@/context/UserContext";
 
 export default function NewPurchase() {
+  const user = useUser();
   const [formData, setFormData] = useState({
     // Staff Information
-    staffname: "",
-    payrollno: "",
-    department: "",
+    staffname: user.name,
+    payrollno: user.payrollno,
+    department: user.department,
 
     // Product & Pricing
     itemname: "",
@@ -40,24 +42,6 @@ export default function NewPurchase() {
       [name]: value,
     }));
   };
-
-  useEffect(() => {
-    const tdprice = parseFloat(formData.tdprice);
-    const discountrate = parseFloat(formData.discountrate);
-
-    if (!isNaN(tdprice) && !isNaN(discountrate)) {
-      const discountedvalue = tdprice * (1 - discountrate / 100);
-      setFormData((prev) => ({
-        ...prev,
-        discountedvalue: discountedvalue.toFixed(2),
-      }));
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        discountedvalue: "",
-      }));
-    }
-  }, [formData.tdprice, formData.discountrate]);
 
   const handleSubmit = async (e) => {
     e?.preventDefault();

@@ -2,6 +2,7 @@
 import {
   HomeIcon,
   LogOutIcon,
+  MessageCircleQuestion,
   ShoppingBagIcon,
   ShoppingCartIcon,
 } from "lucide-react";
@@ -11,6 +12,7 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import LoadingLine from "../Reusables/LoadingLine";
 import { useFinishLoading } from "@/app/hooks/useFinishLoading";
+import { LoggingOutOverlay } from "../Reusables/LoadingBar";
 
 export default function Sidebar({ isOpen }) {
   const [loggingOut, setIsLoggingOut] = useState(false);
@@ -50,9 +52,10 @@ export default function Sidebar({ isOpen }) {
   return (
     <>
       <LoadingLine isLoading={isLoading} />
+      <LoggingOutOverlay isLoggingOut={loggingOut} />
       <div
-        className={`fixed top-0 bottom-0 left-0 flex w-56 flex-col border-r border-gray-200 bg-white transition-all duration-200 dark:border-gray-700 dark:bg-gray-950 ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
+        className={`fixed top-0 bottom-0 left-0 flex flex-col border-r border-gray-200 bg-white transition-all duration-200 dark:border-gray-700 dark:bg-gray-950 ${
+          isOpen ? "w-56" : "w-16"
         }`}
       >
         {/* Navigation Links */}
@@ -62,60 +65,88 @@ export default function Sidebar({ isOpen }) {
               <Link
                 href="/staffdashboard"
                 onClick={handleLinkClick}
-                className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm transition-colors ${isActive(
+                className={`flex cursor-default items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors ${isActive(
                   "/staffdashboard",
                 )}`}
               >
-                <HomeIcon className="h-4 w-4" />
-                Home
+                <HomeIcon className="h-4 w-4 flex-shrink-0" />
+                <span
+                  className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
+                    isOpen ? "w-40" : "w-0"
+                  }`}
+                >
+                  Home
+                </span>
               </Link>
             </li>
             <li>
               <Link
                 href="/staffdashboard/new-purchase"
                 onClick={handleLinkClick}
-                className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm transition-colors ${isActive(
+                className={`flex cursor-default items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors ${isActive(
                   "/staffdashboard/new-purchase",
                 )}`}
               >
-                <ShoppingBagIcon className="h-4 w-4" />
-                New Purchase
+                <ShoppingBagIcon className="h-4 w-4 flex-shrink-0" />
+                <span
+                  className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
+                    isOpen ? "w-40" : "w-0"
+                  }`}
+                >
+                  New Purchase
+                </span>
               </Link>
             </li>
             <li>
               <Link
                 href="/staffdashboard/purchase-history"
                 onClick={handleLinkClick}
-                className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm transition-colors ${isActive(
+                className={`flex cursor-default items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors ${isActive(
                   "/staffdashboard/purchase-history",
                 )}`}
               >
-                <ShoppingCartIcon className="h-4 w-4" />
-                Purchase History
+                <ShoppingCartIcon className="h-4 w-4 flex-shrink-0" />
+                <span
+                  className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
+                    isOpen ? "w-40" : "w-0"
+                  }`}
+                >
+                  Purchase History
+                </span>
               </Link>
             </li>
           </ul>
         </nav>
 
-        {/* Logout Button at Bottom */}
-        <div className="p-3">
-          <button
+        {/* Logout Button at Bottom & Help and Support */}
+        <div className="space-y-4 p-3">
+          <a
+            href="mailto:helpdesk@hotpoint.co.ke"
+            className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-blue-600 transition-colors hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-gray-800"
+          >
+            <MessageCircleQuestion className="h-4 w-4 flex-shrink-0" />
+            <span
+              className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
+                isOpen ? "w-40" : "w-0"
+              }`}
+            >
+              Help & Support
+            </span>
+          </a>
+          <div
             onClick={handleLogout}
             disabled={loggingOut}
-            className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
+            className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
           >
-            {loggingOut ? (
-              <>
-                <div className="h-4 w-4 animate-spin rounded-full border-2 border-gray-900 border-t-transparent dark:border-white dark:border-t-transparent"></div>
-                Logging Out...
-              </>
-            ) : (
-              <>
-                <LogOutIcon className="h-4 w-4" />
-                Logout
-              </>
-            )}
-          </button>
+            <LogOutIcon className="h-4 w-4 flex-shrink-0" />
+            <span
+              className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
+                isOpen ? "w-40" : "w-0"
+              }`}
+            >
+              Logout
+            </span>
+          </div>
         </div>
       </div>
     </>

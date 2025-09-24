@@ -23,7 +23,8 @@ const getRoleFromEmail = (email) => {
 export async function POST(request) {
   let client;
   try {
-    const { name, email, password } = await request.json();
+    const { name, email, password, payrollno, department } =
+      await request.json();
 
     client = await pool.connect();
 
@@ -46,10 +47,10 @@ export async function POST(request) {
 
     // Create user
     const { rows: userResult } = await client.query(
-      `INSERT INTO users (name, email, password, role) 
-       VALUES ($1, $2, $3, $4) 
+      `INSERT INTO users (name, email, password, payrollno, department, role) 
+       VALUES ($1, $2, $3, $4, $5, $6) 
        RETURNING id`,
-      [name, email, hashedPassword, role],
+      [name, email, hashedPassword, payrollno, department, role],
     );
 
     // Clean up verification code
@@ -57,7 +58,14 @@ export async function POST(request) {
       email,
     ]);
 
-    await createSession(userResult[0].id, role, name, email);
+    await createSession(
+      userResult[0].id,
+      role,
+      name,
+      email,
+      payrollno,
+      department,
+    );
 
     // Delete the verify_email cookie now that it's no longer needed
     const cookieStore = await cookies();
