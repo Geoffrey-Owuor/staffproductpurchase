@@ -1,4 +1,5 @@
 import { formatDateLong } from "@/public/assets";
+import FormAsterisk from "../Reusables/FormAsterisk/FormAsterisk";
 
 export default function HRApprovalSection({
   formData,
@@ -22,7 +23,7 @@ export default function HRApprovalSection({
             htmlFor="is_employed"
             className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
           >
-            Employment Status
+            Employment Status <FormAsterisk />
           </label>
           <select
             id="is_employed"
@@ -51,7 +52,7 @@ export default function HRApprovalSection({
             htmlFor="on_probation"
             className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
           >
-            Probation?
+            Probation? <FormAsterisk />
           </label>
           <select
             id="on_probation"
@@ -80,7 +81,7 @@ export default function HRApprovalSection({
             htmlFor="HR_Approval"
             className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
           >
-            Approval Status
+            Approval Status <FormAsterisk />
           </label>
           <select
             id="HR_Approval"
@@ -109,7 +110,7 @@ export default function HRApprovalSection({
             htmlFor="hr_approver_name"
             className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
           >
-            HR Approver Name
+            HR Approver Name <FormAsterisk />
           </label>
           <input
             type="text"

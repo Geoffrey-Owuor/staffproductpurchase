@@ -71,3 +71,51 @@ export async function POST(request) {
     if (conn) conn.release();
   }
 }
+
+export async function PUT(request) {
+  const conn = await pool.getConnection();
+
+  try {
+    const { email } = await request.json();
+
+    //Check if the email is already registered
+    const [existingUsers] = await conn.execute(
+      "SELECT id FROM users WHERE email = ?",
+      [email],
+    );
+
+    if (existingUsers.length > 0) {
+      return Response.json(
+        { message: "Email already registered" },
+        { status: 400 },
+      );
+    }
+
+    //Generate the code (6-digit code)
+    const code = crypto.randomInt(100000, 999999).toString();
+
+    //store or update the code on code resend
+    await conn.execute(
+      `INSERT INTO verification_codes (email, code, expires_at)
+       VALUES (?, ?, NOW() + INTERVAL 5 MINUTE)
+       ON DUPLICATE KEY UPDATE code = ?, expires_at = NOW() + INTERVAL 5 MINUTE, verified = 0`,
+      [email, code, code],
+    );
+
+    // Send verification email
+    await sendVerificationEmail(email, code);
+
+    return Response.json(
+      { message: "Verification code sent to your email" },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error("Email verification error:", error);
+    return Response.json(
+      { message: "Failed to send verification code" },
+      { status: 500 },
+    );
+  } finally {
+    if (conn) conn.release();
+  }
+}

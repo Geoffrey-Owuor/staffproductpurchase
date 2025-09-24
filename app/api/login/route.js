@@ -8,7 +8,7 @@ export async function POST(request) {
 
     //Find user by email
     const [users] = await conn.execute(
-      "SELECT id, password, name, role FROM users WHERE email = ? LIMIT 1",
+      "SELECT id, password, name, payrollNo, department, role FROM users WHERE email = ? LIMIT 1",
       [email],
     );
 
@@ -34,7 +34,14 @@ export async function POST(request) {
 
     //Create Session
 
-    await createSession(user.id, user.role, user.name, email);
+    await createSession(
+      user.id,
+      user.role,
+      user.name,
+      email,
+      user.payrollNo,
+      user.department,
+    );
     conn.release();
 
     return Response.json({ success: true, role: user.role });

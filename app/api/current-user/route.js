@@ -12,6 +12,8 @@ export async function GET() {
         name: user.name,
         role: user.role,
         email: user.email,
+        payrollNo: user.payrollNo,
+        department: user.department,
         id: user.id,
         valid: true,
       },

@@ -6,6 +6,7 @@ import HotpointLogo from "../Reusables/HotpointLogo";
 import LoadingLine from "../Reusables/LoadingLine";
 import { useFinishLoading } from "@/app/hooks/useFinishLoading";
 import ThemeToggleCompact from "../Reusables/ThemeProviders/ThemeToggleCompact";
+import { LoggingOutOverlay } from "../Reusables/LoadingBar";
 
 import { LogOut, PlusCircle, ChevronLeft, Menu } from "lucide-react";
 
@@ -39,6 +40,7 @@ const Header = ({ toggleSidebar }) => {
 
   return (
     <>
+      <LoggingOutOverlay isLoggingOut={loggingOut} />
       <header
         className={`fixed top-0 right-0 left-0 z-50 flex h-14 items-center border-b border-gray-200 bg-white pr-6 pl-2 transition-all duration-200 dark:border-gray-700 dark:bg-gray-950`}
       >
@@ -78,17 +80,8 @@ const Header = ({ toggleSidebar }) => {
             onClick={handleLogout}
             disabled={loggingOut}
           >
-            {loggingOut ? (
-              <>
-                <div className="mr-2 h-3 w-3 animate-spin rounded-full border border-gray-900 border-t-transparent dark:border-white dark:border-t-transparent"></div>
-                <span className="text-sm">Logging Out...</span>
-              </>
-            ) : (
-              <>
-                <LogOut className="mr-2 h-4 w-4" />
-                <span className="text-sm">Logout</span>
-              </>
-            )}
+            <LogOut className="mr-2 h-4 w-4" />
+            <span className="text-sm">Logout</span>
           </button>
         </div>
       </header>

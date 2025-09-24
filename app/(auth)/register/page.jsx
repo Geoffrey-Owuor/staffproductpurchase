@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { AuthPagesLogo } from "@/public/assets";
@@ -10,7 +10,21 @@ export default function Step1Page() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const [emailError, setEmailError] = useState("");
   const [error, setError] = useState("");
+
+  // Simple email format validation regex
+  const validateEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  useEffect(() => {
+    if (email && !validateEmail(email)) {
+      setEmailError("Please enter a valid email address");
+    } else {
+      setEmailError("");
+    }
+  }, [email]);
 
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
@@ -54,7 +68,7 @@ export default function Step1Page() {
         )}
         <form
           onSubmit={handleEmailSubmit}
-          className="space-y-6"
+          className="space-y-2"
           autoComplete="off"
         >
           <div className="relative">
@@ -70,10 +84,16 @@ export default function Step1Page() {
               Email Address
             </label>
           </div>
+          {/* Error Message */}
+          {emailError && (
+            <p className="ml-2 text-sm text-red-600 dark:text-red-500">
+              {emailError}
+            </p>
+          )}
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-full bg-gray-900 px-4 py-3 font-medium text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:bg-gray-400 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
+            className="mt-6 w-full rounded-full bg-gray-900 px-4 py-3 font-medium text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:bg-gray-400 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
           >
             {loading ? (
               <div className="flex items-center justify-center gap-2">

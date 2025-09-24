@@ -11,56 +11,20 @@ import { LoadingBarWave } from "@/components/Reusables/LoadingBar";
 import { clearFormData } from "@/public/assets";
 import EditPurchaseHeading from "@/components/EditPurchaseComponents/EditPurchaseHeading";
 import SaveCloseComponent from "@/components/EditPurchaseComponents/SaveCloseComponent";
+import { useUser } from "@/context/UserContext";
 
 export default function EditPurchaseForm({ params }) {
-  const [userRole, setUserRole] = useState(null);
+  const { role: userRole } = useUser();
   const [loading, setLoading] = useState(true);
   const [biApproval, setBiApproval] = useState(null);
   const [submitting, setIsSubmitting] = useState(false);
-  const [formData, setFormData] = useState({
-    staffName: "",
-    payrollNo: "",
-    department: "",
-    itemName: "",
-    itemStatus: "",
-    productPolicy: "",
-    productCode: "",
-    tdPrice: "",
-    discountRate: "",
-    discountedValue: "",
-    createdAt: "",
-    employee_payment_terms: "",
-    user_credit_period: "",
-    is_employed: "",
-    on_probation: "",
-    hr_comments: "",
-    HR_Approval: "",
-    hr_approver_name: "",
-    hr_approval_date: "",
-  });
+  const [formData, setFormData] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [alertType, setAlertType] = useState("success");
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await fetch("/api/current-user");
-        const data = await response.json();
-
-        if (response.ok && data.valid) {
-          setUserRole(data.role);
-        } else {
-          setUserRole("guest"); //Fallback Role
-        }
-      } catch (error) {
-        console.error("Failed to fetch user role:", error);
-        setUserRole("guest");
-      }
-    };
-    fetchUser();
-
     const fetchPurchaseData = async () => {
       const { id } = await params;
       try {
@@ -114,24 +78,6 @@ export default function EditPurchaseForm({ params }) {
       [name]: value,
     }));
   };
-
-  useEffect(() => {
-    const tdPrice = parseFloat(formData.tdPrice);
-    const discountRate = parseFloat(formData.discountRate);
-
-    if (!isNaN(tdPrice) && !isNaN(discountRate)) {
-      const discountedValue = tdPrice * (1 - discountRate / 100);
-      setFormData((prev) => ({
-        ...prev,
-        discountedValue: discountedValue.toFixed(2),
-      }));
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        discountedValue: "",
-      }));
-    }
-  }, [formData.tdPrice, formData.discountRate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -1,15 +1,12 @@
 "use client";
 
 import { useState } from "react";
-// import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { AuthPagesLogo } from "@/public/assets";
 import { Eye, EyeClosed } from "lucide-react";
 import ThemeToggle from "./Reusables/ThemeProviders/ThemeToggle";
 
 export default function ResetPasswordClient({ token }) {
-  // const searchParams = useSearchParams();
-  // const token = searchParams.get("token");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");

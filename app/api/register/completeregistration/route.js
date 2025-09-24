@@ -27,7 +27,8 @@ const getRoleFromEmail = (email) => {
 
 export async function POST(request) {
   try {
-    const { name, email, password } = await request.json();
+    const { name, email, password, payrollNo, department } =
+      await request.json();
 
     const conn = await pool.getConnection();
 
@@ -50,8 +51,8 @@ export async function POST(request) {
 
     // Create user
     const [userResult] = await conn.execute(
-      `INSERT INTO users (name, email, password, role) VALUES(?,?,?,?)`,
-      [name, email, hashedPassword, role],
+      `INSERT INTO users (name, email, password, payrollNo, department, role) VALUES(?,?,?,?,?,?)`,
+      [name, email, hashedPassword, payrollNo, department, role],
     );
 
     // Clean up verification code
@@ -59,7 +60,14 @@ export async function POST(request) {
       email,
     ]);
 
-    await createSession(userResult.insertId, role, name, email);
+    await createSession(
+      userResult.insertId,
+      role,
+      name,
+      email,
+      payrollNo,
+      department,
+    );
 
     conn.release();
 
