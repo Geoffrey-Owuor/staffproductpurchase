@@ -21,11 +21,10 @@ export async function POST(request) {
     }
 
     const token = uuidv4();
-    const expiry = new Date(Date.now() + 3600000); // 1 hour expiry
 
     await conn.execute(
-      "UPDATE users SET reset_token = ?, reset_token_expiry = ? WHERE id = ?",
-      [token, expiry, users[0].id],
+      "UPDATE users SET reset_token = ?, reset_token_expiry = NOW() + INTERVAL 1 HOUR WHERE id = ?",
+      [token, users[0].id],
     );
 
     const resetLink = `${process.env.NEXT_PUBLIC_BASE_URL}/reset-password?token=${token}`;
