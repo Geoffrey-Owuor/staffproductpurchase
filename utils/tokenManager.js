@@ -28,7 +28,7 @@ export async function getAuthToken() {
     const data = await res.json();
     //Save token and compute expiry
     cachedToken = data.token;
-    tokenExpiry = Date.now() + 14 * 60 * 1000; //14 minutes delay
+    tokenExpiry = Date.now() + 14 * 60 * 1000; //14 minutes delay (1 minute buffer)
 
     return cachedToken;
   } catch (error) {

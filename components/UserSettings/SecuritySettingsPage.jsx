@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useUser } from "@/context/UserContext";
-import { Eye, EyeClosed } from "lucide-react"; // Import icons
+import { Eye, EyeClosed, Loader2 } from "lucide-react"; // Import icons
 import Alert from "../Alert";
 import FormAsterisk from "../Reusables/FormAsterisk/FormAsterisk";
 import ConfirmationDialog from "../Reusables/ConfirmationDialog";
@@ -219,9 +219,16 @@ export default function SecuritySettingsPage() {
                   !currentPassword ||
                   !confirmPassword
                 }
-                className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-red-500 dark:hover:bg-red-600"
+                className="inline-flex items-center gap-1 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-red-500 dark:hover:bg-red-600"
               >
-                {updating ? "Updating..." : "Update"}
+                {updating ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Updating...
+                  </>
+                ) : (
+                  "Update"
+                )}
               </button>
             </div>
           </form>

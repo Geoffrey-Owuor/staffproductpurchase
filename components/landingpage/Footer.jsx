@@ -1,6 +1,7 @@
 // app/components/Footer.js
 import { ShoppingBag } from "lucide-react";
 import ThemeToggle from "../Reusables/ThemeProviders/ThemeToggle";
+import { BrainCog } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -83,11 +84,15 @@ export default function Footer() {
         </div>
 
         <div className="relative mt-12 border-t border-gray-200 pt-8 dark:border-gray-800">
-          {/* Centered text */}
-          <p className="text-center text-gray-500 dark:text-gray-400">
-            © {new Date().getFullYear()} Hotpoint Appliances Ltd. Crafted by
-            Jeff 👨‍💻
-          </p>
+          {/* Centered Part */}
+          <div className="flex items-center justify-center space-x-1 text-sm text-gray-500 dark:text-gray-400">
+            <span>
+              © {new Date().getFullYear()} Hotpoint Appliances Ltd. Built by
+            </span>
+            <span className="font-semibold">Jeff</span>
+
+            <BrainCog className="h-3.5 w-3.5" />
+          </div>
 
           {/* ThemeToggle pinned right */}
           <div className="absolute top-11.5 right-0 -translate-y-1/2">

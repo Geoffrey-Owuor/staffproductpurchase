@@ -16,7 +16,7 @@ import SaveCloseComponent from "@/components/EditPurchaseComponents/SaveCloseCom
 import { useUser } from "@/context/UserContext";
 
 export default function EditPurchaseForm({ params }) {
-  const { role: userRole } = useUser();
+  const { role: userRole, name: userName } = useUser();
   const [loading, setLoading] = useState(true);
   const [biApproval, setBiApproval] = useState(null);
   const [submitting, setIsSubmitting] = useState(false);
@@ -80,7 +80,7 @@ export default function EditPurchaseForm({ params }) {
             ? data.payment_date.split("T")[0]
             : "",
           amount: data.amount || "",
-          bi_approver_name: data.bi_approver_name || "",
+          bi_approver_name: data.bi_approver_name || userName,
           bi_approval_date: data.bi_approval_date || "",
           BI_Approval: data.BI_Approval || "",
         });

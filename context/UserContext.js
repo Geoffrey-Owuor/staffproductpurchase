@@ -1,4 +1,3 @@
-import { User } from "lucide-react";
 import { createContext, useContext } from "react";
 
 //Create the context

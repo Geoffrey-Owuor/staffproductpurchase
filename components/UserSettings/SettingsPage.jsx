@@ -7,7 +7,7 @@ export default function SettingsPage({ onClose }) {
   const [activeTab, setActiveTab] = useState("general");
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/50 p-4 backdrop-blur-sm dark:bg-gray-950/50">
+    <div className="custom-blur fixed inset-0 z-50 flex items-center justify-center bg-white/50 p-4 dark:bg-gray-950/50">
       <div className="mx-auto flex h-138 w-full max-w-3xl overflow-hidden rounded-2xl border border-gray-200 bg-gray-50 shadow-2xl dark:border-gray-800 dark:bg-gray-900">
         {/* Side Navigation */}
         <div className="w-1/4 border-r border-gray-200 bg-white/50 p-4 dark:border-gray-800 dark:bg-gray-950/50">
