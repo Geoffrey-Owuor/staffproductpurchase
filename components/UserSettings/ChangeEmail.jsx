@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { XCircle, Mail } from "lucide-react";
+import { XCircle, Mail, Loader2 } from "lucide-react";
 import { useUser } from "@/context/UserContext";
 import Alert from "../Alert";
 import { LoggingOutOverlay } from "../Reusables/LoadingBar";
@@ -138,7 +138,7 @@ export default function ChangeEmail({ onClose }) {
         />
       )}
       {loggingOut && <LoggingOutOverlay isLoggingOut={loggingOut} />}
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/50 p-4 backdrop-blur-sm dark:bg-gray-950/50">
+      <div className="custom-blur fixed inset-0 z-50 flex items-center justify-center bg-white/50 p-4 dark:bg-gray-950/50">
         <div className="mx-auto w-full max-w-md rounded-2xl border border-gray-200 bg-gray-50 p-6 shadow-2xl dark:border-gray-700 dark:bg-gray-950">
           {step === "step1" && (
             <>
@@ -221,9 +221,16 @@ export default function ChangeEmail({ onClose }) {
                   <button
                     type="submit"
                     disabled={!!error || !newEmail || !confirmEmail || sending}
-                    className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-red-500 dark:hover:bg-red-600"
+                    className="inline-flex items-center gap-1 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-red-500 dark:hover:bg-red-600"
                   >
-                    {sending ? "Sending..." : "Send Code"}
+                    {sending ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      "Send Code"
+                    )}
                   </button>
                 </div>
               </form>
@@ -281,9 +288,16 @@ export default function ChangeEmail({ onClose }) {
                   <button
                     type="submit"
                     disabled={updating}
-                    className="rounded-lg bg-gray-950 px-6 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-900 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-gray-950 dark:hover:bg-gray-50"
+                    className="inline-flex items-center gap-1 rounded-lg bg-gray-950 px-6 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-900 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-gray-950 dark:hover:bg-gray-50"
                   >
-                    {updating ? "Verifying..." : "Verify"}
+                    {updating ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Verifying...
+                      </>
+                    ) : (
+                      "Verify"
+                    )}
                   </button>
                   <button
                     type="button"

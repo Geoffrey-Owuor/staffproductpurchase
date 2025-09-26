@@ -15,7 +15,7 @@ import SaveCloseComponent from "@/components/EditPurchaseComponent/SaveCloseComp
 import { useUser } from "@/context/UserContext";
 
 export default function EditPurchaseForm({ params }) {
-  const { role: userRole } = useUser();
+  const { role: userRole, name: userName } = useUser();
   const [loading, setLoading] = useState(true);
   const [biApproval, setBiApproval] = useState(null);
   const [submitting, setIsSubmitting] = useState(false);
@@ -63,7 +63,7 @@ export default function EditPurchaseForm({ params }) {
           purchase_history_comments: data.purchase_history_comments || "",
           pending_invoices: data.pending_invoices || "",
           cc_approval: data.cc_approval || "",
-          cc_approver_name: data.cc_approver_name || "",
+          cc_approver_name: data.cc_approver_name || userName,
           cc_approval_date: data.cc_approval_date || "",
         });
         setLoading(false);
