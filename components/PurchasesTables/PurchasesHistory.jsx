@@ -1,52 +1,73 @@
 "use client";
 import { Eye, MoreVertical } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import TableSkeleton from "../skeletons/TableSkeleton";
 import { LoadingBar } from "../Reusables/LoadingBar";
 import PurchasesHistoryHeading from "../Reusables/Headings/PurchasesHistoryHeading";
 import { TableApprovalStatus } from "../Reusables/TableApprovalStatus";
+import { UseHandleViewClick } from "@/utils/HandleActionClicks/UseHandleViewClick";
 import Pagination from "../pagination/Pagination";
 
-export default function StaffPurchaseHistory() {
+export default function PurchasesHistory() {
   const [purchases, setPurchases] = useState([]);
   const [loading, setLoading] = useState(true);
   const [navigatingTo, setNavigatingTo] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const router = useRouter();
 
-  const handleViewClick = (id) => {
+  //Added States
+  const [filterType, setFilterType] = useState("staff");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+
+  const handleViewClick = UseHandleViewClick();
+
+  const gotoPurchase = (id) => {
     setNavigatingTo(id);
-    router.push(`/staffdashboard/purchase-history/purchases/${id}`);
+    handleViewClick(id);
   };
 
-  useEffect(() => {
-    const fetchPurchases = async () => {
-      try {
-        const response = await fetch("/api/staffpurchaseshistory");
-        const data = await response.json();
+  // New fetch function
+  const fetchPurchases = async (options = {}) => {
+    try {
+      setLoading(true);
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch purchases");
-        }
+      let url = `/api/tablesdata/purchaseshistorydata?filterType=${options.filterType || filterType}`;
 
-        if (!Array.isArray(data)) {
-          console.warn("Data is not an array:", data); // ✅ Warn if unexpected type
-          setPurchases([]);
-        } else {
-          setPurchases(data);
-        }
-      } catch (err) {
-        console.error("Error fetching purchases:", err);
-      } finally {
-        setLoading(false);
+      if (options.filterType === "staff" && options.searchTerm) {
+        url += `&search=${encodeURIComponent(options.searchTerm)}`;
+      } else if (
+        options.filterType === "date" &&
+        options.fromDate &&
+        options.toDate
+      ) {
+        url += `&fromDate=${options.fromDate}&toDate=${options.toDate}`;
       }
-    };
 
-    fetchPurchases();
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (!response.ok) throw new Error("Failed to fetch purchases");
+      setPurchases(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error("Error fetching purchases:", err);
+      setPurchases([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Initial fetch (unfiltered purchases)
+  useEffect(() => {
+    fetchPurchases({ filterType: "staff" });
   }, []);
+
+  // Button click handler
+  const applyFilters = () => {
+    fetchPurchases({ filterType, searchTerm, fromDate, toDate });
+  };
 
   // Recalculate total pages when purchases or rowsPerPage changes
   useEffect(() => {
@@ -62,8 +83,57 @@ export default function StaffPurchaseHistory() {
   return (
     <div className="m-2 rounded-xl border border-gray-200 px-2 pt-2 pb-4 dark:border-gray-700 dark:bg-gray-950">
       {navigatingTo && <LoadingBar isLoading={true} />}
+      {/* Purchase History Heading */}
       <PurchasesHistoryHeading />
 
+      {/* Search Bar */}
+      <div className="mx-auto mb-4 max-w-md">
+        <div className="flex items-center justify-center space-x-4">
+          <select
+            value={filterType}
+            onChange={(e) => setFilterType(e.target.value)}
+            className="rounded-md border border-gray-300 bg-white px-2 py-1 text-sm focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+          >
+            <option value="staff">Filter by Staff Name</option>
+            <option value="date">Filter by Date</option>
+          </select>
+
+          {filterType === "staff" && (
+            <input
+              type="text"
+              placeholder="Search staff..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="mt-2 rounded-md border border-gray-300 px-3 py-1 text-sm focus:border-gray-500 focus:outline-none sm:mt-0 dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+            />
+          )}
+
+          {filterType === "date" && (
+            <div className="mt-2 flex items-center space-x-2 sm:mt-0">
+              <input
+                type="date"
+                value={fromDate}
+                onChange={(e) => setFromDate(e.target.value)}
+                className="rounded-md border border-gray-300 px-2 py-1 text-sm dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+              />
+              <span className="text-gray-500 dark:text-gray-400">to</span>
+              <input
+                type="date"
+                value={toDate}
+                onChange={(e) => setToDate(e.target.value)}
+                className="rounded-md border border-gray-300 px-2 py-1 text-sm dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+              />
+            </div>
+          )}
+
+          <button
+            onClick={applyFilters}
+            className="mt-2 rounded-md bg-gray-900 px-3 py-1 text-sm text-white hover:bg-gray-700 sm:mt-0 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
+          >
+            Search
+          </button>
+        </div>
+      </div>
       {loading ? (
         <TableSkeleton />
       ) : (
@@ -75,10 +145,10 @@ export default function StaffPurchaseHistory() {
                   Item
                 </th>
                 <th className="px-6 py-3 text-left text-sm font-semibold">
-                  Status
+                  Staff
                 </th>
                 <th className="px-6 py-3 text-left text-sm font-semibold">
-                  Code
+                  Payroll
                 </th>
                 <th className="px-6 py-3 text-left text-sm font-semibold">
                   HR Approval
@@ -104,11 +174,11 @@ export default function StaffPurchaseHistory() {
                     <td className="max-w-[200px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900 dark:text-white">
                       {purchase.itemname}
                     </td>
-                    <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900 dark:text-white">
-                      {purchase.itemstatus}
+                    <td className="max-w-[150px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900 dark:text-white">
+                      {purchase.staffname}
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900 dark:text-white">
-                      {purchase.productcode}
+                      {purchase.payrollno}
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap">
                       <TableApprovalStatus status={purchase.hr_approval} />
@@ -122,7 +192,7 @@ export default function StaffPurchaseHistory() {
                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900 dark:text-white">
                       <div className="group ml-1.5 flex">
                         <button
-                          onClick={() => handleViewClick(purchase.id)}
+                          onClick={() => gotoPurchase(purchase.id)}
                           className="rounded-md border border-gray-300 p-1.5 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-50"
                           title="View"
                           disabled={navigatingTo === purchase.id}
@@ -140,13 +210,12 @@ export default function StaffPurchaseHistory() {
                     colSpan="8"
                     className="px-6 py-4 text-center text-sm whitespace-nowrap text-gray-500 dark:text-gray-400"
                   >
-                    Purchase history not available
+                    No purchase data found
                   </td>
                 </tr>
               )}
             </tbody>
           </table>
-
           {/* Pagination */}
           <Pagination
             totalPages={totalPages}

@@ -54,7 +54,8 @@ export default function CompleteRegistrationComponent({ email }) {
       if (data.role === "hr") dashboardPath = "/hrdashboard";
       else if (data.role === "cc") dashboardPath = "/ccdashboard";
       else if (data.role === "bi") dashboardPath = "/bidashboard";
-      else dashboardPath = "/staffdashboard";
+      else if (data.role === "staff") dashboardPath = "/staffdashboard";
+      else dashboardPath = "/login";
 
       window.location.href = dashboardPath;
     } catch (err) {

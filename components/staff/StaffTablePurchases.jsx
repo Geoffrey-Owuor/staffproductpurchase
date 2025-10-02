@@ -10,16 +10,15 @@ import { TableApprovalStatus } from "../Reusables/TableApprovalStatus";
 export default function StaffTablePurchases() {
   const [purchases, setPurchases] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [navigatingTo, setNavigatingTo] = useState(null);
   const [goingTo, setGoingTo] = useState(null);
   const router = useRouter();
 
-  const handleViewClick = (id) => {
-    setNavigatingTo(id);
+  const gotoPurchaseView = (id) => {
+    setGoingTo(id);
     router.push(`/staffdashboard/purchase-history/purchases/${id}`);
   };
 
-  const handleEditClick = (id) => {
+  const gotoPurchaseEdit = (id) => {
     setGoingTo(id);
     router.push(`/staffdashboard/purchase-history/purchases/${id}/edit`);
   };
@@ -52,7 +51,7 @@ export default function StaffTablePurchases() {
 
   return (
     <div className="m-2 rounded-xl border border-gray-200 px-2 pt-2 pb-4 dark:border-gray-700 dark:bg-gray-950">
-      {(navigatingTo || goingTo) && <LoadingBar isLoading={true} />}
+      {goingTo && <LoadingBar isLoading={true} />}
 
       {/* Heading */}
       <RecentPurchasesHeading />
@@ -115,10 +114,9 @@ export default function StaffTablePurchases() {
                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900 dark:text-white">
                       <RecentActionButtons
                         id={purchase.id}
-                        handleEditClick={handleEditClick}
-                        handleViewClick={handleViewClick}
+                        gotoPurchaseEdit={gotoPurchaseEdit}
+                        gotoPurchaseView={gotoPurchaseView}
                         biApproval={purchase.bi_approval}
-                        navigatingTo={navigatingTo}
                         goingTo={goingTo}
                       />
                     </td>

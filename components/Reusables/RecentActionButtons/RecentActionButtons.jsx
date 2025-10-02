@@ -5,10 +5,9 @@ const iconButtonStyles =
 
 export const RecentActionButtons = ({
   id,
-  handleViewClick,
-  handleEditClick,
+  gotoPurchaseEdit,
+  gotoPurchaseView,
   biApproval,
-  navigatingTo,
   goingTo,
 }) => {
   return (
@@ -16,8 +15,8 @@ export const RecentActionButtons = ({
       {/* View Button */}
       <button
         type="button"
-        onClick={() => handleViewClick(id)}
-        disabled={navigatingTo === id}
+        onClick={() => gotoPurchaseView(id)}
+        disabled={goingTo === id}
         title="View"
         className={`${iconButtonStyles}`}
       >
@@ -25,10 +24,10 @@ export const RecentActionButtons = ({
       </button>
 
       {/* Conditionally rendered Edit Button */}
-      {biApproval !== "approved" && (
+      {(biApproval !== "approved" || biApproval === "declined") && (
         <button
           type="button"
-          onClick={() => handleEditClick(id)}
+          onClick={() => gotoPurchaseEdit(id)}
           disabled={goingTo === id}
           title="Edit"
           className={`${iconButtonStyles}`}

@@ -1,32 +1,37 @@
-// api/cc/cctablepurchases/route.js
+// api/tablesdata/recentpurchasesdata/route.js
 import { pool } from "@/lib/db";
 
 export async function GET(request) {
   let client;
   try {
     const { searchParams } = new URL(request.url);
+    const filterType = searchParams.get("filterType") || "staff"; //default to staff
     const searchQuery = searchParams.get("search") || "";
+    const fromDate = searchParams.get("fromDate") || null;
+    const toDate = searchParams.get("toDate") || null;
 
     client = await pool.connect();
 
-    // Base query with parameterized input
+    // Prepare the query
     let query = {
       text: `SELECT id, itemname, itemstatus, productcode, 
-             tdprice, discountedvalue, createdat, staffname, payrollno, hr_approval, cc_approval, bi_approval  
+                    tdprice, discountedvalue, createdat, staffname, payrollno, hr_approval, cc_approval, bi_approval  
              FROM purchasesinfo WHERE createdat >= NOW() - INTERVAL '12 days'`,
       values: [],
     };
 
-    // Add search filter if provided
-    if (searchQuery) {
+    if (filterType === "staff" && searchQuery) {
       query.text += ` AND staffname ILIKE $1`;
       query.values.push(`%${searchQuery}%`);
+    } else if (filterType === "date" && fromDate && toDate) {
+      query.text += ` AND DATE(createdat) BETWEEN $1 AND $2`;
+      query.values.push(fromDate, toDate);
     }
 
-    // Add sorting
+    // Add ordering
     query.text += ` ORDER BY createdat DESC`;
 
-    // Execute query
+    // Execute the query
     const { rows } = await client.query(query);
 
     return Response.json(rows || [], {

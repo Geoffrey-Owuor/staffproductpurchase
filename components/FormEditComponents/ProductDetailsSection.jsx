@@ -4,15 +4,6 @@ import FormAsterisk from "../Reusables/FormAsterisk/FormAsterisk";
 import useDebounce from "../Reusables/Debouncing/useDebounce";
 import { X } from "lucide-react";
 
-const discountpolicy = {
-  "Von Hotpoint on Account": { New: 10, RHD2: 15 },
-  "Von Hotpoint on Cash Payment": { New: 12.5, RHD2: 17.5 },
-  "Non Von Hotpoint on Cash Payment": { New: 10, RHD2: 15 },
-  "Non Von Hotpoint on Account": { New: 7.5, RHD2: 12.5 },
-  "Samsung Brand on Cash payment": { New: 5, RHD2: 7.5 },
-  "Samsung Brand on Account": { New: 2.5, RHD2: 5 },
-};
-
 export default function ProductDetailsSection({
   formData,
   handleChange,
@@ -22,9 +13,29 @@ export default function ProductDetailsSection({
   const [fetchedDetails, setFetchedDetails] = useState(null);
   const [loading, setLoading] = useState(false);
   const [firstRender, setFirstRender] = useState(true);
+  const [discountPolicies, setDiscountPolicies] = useState([]);
 
   //Using debounced productcode
   const debouncedCode = useDebounce(formData.productcode, 1000);
+
+  //useEffect for fetching the discount policies
+  useEffect(() => {
+    const fetchPolicies = async () => {
+      try {
+        const response = await fetch("/api/getdiscountpolicies");
+        const json = await response.json();
+        if (response.ok) {
+          setDiscountPolicies(json.data);
+        } else {
+          console.error("Failed to fetch discount policies.");
+        }
+      } catch (error) {
+        console.error("Error fetching discount policies: ", error);
+      }
+    };
+
+    fetchPolicies();
+  }, []);
 
   useEffect(() => {
     if (firstRender) {
@@ -87,14 +98,20 @@ export default function ProductDetailsSection({
     }
   };
 
+  //Matching discount policy to discount rate
   useEffect(() => {
     const { itemstatus, productpolicy } = formData;
-    if (itemstatus && productpolicy && discountpolicy[productpolicy]) {
-      const rate = discountpolicy[productpolicy][itemstatus];
-      if (rate !== undefined) {
+    if (itemstatus && productpolicy) {
+      const matchedPolicy = discountPolicies.find(
+        (policy) =>
+          policy.policy_name === productpolicy &&
+          policy.category === itemstatus,
+      );
+
+      if (matchedPolicy) {
         setFormData((prev) => ({
           ...prev,
-          discountrate: rate,
+          discountrate: matchedPolicy.rate,
         }));
       }
     }
@@ -279,11 +296,13 @@ export default function ProductDetailsSection({
             <option value="" disabled>
               Select Policy
             </option>
-            {Object.keys(discountpolicy).map((policy) => (
-              <option key={policy} value={policy}>
-                {policy}
-              </option>
-            ))}
+            {[...new Set(discountPolicies.map((p) => p.policy_name))].map(
+              (policy) => (
+                <option key={policy} value={policy}>
+                  {policy}
+                </option>
+              ),
+            )}
           </select>
         </div>
 
@@ -441,6 +460,8 @@ export default function ProductDetailsSection({
               <option value="2">2 Months</option>
               <option value="3">3 Months</option>
               <option value="4">4 Months</option>
+              <option value="5">5 Months</option>
+              <option value="6">6 Months</option>
             </select>
           </div>
         )}

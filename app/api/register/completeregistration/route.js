@@ -4,22 +4,17 @@ import { pool } from "@/lib/db";
 import { cookies } from "next/headers";
 
 const getRoleFromEmail = (email) => {
-  const prefix = email.split("@")[0].toLowerCase();
-  const roleMappings = {
-    hr: "hr",
-    cc: "cc",
-    bi: "bi",
-    admin: "admin",
+  // Get the normalized email
+  const normalizedEmail = email.toLowerCase();
+
+  const emailRoleMappings = {
+    "cerah@gmail.com": "hr",
+    "ho@hotpoint.com": "cc",
+    "bi@hotpoint.co.ke": "bi",
   };
 
-  for (const [key, role] of Object.entries(roleMappings)) {
-    if (prefix.startsWith(key)) {
-      return role;
-    }
-  }
-  return "staff";
+  return emailRoleMappings[normalizedEmail] || "staff";
 };
-
 export async function POST(request) {
   let client;
   try {

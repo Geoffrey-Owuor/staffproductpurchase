@@ -1,11 +1,11 @@
 import HRApprovalCards from "@/components/hr/HRApprovalCards";
-import HrPurchaseHistory from "@/components/hr/HrPurchaseHistory";
+import PurchasesHistory from "@/components/PurchasesTables/PurchasesHistory";
 
 export default function page() {
   return (
     <>
       <HRApprovalCards />
-      <HrPurchaseHistory />
+      <PurchasesHistory />
     </>
   );
 }

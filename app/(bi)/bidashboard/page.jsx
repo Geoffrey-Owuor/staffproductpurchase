@@ -1,12 +1,12 @@
 import BIApprovalCards from "@/components/bi/BIApprovalCards";
-import BITablePurchases from "@/components/bi/BITablePurchases";
 import TermsConditions from "@/components/TermsConditions";
+import RecentPurchases from "@/components/PurchasesTables/RecentPurchases";
 
 export default function BIHomePage() {
   return (
     <>
       <BIApprovalCards />
-      <BITablePurchases />
+      <RecentPurchases />
       <TermsConditions />
     </>
   );
