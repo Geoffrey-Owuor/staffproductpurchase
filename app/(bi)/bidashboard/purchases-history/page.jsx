@@ -1,11 +1,11 @@
 import BIApprovalCards from "@/components/bi/BIApprovalCards";
-import BIPurchaseHistory from "@/components/bi/BIPurchaseHistory";
+import PurchasesHistory from "@/components/PurchasesTables/PurchasesHistory";
 
-export default function PurchasesHistory() {
+export default function BiPurchasesHistory() {
   return (
     <>
       <BIApprovalCards />
-      <BIPurchaseHistory />
+      <PurchasesHistory />
     </>
   );
 }

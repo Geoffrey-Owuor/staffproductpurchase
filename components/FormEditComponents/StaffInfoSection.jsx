@@ -1,3 +1,5 @@
+import FormAsterisk from "../Reusables/FormAsterisk/FormAsterisk";
+
 export default function StaffInfoSection({ formData, handleChange, userRole }) {
   const isReadOnly = userRole != "staff";
 
@@ -14,7 +16,7 @@ export default function StaffInfoSection({ formData, handleChange, userRole }) {
             htmlFor="staffname"
             className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
           >
-            Staff Name
+            Staff Name <FormAsterisk />
           </label>
           <input
             type="text"
@@ -33,7 +35,7 @@ export default function StaffInfoSection({ formData, handleChange, userRole }) {
             htmlFor="payrollno"
             className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
           >
-            Payroll No
+            Payroll No <FormAsterisk />
           </label>
           <input
             type="text"
@@ -52,33 +54,19 @@ export default function StaffInfoSection({ formData, handleChange, userRole }) {
             htmlFor="department"
             className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
           >
-            Department
+            Department <FormAsterisk />
           </label>
-          <select
+          <input
+            type="text"
             id="department"
             name="department"
             value={formData.department}
             onChange={handleChange}
-            disabled={isReadOnly}
+            readOnly={isReadOnly}
             className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${isReadOnly ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
+            placeholder="Enter payroll number"
             required
-          >
-            <option value="" disabled>
-              Select a department
-            </option>
-            <option value="Engineering">Engineering</option>
-            <option value="Marketing">Marketing</option>
-            <option value="HR & Admin">HR & Admin</option>
-            <option value="IT & Projects">IT & Projects</option>
-            <option value="Finance">Finance</option>
-            <option value="Retail">Retail</option>
-            <option value="B2B">B2B</option>
-            <option value="Service Center">Service Center</option>
-            <option value="Modern Trade">Modern Trade</option>
-            <option value="Commercial">Commercial</option>
-            <option value="Imports & Exports">Imports & Exports</option>
-            <option value="Warehouse">Warehouse</option>
-          </select>
+          />
         </div>
       </div>
     </div>

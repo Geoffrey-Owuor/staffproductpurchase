@@ -1,3 +1,5 @@
+import FormAsterisk from "./Reusables/FormAsterisk/FormAsterisk";
+
 const StaffInformation = ({ formData, handleChange }) => {
   return (
     <div className="mb-8 rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-950">
@@ -11,7 +13,7 @@ const StaffInformation = ({ formData, handleChange }) => {
               htmlFor="staffname"
               className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
             >
-              Staff Name
+              Staff Name <FormAsterisk />
             </label>
             <input
               type="text"
@@ -29,7 +31,7 @@ const StaffInformation = ({ formData, handleChange }) => {
               htmlFor="payrollno"
               className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
             >
-              Payroll No
+              Payroll No <FormAsterisk />
             </label>
             <input
               type="text"
@@ -41,37 +43,23 @@ const StaffInformation = ({ formData, handleChange }) => {
               required
             />
           </div>
+
           <div>
             <label
               htmlFor="department"
               className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
             >
-              Department
+              Department <FormAsterisk />
             </label>
-            <select
+            <input
+              type="text"
               id="department"
               name="department"
               value={formData.department}
               onChange={handleChange}
               className="w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
               required
-            >
-              <option value="" disabled>
-                Select a department
-              </option>
-              <option value="Engineering">Engineering</option>
-              <option value="Marketing">Marketing</option>
-              <option value="HR & Admin">HR & Admin</option>
-              <option value="IT & Projects">IT & Projects</option>
-              <option value="Finance">Finance</option>
-              <option value="Retail">Retail</option>
-              <option value="B2B">B2B</option>
-              <option value="Service Center">Service Center</option>
-              <option value="Modern Trade">Modern Trade</option>
-              <option value="Commercial">Commercial</option>
-              <option value="Imports & Exports">Imports & Exports</option>
-              <option value="Warehouse">Warehouse</option>
-            </select>
+            />
           </div>
         </div>
       </div>

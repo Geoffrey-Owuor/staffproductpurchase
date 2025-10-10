@@ -24,12 +24,11 @@ export async function POST(request) {
 
     // Generate a secure token
     const token = uuidv4();
-    const expiry = new Date(Date.now() + 3600000); // 1 hour expiry
 
     // Store the reset token and expiry in the database
     await client.query(
-      `UPDATE users SET reset_token = $1, reset_token_expiry = $2 WHERE id = $3`,
-      [token, expiry, rows[0].id],
+      `UPDATE users SET reset_token = $1, reset_token_expiry = NOW() + INTERVAL '1 hour' WHERE id = $2`,
+      [token, rows[0].id],
     );
 
     // Generate reset link and send email

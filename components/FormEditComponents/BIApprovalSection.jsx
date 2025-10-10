@@ -1,4 +1,5 @@
 import { formatDateLong } from "@/public/assets";
+import FormAsterisk from "../Reusables/FormAsterisk/FormAsterisk";
 
 export default function BIApprovalSection({
   formData,
@@ -21,7 +22,7 @@ export default function BIApprovalSection({
               htmlFor="invoice_date"
               className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
             >
-              Date of Invoice
+              Date of Invoice <FormAsterisk />
             </label>
             <input
               type="date"
@@ -44,7 +45,7 @@ export default function BIApprovalSection({
               htmlFor="invoice_number"
               className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
             >
-              Invoice No
+              Invoice No <FormAsterisk />
             </label>
             <input
               type="text"
@@ -68,7 +69,7 @@ export default function BIApprovalSection({
               htmlFor="invoice_amount"
               className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
             >
-              Amount (Ksh)
+              Amount (Ksh) <FormAsterisk />
             </label>
             <input
               type="number"
@@ -94,7 +95,7 @@ export default function BIApprovalSection({
               htmlFor="invoice_recorded_date"
               className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
             >
-              Date Recorded
+              Date Recorded <FormAsterisk />
             </label>
             <input
               type="date"

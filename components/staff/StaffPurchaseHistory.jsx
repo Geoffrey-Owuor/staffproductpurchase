@@ -1,17 +1,12 @@
 "use client";
-import {
-  Eye,
-  ChevronRight,
-  ChevronLeft,
-  MoreHorizontal,
-  MoreVertical,
-} from "lucide-react";
+import { Eye, MoreVertical } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import TableSkeleton from "../skeletons/TableSkeleton";
 import { LoadingBar } from "../Reusables/LoadingBar";
 import PurchasesHistoryHeading from "../Reusables/Headings/PurchasesHistoryHeading";
 import { TableApprovalStatus } from "../Reusables/TableApprovalStatus";
+import Pagination from "../pagination/Pagination";
 
 export default function StaffPurchaseHistory() {
   const [purchases, setPurchases] = useState([]);
@@ -20,7 +15,6 @@ export default function StaffPurchaseHistory() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [showPageDropdown, setShowPageDropdown] = useState(false);
   const router = useRouter();
 
   const handleViewClick = (id) => {
@@ -64,100 +58,6 @@ export default function StaffPurchaseHistory() {
     (currentPage - 1) * rowsPerPage,
     currentPage * rowsPerPage,
   );
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-    setShowPageDropdown(false);
-  };
-
-  const renderPageNumbers = () => {
-    const pages = [];
-    const maxVisiblePages = 5;
-
-    if (totalPages <= maxVisiblePages) {
-      for (let i = 1; i <= totalPages; i++) {
-        pages.push(
-          <button
-            key={i}
-            onClick={() => handlePageChange(i)}
-            className={`mx-1 flex h-8 w-8 items-center justify-center rounded-full ${
-              currentPage === i
-                ? "bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900"
-                : "bg-white text-gray-900 hover:bg-gray-100 dark:bg-gray-950 dark:text-white dark:hover:bg-gray-800"
-            }`}
-          >
-            {i}
-          </button>,
-        );
-      }
-    } else {
-      for (let i = 1; i <= 3; i++) {
-        pages.push(
-          <button
-            key={i}
-            onClick={() => handlePageChange(i)}
-            className={`mx-1 flex h-8 w-8 items-center justify-center rounded-full ${
-              currentPage === i
-                ? "bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900"
-                : "bg-white text-gray-900 hover:bg-gray-100 dark:bg-gray-950 dark:text-white dark:hover:bg-gray-800"
-            }`}
-          >
-            {i}
-          </button>,
-        );
-      }
-
-      pages.push(
-        <div key="dropdown" className="relative mx-1">
-          <button
-            onClick={() => setShowPageDropdown(!showPageDropdown)}
-            className={`flex h-8 w-8 items-center justify-center rounded-full ${
-              showPageDropdown
-                ? "bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900"
-                : "bg-white text-gray-900 hover:bg-gray-100 dark:bg-gray-950 dark:text-white dark:hover:bg-gray-800"
-            }`}
-          >
-            <MoreHorizontal className="h-4 w-4" />
-          </button>
-          {showPageDropdown && (
-            <div className="absolute top-full left-0 z-10 mt-1 w-16 rounded-lg bg-white shadow-lg dark:bg-gray-800">
-              {Array.from({ length: totalPages - 4 }, (_, i) => i + 4).map(
-                (page) => (
-                  <button
-                    key={page}
-                    onClick={() => handlePageChange(page)}
-                    className={`block w-full px-3 py-1 text-center text-sm ${
-                      currentPage === page
-                        ? "bg-gray-100 text-gray-900 dark:bg-gray-700 dark:text-white"
-                        : "hover:bg-gray-50 dark:text-white dark:hover:bg-gray-900"
-                    }`}
-                  >
-                    {page}
-                  </button>
-                ),
-              )}
-            </div>
-          )}
-        </div>,
-      );
-
-      pages.push(
-        <button
-          key={totalPages}
-          onClick={() => handlePageChange(totalPages)}
-          className={`mx-1 flex h-8 w-8 items-center justify-center rounded-full ${
-            currentPage === totalPages
-              ? "bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900"
-              : "bg-white text-gray-900 hover:bg-gray-100 dark:bg-gray-950 dark:text-white dark:hover:bg-gray-800"
-          }`}
-        >
-          {totalPages}
-        </button>,
-      );
-    }
-
-    return pages;
-  };
 
   return (
     <div className="m-2 rounded-xl border border-gray-200 px-2 pt-2 pb-4 dark:border-gray-700 dark:bg-gray-950">
@@ -248,51 +148,16 @@ export default function StaffPurchaseHistory() {
           </table>
 
           {/* Pagination */}
-          <div className="mt-4 mb-1 flex items-center justify-center space-x-7">
-            {/* Rows Per Page Drop Down */}
-            <div className="flex items-center">
-              <span className="mr-2 text-sm text-gray-700 dark:text-gray-400">
-                Rows per page:
-              </span>
-              <select
-                value={rowsPerPage}
-                onChange={(e) => {
-                  setRowsPerPage(Number(e.target.value));
-                  setCurrentPage(1); // Reset to first page when changing rows per page
-                }}
-                className="rounded-md border border-gray-300 bg-white px-2 py-1 text-sm text-gray-700 focus:border-gray-500 focus:ring-1 focus:ring-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-gray-400"
-              >
-                {[10, 20, 50, 100].map((size) => (
-                  <option key={size} value={size}>
-                    {size}
-                  </option>
-                ))}
-              </select>
-            </div>
-            {purchases.length > rowsPerPage && (
-              <div className="flex items-center">
-                <button
-                  onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
-                  disabled={currentPage === 1}
-                  className="mx-1 flex h-8 w-8 items-center justify-center rounded-full bg-transparent text-gray-900 hover:bg-gray-100 disabled:opacity-50 dark:text-white dark:hover:bg-gray-800"
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                </button>
-
-                {renderPageNumbers()}
-
-                <button
-                  onClick={() =>
-                    handlePageChange(Math.min(totalPages, currentPage + 1))
-                  }
-                  disabled={currentPage === totalPages}
-                  className="mx-1 flex h-8 w-8 items-center justify-center rounded-full bg-transparent text-gray-900 hover:bg-gray-100 disabled:opacity-50 dark:text-white dark:hover:bg-gray-800"
-                >
-                  <ChevronRight className="h-4 w-4" />
-                </button>
-              </div>
-            )}
-          </div>
+          <Pagination
+            totalPages={totalPages}
+            currentPage={currentPage}
+            rowsPerPage={rowsPerPage}
+            handlePageChange={(page) => setCurrentPage(page)}
+            onRowsPerPageChange={(rows) => {
+              setRowsPerPage(rows);
+              setCurrentPage(1);
+            }}
+          />
         </div>
       )}
     </div>

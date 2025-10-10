@@ -1,4 +1,5 @@
 import { formatDateLong } from "@/public/assets";
+import FormAsterisk from "../Reusables/FormAsterisk/FormAsterisk";
 
 export default function CreditControlSection({
   formData,
@@ -20,7 +21,7 @@ export default function CreditControlSection({
             htmlFor="credit_period"
             className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
           >
-            Credit Period Given & Mode of Payments
+            Credit Period Given & Mode of Payments <FormAsterisk />
           </label>
           <textarea
             id="credit_period"
@@ -40,7 +41,7 @@ export default function CreditControlSection({
             htmlFor="one_third_rule"
             className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
           >
-            1/3 Rule Assessment
+            1/3 Rule Assessment <FormAsterisk />
           </label>
           <textarea
             id="one_third_rule"
@@ -60,7 +61,7 @@ export default function CreditControlSection({
             htmlFor="purchase_history_comments"
             className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
           >
-            Purchase History Comments
+            Purchase History Comments <FormAsterisk />
           </label>
           <textarea
             id="purchase_history_comments"
@@ -81,7 +82,7 @@ export default function CreditControlSection({
             htmlFor="pending_invoices"
             className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
           >
-            Pending Invoices/Outstanding Amounts
+            Pending Invoices/Outstanding Amounts <FormAsterisk />
           </label>
           <input
             type="text"
@@ -101,7 +102,7 @@ export default function CreditControlSection({
             htmlFor="cc_approval"
             className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
           >
-            Approval Status
+            Approval Status <FormAsterisk />
           </label>
           <select
             id="cc_approval"
@@ -125,7 +126,7 @@ export default function CreditControlSection({
             htmlFor="cc_signature"
             className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
           >
-            Checked By
+            Checked By <FormAsterisk />
           </label>
           <input
             type="text"

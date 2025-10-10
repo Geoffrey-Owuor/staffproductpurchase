@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import AlertPopup from "../Reusables/AlertPopup";
 import { AuthPagesLogo } from "@/public/assets";
@@ -13,6 +13,7 @@ export default function VerifyCodeComponent({ email }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showAlert, setShowAlert] = useState(false);
+  const [coolDown, setCoolDown] = useState(0);
 
   const handleCodeSubmit = async (e) => {
     e.preventDefault();
@@ -37,6 +38,8 @@ export default function VerifyCodeComponent({ email }) {
   };
 
   const resendCode = async () => {
+    if (coolDown > 0) return;
+    setCoolDown(60);
     try {
       await fetch("/api/register/verifyemail", {
         method: "POST",
@@ -49,6 +52,15 @@ export default function VerifyCodeComponent({ email }) {
       console.error("Resend failed", error);
     }
   };
+
+  // Add a useEffect to manage the timer
+  useEffect(() => {
+    if (coolDown <= 0) return;
+    const timer = setTimeout(() => {
+      setCoolDown(coolDown - 1);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [coolDown]);
 
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center bg-white text-gray-900 dark:bg-gray-950 dark:text-white">
@@ -84,7 +96,7 @@ export default function VerifyCodeComponent({ email }) {
               placeholder=" "
               className="peer w-full rounded-full border border-gray-300 bg-transparent px-4 py-3 text-center text-xl tracking-widest placeholder-transparent focus:outline-none dark:border-gray-700 dark:text-white"
             />
-            <label className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300">
+            <label className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300">
               Enter verification code
             </label>
           </div>
@@ -106,14 +118,15 @@ export default function VerifyCodeComponent({ email }) {
               <>Verify</>
             )}
           </button>
+
           <div className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
-            Didn’t receive a code?{" "}
+            Didn't receive a code?{" "}
             <button
               type="button"
               onClick={resendCode}
-              className="cursor-pointer font-medium text-gray-700 hover:underline dark:text-gray-300 dark:hover:text-white"
+              className={`${coolDown > 0 ? "cursor-default" : "cursor-pointer hover:underline"}font-medium text-gray-700 dark:text-gray-300 dark:hover:text-white`}
             >
-              Resend
+              {coolDown > 0 ? `Resend code in ${coolDown}s` : "Resend code"}
             </button>
           </div>
         </form>

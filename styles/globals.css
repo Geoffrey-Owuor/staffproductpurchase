@@ -219,3 +219,8 @@
 html {
   scroll-behavior: smooth;
 }
+
+.custom-blur {
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}

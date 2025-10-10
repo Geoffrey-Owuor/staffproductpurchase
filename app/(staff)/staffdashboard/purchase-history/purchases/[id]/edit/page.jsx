@@ -10,50 +10,20 @@ import { LoadingBarWave } from "@/components/Reusables/LoadingBar";
 import { clearFormData } from "@/public/assets";
 import EditPurchaseHeading from "@/components/EditPurchaseComponent/EditPurchaseHeading";
 import SaveCloseComponent from "@/components/EditPurchaseComponent/SaveCloseComponent";
+import { useUser } from "@/context/UserContext";
 
 export default function EditPurchaseForm({ params }) {
-  const [userRole, setUserRole] = useState(null);
+  const { role: userRole } = useUser();
   const [loading, setLoading] = useState(true);
   const [biApproval, setBiApproval] = useState(null);
   const [submitting, setIsSubmitting] = useState(false);
-  const [formData, setFormData] = useState({
-    staffname: "",
-    payrollno: "",
-    department: "",
-    itemname: "",
-    itemstatus: "",
-    productpolicy: "",
-    productcode: "",
-    tdprice: "",
-    discountrate: "",
-    discountedvalue: "",
-    createdat: "",
-    employee_payment_terms: "",
-    user_credit_period: "",
-  });
+  const [formData, setFormData] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [alertType, setAlertType] = useState("success");
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await fetch("/api/current-user");
-        const data = await response.json();
-
-        if (response.ok && data.valid) {
-          setUserRole(data.role);
-        } else {
-          setUserRole("guest"); //Fallback Role
-        }
-      } catch (error) {
-        console.error("Failed to fetch user role:", error);
-        setUserRole("guest");
-      }
-    };
-    fetchUser();
-
     const fetchPurchaseData = async () => {
       const { id } = await params;
       try {
@@ -101,24 +71,6 @@ export default function EditPurchaseForm({ params }) {
       [name]: value,
     }));
   };
-
-  useEffect(() => {
-    const tdprice = parseFloat(formData.tdprice);
-    const discountrate = parseFloat(formData.discountrate);
-
-    if (!isNaN(tdprice) && !isNaN(discountrate)) {
-      const discountedvalue = tdprice * (1 - discountrate / 100);
-      setFormData((prev) => ({
-        ...prev,
-        discountedvalue: discountedvalue.toFixed(2),
-      }));
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        discountedvalue: "",
-      }));
-    }
-  }, [formData.tdprice, formData.discountrate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

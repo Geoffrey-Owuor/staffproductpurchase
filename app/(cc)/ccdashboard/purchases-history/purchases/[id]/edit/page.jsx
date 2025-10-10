@@ -12,63 +12,20 @@ import { LoadingBarWave } from "@/components/Reusables/LoadingBar";
 import { clearFormData } from "@/public/assets";
 import EditPurchaseHeading from "@/components/EditPurchaseComponent/EditPurchaseHeading";
 import SaveCloseComponent from "@/components/EditPurchaseComponent/SaveCloseComponent";
+import { useUser } from "@/context/UserContext";
 
 export default function EditPurchaseForm({ params }) {
-  const [userRole, setUserRole] = useState(null);
+  const { role: userRole, name: userName } = useUser();
   const [loading, setLoading] = useState(true);
   const [biApproval, setBiApproval] = useState(null);
   const [submitting, setIsSubmitting] = useState(false);
-  const [formData, setFormData] = useState({
-    staffname: "",
-    payrollno: "",
-    department: "",
-    itemname: "",
-    itemstatus: "",
-    productpolicy: "",
-    productcode: "",
-    tdprice: "",
-    discountrate: "",
-    discountedvalue: "",
-    createdat: "",
-    employee_payment_terms: "",
-    user_credit_period: "",
-    is_employed: "",
-    on_probation: "",
-    hr_comments: "",
-    hr_approval: "",
-    hr_approver_name: "",
-    hr_approval_date: "",
-    credit_period: "",
-    one_third_rule: "",
-    purchase_history_comments: "",
-    pending_invoices: "",
-    cc_approval: "",
-    cc_approver_name: "",
-    cc_approval_date: "",
-  });
+  const [formData, setFormData] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [alertType, setAlertType] = useState("success");
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await fetch("/api/current-user");
-        const data = await response.json();
-
-        if (response.ok && data.valid) {
-          setUserRole(data.role);
-        } else {
-          setUserRole("guest"); //Fallback Role
-        }
-      } catch (error) {
-        console.error("Failed to fetch user role:", error);
-        setUserRole("guest");
-      }
-    };
-    fetchUser();
-
     const fetchPurchaseData = async () => {
       const { id } = await params;
       try {
@@ -106,7 +63,7 @@ export default function EditPurchaseForm({ params }) {
           purchase_history_comments: data.purchase_history_comments || "",
           pending_invoices: data.pending_invoices || "",
           cc_approval: data.cc_approval || "",
-          cc_approver_name: data.cc_approver_name || "",
+          cc_approver_name: data.cc_approver_name || userName,
           cc_approval_date: data.cc_approval_date || "",
         });
         setLoading(false);
@@ -129,24 +86,6 @@ export default function EditPurchaseForm({ params }) {
       [name]: value,
     }));
   };
-
-  useEffect(() => {
-    const tdprice = parseFloat(formData.tdprice);
-    const discountrate = parseFloat(formData.discountrate);
-
-    if (!isNaN(tdprice) && !isNaN(discountrate)) {
-      const discountedvalue = tdprice * (1 - discountrate / 100);
-      setFormData((prev) => ({
-        ...prev,
-        discountedvalue: discountedvalue.toFixed(2),
-      }));
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        discountedvalue: "",
-      }));
-    }
-  }, [formData.tdprice, formData.discountrate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

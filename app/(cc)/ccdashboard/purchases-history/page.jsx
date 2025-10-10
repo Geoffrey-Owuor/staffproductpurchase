@@ -1,11 +1,11 @@
 import CCApprovalCards from "@/components/cc/CCApprovalCards";
-import CCPurchaseHistory from "@/components/cc/CCPurchaseHistory";
+import PurchasesHistory from "@/components/PurchasesTables/PurchasesHistory";
 
-export default function PurchasesHistory() {
+export default function CCPurchasesHistory() {
   return (
     <>
       <CCApprovalCards />
-      <CCPurchaseHistory />
+      <PurchasesHistory />
     </>
   );
 }
