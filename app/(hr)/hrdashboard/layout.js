@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/app/lib/auth";
 import UnauthorizedPage from "@/components/Reusables/UnauthorizedPage";
-import HrLayoutShell from "@/components/hr/HrLayoutShell";
+import ReusableLayoutShell from "@/components/Reusables/ReuseLayoutShell/ReusableLayoutShell";
 import { FirstLoader } from "@/components/Reusables/FirstLoader";
 
 export const metadata = {
@@ -23,7 +23,7 @@ export default async function layout({ children }) {
   return (
     <>
       <FirstLoader />
-      <HrLayoutShell user={user}>{children}</HrLayoutShell>
+      <ReusableLayoutShell user={user}>{children}</ReusableLayoutShell>
     </>
   );
 }

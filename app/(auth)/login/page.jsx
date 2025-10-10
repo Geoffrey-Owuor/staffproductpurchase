@@ -46,8 +46,10 @@ export default function LoginPage() {
           dashboardPath = "/ccdashboard";
         } else if (data.role === "bi") {
           dashboardPath = "/bidashboard";
-        } else {
+        } else if (data.role === "staff") {
           dashboardPath = "/staffdashboard";
+        } else {
+          dashboardPath = "/login";
         }
 
         // Redirect with page reload

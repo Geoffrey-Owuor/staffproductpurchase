@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/app/lib/auth";
 import UnauthorizedPage from "@/components/Reusables/UnauthorizedPage";
-import BILayoutShell from "@/components/bi/BILayoutShell";
+import ReusableLayoutShell from "@/components/Reusables/ReuseLayoutShell/ReusableLayoutShell";
 import { FirstLoader } from "@/components/Reusables/FirstLoader";
 
 export const metadata = {
@@ -23,7 +23,7 @@ export default async function layout({ children }) {
   return (
     <>
       <FirstLoader />
-      <BILayoutShell user={user}>{children}</BILayoutShell>
+      <ReusableLayoutShell user={user}>{children}</ReusableLayoutShell>
     </>
   );
 }

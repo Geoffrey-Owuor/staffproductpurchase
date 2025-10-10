@@ -1,6 +1,7 @@
 import FormAsterisk from "./Reusables/FormAsterisk/FormAsterisk";
 
-const StaffInformation = ({ formData, handleChange }) => {
+const StaffInformation = ({ formData, handleChange, userRole }) => {
+  const isReadOnly = userRole !== "staff";
   return (
     <div className="mb-8 rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-950">
       <div className="rounded-t-xl px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white">
@@ -21,8 +22,9 @@ const StaffInformation = ({ formData, handleChange }) => {
               name="staffName"
               value={formData.staffName}
               onChange={handleChange}
-              className="w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${isReadOnly ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
               required
+              readOnly={isReadOnly}
             />
           </div>
 
@@ -39,8 +41,9 @@ const StaffInformation = ({ formData, handleChange }) => {
               name="payrollNo"
               value={formData.payrollNo}
               onChange={handleChange}
-              className="w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${isReadOnly ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
               required
+              readOnly={isReadOnly}
             />
           </div>
 
@@ -57,8 +60,9 @@ const StaffInformation = ({ formData, handleChange }) => {
               name="department"
               value={formData.department}
               onChange={handleChange}
-              className="w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${isReadOnly ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
               required
+              readOnly={isReadOnly}
             />
           </div>
         </div>

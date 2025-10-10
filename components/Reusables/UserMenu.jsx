@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { UserRound, ChevronDown, Settings } from "lucide-react";
+import { Settings, UserRoundCog } from "lucide-react";
 import SettingsPage from "../UserSettings/SettingsPage";
 import { useUser } from "@/context/UserContext";
 
@@ -34,12 +34,9 @@ export default function UserMenu() {
         {/* Toggle button */}
         <button
           onClick={() => setIsOpen((prev) => !prev)}
-          className="flex items-center gap-2 rounded-xl border border-gray-200 bg-transparent px-3 py-2 text-gray-900 transition hover:bg-gray-100 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800"
+          className="flex h-8 w-8 items-center justify-center rounded-full text-gray-900 transition hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
         >
-          <UserRound className="h-5 w-5" />
-          <ChevronDown
-            className={`h-4 w-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
-          />
+          <UserRoundCog className="h-5 w-5" />
         </button>
         {/* Dropdown */}
         {isOpen && user && (

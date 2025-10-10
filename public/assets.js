@@ -19,14 +19,9 @@ export const formatDateLong = (dateString) => {
   });
 };
 
-export const clearFormData = (setFormData) => {
-  setFormData((prev) => {
-    const cleared = {};
-    Object.keys(prev).forEach((key) => {
-      cleared[key] = ""; // Reset each field to empty string
-    });
-    return cleared;
-  });
+export const formatCreditPeriod = (period) => {
+  if (!period) return "N/A";
+  return `${period} month${Number(period) != 1 ? "s" : ""}`;
 };
 
 export const AuthPagesLogo = () => {

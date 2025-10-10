@@ -77,3 +77,24 @@ export const LoggingOutOverlay = ({ isLoggingOut }) => {
     </div>
   );
 };
+
+export const DeletingOverlay = () => {
+  return (
+    // This main div provides the full-screen semi-transparent overlay
+    <div className="fixed inset-0 z-9999 flex h-screen items-center justify-center bg-white/50 dark:bg-gray-950/50">
+      {/* Container to align the spinner and text horizontally */}
+      <div className="flex items-center space-x-2">
+        {/* The Lucide Loader spinner */}
+        <Loader
+          className="h-7 w-7 animate-spin text-gray-900 dark:text-white"
+          aria-label="loading"
+        />
+
+        {/* The text, styled for dark and light modes */}
+        <span className="text-lg text-gray-900 dark:text-white">
+          Deleting...
+        </span>
+      </div>
+    </div>
+  );
+};

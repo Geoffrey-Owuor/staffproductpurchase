@@ -146,7 +146,7 @@ export default function CreditControlSection({
             htmlFor="cc_approval_date"
             className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
           >
-            CC Approval Date
+            Credit Approval Date
           </label>
           <input
             type="text"

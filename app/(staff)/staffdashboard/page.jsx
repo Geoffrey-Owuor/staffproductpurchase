@@ -1,12 +1,12 @@
-import StaffApprovalCards from "@/components/staff/StaffApprovalCards";
-import StaffTablePurchases from "@/components/staff/StaffTablePurchases";
+import ApprovalCards from "@/components/Reusables/ReusableApprovalCards/ApprovalCards";
+import StaffPurchaseHistory from "@/components/staff/StaffPurchaseHistory";
 import TermsConditions from "@/components/TermsConditions";
 
 export default function StaffHomePage() {
   return (
     <>
-      <StaffApprovalCards />
-      <StaffTablePurchases />
+      <ApprovalCards />
+      <StaffPurchaseHistory fetchAllData={false} />
       <TermsConditions />
     </>
   );

@@ -1,12 +1,12 @@
-import BIApprovalCards from "@/components/bi/BIApprovalCards";
-import BITablePurchases from "@/components/bi/BITablePurchases";
+import ApprovalCards from "@/components/Reusables/ReusableApprovalCards/ApprovalCards";
 import TermsConditions from "@/components/TermsConditions";
+import PurchasesHistory from "@/components/PurchasesTables/PurchasesHistory";
 
 export default function BIHomePage() {
   return (
     <>
-      <BIApprovalCards />
-      <BITablePurchases />
+      <ApprovalCards />
+      <PurchasesHistory fetchAllData={false} />
       <TermsConditions />
     </>
   );

@@ -3,12 +3,7 @@
 
 import { useEffect } from "react";
 
-export function useFinishLoading(
-  isLoading,
-  setIsLoading,
-  dependency,
-  delay = 400,
-) {
+export function useFinishLoading(isLoading, setIsLoading, delay = 400) {
   useEffect(() => {
     if (!isLoading) return;
 
@@ -17,5 +12,5 @@ export function useFinishLoading(
     }, delay);
 
     return () => clearTimeout(timeout);
-  }, [dependency, isLoading, setIsLoading, delay]);
+  }, [isLoading, setIsLoading, delay]);
 }

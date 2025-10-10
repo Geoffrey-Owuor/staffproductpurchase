@@ -69,7 +69,7 @@ export default function BIApprovalSection({
               htmlFor="invoice_amount"
               className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
             >
-              Amount (Ksh) <FormAsterisk />
+              Invoice Amount (Ksh) <FormAsterisk />
             </label>
             <input
               type="number"
@@ -128,7 +128,7 @@ export default function BIApprovalSection({
               htmlFor="payment_method"
               className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
             >
-              Payment Method
+              Payment Method <FormAsterisk />
             </label>
             <select
               id="payment_method"
@@ -136,6 +136,7 @@ export default function BIApprovalSection({
               value={formData.payment_method}
               onChange={handleChange}
               disabled={isReadOnly}
+              required
               className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${
                 isReadOnly
                   ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800"
@@ -146,10 +147,8 @@ export default function BIApprovalSection({
                 Select method
               </option>
               <option value="cash">Cash</option>
-              <option value="bank">Bank</option>
-              <option value="card">Card</option>
+              <option value="mpesa">Mpesa</option>
               <option value="credit">Credit</option>
-              <option value="mobile">Mobile Money</option>
             </select>
           </div>
 
@@ -158,7 +157,7 @@ export default function BIApprovalSection({
               htmlFor="payment_reference"
               className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
             >
-              Reference Details
+              Reference Details <FormAsterisk />
             </label>
             <input
               type="text"
@@ -167,6 +166,7 @@ export default function BIApprovalSection({
               value={formData.payment_reference}
               onChange={handleChange}
               readOnly={isReadOnly}
+              required
               className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${
                 isReadOnly
                   ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800"
@@ -181,7 +181,7 @@ export default function BIApprovalSection({
               htmlFor="payment_date"
               className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
             >
-              Payment Date
+              Payment Date <FormAsterisk />
             </label>
             <input
               type="date"
@@ -190,6 +190,7 @@ export default function BIApprovalSection({
               value={formData.payment_date}
               onChange={handleChange}
               readOnly={isReadOnly}
+              required
               className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${
                 isReadOnly
                   ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800"
@@ -203,7 +204,7 @@ export default function BIApprovalSection({
               htmlFor="amount"
               className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
             >
-              Amount (Ksh)
+              Amount Received (Ksh) <FormAsterisk />
             </label>
             <input
               type="number"
@@ -214,6 +215,7 @@ export default function BIApprovalSection({
               step="0.01"
               min="0"
               readOnly={isReadOnly}
+              required
               className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${
                 isReadOnly
                   ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800"
@@ -222,12 +224,51 @@ export default function BIApprovalSection({
               placeholder="Enter amount received"
             />
           </div>
+
+          <div>
+            <label
+              htmlFor="payment_balance"
+              className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            >
+              Payment Balance (Ksh)
+            </label>
+            <input
+              type="number"
+              id="payment_balance"
+              name="payment_balance"
+              value={formData.payment_balance}
+              onChange={handleChange}
+              readOnly
+              step="0.01"
+              min="0"
+              className="w-full cursor-not-allowed rounded-xl border border-gray-300 bg-gray-100 px-3 py-2 text-gray-500 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="payment_completion"
+              className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            >
+              Payment Completion Status
+            </label>
+            <input
+              type="text"
+              id="payment_completion"
+              name="payment_completion"
+              value={formData.payment_completion}
+              onChange={handleChange}
+              readOnly
+              className="w-full cursor-not-allowed rounded-xl border border-gray-300 bg-gray-100 px-3 py-2 text-gray-500 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+            />
+          </div>
+
           <div>
             <label
               htmlFor="BI_Approval"
               className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
             >
-              BI Approval
+              Invoicing Approval <FormAsterisk />
             </label>
             <select
               id="BI_Approval"
@@ -235,6 +276,7 @@ export default function BIApprovalSection({
               value={formData.BI_Approval}
               onChange={handleChange}
               disabled={isReadOnly}
+              required
               className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${
                 isReadOnly
                   ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800"
@@ -253,7 +295,7 @@ export default function BIApprovalSection({
               htmlFor="bi_approver_name"
               className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
             >
-              Invoiced By
+              Invoiced By <FormAsterisk />
             </label>
             <input
               type="text"
@@ -262,6 +304,7 @@ export default function BIApprovalSection({
               value={formData.bi_approver_name}
               onChange={handleChange}
               readOnly={isReadOnly}
+              required
               className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${
                 isReadOnly
                   ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800"
@@ -275,7 +318,7 @@ export default function BIApprovalSection({
               htmlFor="bi_approval_date"
               className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
             >
-              BI Approval Date
+              Invoicing Approval Date
             </label>
             <input
               type="text"

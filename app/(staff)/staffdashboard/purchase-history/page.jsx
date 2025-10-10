@@ -1,11 +1,11 @@
-import StaffApprovalCards from "@/components/staff/StaffApprovalCards";
+import ApprovalCards from "@/components/Reusables/ReusableApprovalCards/ApprovalCards";
 import StaffPurchaseHistory from "@/components/staff/StaffPurchaseHistory";
 
 export default function PurchaseHistory() {
   return (
     <>
-      <StaffApprovalCards />
-      <StaffPurchaseHistory />
+      <ApprovalCards />
+      <StaffPurchaseHistory fetchAllData={true} />
     </>
   );
 }
