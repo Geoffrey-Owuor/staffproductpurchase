@@ -26,7 +26,9 @@ export default function PurchasesHistory({ fetchAllData }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [approvalStatus, setApprovalStatus] = useState("");
   const [paymentTerms, setPaymentTerms] = useState("");
+  const [payrollNumber, setPayrollNumber] = useState("");
   const [fromDate, setFromDate] = useState("");
+  const [referenceNumber, setReferenceNumber] = useState("");
   const [toDate, setToDate] = useState("");
 
   //Alert information state
@@ -38,6 +40,9 @@ export default function PurchasesHistory({ fetchAllData }) {
 
   //Toggling hiding columns
   const [visibleColumns, setVisibleColumns] = useState({
+    submissionDate: true,
+    termsOfPayment: true,
+    creditPeriod: true,
     hrApproval: true,
     creditApproval: true,
     invoicingApproval: true,
@@ -77,7 +82,7 @@ export default function PurchasesHistory({ fetchAllData }) {
       }
 
       if (options.filterType === "staff" && options.searchTerm) {
-        url += `&search=${encodeURIComponent(options.searchTerm)}`;
+        url += `&search=${encodeURIComponent(options.searchTerm.trim())}`;
       } else if (
         options.filterType === "date" &&
         options.fromDate &&
@@ -88,6 +93,13 @@ export default function PurchasesHistory({ fetchAllData }) {
         url += `&approvalStatus=${options.approvalStatus}`;
       } else if (options.filterType === "terms" && options.paymentTerms) {
         url += `&paymentTerms=${options.paymentTerms}`;
+      } else if (options.filterType === "payroll" && options.payrollNumber) {
+        url += `&payrollNumber=${encodeURIComponent(options.payrollNumber.trim())}`;
+      } else if (
+        options.filterType === "reference" &&
+        options.referenceNumber
+      ) {
+        url += `&referenceNumber=${encodeURIComponent(options.referenceNumber.trim())}`;
       }
 
       const response = await fetch(url);
@@ -117,6 +129,8 @@ export default function PurchasesHistory({ fetchAllData }) {
       toDate,
       approvalStatus,
       paymentTerms,
+      payrollNumber,
+      referenceNumber,
     });
   };
 
@@ -178,7 +192,7 @@ export default function PurchasesHistory({ fetchAllData }) {
           />
         </div>
 
-        {/* Search Bar */}
+        {/* Search Bar (Selecting filter types) */}
         <div className="mx-auto mb-4 max-w-md">
           <div className="flex items-center justify-center space-x-4">
             <select
@@ -187,6 +201,8 @@ export default function PurchasesHistory({ fetchAllData }) {
               className="rounded-md border border-gray-300 bg-white px-2 py-1 text-sm focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
             >
               <option value="staff">Filter by Staff Name</option>
+              <option value="reference">Filter by Reference Number</option>
+              <option value="payroll">Filter by Payroll Number</option>
               <option value="date">Filter by Date</option>
               <option value="approval">Filter by Approval Status</option>
               <option value="terms">Filter by Payment Terms</option>
@@ -202,20 +218,40 @@ export default function PurchasesHistory({ fetchAllData }) {
               />
             )}
 
+            {filterType === "reference" && (
+              <input
+                type="text"
+                placeholder="Enter reference number..."
+                value={referenceNumber}
+                onChange={(e) => setReferenceNumber(e.target.value)}
+                className="mt-2 rounded-md border border-gray-300 px-3 py-1 text-sm focus:border-gray-500 focus:outline-none sm:mt-0 dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+              />
+            )}
+
+            {filterType === "payroll" && (
+              <input
+                type="text"
+                placeholder="Enter payroll number..."
+                value={payrollNumber}
+                onChange={(e) => setPayrollNumber(e.target.value)}
+                className="mt-2 rounded-md border border-gray-300 px-3 py-1 text-sm focus:border-gray-500 focus:outline-none sm:mt-0 dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+              />
+            )}
+
             {filterType === "date" && (
               <div className="mt-2 flex items-center space-x-2 sm:mt-0">
                 <input
                   type="date"
                   value={fromDate}
                   onChange={(e) => setFromDate(e.target.value)}
-                  className="rounded-md border border-gray-300 px-2 py-1 text-sm dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+                  className="rounded-md border border-gray-300 px-2 py-1 text-sm focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
                 />
                 <span className="text-gray-500 dark:text-gray-400">to</span>
                 <input
                   type="date"
                   value={toDate}
                   onChange={(e) => setToDate(e.target.value)}
-                  className="rounded-md border border-gray-300 px-2 py-1 text-sm dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+                  className="rounded-md border border-gray-300 px-2 py-1 text-sm focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
                 />
               </div>
             )}
@@ -261,31 +297,67 @@ export default function PurchasesHistory({ fetchAllData }) {
           <TableSkeleton />
         ) : (
           <>
-            <div>
-              <table className="min-w-full">
+            <div className="overflow-x-auto">
+              <table className="mb-6 min-w-full">
                 <thead className="bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-white">
                   <tr>
-                    <th className="px-6 py-3 text-left text-sm font-semibold">
-                      Date Submitted
+                    {visibleColumns.submissionDate && (
+                      <th
+                        className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                        title="Date Submitted"
+                      >
+                        Date Submitted
+                      </th>
+                    )}
+                    <th
+                      className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                      title="Reference Number"
+                    >
+                      Reference Number
                     </th>
                     <th className="px-6 py-3 text-left text-sm font-semibold">
                       Staff
                     </th>
-                    <th className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold">
-                      Payment Terms
+                    <th className="px-6 py-3 text-left text-sm font-semibold">
+                      Payroll
                     </th>
+                    {visibleColumns.termsOfPayment && (
+                      <th
+                        className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                        title="Payment Terms"
+                      >
+                        Payment Terms
+                      </th>
+                    )}
+                    {visibleColumns.creditPeriod && (
+                      <th
+                        className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                        title="Credit Period"
+                      >
+                        Credit Period
+                      </th>
+                    )}
                     {visibleColumns.hrApproval && (
-                      <th className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold">
+                      <th
+                        className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                        title="HR Approval"
+                      >
                         HR Approval
                       </th>
                     )}
                     {visibleColumns.creditApproval && (
-                      <th className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold">
+                      <th
+                        className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                        title="Credit Approval"
+                      >
                         Credit Approval
                       </th>
                     )}
                     {visibleColumns.invoicingApproval && (
-                      <th className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold">
+                      <th
+                        className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                        title="Invoicing Approval"
+                      >
                         Invoicing Approval
                       </th>
                     )}
@@ -299,8 +371,16 @@ export default function PurchasesHistory({ fetchAllData }) {
                         key={purchase.id}
                         className="odd:bg-white even:bg-gray-50 dark:odd:bg-gray-950 dark:even:bg-gray-900"
                       >
-                        <td className="max-w-[200px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900 dark:text-white">
-                          {formatDateLong(purchase.createdAt)}
+                        {visibleColumns.submissionDate && (
+                          <td className="max-w-[200px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900 dark:text-white">
+                            {formatDateLong(purchase.createdAt)}
+                          </td>
+                        )}
+                        <td
+                          className="max-w-[200px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900 dark:text-white"
+                          title={purchase.reference_number}
+                        >
+                          {purchase.reference_number}
                         </td>
                         <td
                           className="max-w-[150px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900 dark:text-white"
@@ -308,25 +388,35 @@ export default function PurchasesHistory({ fetchAllData }) {
                         >
                           {purchase.staffName}
                         </td>
-                        <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900 dark:text-white">
-                          {purchase.employee_payment_terms}
+                        <td className="max-w-[150px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900 dark:text-white">
+                          {purchase.payrollNo}
                         </td>
+                        {visibleColumns.termsOfPayment && (
+                          <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
+                            {purchase.employee_payment_terms}
+                          </td>
+                        )}
+                        {visibleColumns.creditPeriod && (
+                          <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
+                            {purchase.user_credit_period || "N/A"}
+                          </td>
+                        )}
                         {visibleColumns.hrApproval && (
-                          <td className="px-6 py-4 text-sm whitespace-nowrap">
+                          <td className="px-6 py-4 text-sm">
                             <TableApprovalStatus
                               status={purchase.HR_Approval}
                             />
                           </td>
                         )}
                         {visibleColumns.creditApproval && (
-                          <td className="px-6 py-4 text-sm whitespace-nowrap">
+                          <td className="px-6 py-4 text-sm">
                             <TableApprovalStatus
                               status={purchase.CC_Approval}
                             />
                           </td>
                         )}
                         {visibleColumns.invoicingApproval && (
-                          <td className="px-6 py-4 text-sm whitespace-nowrap">
+                          <td className="px-6 py-4 text-sm">
                             <TableApprovalStatus
                               status={purchase.BI_Approval}
                             />
@@ -337,6 +427,8 @@ export default function PurchasesHistory({ fetchAllData }) {
                             id={purchase.id}
                             gotoPurchaseEdit={gotoPurchaseEdit}
                             gotoPurchaseView={gotoPurchaseView}
+                            hrApproval={purchase.HR_Approval}
+                            ccApproval={purchase.CC_Approval}
                             biApproval={purchase.BI_Approval}
                             goingTo={goingTo}
                             onDeleteSuccess={handleDeleteSuccess}

@@ -81,6 +81,21 @@ export default function GeneralEditPurchases({ id }) {
 
   useEffect(() => {
     if (purchase) {
+      //initial products from the purchase data
+      const initialProducts =
+        purchase.products && purchase.products.length > 0
+          ? purchase.products
+          : [{ ...initialProductState }];
+
+      // 2. Calculate the total from these initial products, mirroring your useMemo logic.
+      const calculatedPurchaseTotal = initialProducts.reduce(
+        (total, product) => {
+          const value = parseFloat(product.discountedValue) || 0;
+          return total + value;
+        },
+        0,
+      );
+
       setFormData({
         //HR Data
         is_employed: purchase.is_employed || "",
@@ -104,7 +119,7 @@ export default function GeneralEditPurchases({ id }) {
           ? purchase.invoice_date.split("T")[0]
           : "",
         invoice_number: purchase.invoice_number || "",
-        invoice_amount: purchase.invoice_amount || "",
+        invoice_amount: purchase.invoice_amount || calculatedPurchaseTotal,
         invoice_recorded_date: purchase.invoice_recorded_date
           ? purchase.invoice_recorded_date.split("T")[0]
           : "",
@@ -132,11 +147,7 @@ export default function GeneralEditPurchases({ id }) {
         user_credit_period: purchase.user_credit_period || "",
         createdAt: purchase.createdAt || "",
       });
-      setProducts(
-        purchase.products && purchase.products.length > 0
-          ? purchase.products
-          : [{ ...initialProductState }],
-      );
+      setProducts(initialProducts);
 
       setBiApproval(purchase.BI_Approval);
       setHrApproval(purchase.HR_Approval);
@@ -221,6 +232,18 @@ export default function GeneralEditPurchases({ id }) {
     }, 0);
   }, [products]);
 
+  //Setting amount received based on calculated products total from useMemo
+  useEffect(() => {
+    // We only update if purchaseTotal is a valid number greater than 0
+    // to avoid overwriting the initial amount with 0 during setup.
+    if (purchaseTotal > 0) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        invoice_amount: purchaseTotal.toFixed(2),
+      }));
+    }
+  }, [purchaseTotal]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setShowConfirmation(true); // Show confirmation dialog instead of submitting directly
@@ -258,10 +281,10 @@ export default function GeneralEditPurchases({ id }) {
 
       setIsSubmitting(false);
 
-      // Redirect back after 2 seconds
+      // Redirect back after 1.5 seconds
       setTimeout(() => {
         handleHrefLink(id);
-      }, 2000);
+      }, 1500);
     } catch (err) {
       console.error("Error updating purchase:", err);
       setAlertMessage(err.message || "Failed to update purchase");
@@ -272,7 +295,11 @@ export default function GeneralEditPurchases({ id }) {
     }
   };
 
-  if (biApproval === "approved") {
+  if (
+    (userRole === "hr" && hrApproval === "approved") ||
+    (userRole === "cc" && ccApproval === "approved") ||
+    (userRole === "bi" && biApproval === "approved")
+  ) {
     return <UnauthorizedEdit role={userRole} />;
   }
 
@@ -310,6 +337,7 @@ export default function GeneralEditPurchases({ id }) {
               setFormData={(data) => setProductData(index, data)}
               discountPolicies={discountPolicies}
               userRole={userRole}
+              paymentTerms={paymentInfo.employee_payment_terms}
             />
             {/* Removing a product - Only when role is bi */}
             {products.length > 1 && userRole === "bi" && (
@@ -371,7 +399,7 @@ export default function GeneralEditPurchases({ id }) {
       {/* Confirmation Dialogue */}
       {showConfirmation && (
         <ConfirmationDialog
-          message="Are you sure you want to submit these changes?"
+          message="Are you sure you want to submit these request changes? (You can't edit once approved)"
           onConfirm={handleConfirmSubmit}
           onCancel={() => setShowConfirmation(false)}
           title="Confirm Changes"

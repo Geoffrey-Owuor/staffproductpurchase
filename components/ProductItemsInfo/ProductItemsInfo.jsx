@@ -10,7 +10,7 @@ export default function ProductItemsInfo({ products }) {
         Product & Pricing Details
       </h2>
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+        <table className="mb-4 min-w-full divide-y divide-gray-200 dark:divide-gray-700">
           <thead className="bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-white">
             <tr>
               {[
@@ -25,7 +25,7 @@ export default function ProductItemsInfo({ products }) {
                 <th
                   key={header}
                   scope="col"
-                  className="px-6 py-3 text-left text-sm font-medium"
+                  className="px-6 py-3 text-left text-sm font-medium whitespace-nowrap"
                 >
                   {header}
                 </th>
@@ -37,7 +37,7 @@ export default function ProductItemsInfo({ products }) {
               products.map((product, index) => (
                 <tr key={index}>
                   <td
-                    className="max-w-[200px] truncate overflow-hidden px-6 py-4 text-sm whitespace-nowrap text-gray-900 dark:text-white"
+                    className="overflow-hidden px-6 py-4 text-sm whitespace-nowrap text-gray-900 dark:text-white"
                     title={product.itemName}
                   >
                     {product.itemName}
@@ -46,7 +46,7 @@ export default function ProductItemsInfo({ products }) {
                     {product.itemStatus}
                   </td>
                   <td
-                    className="max-w-[150px] truncate overflow-hidden px-6 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-300"
+                    className="overflow-hidden px-6 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-300"
                     title={product.productPolicy}
                   >
                     {product.productPolicy || "N/A"}

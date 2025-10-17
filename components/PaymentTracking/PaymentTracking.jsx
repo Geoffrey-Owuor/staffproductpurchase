@@ -3,14 +3,15 @@ import { useEffect, useState } from "react";
 import TableSkeleton from "../skeletons/TableSkeleton";
 import { LoadingBar } from "../Reusables/LoadingBar";
 import { RecentActionButtons } from "../Reusables/ActionButtons/RecentActionButtons";
-import { TableApprovalStatus } from "../Reusables/TableApprovalStatus";
 import { UseHandleViewClick } from "@/utils/HandleActionClicks/UseHandleViewClick";
 import { UseHandleEditClick } from "@/utils/HandleActionClicks/UseHandleEditClick";
 import { formatDateLong } from "@/public/assets";
+import { PaymentStatus } from "../Reusables/TableApprovalStatus";
 import Alert from "../Alert";
 import Pagination from "../pagination/Pagination";
+import ColumnToggle from "../Reusables/ColumnToggle";
 
-export default function PaymentTracking({ fetchAllData }) {
+export default function PaymentTracking({ fetchAllData, biApproval = true }) {
   const [purchases, setPurchases] = useState([]);
   const [loading, setLoading] = useState(true);
   const [goingTo, setGoingTo] = useState(null);
@@ -24,6 +25,10 @@ export default function PaymentTracking({ fetchAllData }) {
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [paymentTerms, setPaymentTerms] = useState("");
+  const [payrollNumber, setPayrollNumber] = useState("");
+  const [monthPeriod, setMonthPeriod] = useState("");
+  const [referenceNumber, setReferenceNumber] = useState("");
+  const [completion, setCompletion] = useState("");
 
   //Alert information state
   const [alertInfo, setAlertInfo] = useState({
@@ -31,6 +36,23 @@ export default function PaymentTracking({ fetchAllData }) {
     type: "",
     message: "",
   });
+
+  //Toggling hiding columns
+  const [visibleColumns, setVisibleColumns] = useState({
+    submissionDate: true,
+    nameOfStaff: true,
+    termsOfPayment: true,
+    creditPeriod: true,
+    invoiceAmount: true,
+  });
+
+  //Handling column toggle
+  const handleColumnToggle = (columnKey) => {
+    setVisibleColumns((prev) => ({
+      ...prev,
+      [columnKey]: !prev[columnKey],
+    }));
+  };
 
   const handleEditClick = UseHandleEditClick();
   const handleViewClick = UseHandleViewClick();
@@ -56,17 +78,31 @@ export default function PaymentTracking({ fetchAllData }) {
       if (fetchAllData) {
         url += `&fetchAll=true`;
       }
+      if (biApproval) {
+        url += `&biApproval=true`;
+      }
 
       if (options.filterType === "staff" && options.searchTerm) {
-        url += `&search=${encodeURIComponent(options.searchTerm)}`;
+        url += `&search=${encodeURIComponent(options.searchTerm.trim())}`;
       } else if (
         options.filterType === "date" &&
         options.fromDate &&
         options.toDate
       ) {
         url += `&fromDate=${options.fromDate}&toDate=${options.toDate}`;
+      } else if (options.filterType === "period" && options.monthPeriod) {
+        url += `&monthPeriod=${options.monthPeriod}`;
+      } else if (options.filterType === "completion" && options.completion) {
+        url += `&completion=${options.completion}`;
       } else if (options.filterType === "terms" && options.paymentTerms) {
         url += `&paymentTerms=${options.paymentTerms}`;
+      } else if (options.filterType === "payroll" && options.payrollNumber) {
+        url += `&payrollNumber=${encodeURIComponent(options.payrollNumber.trim())}`;
+      } else if (
+        options.filterType === "reference" &&
+        options.referenceNumber
+      ) {
+        url += `&referenceNumber=${encodeURIComponent(options.referenceNumber.trim())}`;
       }
 
       const response = await fetch(url);
@@ -94,7 +130,11 @@ export default function PaymentTracking({ fetchAllData }) {
       searchTerm,
       fromDate,
       toDate,
+      monthPeriod,
+      completion,
       paymentTerms,
+      payrollNumber,
+      referenceNumber,
     });
   };
 
@@ -122,14 +162,21 @@ export default function PaymentTracking({ fetchAllData }) {
         />
       )}
       <div className="m-2 rounded-xl border border-gray-200 px-2 pt-2 pb-4 dark:border-gray-700 dark:bg-gray-950">
-        {/* Table Heading */}
-        <div className="mt-3 mb-2 px-1 pb-3">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-            Staff Payments Tracking
-          </h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            Tracking payments for all submitted purchase requests
-          </p>
+        {/* Table Heading and column toggle*/}
+        <div className="flex items-center justify-between">
+          <div className="mt-3 mb-2 px-1 pb-3">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+              Staff Payments Tracking
+            </h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              Tracking payments for all submitted purchase requests
+            </p>
+          </div>
+
+          <ColumnToggle
+            visibleColumns={visibleColumns}
+            onToggle={handleColumnToggle}
+          />
         </div>
 
         {/* Search Bar */}
@@ -141,7 +188,11 @@ export default function PaymentTracking({ fetchAllData }) {
               className="rounded-md border border-gray-300 bg-white px-2 py-1 text-sm focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
             >
               <option value="staff">Filter by Staff Name</option>
+              <option value="reference">Filter by Reference Number</option>
+              <option value="payroll">Filter by Payroll Number</option>
               <option value="date">Filter by Date</option>
+              <option value="period">Filter by Credit Period</option>
+              <option value="completion">Filter by Completion Status</option>
               <option value="terms">Filter by Payment Terms</option>
             </select>
 
@@ -155,22 +206,72 @@ export default function PaymentTracking({ fetchAllData }) {
               />
             )}
 
+            {filterType === "reference" && (
+              <input
+                type="text"
+                placeholder="Enter reference number..."
+                value={referenceNumber}
+                onChange={(e) => setReferenceNumber(e.target.value)}
+                className="mt-2 rounded-md border border-gray-300 px-3 py-1 text-sm focus:border-gray-500 focus:outline-none sm:mt-0 dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+              />
+            )}
+
+            {filterType === "payroll" && (
+              <input
+                type="text"
+                placeholder="Enter payroll number..."
+                value={payrollNumber}
+                onChange={(e) => setPayrollNumber(e.target.value)}
+                className="mt-2 rounded-md border border-gray-300 px-3 py-1 text-sm focus:border-gray-500 focus:outline-none sm:mt-0 dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+              />
+            )}
+
             {filterType === "date" && (
               <div className="mt-2 flex items-center space-x-2 sm:mt-0">
                 <input
                   type="date"
                   value={fromDate}
                   onChange={(e) => setFromDate(e.target.value)}
-                  className="rounded-md border border-gray-300 px-2 py-1 text-sm dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+                  className="rounded-md border border-gray-300 px-2 py-1 text-sm focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
                 />
                 <span className="text-gray-500 dark:text-gray-400">to</span>
                 <input
                   type="date"
                   value={toDate}
                   onChange={(e) => setToDate(e.target.value)}
-                  className="rounded-md border border-gray-300 px-2 py-1 text-sm dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+                  className="rounded-md border border-gray-300 px-2 py-1 text-sm focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
                 />
               </div>
+            )}
+
+            {filterType === "period" && (
+              <select
+                value={monthPeriod}
+                onChange={(e) => setMonthPeriod(e.target.value)}
+                className="rounded-md border border-gray-300 bg-white px-2 py-1 text-sm focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+              >
+                <option value="" disabled>
+                  Select period
+                </option>
+                <option value="1">1 month</option>
+                <option value="2">2 months</option>
+                <option value="3">3 months</option>
+                <option value="4">4 months</option>
+              </select>
+            )}
+
+            {filterType === "completion" && (
+              <select
+                value={completion}
+                onChange={(e) => setCompletion(e.target.value)}
+                className="rounded-md border border-gray-300 bg-white px-2 py-1 text-sm focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+              >
+                <option value="" disabled>
+                  Select status
+                </option>
+                <option value="complete">Complete</option>
+                <option value="incomplete">Incomplete</option>
+              </select>
             )}
 
             {filterType === "terms" && (
@@ -199,27 +300,70 @@ export default function PaymentTracking({ fetchAllData }) {
           <TableSkeleton />
         ) : (
           <>
-            <div>
-              <table className="min-w-full">
+            <div className="overflow-x-auto">
+              <table className="mb-6 min-w-full">
                 <thead className="bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-white">
                   <tr>
+                    {visibleColumns.submissionDate && (
+                      <th
+                        className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                        title="Date Submitted"
+                      >
+                        Date Submitted
+                      </th>
+                    )}
+                    <th
+                      className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                      title="Reference Number"
+                    >
+                      Reference Number
+                    </th>
+                    {visibleColumns.nameOfStaff && (
+                      <th className="px-6 py-3 text-left text-sm font-semibold">
+                        Staff
+                      </th>
+                    )}
                     <th className="px-6 py-3 text-left text-sm font-semibold">
-                      Date Submitted
+                      Payroll
+                    </th>
+                    {visibleColumns.termsOfPayment && (
+                      <th
+                        className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                        title="Payment Terms"
+                      >
+                        Payment Terms
+                      </th>
+                    )}
+                    {visibleColumns.creditPeriod && (
+                      <th
+                        className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                        title="Credit Period"
+                      >
+                        Credit Period
+                      </th>
+                    )}
+                    {visibleColumns.invoiceAmount && (
+                      <th
+                        className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                        title="Invoice Amount"
+                      >
+                        Invoice Amount
+                      </th>
+                    )}
+                    <th
+                      className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                      title="Amount Received"
+                    >
+                      Amount Received
                     </th>
                     <th className="px-6 py-3 text-left text-sm font-semibold">
-                      Staff
+                      Balance
                     </th>
-                    <th className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold">
-                      Payment Terms
-                    </th>
-                    <th className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold">
-                      HR Approval
-                    </th>
-                    <th className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold">
-                      Credit Approval
-                    </th>
-                    <th className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold">
-                      Invoicing Approval
+                    <th
+                      className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                      title="Completion Status"
+                    >
+                      Completion Status
                     </th>
                     <th className="px-6 py-3 text-left text-sm font-semibold"></th>
                   </tr>
@@ -231,32 +375,67 @@ export default function PaymentTracking({ fetchAllData }) {
                         key={purchase.id}
                         className="odd:bg-white even:bg-gray-50 dark:odd:bg-gray-950 dark:even:bg-gray-900"
                       >
-                        <td className="max-w-[200px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900 dark:text-white">
-                          {formatDateLong(purchase.createdAt)}
-                        </td>
+                        {visibleColumns.submissionDate && (
+                          <td className="max-w-[200px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900 dark:text-white">
+                            {formatDateLong(purchase.createdAt)}
+                          </td>
+                        )}
                         <td
-                          className="max-w-[150px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900 dark:text-white"
-                          title={purchase.staffName}
+                          className="max-w-[200px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900 dark:text-white"
+                          title={purchase.reference_number}
                         >
-                          {purchase.staffName}
+                          {purchase.reference_number}
                         </td>
-                        <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900 dark:text-white">
-                          {purchase.employee_payment_terms}
+                        {visibleColumns.nameOfStaff && (
+                          <td
+                            className="max-w-[150px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900 dark:text-white"
+                            title={purchase.staffName}
+                          >
+                            {purchase.staffName}
+                          </td>
+                        )}
+                        <td className="max-w-[150px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900 dark:text-white">
+                          {purchase.payrollNo}
                         </td>
-                        <td className="px-6 py-4 text-sm whitespace-nowrap">
-                          <TableApprovalStatus status={purchase.HR_Approval} />
+                        {visibleColumns.termsOfPayment && (
+                          <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
+                            {purchase.employee_payment_terms}
+                          </td>
+                        )}
+                        {visibleColumns.creditPeriod && (
+                          <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
+                            {purchase.user_credit_period || "N/A"}
+                          </td>
+                        )}
+                        {visibleColumns.invoiceAmount && (
+                          <td className="text-sm">
+                            <div className="mr-3 rounded-md border border-gray-300 px-6 py-2 dark:border-gray-600">
+                              {purchase.invoice_amount || "N/A"}
+                            </div>
+                          </td>
+                        )}
+                        <td className="text-sm">
+                          <div className="mr-3 rounded-md border border-gray-300 px-6 py-2 dark:border-gray-600">
+                            {purchase.amount || "N/A"}
+                          </div>
                         </td>
-                        <td className="px-6 py-4 text-sm whitespace-nowrap">
-                          <TableApprovalStatus status={purchase.CC_Approval} />
+                        <td className="text-sm">
+                          <div className="mr-3 rounded-md border border-gray-300 px-6 py-2 dark:border-gray-600">
+                            {purchase.payment_balance || "N/A"}
+                          </div>
                         </td>
-                        <td className="px-6 py-4 text-sm whitespace-nowrap">
-                          <TableApprovalStatus status={purchase.BI_Approval} />
+                        <td className="px-6 py-4 text-sm">
+                          <PaymentStatus
+                            status={purchase.payment_completion || "N/A"}
+                          />
                         </td>
                         <td className="px-6 py-4">
                           <RecentActionButtons
                             id={purchase.id}
                             gotoPurchaseEdit={gotoPurchaseEdit}
                             gotoPurchaseView={gotoPurchaseView}
+                            ccApproval={purchase.CC_Approval}
+                            hrApproval={purchase.HR_Approval}
                             biApproval={purchase.BI_Approval}
                             goingTo={goingTo}
                             disableDelete={true}

@@ -5,7 +5,7 @@ import { BrainCog } from "lucide-react";
 export default function DashboardFooter({ isSidebarOpen }) {
   return (
     <footer
-      className={`relative bg-white transition-all duration-200 dark:bg-gray-950 ${isSidebarOpen ? "ml-56" : "mr-10 ml-26"}`}
+      className={`relative bg-white transition-all duration-200 dark:bg-gray-950 ${isSidebarOpen ? "ml-56" : "mr-4 ml-20"}`}
     >
       <div className="mx-auto max-w-4xl py-5 text-center">
         <div className="flex items-center justify-center space-x-1 text-sm text-gray-500 dark:text-gray-400">

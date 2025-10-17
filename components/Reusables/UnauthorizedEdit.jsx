@@ -41,8 +41,7 @@ export default function UnauthorizedEdit({ role }) {
             Edit Unauthorized
           </h2>
           <p className="mt-2 text-gray-600 dark:text-gray-300">
-            This purchase request has been approved by Billing &amp; Invoice and
-            can no longer be modified.
+            You have already approved this request and can no longer modify it
           </p>
           <div className="mt-6">
             <button

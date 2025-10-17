@@ -8,6 +8,7 @@ const ProductPricing = ({
   setFormData,
   discountPolicies,
   userRole,
+  paymentTerms, //New payment terms prop
 }) => {
   const [fetchedDetails, setFetchedDetails] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -64,24 +65,60 @@ const ProductPricing = ({
     }
   };
 
-  //Matching discount policy to discount rate
+  //useEffect for automatic policy and rate selection
   useEffect(() => {
-    const { itemStatus, productPolicy } = formData;
-    if (itemStatus && productPolicy) {
-      const matchedPolicy = discountPolicies.find(
-        (policy) =>
-          policy.policy_name === productPolicy &&
-          policy.category === itemStatus,
-      );
+    const { itemName, itemStatus } = formData;
 
-      if (matchedPolicy) {
-        setFormData((prev) => ({
-          ...prev,
-          discountRate: matchedPolicy.rate,
-        }));
-      }
+    // Guard clause: Don't run if we don't have all the needed info
+    if (!paymentTerms || !itemName || !itemStatus || !discountPolicies) {
+      return;
     }
-  }, [formData.itemStatus, formData.productPolicy]);
+
+    // Determine policy based on payment terms
+    let policyPaymentType = ""; //Default
+    if (paymentTerms === "CASH") {
+      policyPaymentType = "on Cash Payment";
+    } else if (
+      paymentTerms === "CREDIT" ||
+      paymentTerms === "CASH AND CREDIT"
+    ) {
+      policyPaymentType = "on Account";
+    }
+
+    // Determine policy based on brand name
+    let policyBrand = "Non Von Hotpoint"; // Default
+    const itemNameLower = itemName.toLowerCase();
+    if (itemNameLower.startsWith("von")) {
+      policyBrand = "Von Hotpoint";
+    } else if (itemNameLower.startsWith("samsung")) {
+      policyBrand = "Samsung Brand";
+    }
+
+    // Construct the full policy name to search for
+    const fullPolicyName = `${policyBrand} ${policyPaymentType}`;
+
+    // Find the matching policy from the list
+    const matchedPolicy = discountPolicies.find(
+      (policy) =>
+        policy.policy_name === fullPolicyName && policy.category === itemStatus,
+    );
+
+    if (matchedPolicy) {
+      // If a match is found, update the form data with the policy and rate
+      setFormData((prev) => ({
+        ...prev,
+        productPolicy: matchedPolicy.policy_name,
+        discountRate: matchedPolicy.rate,
+      }));
+    } else {
+      // If no policy matches, reset the policy and rate
+      setFormData((prev) => ({
+        ...prev,
+        productPolicy: "",
+        discountRate: 0,
+      }));
+    }
+  }, [formData.itemName, formData.itemStatus, paymentTerms]);
 
   useEffect(() => {
     const tdPrice = parseFloat(formData.tdPrice) || 0;
@@ -209,30 +246,18 @@ const ProductPricing = ({
             </select>
           </div>
 
-          {/* Product Policy */}
+          {/* Product Policy Type */}
           <div>
             <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400">
-              Item Policy Type <FormAsterisk />
+              Item Policy Type
             </label>
-            <select
-              name="productPolicy"
-              value={formData.productPolicy || ""}
+            <input
+              type="text"
+              value={formData.productPolicy}
               onChange={handleChange}
-              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
-              required
-              disabled={isReadOnlyGeneral}
-            >
-              <option value="" disabled>
-                Select Policy
-              </option>
-              {[...new Set(discountPolicies.map((p) => p.policy_name))].map(
-                (policy) => (
-                  <option key={policy} value={policy}>
-                    {policy}
-                  </option>
-                ),
-              )}
-            </select>
+              className="w-full rounded-xl border border-gray-200 bg-gray-100 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white"
+              readOnly
+            />
           </div>
 
           {/* TD Price */}

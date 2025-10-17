@@ -27,7 +27,7 @@ export async function POST(request) {
     await connection.beginTransaction();
 
     // Destructure directly in the parameter list to avoid extra lines
-    await connection.execute(
+    const [result] = await connection.execute(
       `INSERT INTO purchasesInfo 
        (staffName, user_id, user_email, payrollNo, department, employee_payment_terms, user_credit_period, invoicing_location, delivery_details, signature, HR_Approval, 
         CC_Approval, BI_Approval) 
@@ -46,6 +46,18 @@ export async function POST(request) {
       ],
     );
 
+    //Get the resultant inserted id (Next auto_inceremented value)
+    const insertedId = result.insertId;
+
+    //Run an update query to insert reference_number into purchasesinfo
+    await connection.execute(
+      `UPDATE purchasesinfo 
+       SET reference_number = ? 
+       WHERE increment_id = ?`,
+      [`PRQST-${insertedId}`, insertedId],
+    );
+
+    //Get the purchase (id) from purchasesinfo table
     const [rows] = await connection.execute(
       `SELECT id from purchasesInfo
        WHERE user_email = ?

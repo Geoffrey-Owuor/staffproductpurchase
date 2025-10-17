@@ -17,8 +17,11 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
 
     const fetchAll = searchParams.get("fetchAll") === "true";
+    const biApproval = searchParams.get("biApproval") === "true";
     const filterType = searchParams.get("filterType") || "staff"; //default to staff
     const searchQuery = searchParams.get("search") || "";
+    const payrollNumber = searchParams.get("payrollNumber") || "";
+    const referenceNumber = searchParams.get("referenceNumber") || "";
     const fromDate = searchParams.get("fromDate") || null;
     const toDate = searchParams.get("toDate") || null;
 
@@ -26,9 +29,14 @@ export async function GET(request) {
     const approvalStatus = searchParams.get("approvalStatus") || null;
     const paymentTerms = searchParams.get("paymentTerms") || null;
 
+    //Payment Completion and Credit period params
+    const monthPeriod = searchParams.get("monthPeriod") || null;
+    const completion = searchParams.get("completion") || null;
+
     connection = await pool.getConnection();
 
-    let query = `SELECT id, createdAt, staffName, employee_payment_terms, HR_Approval, CC_Approval, BI_Approval
+    let query = `SELECT id, createdAt, reference_number, staffName, payrollNo, employee_payment_terms, user_credit_period, HR_Approval, CC_Approval, BI_Approval,
+         invoice_amount, amount, payment_balance, payment_completion
          FROM purchasesInfo`;
 
     let params = [];
@@ -39,9 +47,19 @@ export async function GET(request) {
       whereClauses.push(`createdAt >= NOW() - INTERVAL 12 DAY`);
     }
 
+    if (biApproval) {
+      whereClauses.push(`BI_Approval = "approved"`);
+    }
+
     if (filterType === "staff" && searchQuery) {
       whereClauses.push(`staffName LIKE ?`);
       params.push(`%${searchQuery}%`);
+    } else if (filterType === "reference" && referenceNumber) {
+      whereClauses.push(`reference_number = ?`);
+      params.push(referenceNumber);
+    } else if (filterType === "payroll" && payrollNumber) {
+      whereClauses.push(`payrollNo = ?`);
+      params.push(payrollNumber);
     } else if (filterType === "date" && fromDate && toDate) {
       whereClauses.push(`DATE(createdAt) BETWEEN ? AND ?`);
       params.push(fromDate, toDate);
@@ -54,6 +72,12 @@ export async function GET(request) {
     } else if (filterType === "terms" && paymentTerms) {
       whereClauses.push(`employee_payment_terms = ?`);
       params.push(paymentTerms);
+    } else if (filterType === "period" && monthPeriod) {
+      whereClauses.push(`user_credit_period = ?`);
+      params.push(Number(monthPeriod));
+    } else if (filterType === "completion" && completion) {
+      whereClauses.push(`payment_completion = ?`);
+      params.push(completion);
     }
 
     if (whereClauses.length > 0) {

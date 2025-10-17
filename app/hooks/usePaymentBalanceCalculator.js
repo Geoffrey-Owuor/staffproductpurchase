@@ -14,7 +14,7 @@ export function usePaymentBalanceCalculator(formData, setFormData) {
     const balance = invoiceAmount - amountReceived;
 
     //Determine new value of completion status
-    const newCompletionStatus = balance <= 0 ? "complete" : "not complete";
+    const newCompletionStatus = balance <= 0 ? "complete" : "incomplete";
 
     //Update payment balance in the state if it has changed
 
@@ -31,7 +31,6 @@ export function usePaymentBalanceCalculator(formData, setFormData) {
   }, [
     formData.invoice_amount,
     formData.amount,
-    setFormData,
     formData.payment_completion,
     formData.payment_balance,
   ]);

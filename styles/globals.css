@@ -225,3 +225,42 @@ html {
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
 }
+
+/* SROLLBAR STYLES STARTING */
+/* For WebKit-based browsers (Chrome, Safari, Edge) */
+/* Light Mode Scrollbar Styles (Default) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Dark mode scrollbar styles */
+html[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: #4b5563; /* A lighter gray, like Tailwind's gray-600 */
+}
+
+html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: #6b7280; /* A slightly lighter gray on hover, like gray-500 */
+}
+
+/* ---Firefox scrollbar styling, light and dark mode --- */
+html {
+  /* light mode: thumb color, track color */
+  scrollbar-color: #9ca3af #ffffff;
+}
+
+/* Dark mode scrollbar color */
+html[data-theme="dark"] {
+  /* dark mode: thumb color, track color */
+  scrollbar-color: #6b7280 #030712;
+}

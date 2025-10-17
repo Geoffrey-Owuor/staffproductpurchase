@@ -36,7 +36,7 @@ export default function GeneralViewPurchases({ id }) {
         purchaseData: purchase,
         products: purchase.products || [],
         createdAt: purchase.createdAt,
-        id: id,
+        reference: purchase.reference_number,
       });
     } catch (error) {
       console.error("Error generating PDF:", error);
@@ -131,16 +131,19 @@ export default function GeneralViewPurchases({ id }) {
           </button>
 
           {/* Middle Edit Button */}
-          {purchase.BI_Approval !== "approved" && userRole !== "staff" && (
-            <button
-              onClick={() => gotoPurchaseEdit(id)}
-              disabled={isEditing}
-              className="flex items-center justify-center gap-1 rounded-xl bg-gray-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
-            >
-              <Edit className="h-4 w-4" />
-              Edit
-            </button>
-          )}
+          {((userRole === "bi" && purchase.BI_Approval !== "approved") ||
+            (userRole === "cc" && purchase.CC_Approval !== "approved") ||
+            (userRole === "hr" && purchase.HR_Approval !== "approved")) &&
+            userRole !== "staff" && (
+              <button
+                onClick={() => gotoPurchaseEdit(id)}
+                disabled={isEditing}
+                className="flex items-center justify-center gap-1 rounded-xl bg-gray-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
+              >
+                <Edit className="h-4 w-4" />
+                Edit
+              </button>
+            )}
 
           <div className="mr-4 flex items-center gap-4">
             <button
@@ -216,6 +219,10 @@ export default function GeneralViewPurchases({ id }) {
                 <DetailField
                   label="Delivery/Pickup Details"
                   value={purchase.delivery_details}
+                />
+                <DetailField
+                  label="Reference Number"
+                  value={purchase.reference_number}
                 />
               </div>
             </div>
@@ -352,7 +359,7 @@ export default function GeneralViewPurchases({ id }) {
                 value={purchase.invoice_number || "n/a"}
               />
               <DetailField
-                label="Amount"
+                label="Invoice Amount"
                 value={
                   purchase.invoice_amount
                     ? `Ksh ${Number(purchase.invoice_amount).toFixed(2)}`
@@ -390,12 +397,24 @@ export default function GeneralViewPurchases({ id }) {
                 value={formatDateLong(purchase.payment_date)}
               />
               <DetailField
-                label="Amount"
+                label="Amount Received"
                 value={
                   purchase.amount
                     ? `Ksh ${Number(purchase.amount).toFixed(2)}`
                     : "n/a"
                 }
+              />
+              <DetailField
+                label="Payment Balance"
+                value={
+                  purchase.payment_balance
+                    ? `Ksh ${Number(purchase.payment_balance).toFixed(2)}`
+                    : "n/a"
+                }
+              />
+              <DetailField
+                label="Payment Completion Status"
+                value={purchase.payment_completion || "n/a"}
               />
               <ApprovalStatus
                 label="Approval Status"
@@ -411,16 +430,19 @@ export default function GeneralViewPurchases({ id }) {
 
         {/* Bottom Buttons - Centered */}
         <div className="mt-6 flex justify-center gap-4">
-          {purchase.BI_Approval !== "approved" && userRole !== "staff" && (
-            <button
-              onClick={() => gotoPurchaseEdit(id)}
-              disabled={isEditing}
-              className="inline-flex items-center justify-center gap-1 rounded-xl bg-gray-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
-            >
-              <Edit className="h-4 w-4" />
-              Edit
-            </button>
-          )}
+          {((userRole === "bi" && purchase.BI_Approval !== "approved") ||
+            (userRole === "cc" && purchase.CC_Approval !== "approved") ||
+            (userRole === "hr" && purchase.HR_Approval !== "approved")) &&
+            userRole !== "staff" && (
+              <button
+                onClick={() => gotoPurchaseEdit(id)}
+                disabled={isEditing}
+                className="inline-flex items-center justify-center gap-1 rounded-xl bg-gray-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
+              >
+                <Edit className="h-4 w-4" />
+                Edit
+              </button>
+            )}
           <button
             onClick={handleCloseClick}
             disabled={isClosing}

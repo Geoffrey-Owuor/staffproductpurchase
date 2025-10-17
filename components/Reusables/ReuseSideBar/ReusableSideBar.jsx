@@ -1,12 +1,12 @@
 "use client";
 
 import {
-  FileBarChart,
   HomeIcon,
   LogOutIcon,
   ShoppingBagIcon,
   MessageCircleQuestion,
-  HandCoins,
+  Wallet2,
+  History,
 } from "lucide-react";
 
 import { useState } from "react";
@@ -50,7 +50,7 @@ export default function ReusableSidebar({ isOpen }) {
     activeTab = "history";
   } else if (pathname === "/staffdashboard/new-purchase") {
     activeTab = "newpurchase";
-  } else if (pathname === "/hrdashboard/payment-tracking") {
+  } else if (pathname === "/ccdashboard/payment-tracking") {
     activeTab = "paymentTracking";
   }
 
@@ -146,7 +146,7 @@ export default function ReusableSidebar({ isOpen }) {
                     : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
                 }`}
               >
-                <FileBarChart className="h-4 w-4 flex-shrink-0" />
+                <History className="h-4 w-4 flex-shrink-0" />
                 <span
                   className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
                     isOpen ? "w-40" : "w-0"
@@ -156,12 +156,12 @@ export default function ReusableSidebar({ isOpen }) {
                 </span>
               </div>
             </li>
-            {role === "hr" && (
+            {role === "cc" && (
               <li>
                 <div
                   onClick={() => {
                     setIsLoading(true);
-                    router.push("/hrdashboard/payment-tracking");
+                    router.push("/ccdashboard/payment-tracking");
                   }}
                   className={`flex cursor-default items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-colors ${
                     activeTab === "paymentTracking"
@@ -169,7 +169,7 @@ export default function ReusableSidebar({ isOpen }) {
                       : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
                   }`}
                 >
-                  <HandCoins className="h-4 w-4 flex-shrink-0" />
+                  <Wallet2 className="h-4 w-4 flex-shrink-0" />
                   <span
                     className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
                       isOpen ? "w-40" : "w-0"

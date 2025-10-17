@@ -173,18 +173,24 @@ export default function StaffPurchaseHistory({ fetchAllData }) {
         <TableSkeleton />
       ) : (
         <>
-          <div>
-            <table className="min-w-full">
+          <div className="overflow-x-auto">
+            <table className="mb-6 min-w-full">
               <thead className="bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-white">
                 <tr>
-                  <th className="px-6 py-3 text-left text-sm font-semibold">
+                  <th className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold">
                     Date Submitted
+                  </th>
+                  <th className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold">
+                    Reference Number
                   </th>
                   <th className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold">
                     Payment Terms
                   </th>
                   <th className="px-6 py-3 text-left text-sm font-semibold">
                     PayrollNo
+                  </th>
+                  <th className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold">
+                    Invoicing Location
                   </th>
                   <th className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold">
                     HR Approval
@@ -210,26 +216,35 @@ export default function StaffPurchaseHistory({ fetchAllData }) {
                       <td className="max-w-[200px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900 dark:text-white">
                         {formatDateLong(purchase.createdAt)}
                       </td>
-                      <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900 dark:text-white">
+                      <td
+                        className="max-w-[200px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900 dark:text-white"
+                        title={purchase.reference_number}
+                      >
+                        {purchase.reference_number}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
                         {purchase.employee_payment_terms}
                       </td>
-                      <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900 dark:text-white">
+                      <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
                         {purchase.payrollNo}
                       </td>
-                      <td className="px-6 py-4 text-sm whitespace-nowrap">
+                      <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
+                        {purchase.invoicing_location}
+                      </td>
+                      <td className="px-6 py-4 text-sm">
                         <TableApprovalStatus status={purchase.HR_Approval} />
                       </td>
-                      <td className="px-6 py-4 text-sm whitespace-nowrap">
+                      <td className="px-6 py-4 text-sm">
                         <TableApprovalStatus status={purchase.CC_Approval} />
                       </td>
-                      <td className="px-6 py-4 text-sm whitespace-nowrap">
+                      <td className="px-6 py-4 text-sm">
                         <TableApprovalStatus status={purchase.BI_Approval} />
                       </td>
                       <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900 dark:text-white">
                         <div className="group ml-1.5 flex">
                           <button
                             onClick={() => handleViewClick(purchase.id)}
-                            className="rounded-md border border-gray-300 p-1.5 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-50"
+                            className="rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-50"
                             title="View"
                             disabled={navigatingTo === purchase.id}
                           >

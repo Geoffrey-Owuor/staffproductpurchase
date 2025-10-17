@@ -223,6 +223,8 @@ export default function NewPurchase() {
                 setFormData={(data) => setProductData(index, data)}
                 discountPolicies={discountPolicies}
                 userRole={user.role}
+                //Passing in payment terms
+                paymentTerms={paymentInfo.employee_payment_terms}
               />
               {products.length > 1 && (
                 <button

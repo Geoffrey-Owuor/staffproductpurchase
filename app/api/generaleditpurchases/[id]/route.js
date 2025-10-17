@@ -275,7 +275,7 @@ export async function PUT(request, { params }) {
           purchaseData,
           products,
           createdAt: oldData.createdAt,
-          id: id,
+          reference: oldData.reference_number,
         });
         await sendEmail({
           to: oldData.user_email,

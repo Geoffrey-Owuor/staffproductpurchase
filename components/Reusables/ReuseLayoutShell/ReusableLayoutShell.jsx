@@ -22,7 +22,7 @@ export default function ReusableLayoutShell({ user, children }) {
         <div className="flex flex-1 pb-4">
           <ReusableSidebar isOpen={sidebarOpen} />
           <main
-            className={`flex-1 px-4 transition-all duration-200 ${sidebarOpen ? "ml-56" : "mr-10 ml-26"}`}
+            className={`min-w-0 flex-1 px-4 transition-all duration-200 ${sidebarOpen ? "ml-56" : "mr-4 ml-20"}`}
           >
             <div className="mt-20">{children}</div>
           </main>

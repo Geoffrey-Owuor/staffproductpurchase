@@ -35,32 +35,33 @@ const styles = StyleSheet.create({
     color: "#1F2937",
     display: "flex",
     flexDirection: "column",
+    flexGrow: 1,
     justifyContent: "flex-start",
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 18,
+    marginBottom: 12,
     alignItems: "flex-start",
   },
   headerLeft: { color: "#4B5563" },
   headerRight: { textAlign: "right" },
   title: { fontSize: 18, fontWeight: 700, color: "#111827", marginBottom: 2 },
   subtitle: { fontSize: 10, color: "#6B7280" },
-  section: { marginBottom: 12 },
+  section: { marginBottom: 10 },
   rowSection: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
-    marginBottom: 12,
+    marginBottom: 10,
     gap: 10,
   },
   sectionHalf: {
     width: "48%", // each half occupies roughly half of the page width
   },
   sectionRow: { flexDirection: "row", marginBottom: 3, alignItems: "center" },
-  sectionLabel: { width: "30%", color: "#6B7280", textAlign: "left" },
-  sectionValue: { width: "60%", fontWeight: 400, textAlign: "left" },
+  sectionLabel: { width: "50%", color: "#6B7280", textAlign: "left" },
+  sectionValue: { width: "50%", fontWeight: 400, textAlign: "left" },
   sectionTitle: {
     fontSize: 12,
     fontWeight: 700,
@@ -69,9 +70,16 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     color: "#374151",
   },
+  sectionTitle2: {
+    fontSize: 12,
+    fontWeight: 700,
+    paddingBottom: 4,
+    marginBottom: 5,
+    color: "#374151",
+  },
   infoRow: { flexDirection: "row", marginBottom: 3, alignItems: "center" },
-  infoLabel: { width: "20%", color: "#6B7280", textAlign: "left" },
-  infoValue: { width: "80%", fontWeight: 400, textAlign: "left" },
+  infoLabel: { width: "40%", color: "#6B7280", textAlign: "left" },
+  infoValue: { width: "60%", fontWeight: 400, textAlign: "left" },
   table: {
     width: "100%",
     border: "1px solid #E5E7EB",
@@ -98,17 +106,27 @@ const styles = StyleSheet.create({
   summaryContainer: {
     flexDirection: "row",
     justifyContent: "flex-end",
-    marginBottom: 10,
+    marginBottom: 8,
   },
   summaryBox: { width: "45%" },
   summaryRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingVertical: 3,
+    paddingVertical: 2,
   },
   summaryLabel: { color: "#6B7280" },
   summaryValue: { fontWeight: 700 },
-  summaryTotal: { borderTop: "1px solid #D1D5DB", paddingTop: 4, marginTop: 4 },
+
+  approvalGrid: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    flexWrap: "wrap",
+    gap: 10,
+  },
+
+  approvalColumn: {
+    width: "48%", // roughly half the page width
+  },
   subSection: { marginBottom: 8 },
   subSectionTitle: {
     fontWeight: 700,
@@ -118,10 +136,19 @@ const styles = StyleSheet.create({
     paddingBottom: 2,
   },
 
+  // footer: {
+  //   textAlign: "center",
+  //   fontSize: 8,
+  //   color: "#9CA3AF",
+  // },
+
   footer: {
-    marginTop: 20,
-    textAlign: "center",
+    position: "absolute",
+    bottom: 20, // distance from the bottom edge
+    left: 40,
+    right: 40,
     fontSize: 8,
+    textAlign: "center",
     color: "#9CA3AF",
   },
 });
@@ -149,11 +176,12 @@ const calculateDaysDifference = (startDate, endDate) => {
 };
 
 // --- PDF DOCUMENT ---
-const PurchasePDFDocument = ({ purchaseData, products, createdAt, id }) => {
-  const totalDiscount = products.reduce(
-    (sum, p) => sum + (Number(p.tdPrice) - Number(p.discountedValue)),
-    0,
-  );
+const PurchasePDFDocument = ({
+  purchaseData,
+  products,
+  createdAt,
+  reference,
+}) => {
   const grandTotal = products.reduce(
     (sum, p) => sum + Number(p.discountedValue),
     0,
@@ -170,8 +198,7 @@ const PurchasePDFDocument = ({ purchaseData, products, createdAt, id }) => {
               <Text style={styles.subtitle}>Hotpoint Appliances Ltd.</Text>
             </View>
             <View style={styles.headerRight}>
-              <Text>Reference No: {purchaseData.payrollNo || "N/A"}</Text>
-              <Text>Request ID: {id || "N/A"}</Text>
+              <Text>Reference Number: {reference || "N/A"}</Text>
               <Text>
                 Date Issued:{" "}
                 {formatDate(purchaseData.bi_approval_date || biApprovalDate)}
@@ -206,11 +233,25 @@ const PurchasePDFDocument = ({ purchaseData, products, createdAt, id }) => {
 
             {/* Payment Details - To the right */}
             <View style={styles.sectionHalf}>
-              <Text style={styles.sectionTitle}>Payment Details</Text>
+              <Text style={styles.sectionTitle}>
+                Payment & Invoicing Details
+              </Text>
               <View style={styles.sectionRow}>
                 <Text style={styles.sectionLabel}>Payment Terms</Text>
                 <Text style={styles.sectionValue}>
                   {purchaseData.employee_payment_terms || "N/A"}
+                </Text>
+              </View>
+              <View style={styles.sectionRow}>
+                <Text style={styles.sectionLabel}>Invoicing Location</Text>
+                <Text style={styles.sectionValue}>
+                  {purchaseData.invoicing_location || "N/A"}
+                </Text>
+              </View>
+              <View style={styles.sectionRow}>
+                <Text style={styles.sectionLabel}>Delivery/Pickup Details</Text>
+                <Text style={styles.sectionValue}>
+                  {purchaseData.delivery_details || "N/A"}
                 </Text>
               </View>
               <View style={styles.sectionRow}>
@@ -224,7 +265,7 @@ const PurchasePDFDocument = ({ purchaseData, products, createdAt, id }) => {
 
           {/* Products Table */}
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Purchased Items</Text>
+            <Text style={styles.sectionTitle2}>Purchased Items</Text>
             <View style={styles.table}>
               <View style={styles.tableHeader}>
                 <Text style={styles.tableCol1}>Item Description</Text>
@@ -263,12 +304,6 @@ const PurchasePDFDocument = ({ purchaseData, products, createdAt, id }) => {
           <View style={styles.summaryContainer}>
             <View style={styles.summaryBox}>
               <View style={styles.summaryRow}>
-                <Text style={styles.summaryLabel}>Total Discount</Text>
-                <Text style={styles.summaryValue}>
-                  {formatCurrency(totalDiscount)}
-                </Text>
-              </View>
-              <View style={[styles.summaryRow, styles.summaryTotal]}>
                 <Text
                   style={[
                     styles.summaryLabel,
@@ -284,12 +319,13 @@ const PurchasePDFDocument = ({ purchaseData, products, createdAt, id }) => {
             </View>
           </View>
 
-          {/* --- NEW: VERTICAL VERIFICATION & APPROVAL --- */}
+          {/* VERIFICATION & APPROVAL --- */}
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>
+            <Text style={styles.sectionTitle2}>
               Verification & Approval Details
             </Text>
-            {/* Human Resources */}
+
+            {/* Human Resources (Outside the Grid) */}
             <View style={styles.subSection}>
               <Text style={styles.subSectionTitle}>Human Resources</Text>
               <View style={styles.infoRow}>
@@ -330,118 +366,148 @@ const PurchasePDFDocument = ({ purchaseData, products, createdAt, id }) => {
               </View>
             </View>
 
-            {/* Credit Control */}
-            <View style={styles.subSection}>
-              <Text style={styles.subSectionTitle}>Credit Control</Text>
-              <View style={styles.infoRow}>
-                <Text style={styles.infoLabel}>Credit Period</Text>
-                <Text style={styles.infoValue}>
-                  {purchaseData.credit_period || "N/A"}
-                </Text>
+            {/* 2-Column Grid Layout */}
+            <View style={styles.approvalGrid}>
+              {/* LEFT COLUMN: Credit Control*/}
+              <View style={styles.approvalColumn}>
+                {/* Credit Control */}
+                <View style={styles.subSection}>
+                  <Text style={styles.subSectionTitle}>Credit Control</Text>
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoLabel}>Credit Period</Text>
+                    <Text style={styles.infoValue}>
+                      {purchaseData.credit_period || "N/A"}
+                    </Text>
+                  </View>
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoLabel}>1/3 Rule Check</Text>
+                    <Text style={styles.infoValue}>
+                      {purchaseData.one_third_rule || "N/A"}
+                    </Text>
+                  </View>
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoLabel}>Pending Invoices</Text>
+                    <Text style={styles.infoValue}>
+                      {purchaseData.pending_invoices || "N/A"}
+                    </Text>
+                  </View>
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoLabel}>History Comments</Text>
+                    <Text style={styles.infoValue}>
+                      {purchaseData.purchase_history_comments || "N/A"}
+                    </Text>
+                  </View>
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoLabel}>Approval Status</Text>
+                    <Text style={styles.infoValue}>
+                      {formatStatus(purchaseData.CC_Approval)}
+                    </Text>
+                  </View>
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoLabel}>Approved By</Text>
+                    <Text style={styles.infoValue}>
+                      {purchaseData.cc_approver_name || "N/A"}
+                    </Text>
+                  </View>
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoLabel}>Date</Text>
+                    <Text style={styles.infoValue}>
+                      {formatDate(purchaseData.cc_approval_date)}
+                    </Text>
+                  </View>
+                </View>
               </View>
-              <View style={styles.infoRow}>
-                <Text style={styles.infoLabel}>1/3 Rule Check</Text>
-                <Text style={styles.infoValue}>
-                  {purchaseData.one_third_rule || "N/A"}
-                </Text>
-              </View>
-              <View style={styles.infoRow}>
-                <Text style={styles.infoLabel}>Pending Invoices</Text>
-                <Text style={styles.infoValue}>
-                  {purchaseData.pending_invoices || "N/A"}
-                </Text>
-              </View>
-              <View style={styles.infoRow}>
-                <Text style={styles.infoLabel}>History Comments</Text>
-                <Text style={styles.infoValue}>
-                  {purchaseData.purchase_history_comments || "N/A"}
-                </Text>
-              </View>
-              <View style={styles.infoRow}>
-                <Text style={styles.infoLabel}>Approval Status</Text>
-                <Text style={styles.infoValue}>
-                  {formatStatus(purchaseData.CC_Approval)}
-                </Text>
-              </View>
-              <View style={styles.infoRow}>
-                <Text style={styles.infoLabel}>Approved By</Text>
-                <Text style={styles.infoValue}>
-                  {purchaseData.cc_approver_name || "N/A"}
-                </Text>
-              </View>
-              <View style={styles.infoRow}>
-                <Text style={styles.infoLabel}>Date</Text>
-                <Text style={styles.infoValue}>
-                  {formatDate(purchaseData.cc_approval_date)}
-                </Text>
-              </View>
-            </View>
 
-            {/* Billing & Invoicing */}
-            <View style={styles.subSection}>
-              <Text style={styles.subSectionTitle}>Billing & Invoicing</Text>
-              <View style={styles.infoRow}>
-                <Text style={styles.infoLabel}>Invoice Number</Text>
-                <Text style={styles.infoValue}>
-                  {purchaseData.invoice_number || "N/A"}
-                </Text>
-              </View>
-              <View style={styles.infoRow}>
-                <Text style={styles.infoLabel}>Invoice Date</Text>
-                <Text style={styles.infoValue}>
-                  {formatDate(purchaseData.invoice_date)}
-                </Text>
-              </View>
-              <View style={styles.infoRow}>
-                <Text style={styles.infoLabel}>Invoice Amount</Text>
-                <Text style={styles.infoValue}>
-                  {formatCurrency(purchaseData.invoice_amount)}
-                </Text>
-              </View>
-              <View style={styles.infoRow}>
-                <Text style={styles.infoLabel}>Payment Method</Text>
-                <Text style={styles.infoValue}>
-                  {purchaseData.payment_method || "N/A"}
-                </Text>
-              </View>
-              <View style={styles.infoRow}>
-                <Text style={styles.infoLabel}>Payment Reference</Text>
-                <Text style={styles.infoValue}>
-                  {purchaseData.payment_reference || "N/A"}
-                </Text>
-              </View>
-              <View style={styles.infoRow}>
-                <Text style={styles.infoLabel}>Payment Date</Text>
-                <Text style={styles.infoValue}>
-                  {formatDate(purchaseData.payment_date)}
-                </Text>
-              </View>
-              <View style={styles.infoRow}>
-                <Text style={styles.infoLabel}>Approval Status</Text>
-                <Text style={styles.infoValue}>
-                  {formatStatus(purchaseData.BI_Approval)}
-                </Text>
-              </View>
-              <View style={styles.infoRow}>
-                <Text style={styles.infoLabel}>Approved By</Text>
-                <Text style={styles.infoValue}>
-                  {purchaseData.bi_approver_name || "N/A"}
-                </Text>
-              </View>
-              <View style={styles.infoRow}>
-                <Text style={styles.infoLabel}>Date</Text>
-                <Text style={styles.infoValue}>
-                  {formatDate(purchaseData.bi_approval_date || biApprovalDate)}
-                </Text>
-              </View>
-              <View style={styles.infoRow}>
-                <Text style={styles.infoLabel}>Approval Time</Text>
-                <Text style={styles.infoValue}>
-                  {calculateDaysDifference(
-                    createdAt,
-                    purchaseData.bi_approval_date || biApprovalDate,
-                  )}
-                </Text>
+              {/* RIGHT COLUMN: Billing & Invoicing */}
+              <View style={styles.approvalColumn}>
+                <View style={styles.subSection}>
+                  <Text style={styles.subSectionTitle}>
+                    Billing & Invoicing
+                  </Text>
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoLabel}>Invoice Number</Text>
+                    <Text style={styles.infoValue}>
+                      {purchaseData.invoice_number || "N/A"}
+                    </Text>
+                  </View>
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoLabel}>Invoice Date</Text>
+                    <Text style={styles.infoValue}>
+                      {formatDate(purchaseData.invoice_date)}
+                    </Text>
+                  </View>
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoLabel}>Invoice Amount</Text>
+                    <Text style={styles.infoValue}>
+                      {formatCurrency(purchaseData.invoice_amount)}
+                    </Text>
+                  </View>
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoLabel}>Payment Method</Text>
+                    <Text style={styles.infoValue}>
+                      {purchaseData.payment_method || "N/A"}
+                    </Text>
+                  </View>
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoLabel}>Payment Reference</Text>
+                    <Text style={styles.infoValue}>
+                      {purchaseData.payment_reference || "N/A"}
+                    </Text>
+                  </View>
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoLabel}>Payment Date</Text>
+                    <Text style={styles.infoValue}>
+                      {formatDate(purchaseData.payment_date)}
+                    </Text>
+                  </View>
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoLabel}>Amount Received</Text>
+                    <Text style={styles.infoValue}>
+                      {formatCurrency(purchaseData.amount)}
+                    </Text>
+                  </View>
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoLabel}>Payment Balance</Text>
+                    <Text style={styles.infoValue}>
+                      {formatCurrency(purchaseData.payment_balance)}
+                    </Text>
+                  </View>
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoLabel}>Completion Status</Text>
+                    <Text style={styles.infoValue}>
+                      {purchaseData.payment_completion}
+                    </Text>
+                  </View>
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoLabel}>Approval Status</Text>
+                    <Text style={styles.infoValue}>
+                      {formatStatus(purchaseData.BI_Approval)}
+                    </Text>
+                  </View>
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoLabel}>Approved By</Text>
+                    <Text style={styles.infoValue}>
+                      {purchaseData.bi_approver_name || "N/A"}
+                    </Text>
+                  </View>
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoLabel}>Date</Text>
+                    <Text style={styles.infoValue}>
+                      {formatDate(
+                        purchaseData.bi_approval_date || biApprovalDate,
+                      )}
+                    </Text>
+                  </View>
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoLabel}>Approval Time</Text>
+                    <Text style={styles.infoValue}>
+                      {calculateDaysDifference(
+                        createdAt,
+                        purchaseData.bi_approval_date || biApprovalDate,
+                      )}
+                    </Text>
+                  </View>
+                </View>
               </View>
             </View>
           </View>
@@ -461,14 +527,14 @@ export async function generatePurchasePDF({
   purchaseData,
   products,
   createdAt,
-  id,
+  reference,
 }) {
   const pdfStream = await pdf(
     <PurchasePDFDocument
       purchaseData={purchaseData}
       products={products}
       createdAt={createdAt}
-      id={id}
+      reference={reference}
     />,
   ).toBuffer();
 
@@ -485,14 +551,14 @@ export async function generateClientPDF({
   purchaseData,
   products,
   createdAt,
-  id,
+  reference,
 }) {
   const blob = await pdf(
     <PurchasePDFDocument
       purchaseData={purchaseData}
       products={products}
       createdAt={createdAt}
-      id={id}
+      reference={reference}
     />,
   ).toBlob();
 

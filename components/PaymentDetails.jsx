@@ -91,11 +91,13 @@ const PaymentDetails = ({ formData, handleChange, userRole }) => {
               </option>
               <option value="CREDIT">Credit</option>
               <option value="CASH">Cash</option>
+              <option value="CASH AND CREDIT">Cash & Credit</option>
             </select>
           </div>
 
           {/* Conditional Credit Period */}
-          {formData.employee_payment_terms === "CREDIT" && (
+          {(formData.employee_payment_terms === "CREDIT" ||
+            formData.employee_payment_terms === "CASH AND CREDIT") && (
             <div>
               <label
                 htmlFor="user_credit_period"
