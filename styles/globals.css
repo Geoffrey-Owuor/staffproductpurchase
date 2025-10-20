@@ -2,22 +2,6 @@
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
-@theme {
-  --background-image-blue-gradient: linear-gradient(
-    135deg,
-    #1d4ed8,
-    #2563eb,
-    #3b82f6
-  );
-
-  --background-image-gray-gradient: linear-gradient(
-    135deg,
-    #1f2937,
-    #374151,
-    #4b5563
-  );
-}
-
 :root {
   --shimmer-background: #e5e7eb;
 
@@ -45,69 +29,6 @@
 }
 
 @layer utilities {
-  /* Optional subtle gradient movement */
-  @keyframes gradient-shift {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
-
-  @keyframes pulse-brightness {
-    0%,
-    100% {
-      filter: brightness(0.75);
-    }
-    50% {
-      filter: brightness(1.5);
-    }
-  }
-
-  /* Bounce animation */
-  @keyframes custom-bounce {
-    0%,
-    80%,
-    100% {
-      transform: translateY(0);
-    }
-    40% {
-      transform: translateY(-20px);
-    }
-  }
-
-  .dot {
-    width: 16px;
-    height: 16px;
-    border-radius: 9999px;
-    display: inline-block;
-  }
-  .gradient-dot {
-    background-size: 200% 200%;
-    animation: gradient-shift 3s ease infinite;
-  }
-
-  .animate-custom-bounce {
-    animation:
-      custom-bounce 1.2s infinite ease-in-out,
-      pulse-brightness 1.2s infinite ease-in-out;
-  }
-
-  /* Animation delays for staggered bounce */
-  .animation-delay-0 {
-    animation-delay: 0s;
-  }
-  .animation-delay-150 {
-    animation-delay: 0.15s;
-  }
-  .animation-delay-300 {
-    animation-delay: 0.3s;
-  }
-
   @keyframes slideDown {
     from {
       transform: translateY(-100%);
@@ -170,24 +91,6 @@
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
   }
-
-  @keyframes pulse-slow {
-    0%,
-    100% {
-      opacity: 1;
-      transform: scale(1);
-      filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0));
-    }
-    50% {
-      opacity: 0.5;
-      transform: scale(1.08);
-      filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.1));
-    }
-  }
-
-  .animate-pulse-slow {
-    animation: pulse-slow 2.2s ease-in-out infinite;
-  }
 }
 
 @layer base {
@@ -219,48 +122,14 @@
 
 html {
   scroll-behavior: smooth;
+  scrollbar-color: #9ca3af #00000000;
+}
+
+html[data-theme="dark"] {
+  scrollbar-color: #4b5563 #00000000;
 }
 
 .custom-blur {
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
-}
-
-/* SROLLBAR STYLES STARTING */
-/* For WebKit-based browsers (Chrome, Safari, Edge) */
-/* Light Mode Scrollbar Styles (Default) */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #d1d5db;
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
-}
-
-/* Dark mode scrollbar styles */
-html[data-theme="dark"] ::-webkit-scrollbar-thumb {
-  background: #4b5563; /* A lighter gray, like Tailwind's gray-600 */
-}
-
-html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
-  background: #6b7280; /* A slightly lighter gray on hover, like gray-500 */
-}
-
-/* ---Firefox scrollbar styling, light and dark mode --- */
-html {
-  /* light mode: thumb color, track color */
-  scrollbar-color: #9ca3af #ffffff;
-}
-
-/* Dark mode scrollbar color */
-html[data-theme="dark"] {
-  /* dark mode: thumb color, track color */
-  scrollbar-color: #6b7280 #030712;
 }

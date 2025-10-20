@@ -2,7 +2,7 @@
 import { Eye, Settings2, Trash2, MoreVertical } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
-import ConfirmationDialog from "../ConfirmationDialog";
+import DeleteConfirmation from "../DeleteConfirmation/DeleteConfirmation";
 import { DeletingOverlay } from "../LoadingBar";
 import { useUser } from "@/context/UserContext";
 
@@ -149,8 +149,10 @@ export const RecentActionButtons = ({
           <button
             type="button"
             onClick={handleConfirmDelete}
-            disabled={goingTo === id || disableDelete}
-            className="mt-1 flex w-full items-center rounded-md p-2 text-left text-sm text-red-600 hover:bg-red-50 disabled:opacity-50 disabled:hover:bg-transparent dark:text-red-400 dark:hover:bg-[#4c2e2f]"
+            disabled={
+              goingTo === id || disableDelete || biApproval === "approved"
+            }
+            className="mt-1 flex w-full items-center rounded-md p-2 text-left text-sm text-red-600 hover:bg-red-50 disabled:opacity-50 disabled:hover:bg-transparent dark:text-red-400 dark:hover:bg-red-600/15"
           >
             <Trash2 className="mr-1 h-4 w-4" />
             <span>Delete</span>
@@ -163,9 +165,7 @@ export const RecentActionButtons = ({
   return (
     <>
       {showConfirmation && (
-        <ConfirmationDialog
-          message="Are you sure you want to delete this purchase request? (This action is irreversible)"
-          title="Delete Purchase Request"
+        <DeleteConfirmation
           onConfirm={handleDelete}
           onCancel={() => setShowConfirmation(false)}
         />

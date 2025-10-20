@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { XCircle, Mail, Loader2 } from "lucide-react";
+import { Mail, Loader2, X } from "lucide-react";
 import { useUser } from "@/context/UserContext";
 import Alert from "../Alert";
 import { LoggingOutOverlay } from "../Reusables/LoadingBar";
@@ -150,7 +150,7 @@ export default function ChangeEmail({ onClose }) {
                   className="cursor-pointer text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                   aria-label="Close dialog"
                 >
-                  <XCircle className="h-7 w-7" />
+                  <X className="h-6 w-6" />
                 </button>
               </div>
 
@@ -247,7 +247,7 @@ export default function ChangeEmail({ onClose }) {
                   className="cursor-pointer text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                   aria-label="Close dialog"
                 >
-                  <XCircle className="h-7 w-7" />
+                  <X className="h-6 w-6" />
                 </button>
               </div>
 

@@ -12,6 +12,7 @@ import { formatDateLong } from "@/public/assets";
 import Alert from "../Alert";
 import Pagination from "../pagination/Pagination";
 import ColumnToggle from "../Reusables/ColumnToggle";
+import ImportExcelData from "../Reusables/Import/ImportExcelData";
 
 export default function PurchasesHistory({ fetchAllData }) {
   const [purchases, setPurchases] = useState([]);
@@ -186,10 +187,17 @@ export default function PurchasesHistory({ fetchAllData }) {
           ) : (
             <RecentPurchasesHeading />
           )}
-          <ColumnToggle
-            visibleColumns={visibleColumns}
-            onToggle={handleColumnToggle}
-          />
+          <div className="flex items-center gap-4">
+            <ImportExcelData
+              exportAll={true}
+              fromDate={fromDate}
+              toDate={toDate}
+            />
+            <ColumnToggle
+              visibleColumns={visibleColumns}
+              onToggle={handleColumnToggle}
+            />
+          </div>
         </div>
 
         {/* Search Bar (Selecting filter types) */}

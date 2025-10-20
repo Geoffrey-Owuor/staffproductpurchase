@@ -22,7 +22,7 @@ export const TableApprovalStatus = ({ status }) => {
   const formattedStatus = status.charAt(0).toUpperCase() + status.slice(1);
 
   return (
-    <div className="inline-flex items-center gap-x-1 rounded-full border border-gray-200 px-2 py-1 dark:border-gray-700">
+    <div className="inline-flex items-center gap-x-1 rounded-[9px] border border-gray-200 px-2 py-1 dark:border-gray-700">
       <span className={`h-2 w-2 rounded-full ${dotClass}`} />
       <span className="text-xs text-gray-700 dark:text-gray-300">
         {formattedStatus}
@@ -44,21 +44,21 @@ export const PaymentStatus = ({ status }) => {
   switch (status) {
     case "complete":
       return (
-        <div className="inline-flex items-center gap-x-1 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-300">
-          <CircleCheck className="h-4 w-4" />
+        <div className="inline-flex items-center gap-x-1 rounded-[9px] bg-green-100 px-2 py-1 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-200">
+          <CircleCheck className="h-3 w-3" />
           {formattedStatus}
         </div>
       );
     case "incomplete":
       return (
-        <div className="inline-flex items-center gap-x-1 rounded-full bg-yellow-100 px-2 py-1 text-xs font-medium text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300">
-          <Loader className="h-4 w-4" />
+        <div className="inline-flex items-center gap-x-1 rounded-[9px] bg-yellow-100 px-2 py-1 text-xs font-medium text-yellow-700 dark:bg-yellow-900 dark:text-yellow-200">
+          <Loader className="h-3 w-3" />
           {formattedStatus}
         </div>
       );
     default: // Handles "unknown" or any other status
       return (
-        <div className="inline-flex items-center gap-x-1 rounded-full border border-gray-200 px-2 py-1 dark:border-gray-700">
+        <div className="inline-flex items-center gap-x-1 rounded-[9px] border border-gray-200 px-2 py-1 dark:border-gray-700">
           <span className="h-2 w-2 rounded-full bg-gray-500" />
           <span className="text-xs text-gray-700 dark:text-gray-300">
             {formattedStatus}

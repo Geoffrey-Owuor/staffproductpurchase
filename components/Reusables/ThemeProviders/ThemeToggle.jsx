@@ -1,6 +1,6 @@
 "use client";
 
-import { Sun, Moon, Laptop } from "lucide-react";
+import { Sun, Moon, Monitor } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 const themeOptions = [
   { name: "light", Icon: Sun },
   { name: "dark", Icon: Moon },
-  { name: "system", Icon: Laptop },
+  { name: "system", Icon: Monitor },
 ];
 
 export default function ThemeToggle() {
@@ -23,19 +23,19 @@ export default function ThemeToggle() {
   }
 
   return (
-    <div className="flex items-center space-x-2 rounded-full bg-gray-100 px-2 py-1 dark:bg-gray-800">
+    <div className="flex items-center space-x-1 rounded-full bg-gray-100 px-2 py-1 dark:bg-gray-800">
       {themeOptions.map(({ name, Icon }) => (
         <button
           key={name}
           onClick={() => setTheme(name)}
-          className={`rounded-full p-2 transition ${
+          className={`rounded-full p-1 transition ${
             theme === name
               ? "bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-white"
               : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
           }`}
           aria-label={`Switch to ${name} theme`}
         >
-          <Icon className="h-4 w-4" />
+          <Icon className="h-3.5 w-3.5" />
         </button>
       ))}
     </div>

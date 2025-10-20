@@ -10,6 +10,7 @@ import { PaymentStatus } from "../Reusables/TableApprovalStatus";
 import Alert from "../Alert";
 import Pagination from "../pagination/Pagination";
 import ColumnToggle from "../Reusables/ColumnToggle";
+import ImportExcelData from "../Reusables/Import/ImportExcelData";
 
 export default function PaymentTracking({ fetchAllData, biApproval = true }) {
   const [purchases, setPurchases] = useState([]);
@@ -173,10 +174,13 @@ export default function PaymentTracking({ fetchAllData, biApproval = true }) {
             </p>
           </div>
 
-          <ColumnToggle
-            visibleColumns={visibleColumns}
-            onToggle={handleColumnToggle}
-          />
+          <div className="flex items-center gap-4">
+            <ImportExcelData fromDate={fromDate} toDate={toDate} />
+            <ColumnToggle
+              visibleColumns={visibleColumns}
+              onToggle={handleColumnToggle}
+            />
+          </div>
         </div>
 
         {/* Search Bar */}
@@ -300,7 +304,7 @@ export default function PaymentTracking({ fetchAllData, biApproval = true }) {
           <TableSkeleton />
         ) : (
           <>
-            <div className="overflow-x-auto">
+            <div className="custom-scroll overflow-x-auto">
               <table className="mb-6 min-w-full">
                 <thead className="bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-white">
                   <tr>

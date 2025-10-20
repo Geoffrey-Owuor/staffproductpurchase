@@ -1,5 +1,6 @@
 "use client";
 import { useState, useMemo, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import StaffInformation from "../StaffInformation";
 import ProductPricing from "../ProductPricing";
 import TermsConditions from "../TermsConditions";
@@ -8,6 +9,7 @@ import { LoadingBarWave } from "../Reusables/LoadingBar";
 import { ClipboardList, PlusCircle, Trash2 } from "lucide-react";
 import ConfirmationDialog from "../Reusables/ConfirmationDialog";
 import PaymentDetails from "../PaymentDetails";
+import TopBarButtons from "../Reusables/TopBarButtons/TopBarButtons";
 import { useUser } from "@/context/UserContext";
 
 // The initial state for a single product
@@ -23,6 +25,7 @@ const initialProductState = {
 
 export default function NewPurchase() {
   const user = useUser();
+  const router = useRouter();
 
   const [discountPolicies, setDiscountPolicies] = useState([]);
   const [staffInfo, setStaffInfo] = useState({
@@ -184,11 +187,12 @@ export default function NewPurchase() {
   return (
     <>
       <div className="mx-auto p-2 leading-relaxed dark:text-white">
-        <div className="mb-5 flex items-center justify-center gap-2">
-          <ClipboardList className="h-6 w-6 text-gray-900 dark:text-gray-200" />
-          <h1 className="text-xl font-semibold text-gray-900 dark:text-gray-200">
-            PURCHASE FORM (Staff Information & Product Details)
-          </h1>
+        <div className="mb-6 flex items-center justify-between">
+          <div className="flex items-center justify-center gap-2 text-gray-900 dark:text-gray-200">
+            <ClipboardList className="h-6 w-6" />
+            <h1 className="text-xl font-semibold">Purchase Request Form</h1>
+          </div>
+          <TopBarButtons />
         </div>
 
         <form

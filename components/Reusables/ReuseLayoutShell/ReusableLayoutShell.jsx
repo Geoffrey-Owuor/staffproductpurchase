@@ -1,5 +1,4 @@
 "use client";
-import ReusableHeader from "../ReuseHeader/ReusableHeader";
 import ReusableSidebar from "../ReuseSideBar/ReusableSideBar";
 import DashboardFooter from "../DashboardFooter";
 import { useState } from "react";
@@ -18,13 +17,12 @@ export default function ReusableLayoutShell({ user, children }) {
     <UserContext.Provider value={user}>
       {expired && <ExpiredSessionOverlay />}
       <div className="flex min-h-screen flex-col">
-        <ReusableHeader toggleSidebar={toggleSidebar} />
+        <ReusableSidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
         <div className="flex flex-1 pb-4">
-          <ReusableSidebar isOpen={sidebarOpen} />
           <main
-            className={`min-w-0 flex-1 px-4 transition-all duration-200 ${sidebarOpen ? "ml-56" : "mr-4 ml-20"}`}
+            className={`min-w-0 flex-1 px-4 transition-all duration-200 ${sidebarOpen ? "ml-56" : "ml-16"}`}
           >
-            <div className="mt-20">{children}</div>
+            <div className="mt-4">{children}</div>
           </main>
         </div>
         <DashboardFooter isSidebarOpen={sidebarOpen} />

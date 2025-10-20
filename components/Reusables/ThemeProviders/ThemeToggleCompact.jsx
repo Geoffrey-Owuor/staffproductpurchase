@@ -67,7 +67,7 @@ export default function ThemeToggleCompact() {
 
       {/* The Dropdown Menu */}
       {isOpen && (
-        <div className="absolute z-50 mt-2 w-40 space-y-1 rounded-lg border border-gray-200 bg-white p-1 shadow-lg focus:outline-none dark:border-gray-700 dark:bg-gray-950">
+        <div className="absolute -left-15 z-50 mt-2 w-40 space-y-1 rounded-lg border border-gray-200 bg-white p-1 shadow-lg focus:outline-none dark:border-gray-700 dark:bg-gray-900">
           {themeOptions.map((option) => (
             <button
               key={option.value}

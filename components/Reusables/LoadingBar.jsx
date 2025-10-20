@@ -1,22 +1,10 @@
 import { Loader } from "lucide-react";
 export const LoadingBar = ({ isLoading }) => {
-  // if (!isLoading) return null;
-
-  // return (
-  //   <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/30 backdrop-blur-xs dark:bg-gray-950/30">
-  //     <div className="flex space-x-3">
-  //       <span className="dot gradient-dot bg-gray-gradient dark:bg-blue-gradient animate-custom-bounce animation-delay-0" />
-  //       <span className="dot gradient-dot bg-gray-gradient dark:bg-blue-gradient animate-custom-bounce animation-delay-150" />
-  //       <span className="dot gradient-dot bg-gray-gradient dark:bg-blue-gradient animate-custom-bounce animation-delay-300" />
-  //     </div>
-  //   </div>
-  // );
-
   if (!isLoading) return null;
 
   return (
     // This main div provides the full-screen semi-transparent overlay
-    <div className="fixed inset-0 z-50 flex h-screen items-center justify-center bg-white/50 dark:bg-gray-950/50">
+    <div className="fixed inset-0 z-9999 flex h-screen items-center justify-center bg-white/50 dark:bg-gray-950/50">
       {/* Container to align the spinner and text horizontally */}
       <div className="flex items-center space-x-2">
         {/* The Lucide Loader spinner */}
@@ -39,7 +27,7 @@ export const LoadingBarWave = ({ isLoading }) => {
 
   return (
     // This main div provides the full-screen semi-transparent overlay
-    <div className="fixed inset-0 z-50 flex h-screen items-center justify-center bg-white/50 dark:bg-gray-950/50">
+    <div className="fixed inset-0 z-9999 flex h-screen items-center justify-center bg-white/50 dark:bg-gray-950/50">
       {/* Container to align the spinner and text horizontally */}
       <div className="flex items-center space-x-2">
         {/* The Lucide Loader spinner */}

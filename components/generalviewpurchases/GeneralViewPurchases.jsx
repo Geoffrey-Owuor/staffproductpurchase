@@ -1,6 +1,7 @@
 "use client";
-import { ArrowLeft, ArrowUpRight, Edit, X, Download } from "lucide-react";
+import { Edit, X, Download, View } from "lucide-react";
 import ApprovalStatus from "../Reusables/ApprovalStatus";
+import TopBarButtons from "../Reusables/TopBarButtons/TopBarButtons";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import PurchaseDetailSkeleton from "../skeletons/PurchaseDetailsSkeleton";
@@ -8,12 +9,8 @@ import DetailField from "../Reusables/DetailField";
 import { generateClientPDF } from "@/utils/returnPurchasePDF";
 import { LoadingBar } from "../Reusables/LoadingBar";
 import { formatDateLong } from "@/public/assets";
-import { useFinishLoading } from "@/app/hooks/useFinishLoading";
-import LoadingLine from "../Reusables/LoadingLine";
 import { UseHandleEditClick } from "@/utils/HandleActionClicks/UseHandleEditClick";
-import { UseHandleHomeRoute } from "@/utils/HandleActionClicks/useHandleHomeRoute";
 import ProductItemsInfo from "../ProductItemsInfo/ProductItemsInfo";
-import { UseHandleHistoryRoute } from "@/utils/HandleActionClicks/useHandleHistoryRoute";
 import { usePurchase } from "@/context/PurchaseDetailsContext";
 import { useUser } from "@/context/UserContext";
 import { formatCreditPeriod } from "@/public/assets";
@@ -21,7 +18,6 @@ import { formatCreditPeriod } from "@/public/assets";
 export default function GeneralViewPurchases({ id }) {
   const { role: userRole } = useUser();
   const { purchase, loading, error } = usePurchase();
-  const [isLoadingline, setIsLoadingLine] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -46,30 +42,16 @@ export default function GeneralViewPurchases({ id }) {
   };
 
   const handleEditClick = UseHandleEditClick();
-  const handleHomeRoute = UseHandleHomeRoute();
-  const handleHistoryRoute = UseHandleHistoryRoute();
 
   const gotoPurchaseEdit = (id) => {
     setIsEditing(true);
     handleEditClick(id);
   };
 
-  const gotoHomeClick = () => {
-    setIsLoadingLine(true);
-    handleHomeRoute();
-  };
-
-  const gotoHistoryClick = () => {
-    setIsLoadingLine(true);
-    handleHistoryRoute();
-  };
-
   const handleCloseClick = () => {
     setIsClosing(true);
     router.back();
   };
-
-  useFinishLoading(isLoadingline, setIsLoadingLine);
 
   if (loading) {
     return <PurchaseDetailSkeleton />;
@@ -78,18 +60,11 @@ export default function GeneralViewPurchases({ id }) {
   if (error) {
     return (
       <>
-        <LoadingLine isLoading={isLoadingline} />
         <div className="mx-auto p-6 text-center dark:bg-gray-950">
-          <div className="rounded-lg bg-red-100 p-4 text-red-700 dark:bg-red-900 dark:text-white">
+          <div className="mb-4 rounded-lg bg-red-100 p-4 text-red-700 dark:bg-red-900 dark:text-white">
             Error: {error}
           </div>
-          <button
-            onClick={gotoHomeClick}
-            className="mt-4 inline-flex items-center gap-1 rounded-full bg-gray-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back to Home
-          </button>
+          <TopBarButtons />
         </div>
       </>
     );
@@ -98,18 +73,11 @@ export default function GeneralViewPurchases({ id }) {
   if (!purchase || purchase.length === 0) {
     return (
       <>
-        <LoadingLine isLoading={isLoadingline} />
         <div className="mx-auto p-6 text-center dark:bg-gray-950">
-          <div className="rounded-lg bg-yellow-100 p-4 text-yellow-700 dark:bg-yellow-900 dark:text-white">
+          <div className="mb-4 rounded-lg bg-yellow-100 p-4 text-yellow-700 dark:bg-yellow-900 dark:text-white">
             No purchase data found
           </div>
-          <button
-            onClick={gotoHomeClick}
-            className="mt-4 inline-flex items-center gap-1 rounded-full bg-gray-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back to Home
-          </button>
+          <TopBarButtons />
         </div>
       </>
     );
@@ -117,35 +85,30 @@ export default function GeneralViewPurchases({ id }) {
 
   return (
     <>
-      <LoadingLine isLoading={isLoadingline} />
       <div className="mx-auto p-2 dark:bg-gray-950">
         {isEditing && <LoadingBar isLoading={true} />}
         {/* Header with back button */}
         <div className="mb-6 flex items-center justify-between">
-          <button
-            onClick={gotoHomeClick}
-            className="ml-4 flex cursor-pointer items-center text-gray-900 hover:text-gray-700 dark:text-white dark:hover:text-gray-400"
-          >
-            <ArrowLeft className="mr-2 h-5 w-5" />
-            Back to Home
-          </button>
+          <div className="flex items-center gap-2">
+            <View className="h-6 w-6" />
+            <span className="text-xl font-semibold">View Purchase Request</span>
+          </div>
+          <div className="flex items-center justify-end gap-4">
+            {/* Middle Edit Button */}
+            {((userRole === "bi" && purchase.BI_Approval !== "approved") ||
+              (userRole === "cc" && purchase.CC_Approval !== "approved") ||
+              (userRole === "hr" && purchase.HR_Approval !== "approved")) &&
+              userRole !== "staff" && (
+                <button
+                  onClick={() => gotoPurchaseEdit(id)}
+                  disabled={isEditing}
+                  className="flex items-center justify-center gap-1 rounded-xl bg-gray-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
+                >
+                  <Edit className="h-4 w-4" />
+                  Edit
+                </button>
+              )}
 
-          {/* Middle Edit Button */}
-          {((userRole === "bi" && purchase.BI_Approval !== "approved") ||
-            (userRole === "cc" && purchase.CC_Approval !== "approved") ||
-            (userRole === "hr" && purchase.HR_Approval !== "approved")) &&
-            userRole !== "staff" && (
-              <button
-                onClick={() => gotoPurchaseEdit(id)}
-                disabled={isEditing}
-                className="flex items-center justify-center gap-1 rounded-xl bg-gray-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
-              >
-                <Edit className="h-4 w-4" />
-                Edit
-              </button>
-            )}
-
-          <div className="mr-4 flex items-center gap-4">
             <button
               onClick={handleDownload}
               className={`relative flex items-center justify-center gap-1 rounded-full bg-gray-100 p-2 text-sm text-black shadow-sm hover:bg-gray-200 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700`}
@@ -158,14 +121,8 @@ export default function GeneralViewPurchases({ id }) {
               )}
               <Download className="relative z-10 h-4 w-4" />
             </button>
-
-            <button
-              onClick={gotoHistoryClick}
-              className="flex cursor-pointer items-center text-gray-900 hover:text-gray-700 dark:text-white dark:hover:text-gray-400"
-            >
-              Purchases History
-              <ArrowUpRight className="h-4 w-4" />
-            </button>
+            {/* Top bar buttons */}
+            <TopBarButtons />
           </div>
         </div>
 

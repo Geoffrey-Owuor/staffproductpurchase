@@ -54,7 +54,7 @@ export async function POST(request) {
       `UPDATE purchasesinfo 
        SET reference_number = ? 
        WHERE increment_id = ?`,
-      [`PRQST-${insertedId}`, insertedId],
+      [`PRQ-${insertedId}`, insertedId],
     );
 
     //Get the purchase (id) from purchasesinfo table

@@ -27,8 +27,8 @@ export const formatCreditPeriod = (period) => {
 export const AuthPagesLogo = () => {
   return (
     <a href="/">
-      <div className="flex items-center space-x-2 text-3xl font-bold">
-        <ShoppingBag className="h-8 w-8 text-gray-950 dark:text-white" />
+      <div className="flex items-center gap-1 text-2xl font-bold">
+        <ShoppingBag className="h-6 w-6 text-gray-950 dark:text-white" />
         <span className="text-gray-900 dark:text-gray-100">
           Hot<span className="text-red-600 dark:text-red-500">p</span>oint
         </span>
