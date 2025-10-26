@@ -138,7 +138,7 @@ export default function ChangeEmail({ onClose }) {
       )}
       {loggingOut && <LoggingOutOverlay isLoggingOut={loggingOut} />}
       <div className="custom-blur fixed inset-0 z-50 flex items-center justify-center bg-white/50 p-4 dark:bg-gray-950/50">
-        <div className="mx-auto w-full max-w-md rounded-2xl border border-gray-200 bg-gray-50 p-6 shadow-2xl dark:border-gray-700 dark:bg-gray-950">
+        <div className="mx-auto w-90 rounded-2xl border border-gray-200 bg-gray-50 p-6 shadow-2xl md:w-full md:max-w-md dark:border-gray-700 dark:bg-gray-950">
           {step === "step1" && (
             <>
               <div className="flex items-start justify-between">

@@ -11,8 +11,8 @@ export default function HRApprovalSection({
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700">
       <div className="px-6 py-3">
-        <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-          HR/Payroll Approval
+        <h3 className="font-semi-bold text-lg text-gray-900 dark:text-white">
+          HR Approval
         </h3>
       </div>
 

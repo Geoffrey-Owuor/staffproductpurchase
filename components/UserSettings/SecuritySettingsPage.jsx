@@ -109,16 +109,16 @@ export default function SecuritySettingsPage() {
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             Email Address
           </label>
-          <div className="flex items-center gap-3">
-            <div className="flex-1 rounded-lg border border-gray-300 bg-gray-100 p-2 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200">
+          <div className="flex items-center gap-2">
+            <div className="flex-1 rounded-lg border border-gray-300 bg-gray-100 p-2 text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200">
               {email}
             </div>
             <button
               type="button"
               onClick={() => setShowChangeEmail(true)}
-              className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
+              className="rounded-lg border border-gray-300 bg-white p-2 text-sm text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
             >
-              Change Email
+              change email
             </button>
           </div>
         </div>

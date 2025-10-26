@@ -6,7 +6,7 @@ export default function PurchaseDetailSkeleton() {
       {/* Header Skeleton */}
       <div className="mb-6 flex items-center justify-between">
         <SkeletonBox className="h-6 w-40" />
-        <div className="flex items-center justify-end gap-4">
+        <div className="hidden items-center justify-end gap-4 md:flex">
           <SkeletonBox className="h-9 w-20" />
           <SkeletonBox className="h-7 w-7" />
           <SkeletonBox className="h-9 w-33" />

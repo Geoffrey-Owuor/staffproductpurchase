@@ -12,11 +12,12 @@ export function useSessionExpiry(expiresAt) {
 
     // Helper to handle expiry actions
     const handleExpiry = () => {
-      // Delete cookie immediately
+      // Delete cookie immediately - THIS DOES NOT NECESSARILY WORK SINCE WE CAN NOT DIRECTLY MODIFY AN HTTP ONLY COOKIE USING document.cookie();
       document.cookie = "session_token=; path=/; max-age=0";
       setExpired(true);
     };
 
+    //i
     if (msUntilExpiry <= 0) {
       handleExpiry();
       return;

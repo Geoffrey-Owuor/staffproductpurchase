@@ -40,7 +40,9 @@ export default function LoginPage() {
         const data = await response.json();
         // Determine dashboard path based on role
         let dashboardPath;
-        if (data.role === "hr") {
+        if (data.role === "payroll") {
+          dashboardPath = "/payrolldashboard";
+        } else if (data.role === "hr") {
           dashboardPath = "/hrdashboard";
         } else if (data.role === "cc") {
           dashboardPath = "/ccdashboard";

@@ -2,6 +2,9 @@ import pool from "@/lib/db";
 import { getCurrentUser } from "@/app/lib/auth";
 import { sendEmail } from "@/lib/emailSender";
 import { generatePurchasePDF } from "@/utils/returnPurchasePDF";
+import generatePayrollApprovalEmailHTML from "@/utils/EmailTemplates/PayrollEmails/PayrollApprovalEmail";
+import generatePayrollRejectionEmailHTML from "@/utils/EmailTemplates/PayrollEmails/PayrollRejectionEmail";
+import generateStaffPayrollApprovedEmailHTML from "@/utils/EmailTemplates/PayrollEmails/StaffPayrollApprovedEmail";
 import generateHrApprovalEmailHTML from "@/utils/EmailTemplates/HREmails/HrApprovalEmail";
 import generateHrRejectionEmailHTML from "@/utils/EmailTemplates/HREmails/HrRejectionEmail";
 import generateStaffHrApprovedEmailHTML from "@/utils/EmailTemplates/HREmails/StaffHrApprovedEmail";
@@ -47,10 +50,10 @@ export async function PUT(request, { params }) {
 
     //Allowed stores fields each role is allowed to update
     const allowedFields = {
+      payroll: ["one_third_rule", "Payroll_Approval"],
       hr: ["is_employed", "on_probation", "hr_comments", "HR_Approval"],
       cc: [
         "credit_period",
-        "one_third_rule",
         "purchase_history_comments",
         "pending_invoices",
         "CC_Approval",
@@ -104,6 +107,10 @@ export async function PUT(request, { params }) {
 
     //Refactored Logic to add Approver Details
     const approverConfig = {
+      payroll: {
+        approvalField: "Payroll_Approval",
+        prefix: "payroll",
+      },
       hr: {
         approvalField: "HR_Approval",
         prefix: "hr",
@@ -176,8 +183,51 @@ export async function PUT(request, { params }) {
 
     //HANDLING EMAIL NOTIFICATIONS AFTER A SUCCESSFULL COMMIT
 
+    const hrEmail = process.env.HR_APPROVER;
     const ccEmail = process.env.CC_APPROVER;
     const biEmail = process.env.BI_APPROVER;
+
+    //Payroll Approval and decline Emails
+    if (
+      user.role === "payroll" &&
+      newData.Payroll_Approval &&
+      newData.Payroll_Approval != oldData.Payroll_Approval
+    ) {
+      if (newData.Payroll_Approval === "approved") {
+        await sendEmail({
+          to: hrEmail,
+          subject: `Purchase Request Requires Approval - Staff Name: ${newData.staffName}`,
+          html: generatePayrollApprovalEmailHTML({
+            staffName: newData.staffName,
+            payrollNo: newData.payrollNo,
+            payroll_approver_name: newData.payroll_approver_name,
+            products: products,
+          }),
+        });
+        await sendEmail({
+          to: oldData.user_email,
+          subject: `Purchase Request Approved by Payroll - Staff Name: ${newData.staffName}`,
+          html: generateStaffPayrollApprovedEmailHTML({
+            staffName: newData.staffName,
+            payrollNo: newData.payrollNo,
+            payroll_approver_name: newData.payroll_approver_name,
+            products: products,
+          }),
+        });
+      } else if (newData.Payroll_Approval === "declined") {
+        await sendEmail({
+          to: oldData.user_email,
+          subject: `Purchase Request Declined by Payroll - Staff Name: ${newData.staffName}`,
+          html: generatePayrollRejectionEmailHTML({
+            staffName: newData.staffName,
+            payrollNo: newData.payrollNo,
+            payroll_approver_name: newData.payroll_approver_name,
+            one_third_rule: newData.one_third_rule,
+            products: products,
+          }),
+        });
+      }
+    }
 
     //Hr Approval And Decline Emails
     if (

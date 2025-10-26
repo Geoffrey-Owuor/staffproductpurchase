@@ -7,6 +7,7 @@ import {
   Wallet2,
   History,
   Menu,
+  ChevronsLeft,
   Link2,
 } from "lucide-react";
 
@@ -34,12 +35,14 @@ export default function ReusableSidebar({ isOpen, toggleSidebar }) {
 
   const homeRoutes = [
     "/staffdashboard",
+    "/payrolldashboard",
     "/hrdashboard",
     "/ccdashboard",
     "/bidashboard",
   ];
   const historyRoutes = [
     "/staffdashboard/purchase-history",
+    "/payrolldashboard/purchases-history",
     "/hrdashboard/requests-history",
     "/ccdashboard/purchases-history",
     "/bidashboard/purchases-history",
@@ -70,7 +73,7 @@ export default function ReusableSidebar({ isOpen, toggleSidebar }) {
   return (
     <>
       <div
-        className={`fixed top-0 bottom-0 left-0 z-50 flex flex-col border-r border-gray-200 bg-white transition-all duration-200 dark:border-gray-700 dark:bg-gray-950 ${
+        className={`fixed top-0 bottom-0 left-0 z-50 hidden flex-col border-r border-gray-200 bg-white transition-all duration-200 md:flex dark:border-gray-700 dark:bg-gray-950 ${
           isOpen ? "w-56" : "w-14"
         }`}
       >
@@ -91,15 +94,13 @@ export default function ReusableSidebar({ isOpen, toggleSidebar }) {
             {/* Hotpoint Logo */}
             <HotpointLogo isOpen={isOpen} />
 
-            <a
-              href="https://hotpoint.co.ke"
+            <button
+              onClick={() => router.back()}
               className={`absolute ${isOpen ? "top-1 left-45" : "top-11 left-[13px]"} rounded-full p-1.5 text-gray-600 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-500 dark:hover:bg-gray-800/50 dark:hover:text-white`}
-              title="Hotpoint Ecommerce Website"
-              target="_blank"
-              rel="noopener noreferrer"
+              title="Go back"
             >
-              <Link2 className="h-4.5 w-4.5" />
-            </a>
+              <ChevronsLeft className="h-4.5 w-4.5" />
+            </button>
           </div>
 
           {/* Navigation Buttons */}
@@ -195,8 +196,23 @@ export default function ReusableSidebar({ isOpen, toggleSidebar }) {
               )}
             </ul>
           </nav>
-          {/* Help & Support & User Menu */}
+          {/* Help & Support Hotpoint Website & User Menu */}
           <div className="space-y-4 px-2 py-3">
+            <a
+              href="https://hotpoint.co.ke"
+              className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Link2 className="h-4 w-4 flex-shrink-0" />
+              <span
+                className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
+                  isOpen ? "w-40" : "w-0"
+                }`}
+              >
+                Hotpoint Website
+              </span>
+            </a>
             <a
               href="mailto:helpdesk@hotpoint.co.ke"
               className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-blue-600 transition-colors hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-gray-800"

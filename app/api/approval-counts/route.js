@@ -4,16 +4,20 @@ import { getCurrentUser } from "@/app/lib/auth";
 
 const ROLE_QUERY_CONFIGS = {
   bi: {
-    approvalField: "BI_APPROVAL",
+    approvalField: "BI_Approval",
     approverIdField: "bi_approver_id",
   },
   cc: {
-    approvalField: "CC_APPROVAL",
+    approvalField: "CC_Approval",
     approverIdField: "cc_approver_id",
   },
   hr: {
-    approvalField: "HR_APPROVAL",
+    approvalField: "HR_Approval",
     approverIdField: "hr_approver_id",
+  },
+  payroll: {
+    approvalField: "Payroll_Approval",
+    approverIdField: "payroll_approver_id",
   },
 
   // Staff functions - they see the approval status of their submitted requests

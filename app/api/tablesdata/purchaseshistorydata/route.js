@@ -35,7 +35,7 @@ export async function GET(request) {
 
     connection = await pool.getConnection();
 
-    let query = `SELECT id, createdAt, reference_number, staffName, payrollNo, employee_payment_terms, user_credit_period, HR_Approval, CC_Approval, BI_Approval,
+    let query = `SELECT id, createdAt, reference_number, staffName, payrollNo, employee_payment_terms, user_credit_period, Payroll_Approval, HR_Approval, CC_Approval, BI_Approval,
          invoice_amount, amount, payment_balance, payment_completion
          FROM purchasesInfo`;
 

@@ -100,8 +100,8 @@ export default function StaffPurchaseHistory({ fetchAllData }) {
 
       {/* Search Bar */}
       {fetchAllData && (
-        <div className="mx-auto mb-4 max-w-md">
-          <div className="flex items-center justify-center space-x-4">
+        <div className="mx-auto mb-6 max-w-md">
+          <div className="mt-3 flex flex-col items-center justify-center space-y-4 md:flex-row md:space-y-0 md:space-x-4">
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
@@ -177,33 +177,58 @@ export default function StaffPurchaseHistory({ fetchAllData }) {
             <table className="mb-6 min-w-full">
               <thead className="bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-white">
                 <tr>
-                  <th className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold">
+                  <th
+                    className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                    title="Date Submitted"
+                  >
                     Date Submitted
                   </th>
-                  <th className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold">
+                  <th
+                    className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                    title="Reference Number"
+                  >
                     Reference Number
                   </th>
-                  <th className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold">
+                  <th
+                    className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                    title="Payment Terms"
+                  >
                     Payment Terms
                   </th>
                   <th className="px-6 py-3 text-left text-sm font-semibold">
                     PayrollNo
                   </th>
-                  <th className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold">
+                  <th
+                    className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                    title="Invoicing Location"
+                  >
                     Invoicing Location
                   </th>
-                  <th className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold">
+                  <th
+                    className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                    title="Payroll Approval"
+                  >
+                    Payroll Approval
+                  </th>
+                  <th
+                    className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                    title="HR Approval"
+                  >
                     HR Approval
                   </th>
-                  <th className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold">
+                  <th
+                    className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                    title="Credit Approval"
+                  >
                     Credit Approval
                   </th>
-                  <th className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold">
+                  <th
+                    className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                    title="Invoicing Approval"
+                  >
                     Invoicing Approval
                   </th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold">
-                    Actions
-                  </th>
+                  <th className="px-6 py-3 text-left text-sm font-semibold"></th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-950">
@@ -232,6 +257,11 @@ export default function StaffPurchaseHistory({ fetchAllData }) {
                         {purchase.invoicing_location}
                       </td>
                       <td className="px-6 py-4 text-sm">
+                        <TableApprovalStatus
+                          status={purchase.Payroll_Approval}
+                        />
+                      </td>
+                      <td className="px-6 py-4 text-sm">
                         <TableApprovalStatus status={purchase.HR_Approval} />
                       </td>
                       <td className="px-6 py-4 text-sm">
@@ -248,8 +278,8 @@ export default function StaffPurchaseHistory({ fetchAllData }) {
                             title="View"
                             disabled={navigatingTo === purchase.id}
                           >
-                            <MoreVertical className="h-4 w-4 group-hover:hidden" />
-                            <Eye className="hidden h-4 w-4 group-hover:block" />
+                            <MoreVertical className="hidden h-4 w-4 md:block md:group-hover:hidden" />
+                            <Eye className="h-4 w-4 md:hidden md:group-hover:block" />
                           </button>
                         </div>
                       </td>

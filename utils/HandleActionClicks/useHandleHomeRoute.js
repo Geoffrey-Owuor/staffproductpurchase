@@ -10,6 +10,9 @@ export function UseHandleHomeRoute() {
     let dashboardPath;
 
     switch (userRole) {
+      case "payroll":
+        dashboardPath = `/payrolldashboard`;
+        break;
       case "hr":
         dashboardPath = `/hrdashboard`;
         break;

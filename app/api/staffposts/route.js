@@ -1,7 +1,7 @@
 import pool from "@/lib/db";
 import { getCurrentUser } from "@/app/lib/auth";
 import { sendEmail } from "@/lib/emailSender";
-import generatePurchaseEmailHTML from "@/utils/EmailTemplates/StaffEmails/SendtoHrEmails";
+import generatePurchaseEmailHTML from "@/utils/EmailTemplates/StaffEmails/SendtoPayrollEmail";
 import generateUserPurchaseEmailHTML from "@/utils/EmailTemplates/StaffEmails/SendtoStaffEmail";
 
 const parseNumber = (value) => {
@@ -29,9 +29,9 @@ export async function POST(request) {
     // Destructure directly in the parameter list to avoid extra lines
     const [result] = await connection.execute(
       `INSERT INTO purchasesInfo 
-       (staffName, user_id, user_email, payrollNo, department, employee_payment_terms, user_credit_period, invoicing_location, delivery_details, signature, HR_Approval, 
-        CC_Approval, BI_Approval) 
-       VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', 'pending', 'pending')`,
+       (staffName, user_id, user_email, payrollNo, department, employee_payment_terms, user_credit_period, invoicing_location, delivery_details, signature, Payroll_Approval, HR_Approval, 
+        CC_Approval, BI_Approval, request_closure) 
+       VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', 'pending', 'pending', 'pending', 'open')`,
       [
         staffInfo.staffName,
         user.id,
@@ -103,10 +103,10 @@ export async function POST(request) {
     });
 
     //Send email to HR department
-    const hrEmail = process.env.HR_APPROVER;
+    const payrollEmail = process.env.PAYROLL_APPROVER;
 
     await sendEmail({
-      to: hrEmail,
+      to: payrollEmail,
       subject: `New Purchase Request from ${staffInfo.staffName} PayrollNo: (${staffInfo.payrollNo})`,
       html: emailHtml,
     });

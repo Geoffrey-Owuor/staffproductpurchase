@@ -12,7 +12,7 @@ export default function BIApprovalSection({
       {/* Invoicing Details Section */}
       <div className="border-b border-gray-200 dark:border-gray-700">
         <div className="px-6 py-3">
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
             Invoicing Details
           </h3>
         </div>
@@ -118,7 +118,7 @@ export default function BIApprovalSection({
       {/* Payment Received Section */}
       <div>
         <div className="px-6 py-3">
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
             Payment Received
           </h3>
         </div>
@@ -146,9 +146,9 @@ export default function BIApprovalSection({
               <option value="" disabled>
                 Select method
               </option>
-              <option value="cash">Cash</option>
-              <option value="mpesa">Mpesa</option>
-              <option value="credit">Credit</option>
+              <option value="CASH">Cash</option>
+              <option value="MPESA">Mpesa</option>
+              <option value="CREDIT">Credit</option>
             </select>
           </div>
 

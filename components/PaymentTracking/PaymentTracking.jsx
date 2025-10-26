@@ -164,7 +164,7 @@ export default function PaymentTracking({ fetchAllData, biApproval = true }) {
       )}
       <div className="m-2 rounded-xl border border-gray-200 px-2 pt-2 pb-4 dark:border-gray-700 dark:bg-gray-950">
         {/* Table Heading and column toggle*/}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col items-center space-y-6 md:flex-row md:justify-between md:space-y-0">
           <div className="mt-3 mb-2 px-1 pb-3">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
               Staff Payments Tracking
@@ -184,8 +184,8 @@ export default function PaymentTracking({ fetchAllData, biApproval = true }) {
         </div>
 
         {/* Search Bar */}
-        <div className="mx-auto mb-4 max-w-md">
-          <div className="flex items-center justify-center space-x-4">
+        <div className="mx-auto mb-6 max-w-md">
+          <div className="mt-3 flex flex-col items-center justify-center space-y-4 md:flex-row md:space-y-0 md:space-x-4">
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
@@ -440,6 +440,7 @@ export default function PaymentTracking({ fetchAllData, biApproval = true }) {
                             gotoPurchaseView={gotoPurchaseView}
                             ccApproval={purchase.CC_Approval}
                             hrApproval={purchase.HR_Approval}
+                            payrollApproval={purchase.Payroll_Approval}
                             biApproval={purchase.BI_Approval}
                             goingTo={goingTo}
                             disableDelete={true}

@@ -10,6 +10,9 @@ export function UseHandleHistoryRoute() {
     let dashboardPath;
 
     switch (userRole) {
+      case "payroll":
+        dashboardPath = `/payrolldashboard/purchases-history`;
+        break;
       case "hr":
         dashboardPath = `/hrdashboard/requests-history`;
         break;

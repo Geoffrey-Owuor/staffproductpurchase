@@ -18,6 +18,19 @@ export async function DELETE(_req, { params }) {
     //Begin the transaction
     await connection.beginTransaction();
 
+    //Check if biApproval is approved for the purchase about to be deleted
+    const [biApproval] = await connection.execute(
+      "SELECT BI_Approval from purchasesinfo WHERE id = ? AND BI_Approval = 'approved'",
+      [id],
+    );
+
+    if (biApproval.length > 0) {
+      return Response.json(
+        { message: "Can't delete, already approved by invoicing" },
+        { status: 400 },
+      );
+    }
+
     //Delete associated products from the purchase_products table (Deleted first to avoid foreign key error constraints)
     const [deletedProducts] = await connection.execute(
       "DELETE FROM purchase_products WHERE purchase_id = ?",

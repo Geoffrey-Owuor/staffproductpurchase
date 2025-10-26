@@ -8,7 +8,8 @@ const ProductPricing = ({
   setFormData,
   discountPolicies,
   userRole,
-  paymentTerms, //New payment terms prop
+  paymentTerms,
+  productNumber,
 }) => {
   const [fetchedDetails, setFetchedDetails] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -118,7 +119,7 @@ const ProductPricing = ({
         discountRate: 0,
       }));
     }
-  }, [formData.itemName, formData.itemStatus, paymentTerms]);
+  }, [formData.itemName, formData.itemStatus, paymentTerms, discountPolicies]);
 
   useEffect(() => {
     const tdPrice = parseFloat(formData.tdPrice) || 0;
@@ -139,13 +140,13 @@ const ProductPricing = ({
   return (
     <div className="relative mb-8 rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-950">
       <div className="rounded-t-xl px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white">
-        Product & Pricing Details
+        Product {productNumber}
       </div>
 
       {/* Checking the inputed product code from ORION api and returning product name and TD price */}
       {formData.productCode?.trim() !== "" && fetchedDetails?.itemName && (
         <div
-          className="absolute left-35 z-10 w-87 cursor-pointer rounded-lg border border-gray-300 bg-white p-2 shadow-lg dark:border-gray-700 dark:bg-gray-900"
+          className="absolute top-1.5 left-4 z-10 w-80 cursor-pointer rounded-lg border border-gray-300 bg-white p-2 shadow-lg md:left-43 dark:border-gray-700 dark:bg-gray-900"
           onClick={handleSelectFetched}
         >
           <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
@@ -160,25 +161,22 @@ const ProductPricing = ({
 
       {/* Returning a fallback message when product is not found */}
       {formData.productCode?.trim() !== "" && fetchedDetails?.message && (
-        <div className="absolute left-35 z-10 mt-1 w-80 cursor-pointer rounded-lg border border-gray-300 bg-white p-2 shadow-lg dark:border-gray-700 dark:bg-gray-900">
+        <div className="absolute top-2 left-4 z-10 w-80 cursor-pointer rounded-lg border border-gray-300 bg-white p-2 shadow-lg md:left-43 dark:border-gray-700 dark:bg-gray-900">
           <p className="text-sm text-gray-900 dark:text-white">
             {fetchedDetails.message}
           </p>
           {/* Close Icon */}
           <div
             className="absolute top-1.5 left-73 z-20 cursor-pointer p-1 text-gray-500 hover:text-gray-400"
-            onClick={(e) => {
-              e.stopPropagation(); // Prevent triggering parent onClick
-              setFetchedDetails(null);
-            }}
+            onClick={() => setFetchedDetails(null)}
           >
             <X className="h-4 w-4" />
           </div>
         </div>
       )}
-      <div className="mt-8 space-y-6 overflow-x-auto px-6 py-4">
+      <div className="space-y-6 overflow-x-auto px-6 py-4">
         {/* Grouped Inputs - 2 columns on md+ */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
           {/* Product Code */}
           <div>
             <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400">
@@ -223,6 +221,7 @@ const ProductPricing = ({
               className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
               required
               readOnly={isReadOnlyGeneral}
+              title={formData.itemName}
             />
           </div>
           {/* Item Status */}
@@ -257,6 +256,7 @@ const ProductPricing = ({
               onChange={handleChange}
               className="w-full rounded-xl border border-gray-200 bg-gray-100 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white"
               readOnly
+              title={formData.productPolicy}
             />
           </div>
 

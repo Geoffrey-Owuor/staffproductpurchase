@@ -43,7 +43,7 @@ const generatePurchaseEmailHTML = ({ staffInfo, products }) => {
                 <table width="100%" cellpadding="0" cellspacing="0" style="background: #fcfcfc; border-top: 5px solid #B71C1C; border-radius: 8px; max-width: 600px; margin: 0 auto;">
                   <tr>
                     <td style="padding: 25px;">
-                      <h1 style="color: #B71C1C; font-size: 24px; text-align: center; margin: 0 0 15px 0;">New Purchase Request</h1>
+                      <h1 style="color: #B71C1C; font-size: 24px; text-align: center; margin: 0 0 15px 0;">New Purchase Request (Payroll Approval)</h1>
                       <p style="color: #555555; font-size: 15px;">A new purchase request has been submitted and requires your approval.</p>
                        <h3 style="color: #333;">Staff Details</h3>
                          <p><strong>Name:</strong> ${staffInfo.staffName}</p>

@@ -51,7 +51,8 @@ export default function CompleteRegistrationComponent({ email }) {
       if (!response.ok) throw new Error(data.message || "Registration failed");
 
       let dashboardPath;
-      if (data.role === "hr") dashboardPath = "/hrdashboard";
+      if (data.role === "payroll") dashboardPath = "/payrolldashboard";
+      else if (data.role === "hr") dashboardPath = "/hrdashboard";
       else if (data.role === "cc") dashboardPath = "/ccdashboard";
       else if (data.role === "bi") dashboardPath = "/bidashboard";
       else if (data.role === "staff") dashboardPath = "/staffdashboard";

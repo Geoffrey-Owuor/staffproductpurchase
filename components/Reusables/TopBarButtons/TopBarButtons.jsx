@@ -29,7 +29,7 @@ export default function TopBarButtons() {
     <>
       <LoadingLine isLoading={isLoadingline} />
 
-      <div className="flex items-center justify-end gap-4">
+      <div className="hidden items-center justify-end gap-4 md:flex">
         <button
           onClick={() => router.back()}
           className="flex cursor-pointer items-center gap-2 rounded-xl border border-gray-300 bg-gray-100 px-4 py-2 text-sm text-gray-900 hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-900/50 dark:text-white dark:hover:bg-gray-800/50"

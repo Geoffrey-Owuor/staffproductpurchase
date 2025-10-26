@@ -1,12 +1,10 @@
 "use client";
 import { useState, useMemo, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import StaffInformation from "../StaffInformation";
 import ProductPricing from "../ProductPricing";
-import TermsConditions from "../TermsConditions";
 import Alert from "../Alert";
 import { LoadingBarWave } from "../Reusables/LoadingBar";
-import { ClipboardList, PlusCircle, Trash2 } from "lucide-react";
+import { ClipboardList, PackagePlus, PlusCircle, Trash2 } from "lucide-react";
 import ConfirmationDialog from "../Reusables/ConfirmationDialog";
 import PaymentDetails from "../PaymentDetails";
 import TopBarButtons from "../Reusables/TopBarButtons/TopBarButtons";
@@ -25,7 +23,6 @@ const initialProductState = {
 
 export default function NewPurchase() {
   const user = useUser();
-  const router = useRouter();
 
   const [discountPolicies, setDiscountPolicies] = useState([]);
   const [staffInfo, setStaffInfo] = useState({
@@ -218,6 +215,12 @@ export default function NewPurchase() {
             userRole={user.role}
           />
 
+          {/* Main Product Pricing title */}
+          <div className="mt-8 mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
+            <PackagePlus className="h-6 w-6" />
+            <span className="text-xl">Product & Pricing Details</span>
+          </div>
+
           {/* Map over the products array to render a component for each */}
           {products.map((product, index) => (
             <div key={index} className="relative">
@@ -226,8 +229,8 @@ export default function NewPurchase() {
                 handleChange={(e) => handleProductChange(index, e)}
                 setFormData={(data) => setProductData(index, data)}
                 discountPolicies={discountPolicies}
+                productNumber={index + 1}
                 userRole={user.role}
-                //Passing in payment terms
                 paymentTerms={paymentInfo.employee_payment_terms}
               />
               {products.length > 1 && (
@@ -243,7 +246,7 @@ export default function NewPurchase() {
             </div>
           ))}
 
-          <div className="my-4 flex items-center justify-between">
+          <div className="my-4 flex flex-col items-center space-y-3 md:flex-row md:justify-between md:space-y-0">
             {purchaseTotal > 0 && (
               <span className="text-lg">
                 Total Purchase Value:{" "}
@@ -263,7 +266,7 @@ export default function NewPurchase() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="mx-auto my-8 block rounded-xl bg-gray-900 px-6 py-2.5 text-sm text-white transition-colors hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
+            className="mx-auto mt-8 block rounded-xl bg-gray-900 px-6 py-2.5 text-sm text-white transition-colors hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
           >
             Submit Purchase
           </button>
@@ -289,7 +292,6 @@ export default function NewPurchase() {
           title="Submit Purchase"
         />
       )}
-      <TermsConditions />
     </>
   );
 }

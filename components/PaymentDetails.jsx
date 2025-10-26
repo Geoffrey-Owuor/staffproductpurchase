@@ -36,10 +36,16 @@ const PaymentDetails = ({ formData, handleChange, userRole }) => {
                 Select a location
               </option>
               <option value="SARIT">Sarit Showroom</option>
-              <option value="RHW1">Head Office (RHW1)</option>
+              <option value="RUIRU">Head Office (RUIRU)</option>
               <option value="GCS">Garden City Showroom</option>
               <option value="IMAARA">Imaara Showroom</option>
               <option value="KAREN">Karen Showroom</option>
+              <option value="RIARA">Riara Showroom</option>
+              <option value="KISUMU">Kisumu Showroom</option>
+              <option value="ELDORET">Eldoret Showroom</option>
+              <option value="NYALI">Nyali Showroom</option>
+              <option value="LIKONI">Likoni Showroom</option>
+              <option value="CBD">CBD Showroom</option>
               <option value="VILLAGE">Village Market Showroom</option>
             </select>
           </div>
@@ -50,7 +56,7 @@ const PaymentDetails = ({ formData, handleChange, userRole }) => {
               htmlFor="delivery_details"
               className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
             >
-              Delivery/Pickup Details <FormAsterisk />
+              Delivery/Pickup/Other Details <FormAsterisk />
             </label>
             <textarea
               id="delivery_details"
@@ -121,8 +127,6 @@ const PaymentDetails = ({ formData, handleChange, userRole }) => {
                 <option value="2">2 Months</option>
                 <option value="3">3 Months</option>
                 <option value="4">4 Months</option>
-                <option value="5">5 months</option>
-                <option value="6">6 months</option>
               </select>
             </div>
           )}

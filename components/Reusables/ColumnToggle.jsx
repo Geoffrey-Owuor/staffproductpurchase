@@ -9,6 +9,7 @@ const allPossibleColumns = [
   { key: "nameOfStaff", label: "Staff" },
   { key: "termsOfPayment", label: "Payment Terms" },
   { key: "creditPeriod", label: "Credit Period" },
+  { key: "payrollApproval", label: "Payroll Approval" },
   { key: "hrApproval", label: "HR Approval" },
   { key: "creditApproval", label: "Credit Approval" },
   { key: "invoicingApproval", label: "Invoicing Approval" },

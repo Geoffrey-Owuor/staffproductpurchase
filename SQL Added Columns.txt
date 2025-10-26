@@ -1,0 +1,37 @@
+ALTER TABLE purchasesinfo ADD COLUMN Payroll_Approval VARCHAR(20) NULL AFTER createdAt;
+
+ALTER TABLE purchasesinfo ADD COLUMN request_closure VARCHAR(20) NULL;
+
+
+ALTER TABLE purchasesinfo ADD COLUMN payroll_approver_id INT NULL AFTER BI_Approval;
+ALTER TABLE purchasesinfo ADD COLUMN payroll_approver_name VARCHAR(255) NULL AFTER payroll_approver_id;
+ALTER TABLE purchasesinfo ADD COLUMN payroll_approver_email VARCHAR(255) NULL AFTER payroll_approver_name;
+
+
+
+//New Columns Added
+ALTER TABLE purchasesinfo ADD COLUMN payroll_approval_date TIMESTAMP NULL AFTER payroll_approver_email;
+ALTER TABLE purchasesinfo ADD COLUMN payroll_signature VARCHAR(255) NULL AFTER payroll_approver_email;
+
+//TABLE AND INSERT STATEMENTS FOR TERMS & CONDITIONS (26/10/2025)
+
+CREATE TABLE terms_conditions (
+  condition_id INT PRIMARY KEY auto_increment,
+  condition_description VARCHAR(1000) NULL
+);
+
+//INSERT STATEMENT
+INSERT INTO terms_conditions (condition_description)
+VALUES
+('1/3 rule must be observed. This includes monthly average commissions for the sales staff.'),
+('Maximum repayment period is 4 months.'),
+('Item purchased on a staff discount benefit for the purpose of reselling is prohibited.'),
+('The company shall deduct any outstanding balances from the employee''s final dues in case of separation.'),
+('The employee should not be on probation.'),
+('Limited to only one item of similar category within a year for both new and RHD2.'),
+('The employee will not have an outstanding amount from a previous purchase.'),
+('For new products, normal warranty terms and conditions shall apply, while for RHD2 items, a 3-month warranty period will be applicable.'),
+('Items purchased on discount cannot be returned, exchanged, or refunded unless the item is faulty and covered under warranty.');
+
+
+Edit the PDF tomorrow - The one that is being downloaded as PDF

@@ -97,6 +97,8 @@ export default function GeneralViewPurchases({ id }) {
             {/* Middle Edit Button */}
             {((userRole === "bi" && purchase.BI_Approval !== "approved") ||
               (userRole === "cc" && purchase.CC_Approval !== "approved") ||
+              (userRole === "payroll" &&
+                purchase.Payroll_Approval !== "approved") ||
               (userRole === "hr" && purchase.HR_Approval !== "approved")) &&
               userRole !== "staff" && (
                 <button
@@ -151,6 +153,10 @@ export default function GeneralViewPurchases({ id }) {
               </h2>
               <div className="space-y-4">
                 <ApprovalStatus
+                  label="Payroll Approval"
+                  status={purchase.Payroll_Approval}
+                />
+                <ApprovalStatus
                   label="HR Approval"
                   status={purchase.HR_Approval}
                 />
@@ -166,7 +172,7 @@ export default function GeneralViewPurchases({ id }) {
             </div>
             <div>
               <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
-                Deliver & Invoicing Details
+                Delivery & Invoicing Details
               </h2>
               <div className="space-y-4">
                 <DetailField
@@ -206,10 +212,34 @@ export default function GeneralViewPurchases({ id }) {
             </div>
           </div>
 
-          {/* Payroll/HR Approval Section */}
+          {/* Payroll Approval Section - Just the same 1/3 rule in credit control */}
           <div className="border-t border-gray-200 p-6 dark:border-gray-700">
             <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
-              Payroll/HR Approval
+              Payroll Approval
+            </h2>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              <div className="md:col-span-2">
+                <DetailField
+                  label="1/3 Rule Assessment"
+                  value={purchase.one_third_rule || "n/a"}
+                />
+              </div>
+
+              <DetailField
+                label="Payroll Approval Date"
+                value={formatDateLong(purchase.payroll_approval_date)}
+              />
+              <ApprovalStatus
+                label="Payroll Approval Status"
+                status={purchase.Payroll_Approval || "n/a"}
+              />
+            </div>
+          </div>
+
+          {/* HR Approval Section */}
+          <div className="border-t border-gray-200 p-6 dark:border-gray-700">
+            <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+              HR Approval
             </h2>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
               <ApprovalStatus
@@ -221,7 +251,7 @@ export default function GeneralViewPurchases({ id }) {
                 status={purchase.on_probation || "n/a"}
               />
               <ApprovalStatus
-                label="Approval Status"
+                label="HR Approval Status"
                 status={purchase.HR_Approval || "n/a"}
               />
               <DetailField
@@ -258,13 +288,6 @@ export default function GeneralViewPurchases({ id }) {
 
               <div className="md:col-span-2">
                 <DetailField
-                  label="1/3 Rule Assessment"
-                  value={purchase.one_third_rule || "n/a"}
-                />
-              </div>
-
-              <div className="md:col-span-2">
-                <DetailField
                   label="Purchase History Comments"
                   value={purchase.purchase_history_comments || "n/a"}
                 />
@@ -280,7 +303,7 @@ export default function GeneralViewPurchases({ id }) {
 
               <div>
                 <ApprovalStatus
-                  label="Approval Status"
+                  label="Credit Approval Status"
                   status={purchase.CC_Approval || "n/a"}
                 />
               </div>
@@ -374,7 +397,7 @@ export default function GeneralViewPurchases({ id }) {
                 value={purchase.payment_completion || "n/a"}
               />
               <ApprovalStatus
-                label="Approval Status"
+                label="Invoicing Approval Status"
                 status={purchase.BI_Approval || "n/a"}
               />
               <DetailField
@@ -389,6 +412,8 @@ export default function GeneralViewPurchases({ id }) {
         <div className="mt-6 flex justify-center gap-4">
           {((userRole === "bi" && purchase.BI_Approval !== "approved") ||
             (userRole === "cc" && purchase.CC_Approval !== "approved") ||
+            (userRole === "payroll" &&
+              purchase.Payroll_Approval !== "approved") ||
             (userRole === "hr" && purchase.HR_Approval !== "approved")) &&
             userRole !== "staff" && (
               <button

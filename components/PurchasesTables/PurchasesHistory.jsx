@@ -44,6 +44,7 @@ export default function PurchasesHistory({ fetchAllData }) {
     submissionDate: true,
     termsOfPayment: true,
     creditPeriod: true,
+    payrollApproval: true,
     hrApproval: true,
     creditApproval: true,
     invoicingApproval: true,
@@ -181,7 +182,7 @@ export default function PurchasesHistory({ fetchAllData }) {
       )}
       <div className="m-2 rounded-xl border border-gray-200 px-2 pt-2 pb-4 dark:border-gray-700 dark:bg-gray-950">
         {/* Purchase History Heading or Recent Purchases Heading & toggling columns */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col items-center space-y-6 md:flex-row md:justify-between md:space-y-0">
           {fetchAllData ? (
             <PurchasesHistoryHeading />
           ) : (
@@ -201,8 +202,8 @@ export default function PurchasesHistory({ fetchAllData }) {
         </div>
 
         {/* Search Bar (Selecting filter types) */}
-        <div className="mx-auto mb-4 max-w-md">
-          <div className="flex items-center justify-center space-x-4">
+        <div className="mx-auto mb-6 max-w-md">
+          <div className="mt-3 flex flex-col items-center justify-center space-y-4 md:flex-row md:space-y-0 md:space-x-4">
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
@@ -222,7 +223,7 @@ export default function PurchasesHistory({ fetchAllData }) {
                 placeholder="Search staff..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="mt-2 rounded-md border border-gray-300 px-3 py-1 text-sm focus:border-gray-500 focus:outline-none sm:mt-0 dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+                className="rounded-md border border-gray-300 px-3 py-1 text-sm focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
               />
             )}
 
@@ -232,7 +233,7 @@ export default function PurchasesHistory({ fetchAllData }) {
                 placeholder="Enter reference number..."
                 value={referenceNumber}
                 onChange={(e) => setReferenceNumber(e.target.value)}
-                className="mt-2 rounded-md border border-gray-300 px-3 py-1 text-sm focus:border-gray-500 focus:outline-none sm:mt-0 dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+                className="rounded-md border border-gray-300 px-3 py-1 text-sm focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
               />
             )}
 
@@ -242,7 +243,7 @@ export default function PurchasesHistory({ fetchAllData }) {
                 placeholder="Enter payroll number..."
                 value={payrollNumber}
                 onChange={(e) => setPayrollNumber(e.target.value)}
-                className="mt-2 rounded-md border border-gray-300 px-3 py-1 text-sm focus:border-gray-500 focus:outline-none sm:mt-0 dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+                className="rounded-md border border-gray-300 px-3 py-1 text-sm focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
               />
             )}
 
@@ -295,7 +296,7 @@ export default function PurchasesHistory({ fetchAllData }) {
 
             <button
               onClick={applyFilters}
-              className="mt-2 rounded-md bg-gray-900 px-3 py-1 text-sm text-white hover:bg-gray-700 sm:mt-0 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
+              className="rounded-md bg-gray-900 px-3 py-1 text-sm text-white hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
             >
               Search
             </button>
@@ -343,6 +344,14 @@ export default function PurchasesHistory({ fetchAllData }) {
                         title="Credit Period"
                       >
                         Credit Period
+                      </th>
+                    )}
+                    {visibleColumns.payrollApproval && (
+                      <th
+                        className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                        title="Payroll Approval"
+                      >
+                        Payroll Approval
                       </th>
                     )}
                     {visibleColumns.hrApproval && (
@@ -409,6 +418,13 @@ export default function PurchasesHistory({ fetchAllData }) {
                             {purchase.user_credit_period || "N/A"}
                           </td>
                         )}
+                        {visibleColumns.payrollApproval && (
+                          <td className="px-6 py-4 text-sm">
+                            <TableApprovalStatus
+                              status={purchase.Payroll_Approval}
+                            />
+                          </td>
+                        )}
                         {visibleColumns.hrApproval && (
                           <td className="px-6 py-4 text-sm">
                             <TableApprovalStatus
@@ -436,6 +452,7 @@ export default function PurchasesHistory({ fetchAllData }) {
                             gotoPurchaseEdit={gotoPurchaseEdit}
                             gotoPurchaseView={gotoPurchaseView}
                             hrApproval={purchase.HR_Approval}
+                            payrollApproval={purchase.Payroll_Approval}
                             ccApproval={purchase.CC_Approval}
                             biApproval={purchase.BI_Approval}
                             goingTo={goingTo}

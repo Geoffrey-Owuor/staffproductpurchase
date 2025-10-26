@@ -23,7 +23,7 @@ export const createSession = async (
   payrollNo,
   department,
 ) => {
-  const expiresAt = Math.floor(Date.now() / 1000) + 2 * 60 * 60;
+  const expiresAt = Math.floor(Date.now() / 1000) + 12 * 60 * 60; //12hrs until expiration
   const token = await new SignJWT({
     userId,
     role,
@@ -43,7 +43,7 @@ export const createSession = async (
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
-    maxAge: 2 * 60 * 60, //2 hours
+    // maxAge: 2 * 60 * 60, //Used to set the max age of the cookie for persistence after browser is closed
   });
 };
 

@@ -325,6 +325,29 @@ const PurchasePDFDocument = ({
               Verification & Approval Details
             </Text>
 
+            {/* Payroll Approval (Outside the Grid) */}
+            <View style={styles.subSection}>
+              <Text style={styles.subSectionTitle}>Payroll</Text>
+              <View style={styles.infoRow}>
+                <Text style={styles.infoLabel}>1/3 Rule</Text>
+                <Text style={styles.infoValue}>
+                  {purchaseData.one_third_rule || "N/A"}
+                </Text>
+              </View>
+              <View style={styles.infoRow}>
+                <Text style={styles.infoLabel}>Approved by</Text>
+                <Text style={styles.infoValue}>
+                  {purchaseData.payroll_approver_name || "N/A"}
+                </Text>
+              </View>
+              <View style={styles.infoRow}>
+                <Text style={styles.infoLabel}>Date</Text>
+                <Text style={styles.infoValue}>
+                  {formatDate(purchaseData.payroll_approval_date)}
+                </Text>
+              </View>
+            </View>
+
             {/* Human Resources (Outside the Grid) */}
             <View style={styles.subSection}>
               <Text style={styles.subSectionTitle}>Human Resources</Text>
@@ -379,12 +402,7 @@ const PurchasePDFDocument = ({
                       {purchaseData.credit_period || "N/A"}
                     </Text>
                   </View>
-                  <View style={styles.infoRow}>
-                    <Text style={styles.infoLabel}>1/3 Rule Check</Text>
-                    <Text style={styles.infoValue}>
-                      {purchaseData.one_third_rule || "N/A"}
-                    </Text>
-                  </View>
+
                   <View style={styles.infoRow}>
                     <Text style={styles.infoLabel}>Pending Invoices</Text>
                     <Text style={styles.infoValue}>

@@ -13,7 +13,7 @@ import { useUser } from "@/context/UserContext";
 import ThemeToggle from "./ThemeProviders/ThemeToggle";
 import { LoggingOutOverlay } from "./LoadingBar";
 
-export default function UserMenu({ isSidebarOpen }) {
+export default function UserMenu({ isSidebarOpen, hideMobileMenu }) {
   const user = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const [showUserSettings, setShowUserSettings] = useState(false);
@@ -101,6 +101,7 @@ export default function UserMenu({ isSidebarOpen }) {
               </div>
               <button
                 onClick={() => {
+                  hideMobileMenu?.();
                   setShowUserSettings(true);
                   setIsOpen(false);
                 }}

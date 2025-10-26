@@ -95,7 +95,7 @@ export default function Footer() {
           </div>
 
           {/* ThemeToggle pinned right */}
-          <div className="absolute top-11.5 right-0 -translate-y-1/2">
+          <div className="absolute top-14.5 right-0 md:top-11.5 md:-translate-y-1/2">
             <ThemeToggle />
           </div>
         </div>

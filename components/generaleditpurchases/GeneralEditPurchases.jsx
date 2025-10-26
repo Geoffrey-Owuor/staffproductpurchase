@@ -1,11 +1,12 @@
 "use client";
 import { useState, useEffect, useMemo } from "react";
-import { PlusCircle, Trash2 } from "lucide-react";
+import { PackagePlus, PlusCircle, Trash2 } from "lucide-react";
 import Alert from "../Alert";
 import StaffInformation from "../StaffInformation";
 import ProductPricing from "../ProductPricing";
 import PaymentDetails from "../PaymentDetails";
 import EditFormSkeleton from "../skeletons/EditFormSkeleton";
+import PayrollApprovalSection from "../FormEditComponents/PayrollApprovalSection";
 import HRApprovalSection from "../FormEditComponents/HrApprovalSection";
 import CreditControlSection from "../FormEditComponents/CreditControlSection";
 import BIApprovalSection from "../FormEditComponents/BIApprovalSection";
@@ -30,6 +31,13 @@ const initialProductState = {
   discountedValue: "",
 };
 
+//Getting today's date in mm/dd/yy format (Server time zone)
+const today = new Date();
+const year = today.getFullYear();
+const month = (today.getMonth() + 1).toString().padStart(2, "0");
+const day = today.getDate().toString().padStart(2, "0");
+const localTodayString = `${year}-${month}-${day}`;
+
 export default function GeneralEditPurchases({ id }) {
   const { role: userRole } = useUser();
   const { purchase } = usePurchase();
@@ -53,6 +61,7 @@ export default function GeneralEditPurchases({ id }) {
   //Setting the products object into the array
   const [products, setProducts] = useState([{ ...initialProductState }]);
   const [showAlert, setShowAlert] = useState(false);
+  const [payrollApproval, setPayrollApproval] = useState(null);
   const [hrApproval, setHrApproval] = useState(null);
   const [ccApproval, setCCApproval] = useState(null);
   const [biApproval, setBiApproval] = useState(null);
@@ -81,7 +90,7 @@ export default function GeneralEditPurchases({ id }) {
 
   useEffect(() => {
     if (purchase) {
-      //initial products from the purchase data
+      //initial products from the purchase data and setting products
       const initialProducts =
         purchase.products && purchase.products.length > 0
           ? purchase.products
@@ -95,8 +104,15 @@ export default function GeneralEditPurchases({ id }) {
         },
         0,
       );
+      setProducts(initialProducts);
 
       setFormData({
+        //Payroll Data
+        one_third_rule: purchase.one_third_rule || "",
+        Payroll_Approval: purchase.Payroll_Approval || "",
+        payroll_approver_name: purchase.payroll_approver_name || "",
+        payroll_approval_date: purchase.payroll_approval_date || "",
+
         //HR Data
         is_employed: purchase.is_employed || "",
         on_probation: purchase.on_probation || "",
@@ -107,7 +123,6 @@ export default function GeneralEditPurchases({ id }) {
 
         //Credit Control Data
         credit_period: purchase.credit_period || "",
-        one_third_rule: purchase.one_third_rule || "",
         purchase_history_comments: purchase.purchase_history_comments || "",
         pending_invoices: purchase.pending_invoices || "",
         CC_Approval: purchase.CC_Approval || "",
@@ -117,13 +132,14 @@ export default function GeneralEditPurchases({ id }) {
         //Billing & Invoice Data
         invoice_date: purchase.invoice_date
           ? purchase.invoice_date.split("T")[0]
-          : "",
+          : localTodayString,
         invoice_number: purchase.invoice_number || "",
         invoice_amount: purchase.invoice_amount || calculatedPurchaseTotal,
         invoice_recorded_date: purchase.invoice_recorded_date
           ? purchase.invoice_recorded_date.split("T")[0]
-          : "",
-        payment_method: purchase.payment_method || "",
+          : localTodayString,
+        payment_method:
+          purchase.payment_method || purchase.employee_payment_terms,
         payment_reference: purchase.payment_reference || "",
         payment_date: purchase.payment_date
           ? purchase.payment_date.split("T")[0]
@@ -147,10 +163,10 @@ export default function GeneralEditPurchases({ id }) {
         user_credit_period: purchase.user_credit_period || "",
         createdAt: purchase.createdAt || "",
       });
-      setProducts(initialProducts);
 
       setBiApproval(purchase.BI_Approval);
       setHrApproval(purchase.HR_Approval);
+      setPayrollApproval(purchase.Payroll_Approval);
       setCCApproval(purchase.CC_Approval);
 
       setLoading(false);
@@ -296,6 +312,7 @@ export default function GeneralEditPurchases({ id }) {
   };
 
   if (
+    (userRole === "payroll" && payrollApproval === "approved") ||
     (userRole === "hr" && hrApproval === "approved") ||
     (userRole === "cc" && ccApproval === "approved") ||
     (userRole === "bi" && biApproval === "approved")
@@ -328,6 +345,12 @@ export default function GeneralEditPurchases({ id }) {
           userRole={userRole}
         />
 
+        {/* Main Product Pricing title */}
+        <div className="mt-8 mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
+          <PackagePlus className="h-6 w-6" />
+          <span className="text-xl">Product & Pricing Details</span>
+        </div>
+
         {/* Map over the products array to render a component for each */}
         {products.map((product, index) => (
           <div key={index} className="relative">
@@ -336,6 +359,7 @@ export default function GeneralEditPurchases({ id }) {
               handleChange={(e) => handleProductChange(index, e)}
               setFormData={(data) => setProductData(index, data)}
               discountPolicies={discountPolicies}
+              productNumber={index + 1}
               userRole={userRole}
               paymentTerms={paymentInfo.employee_payment_terms}
             />
@@ -373,11 +397,19 @@ export default function GeneralEditPurchases({ id }) {
           )}
         </div>
 
-        <HRApprovalSection
+        <PayrollApprovalSection
           formData={formData}
-          handleChange={handleChange}
           userRole={userRole}
+          handleChange={handleChange}
         />
+
+        {(userRole === "hr" || userRole === "cc" || userRole === "bi") && (
+          <HRApprovalSection
+            formData={formData}
+            handleChange={handleChange}
+            userRole={userRole}
+          />
+        )}
         {(userRole === "cc" || userRole === "bi") && (
           <CreditControlSection
             formData={formData}
@@ -393,7 +425,11 @@ export default function GeneralEditPurchases({ id }) {
           />
         )}
 
-        <SaveCloseComponent hrApproval={hrApproval} ccApproval={ccApproval} />
+        <SaveCloseComponent
+          payrollApproval={payrollApproval}
+          hrApproval={hrApproval}
+          ccApproval={ccApproval}
+        />
       </form>
 
       {/* Confirmation Dialogue */}

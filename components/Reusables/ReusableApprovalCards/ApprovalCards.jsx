@@ -38,7 +38,7 @@ export default function ApprovalCards() {
   }, []);
 
   return (
-    <div className="mx-2 mt-4 mb-8 rounded-xl border border-gray-200 px-2 pt-2 pb-6 dark:border-gray-700 dark:bg-gray-950">
+    <div className="mx-2 mt-4 mb-8 rounded-xl border border-gray-200 px-2 pt-2 pb-3 dark:border-gray-700 dark:bg-gray-950">
       {/* Render Heading Dynamically */}
       {userRole === "staff" ? (
         <div className="mt-3 mb-2 px-1 pb-3">
@@ -58,7 +58,7 @@ export default function ApprovalCards() {
       {loading ? (
         <ApprovalCardsSkeleton />
       ) : (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 p-2 md:grid-cols-3">
           {/* Pending Card */}
           <StatCard
             title="Pending"

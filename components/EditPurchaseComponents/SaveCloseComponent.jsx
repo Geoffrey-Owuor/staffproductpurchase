@@ -4,7 +4,11 @@ import { useUser } from "@/context/UserContext";
 import Alert from "../Alert";
 import { useState } from "react";
 
-export default function SaveCloseComponent({ hrApproval, ccApproval }) {
+export default function SaveCloseComponent({
+  payrollApproval,
+  hrApproval,
+  ccApproval,
+}) {
   const [showAlert, setShowAlert] = useState(false);
   const [alertType, setAlertType] = useState("error");
   const [alertMessage, setAlertMessage] = useState("");
@@ -13,8 +17,20 @@ export default function SaveCloseComponent({ hrApproval, ccApproval }) {
 
   //Handler to check conditions before allowing form submission
   const handleSaveAttempt = (event) => {
+    //Condition for 'hr' role
+    if (userRole === "hr" && payrollApproval !== "approved") {
+      event.preventDefault(); // Stop the form from submitting
+      setAlertMessage("Request is either not approved or declined by Payroll");
+      setAlertType("error");
+      setShowAlert(true);
+      return; // End the function
+    }
+
     // Condition for 'cc' role
-    if (userRole === "cc" && hrApproval !== "approved") {
+    if (
+      userRole === "cc" &&
+      (payrollApproval !== "approved" || hrApproval !== "approved")
+    ) {
       event.preventDefault(); // Stop the form from submitting
       setAlertMessage("Request is either not approved or declined by HR");
       setAlertType("error");
@@ -25,7 +41,9 @@ export default function SaveCloseComponent({ hrApproval, ccApproval }) {
     // Condition for 'bi' role
     if (
       userRole === "bi" &&
-      (hrApproval !== "approved" || ccApproval !== "approved")
+      (payrollApproval !== "approved" ||
+        hrApproval !== "approved" ||
+        ccApproval !== "approved")
     ) {
       event.preventDefault(); // Stop the form from submitting
       setAlertMessage(

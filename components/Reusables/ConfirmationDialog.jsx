@@ -5,7 +5,7 @@ import { X } from "lucide-react";
 const ConfirmationDialog = ({ message, onConfirm, onCancel, title }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/50 dark:bg-gray-950/50">
-      <div className="mx-auto max-w-md rounded-2xl border border-gray-200 bg-gray-50 p-4 shadow-2xl dark:border-gray-700 dark:bg-gray-950">
+      <div className="mx-auto max-w-90 rounded-2xl border border-gray-200 bg-gray-50 p-4 shadow-2xl md:max-w-md dark:border-gray-700 dark:bg-gray-950">
         <div className="flex items-start justify-between">
           <h3 className="mb-3 text-xl font-bold text-gray-900 dark:text-white">
             {title}

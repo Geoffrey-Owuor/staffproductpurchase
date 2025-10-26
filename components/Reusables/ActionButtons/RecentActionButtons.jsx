@@ -16,6 +16,7 @@ export const RecentActionButtons = ({
   gotoPurchaseView,
   biApproval,
   hrApproval,
+  payrollApproval,
   ccApproval,
   onDeleteSuccess,
   onDeleteError,
@@ -135,6 +136,7 @@ export const RecentActionButtons = ({
           onClick={() => handleActionClick(gotoPurchaseEdit)}
           disabled={
             goingTo === id ||
+            (userRole === "payroll" && payrollApproval === "approved") ||
             (userRole === "hr" && hrApproval === "approved") ||
             (userRole === "cc" && ccApproval === "approved") ||
             (userRole === "bi" && biApproval === "approved")

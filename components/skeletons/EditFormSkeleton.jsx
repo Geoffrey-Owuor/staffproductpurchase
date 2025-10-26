@@ -6,7 +6,7 @@ export default function EditFormSkeleton() {
       {/* Header Skeleton */}
       <div className="mb-6 flex items-center justify-between">
         <SkeletonBox className="h-6 w-48" />
-        <div className="flex items-center justify-end gap-4">
+        <div className="hidden items-center justify-end gap-4 md:flex">
           <SkeletonBox className="h-9 w-28" />
           <SkeletonBox className="h-9 w-28" />
           <SkeletonBox className="h-9 w-28" />

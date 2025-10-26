@@ -12,5 +12,5 @@ export async function POST() {
     maxAge: 0, // expires immediately
   });
 
-  return Response.json({ success: true, message: "Logged out successfully" });
+  return Response.json({ success: true }, { status: 200 });
 }
