@@ -6,10 +6,10 @@ import {
   HomeIcon,
   ShoppingBagIcon,
   MessageCircleQuestion,
-  Wallet2,
   History,
   Link2,
   ChevronsLeft,
+  BookOpenCheck,
 } from "lucide-react";
 import HotpointLogo from "../HotpointLogo";
 import { useState, useEffect } from "react";
@@ -171,7 +171,7 @@ export default function MobileHeader() {
                   }
                   className="flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
                 >
-                  <Wallet2 className="h-5 w-5 flex-shrink-0" />
+                  <BookOpenCheck className="h-5 w-5 flex-shrink-0" />
                   <span>Track Payments</span>
                 </div>
               </li>

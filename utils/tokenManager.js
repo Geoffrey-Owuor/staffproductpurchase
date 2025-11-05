@@ -1,3 +1,4 @@
+"use server";
 let cachedToken = null;
 let tokenExpiry = null;
 

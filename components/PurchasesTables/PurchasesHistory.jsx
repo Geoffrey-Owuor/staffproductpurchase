@@ -43,6 +43,7 @@ export default function PurchasesHistory({ fetchAllData }) {
   const [visibleColumns, setVisibleColumns] = useState({
     submissionDate: true,
     termsOfPayment: true,
+    mpesaCode: true,
     creditPeriod: true,
     payrollApproval: true,
     hrApproval: true,
@@ -291,6 +292,7 @@ export default function PurchasesHistory({ fetchAllData }) {
                 </option>
                 <option value="CASH">Cash</option>
                 <option value="CREDIT">Credit</option>
+                <option value="CASH AND CREDIT">Cash & Credit</option>
               </select>
             )}
 
@@ -336,6 +338,14 @@ export default function PurchasesHistory({ fetchAllData }) {
                         title="Payment Terms"
                       >
                         Payment Terms
+                      </th>
+                    )}
+                    {visibleColumns.mpesaCode && (
+                      <th
+                        className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                        title="Mpesa Code"
+                      >
+                        Mpesa Code
                       </th>
                     )}
                     {visibleColumns.creditPeriod && (
@@ -409,8 +419,19 @@ export default function PurchasesHistory({ fetchAllData }) {
                           {purchase.payrollNo}
                         </td>
                         {visibleColumns.termsOfPayment && (
-                          <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
+                          <td
+                            className="max-w-[150px] truncate px-6 py-4 text-sm text-gray-900 dark:text-white"
+                            title={purchase.employee_payment_terms}
+                          >
                             {purchase.employee_payment_terms}
+                          </td>
+                        )}
+                        {visibleColumns.mpesaCode && (
+                          <td
+                            className="px-6 py-4 text-sm text-gray-900 dark:text-white"
+                            title={purchase.mpesa_code}
+                          >
+                            {purchase.mpesa_code || "N/A"}
                           </td>
                         )}
                         {visibleColumns.creditPeriod && (

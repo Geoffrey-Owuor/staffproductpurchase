@@ -18,7 +18,7 @@ import EditPurchaseHeading from "../EditPurchaseComponents/EditPurchaseHeading";
 import SaveCloseComponent from "../EditPurchaseComponents/SaveCloseComponent";
 import { usePurchase } from "@/context/PurchaseDetailsContext";
 import { useUser } from "@/context/UserContext";
-import { usePaymentBalanceCalculator } from "@/app/hooks/usePaymentBalanceCalculator";
+import { FetchPeriodsPolicies } from "@/app/lib/FetchPeriodsPolicies";
 
 // The initial state for a single product
 const initialProductState = {
@@ -39,7 +39,7 @@ const day = today.getDate().toString().padStart(2, "0");
 const localTodayString = `${year}-${month}-${day}`;
 
 export default function GeneralEditPurchases({ id }) {
-  const { role: userRole } = useUser();
+  const { role: userRole, name } = useUser();
   const { purchase } = usePurchase();
 
   //Calling the hook at the top level, not outside of the component
@@ -69,23 +69,20 @@ export default function GeneralEditPurchases({ id }) {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [alertType, setAlertType] = useState("success");
 
-  //useEffect for fetching the discount policies
-  useEffect(() => {
-    const fetchPolicies = async () => {
-      try {
-        const response = await fetch("/api/getdiscountpolicies");
-        const json = await response.json();
-        if (response.ok) {
-          setDiscountPolicies(json.data);
-        } else {
-          console.error("Failed to fetch discount policies.");
-        }
-      } catch (error) {
-        console.error("Error fetching discount policies: ", error);
-      }
-    };
+  //Initially setting periods to an empty array
+  const [periods, setPeriods] = useState([]);
 
-    fetchPolicies();
+  //useEffect for fetching credit periods and discount policies
+  useEffect(() => {
+    const fetchData = async () => {
+      // Fetching credit periods and discount policies
+      const { periods, policies } = await FetchPeriodsPolicies();
+
+      //Setting the credit periods and discount policies
+      setPeriods(periods);
+      setDiscountPolicies(policies);
+    };
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -110,7 +107,7 @@ export default function GeneralEditPurchases({ id }) {
         //Payroll Data
         one_third_rule: purchase.one_third_rule || "",
         Payroll_Approval: purchase.Payroll_Approval || "",
-        payroll_approver_name: purchase.payroll_approver_name || "",
+        payroll_approver_name: purchase.payroll_approver_name || name,
         payroll_approval_date: purchase.payroll_approval_date || "",
 
         //HR Data
@@ -118,7 +115,7 @@ export default function GeneralEditPurchases({ id }) {
         on_probation: purchase.on_probation || "",
         hr_comments: purchase.hr_comments || "",
         HR_Approval: purchase.HR_Approval || "",
-        hr_approver_name: purchase.hr_approver_name || "",
+        hr_approver_name: purchase.hr_approver_name || name,
         hr_approval_date: purchase.hr_approval_date || "",
 
         //Credit Control Data
@@ -126,7 +123,7 @@ export default function GeneralEditPurchases({ id }) {
         purchase_history_comments: purchase.purchase_history_comments || "",
         pending_invoices: purchase.pending_invoices || "",
         CC_Approval: purchase.CC_Approval || "",
-        cc_approver_name: purchase.cc_approver_name || "",
+        cc_approver_name: purchase.cc_approver_name || name,
         cc_approval_date: purchase.cc_approval_date || "",
 
         //Billing & Invoice Data
@@ -134,20 +131,11 @@ export default function GeneralEditPurchases({ id }) {
           ? purchase.invoice_date.split("T")[0]
           : localTodayString,
         invoice_number: purchase.invoice_number || "",
-        invoice_amount: purchase.invoice_amount || calculatedPurchaseTotal,
-        invoice_recorded_date: purchase.invoice_recorded_date
-          ? purchase.invoice_recorded_date.split("T")[0]
-          : localTodayString,
-        payment_method:
-          purchase.payment_method || purchase.employee_payment_terms,
+        invoice_amount:
+          purchase.invoice_amount || calculatedPurchaseTotal.toFixed(2),
+
         payment_reference: purchase.payment_reference || "",
-        payment_date: purchase.payment_date
-          ? purchase.payment_date.split("T")[0]
-          : "",
-        amount: purchase.amount || "",
-        payment_balance: purchase.payment_balance || "",
-        payment_completion: purchase.payment_completion || "",
-        bi_approver_name: purchase.bi_approver_name || "",
+        bi_approver_name: purchase.bi_approver_name || name,
         bi_approval_date: purchase.bi_approval_date || "",
         BI_Approval: purchase.BI_Approval || "",
       });
@@ -161,9 +149,11 @@ export default function GeneralEditPurchases({ id }) {
         invoicing_location: purchase.invoicing_location || "",
         delivery_details: purchase.delivery_details || "",
         user_credit_period: purchase.user_credit_period || "",
+        mpesa_code: purchase.mpesa_code || "",
         createdAt: purchase.createdAt || "",
       });
 
+      //Approval statuses for security checks
       setBiApproval(purchase.BI_Approval);
       setHrApproval(purchase.HR_Approval);
       setPayrollApproval(purchase.Payroll_Approval);
@@ -172,9 +162,6 @@ export default function GeneralEditPurchases({ id }) {
       setLoading(false);
     }
   }, [purchase]);
-
-  //Payment Balance Calculation
-  usePaymentBalanceCalculator(formData, setFormData);
 
   //Handler for other formdata change
   const handleChange = (e) => {
@@ -297,10 +284,10 @@ export default function GeneralEditPurchases({ id }) {
 
       setIsSubmitting(false);
 
-      // Redirect back after 1.5 seconds
+      // Redirect back after 1 second
       setTimeout(() => {
         handleHrefLink(id);
-      }, 1500);
+      }, 1000);
     } catch (err) {
       console.error("Error updating purchase:", err);
       setAlertMessage(err.message || "Failed to update purchase");
@@ -343,6 +330,7 @@ export default function GeneralEditPurchases({ id }) {
           formData={paymentInfo}
           handleChange={handlePaymentChange}
           userRole={userRole}
+          periods={periods}
         />
 
         {/* Main Product Pricing title */}

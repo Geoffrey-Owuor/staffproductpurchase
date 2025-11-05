@@ -11,7 +11,7 @@ export default function HRApprovalSection({
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700">
       <div className="px-6 py-3">
-        <h3 className="font-semi-bold text-lg text-gray-900 dark:text-white">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
           HR Approval
         </h3>
       </div>
@@ -43,6 +43,9 @@ export default function HRApprovalSection({
             </option>
             <option value="contract">Contract</option>
             <option value="permanent">Permanent</option>
+            <option value="cash approval" disabled>
+              Cash Approval
+            </option>
           </select>
         </div>
 
@@ -72,6 +75,9 @@ export default function HRApprovalSection({
             </option>
             <option value="yes">Yes</option>
             <option value="no">No</option>
+            <option value="cash approval" disabled>
+              Cash Approval
+            </option>
           </select>
         </div>
 
@@ -154,7 +160,7 @@ export default function HRApprovalSection({
             htmlFor="hr_comments"
             className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
           >
-            HR Comments
+            HR Comments <FormAsterisk />
           </label>
           <textarea
             id="hr_comments"
@@ -163,6 +169,7 @@ export default function HRApprovalSection({
             value={formData.hr_comments}
             onChange={handleChange}
             readOnly={isReadOnly}
+            required
             className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${
               isReadOnly
                 ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800"

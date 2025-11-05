@@ -12,10 +12,10 @@ export const FirstLoader = () => {
       setLogoVisible(true);
     }, 100);
 
-    // Hide entire loader after 2 seconds
+    // Hide entire loader after 1 second
     const hideTimer = setTimeout(() => {
       setVisible(false);
-    }, 2000);
+    }, 1000);
 
     return () => {
       clearTimeout(fadeTimer);
@@ -23,7 +23,7 @@ export const FirstLoader = () => {
     };
   }, []);
 
-  // Don't render anything after 2 seconds
+  // Don't render anything after 1 second (If not visible do not return anything)
   if (!visible) return null;
 
   return (

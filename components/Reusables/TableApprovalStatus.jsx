@@ -42,14 +42,14 @@ export const PaymentStatus = ({ status }) => {
 
   // Use a switch statement to handle different UI for each status
   switch (status) {
-    case "complete":
+    case "closed":
       return (
         <div className="inline-flex items-center gap-x-1 rounded-[9px] bg-green-100 px-2 py-1 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-200">
           <CircleCheck className="h-3 w-3" />
           {formattedStatus}
         </div>
       );
-    case "incomplete":
+    case "open":
       return (
         <div className="inline-flex items-center gap-x-1 rounded-[9px] bg-yellow-100 px-2 py-1 text-xs font-medium text-yellow-700 dark:bg-yellow-900 dark:text-yellow-200">
           <Loader className="h-3 w-3" />

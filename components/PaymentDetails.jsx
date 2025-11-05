@@ -1,8 +1,10 @@
+"use client";
 import FormAsterisk from "./Reusables/FormAsterisk/FormAsterisk";
 import { formatDateLong } from "@/public/assets";
 
-const PaymentDetails = ({ formData, handleChange, userRole }) => {
+const PaymentDetails = ({ formData, handleChange, userRole, periods }) => {
   const editableRoles = ["bi", "staff"];
+  const staffReadonly = userRole !== "staff";
   const isReadOnly = !editableRoles.includes(userRole);
   return (
     <div className="relative mb-8 rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-950">
@@ -50,31 +52,6 @@ const PaymentDetails = ({ formData, handleChange, userRole }) => {
             </select>
           </div>
 
-          {/* Delivery Details */}
-          <div>
-            <label
-              htmlFor="delivery_details"
-              className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
-            >
-              Delivery/Pickup/Other Details <FormAsterisk />
-            </label>
-            <textarea
-              id="delivery_details"
-              name="delivery_details"
-              value={formData.delivery_details || ""}
-              onChange={handleChange}
-              rows="3" //Text Area Height
-              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${
-                isReadOnly
-                  ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800"
-                  : "bg-white dark:bg-gray-950"
-              }`}
-              required
-              disabled={isReadOnly}
-              placeholder="Enter delivery address and contact person details if applicable..."
-            />
-          </div>
-
           {/* Payment Terms & Options */}
           <div>
             <label
@@ -88,9 +65,9 @@ const PaymentDetails = ({ formData, handleChange, userRole }) => {
               name="employee_payment_terms"
               value={formData.employee_payment_terms}
               onChange={handleChange}
-              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${isReadOnly ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
+              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${staffReadonly ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
               required
-              disabled={isReadOnly}
+              disabled={staffReadonly}
             >
               <option value="" disabled>
                 Select a payment option
@@ -100,6 +77,30 @@ const PaymentDetails = ({ formData, handleChange, userRole }) => {
               <option value="CASH AND CREDIT">Cash & Credit</option>
             </select>
           </div>
+
+          {/* Conditional mpesa-reference code */}
+          {(formData.employee_payment_terms === "CASH" ||
+            formData.employee_payment_terms === "CASH AND CREDIT") && (
+            <div>
+              <label
+                htmlFor="mpesa_code"
+                className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
+              >
+                Mpesa code <FormAsterisk />
+              </label>
+              <input
+                type="text"
+                id="mpesa_code"
+                name="mpesa_code"
+                value={formData.mpesa_code}
+                onChange={handleChange}
+                readOnly={isReadOnly}
+                placeholder="Enter Mpesa reference code"
+                required
+                className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${isReadOnly ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
+              />
+            </div>
+          )}
 
           {/* Conditional Credit Period */}
           {(formData.employee_payment_terms === "CREDIT" ||
@@ -116,17 +117,18 @@ const PaymentDetails = ({ formData, handleChange, userRole }) => {
                 name="user_credit_period"
                 value={formData.user_credit_period || ""}
                 onChange={handleChange}
-                className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${isReadOnly ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
+                className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${staffReadonly ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
                 required
-                disabled={isReadOnly}
+                disabled={staffReadonly}
               >
                 <option value="" disabled>
                   Select period
                 </option>
-                <option value="1">1 Month</option>
-                <option value="2">2 Months</option>
-                <option value="3">3 Months</option>
-                <option value="4">4 Months</option>
+                {periods.map((period) => (
+                  <option key={period.period_value} value={period.period_value}>
+                    {period.period_description}
+                  </option>
+                ))}
               </select>
             </div>
           )}
@@ -147,6 +149,32 @@ const PaymentDetails = ({ formData, handleChange, userRole }) => {
               onChange={handleChange}
               readOnly
               className="w-full cursor-not-allowed rounded-xl border border-gray-300 bg-gray-100 px-3 py-2 text-gray-500 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+            />
+          </div>
+        </div>
+        <div className="grid grid-cols-1">
+          {/* Delivery Details */}
+          <div>
+            <label
+              htmlFor="delivery_details"
+              className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            >
+              Other Details <FormAsterisk />
+            </label>
+            <textarea
+              id="delivery_details"
+              name="delivery_details"
+              value={formData.delivery_details || ""}
+              onChange={handleChange}
+              rows="3" //Text Area Height
+              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${
+                isReadOnly
+                  ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800"
+                  : "bg-white dark:bg-gray-950"
+              }`}
+              required
+              disabled={isReadOnly}
+              placeholder="Enter other details applicable to this purchase request e.g., delivery/pickup details..."
             />
           </div>
         </div>

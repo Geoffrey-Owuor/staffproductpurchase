@@ -8,6 +8,7 @@ import { ClipboardList, PackagePlus, PlusCircle, Trash2 } from "lucide-react";
 import ConfirmationDialog from "../Reusables/ConfirmationDialog";
 import PaymentDetails from "../PaymentDetails";
 import TopBarButtons from "../Reusables/TopBarButtons/TopBarButtons";
+import { FetchPeriodsPolicies } from "@/app/lib/FetchPeriodsPolicies";
 import { useUser } from "@/context/UserContext";
 
 // The initial state for a single product
@@ -32,6 +33,9 @@ export default function NewPurchase() {
     department: user.department,
   });
 
+  //Initially setting periods to an empty array
+  const [periods, setPeriods] = useState([]);
+
   const [products, setProducts] = useState([{ ...initialProductState }]);
 
   //Calculating the total discountedValue from the products
@@ -47,6 +51,7 @@ export default function NewPurchase() {
     employee_payment_terms: "",
     invoicing_location: "",
     delivery_details: "",
+    mpesa_code: "",
     user_credit_period: "",
     createdAt: "",
   });
@@ -57,23 +62,17 @@ export default function NewPurchase() {
   const [alertType, setAlertType] = useState("success");
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
-  //useEffect for fetching the discount policies
+  //useEffect for fetching credit periods and discount policies
   useEffect(() => {
-    const fetchPolicies = async () => {
-      try {
-        const response = await fetch("/api/getdiscountpolicies");
-        const json = await response.json();
-        if (response.ok) {
-          setDiscountPolicies(json.data);
-        } else {
-          console.error("Failed to fetch discount policies.");
-        }
-      } catch (error) {
-        console.error("Error fetching discount policies: ", error);
-      }
-    };
+    const fetchData = async () => {
+      // Fetching credit periods and discount policies
+      const { periods, policies } = await FetchPeriodsPolicies();
 
-    fetchPolicies();
+      //Setting the credit periods and discount policies
+      setPeriods(periods);
+      setDiscountPolicies(policies);
+    };
+    fetchData();
   }, []);
 
   //Handler for staff change
@@ -166,6 +165,7 @@ export default function NewPurchase() {
         invoicing_location: "",
         delivery_details: "",
         user_credit_period: "",
+        mpesa_code: "",
         createdAt: "",
       });
       setStaffInfo({ staffName: "", payrollNo: "", department: "" });
@@ -213,6 +213,7 @@ export default function NewPurchase() {
             formData={paymentInfo}
             handleChange={handlePaymentChange}
             userRole={user.role}
+            periods={periods}
           />
 
           {/* Main Product Pricing title */}

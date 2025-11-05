@@ -1,6 +1,7 @@
 import pool from "@/lib/db";
 import { getCurrentUser } from "@/app/lib/auth";
 import { sendEmail } from "@/lib/emailSender";
+import { CachedEmails } from "@/utils/Cache/CachedConditions";
 import { generatePurchasePDF } from "@/utils/returnPurchasePDF";
 import generatePayrollApprovalEmailHTML from "@/utils/EmailTemplates/PayrollEmails/PayrollApprovalEmail";
 import generatePayrollRejectionEmailHTML from "@/utils/EmailTemplates/PayrollEmails/PayrollRejectionEmail";
@@ -13,6 +14,7 @@ import generateCCRejectionEmailHTML from "@/utils/EmailTemplates/CCEmails/CCReje
 import generateStaffCCApprovedEmailHTML from "@/utils/EmailTemplates/CCEmails/StaffCCApprovedEmail";
 import generateStaffBIApprovedEmailHTML from "@/utils/EmailTemplates/BIEmails/BIApprovalEmail";
 import generateBIRejectionEmailHTML from "@/utils/EmailTemplates/BIEmails/BIRejectionEmail";
+import generateBICCApprovedEmailHTML from "@/utils/EmailTemplates/BIEmails/BICCEmail";
 
 const parseNumber = (value) => {
   return value === "" || value == null ? null : parseFloat(value);
@@ -38,9 +40,33 @@ export async function PUT(request, { params }) {
       [id],
     );
     if (currentPurchaseRows.length === 0) {
+      await connection.rollback();
       return Response.json({ message: "Purchase not found" }, { status: 404 });
     }
     const oldData = currentPurchaseRows[0];
+
+    //Approval Check to make sure there is no further update after approval by various roles/approvers
+
+    const approvalFieldForRole = {
+      payroll: "Payroll_Approval",
+      hr: "HR_Approval",
+      cc: "CC_Approval",
+      bi: "BI_Approval",
+    };
+
+    const roleField = approvalFieldForRole[user.role];
+
+    //Check if current role has an approval field and if the value in the database is already approved
+    if (roleField && oldData[roleField] === "approved") {
+      //role has already approved, stop any further updates
+      //Explicitly roll back the transaction to release the row lock
+      await connection.rollback();
+
+      return Response.json(
+        { message: "Purchase request already approved by your department" },
+        { status: 403 },
+      );
+    }
 
     //Get the full json payload from the frontend
     const newData = await request.json();
@@ -62,15 +88,10 @@ export async function PUT(request, { params }) {
         "invoice_date",
         "invoice_number",
         "invoice_amount",
-        "invoice_recorded_date",
-        "payment_method",
         "payment_reference",
-        "employee_payment_terms",
-        "user_credit_period",
-        "payment_date",
-        "amount",
-        "payment_balance",
-        "payment_completion",
+        "invoicing_location",
+        "mpesa_code",
+        "delivery_details",
         "BI_Approval",
       ],
     };
@@ -82,6 +103,7 @@ export async function PUT(request, { params }) {
     const fieldsForUpdate = allowedFields[user.role];
 
     if (!fieldsForUpdate) {
+      await connection.rollback();
       return Response.json(
         { message: "Invalid user role for this action" },
         { status: 403 },
@@ -183,9 +205,11 @@ export async function PUT(request, { params }) {
 
     //HANDLING EMAIL NOTIFICATIONS AFTER A SUCCESSFULL COMMIT
 
-    const hrEmail = process.env.HR_APPROVER;
-    const ccEmail = process.env.CC_APPROVER;
-    const biEmail = process.env.BI_APPROVER;
+    //Getting required approver emails
+    const emails = await CachedEmails();
+    const hrEmail = emails[1].approver_email;
+    const ccEmail = emails[2].approver_email;
+    const biEmail = emails[3].approver_email;
 
     //Payroll Approval and decline Emails
     if (
@@ -338,6 +362,18 @@ export async function PUT(request, { params }) {
             products: products,
           }),
           attachments: [pdfAttachment], //Attaching the generated PDF
+        });
+
+        await sendEmail({
+          to: ccEmail,
+          subject: `Close Purchase Request for Staff: ${newData.staffName} , Payroll: ${newData.payrollNo}`,
+          html: generateBICCApprovedEmailHTML({
+            staffName: newData.staffName,
+            payrollNo: newData.payrollNo,
+            createdAt: oldData.createdAt,
+            bi_approver_name: newData.bi_approver_name,
+            products: products,
+          }),
         });
       } else if (newData.BI_Approval === "declined") {
         await sendEmail({

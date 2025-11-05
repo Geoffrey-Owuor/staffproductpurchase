@@ -132,8 +132,7 @@ const ProductPricing = ({
     }));
   }, [formData.tdPrice, formData.discountRate]);
 
-  const biReadOnly = userRole != "bi";
-  const isRequired = userRole === "bi";
+  const staffReadOnly = userRole != "staff";
   const editableRoles = ["bi", "staff"];
   const isReadOnlyGeneral = !editableRoles.includes(userRole);
 
@@ -192,11 +191,11 @@ const ProductPricing = ({
                 name="productCode"
                 value={formData.productCode}
                 onChange={handleChange}
-                className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
+                className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${staffReadOnly ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
                 required
-                readOnly={isReadOnlyGeneral}
+                readOnly={staffReadOnly}
               />
-              {(userRole === "bi" || userRole === "staff") && (
+              {userRole === "staff" && (
                 <button
                   type="button"
                   onClick={fetchDetails}
@@ -218,9 +217,9 @@ const ProductPricing = ({
               name="itemName"
               value={formData.itemName}
               onChange={handleChange}
-              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
+              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${staffReadOnly ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
               required
-              readOnly={isReadOnlyGeneral}
+              readOnly={staffReadOnly}
               title={formData.itemName}
             />
           </div>
@@ -233,9 +232,9 @@ const ProductPricing = ({
               name="itemStatus"
               value={formData.itemStatus}
               onChange={handleChange}
-              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
+              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${staffReadOnly ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
               required
-              disabled={isReadOnlyGeneral}
+              disabled={staffReadOnly}
             >
               <option value="" disabled>
                 Select
@@ -263,7 +262,7 @@ const ProductPricing = ({
           {/* TD Price */}
           <div>
             <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400">
-              TD Price {isRequired ? <FormAsterisk /> : ""}
+              TD Price <FormAsterisk />
             </label>
             <input
               type="number"
@@ -271,16 +270,16 @@ const ProductPricing = ({
               name="tdPrice"
               value={formData.tdPrice}
               onChange={handleChange}
-              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${biReadOnly ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
-              readOnly={biReadOnly}
-              required={isRequired}
+              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
+              readOnly={isReadOnlyGeneral}
+              required
             />
           </div>
 
           {/* Discount Rate */}
           <div>
             <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400">
-              Discount Rate {isRequired ? <FormAsterisk /> : ""}
+              Discount Rate <FormAsterisk />
             </label>
             <input
               type="number"
@@ -288,9 +287,9 @@ const ProductPricing = ({
               name="discountRate"
               value={formData.discountRate}
               onChange={handleChange}
-              readOnly={biReadOnly}
-              required={isRequired}
-              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${biReadOnly ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
+              readOnly={isReadOnlyGeneral}
+              required
+              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
             />
           </div>
 

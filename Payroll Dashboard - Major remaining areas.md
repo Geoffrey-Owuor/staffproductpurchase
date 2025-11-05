@@ -1,13 +1,5 @@
 Major remaining areas
 
-Product Manager special pricing approval - Is it necessary (Some discussion around it).
-
-Payroll Approval just before HR - Could be added - Seems Necessary
-
-Payment Tracking - Updating payment per request - To be done
-
-Restricting per category - Requires api to return product category
-
 Changing Payroll/HR Approval to HR Approval - In view purchases and edit purchases - **DONE**
 
 GeneralEditPurchases - New component for editing the one-third rule in general edit purchases - **DONE**
@@ -37,19 +29,31 @@ The email sending templates - New folder for payroll - **DONE FOR NOW, TESTING R
 Editing the return purchase pdf format to include payroll approval - **DONE**
 Editing the delete api to fetch the data first and check if biApproval is approved - **DONE**
 
-Fetch Terms & Conditions from the database - a server component
-create table and add condition_descriptions - file already included
+Fetch Terms & Conditions from the database - a server component - **DONE**
+create table and add condition_descriptions - file already included - **DONE**
 
 KEY AREA TO ALSO CHECK - ASK IN THE DEMONSTRATION MEETING
 
-PAYMENT RECEIVED SECTION IS FILLED BY CREDIT CONTROL - LATER AFTER PAYROLL APPROVAL WORKS
+Special pricing by Product Managers - **DONE** **The workaround is already implemented**
 
-Controlling column is request_closure which will now control the RecentActionButtons and Payment Received Section
+If Cash Payment, which approval levels should be skipped - **DONE**
 
-Special pricing by Product Managers
+Tommorrow - TASK AT HAND
 
-If Cash Payment, which approval levels should be skipped
+Add mpesa_code to all tables (Insert dummy data into the database) - **DONE**
 
-Add a new column called - Close Request - Request Closure.
+Extract all emails directly from the database - (APPROVER EMAILS table) - **DONE**
 
-An additional email alerting credit control to finish by entering the payment received area - Consider doing this later
+---Restricting per category - Requires api to return product category - **PENDING**
+
+Check on Payments Tracking - Fully Approved Requests (START HERE) - **FORMATTING DONE FOR NOW**
+Remove the payment received section, and all its columns from the database (And all its related logic) - **DONE**
+
+Default for all approver names in General Edit Purchases - **DONE**
+Reduce the first loader time - Reduced to 1 second **DONE**
+Add an email that sends back to credit control notifying them of Billing Invoice Approval finishing - **DONE**
+
+(WILL BE USED BY CREDIT CONTROL - For closing requests after invoicing approval) **PENDING** **MAJOR & MEANINGFUL**
+Add two approval cards for how many requests are open and how many are closed - **DONE**
+--RETURN request_closure (open & closed) - **DONE**
+--Add Mark as closed (In RecentActionButtons with a boolean check)

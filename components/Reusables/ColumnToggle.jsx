@@ -8,6 +8,7 @@ const allPossibleColumns = [
   { key: "submissionDate", label: "Date Submitted" },
   { key: "nameOfStaff", label: "Staff" },
   { key: "termsOfPayment", label: "Payment Terms" },
+  { key: "mpesaCode", label: "Mpesa Code" },
   { key: "creditPeriod", label: "Credit Period" },
   { key: "payrollApproval", label: "Payroll Approval" },
   { key: "hrApproval", label: "HR Approval" },

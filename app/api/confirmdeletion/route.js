@@ -9,7 +9,7 @@ export async function POST(request) {
   try {
     connection = await pool.getConnection();
     const [result] = await connection.execute(
-      ` SELECT password from users WHERE email = ?`,
+      ` SELECT password from users WHERE email = ? LIMIT 1`,
       [email],
     );
     const userPassword = result[0].password;
@@ -20,5 +20,7 @@ export async function POST(request) {
   } catch (error) {
     console.error("Error verifying your password", error);
     return Response.json({ valid: false }, { status: 500 });
+  } finally {
+    if (connection) connection.release();
   }
 }

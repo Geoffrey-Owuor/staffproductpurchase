@@ -14,10 +14,9 @@ export async function GET(request) {
     SELECT
       p.id AS purchaseId, p.createdAt, p.reference_number, p.staffName,
       p.payrollNo, p.department, p.employee_payment_terms,
-      p.user_credit_period, p.invoicing_location, p.delivery_details,
+      p.mpesa_code, p.user_credit_period, p.invoicing_location, p.delivery_details,
       p.credit_period, p.pending_invoices, p.invoice_number, p.invoice_amount,
-      p.payment_reference, p.amount, p.payment_balance, p.payment_completion,
-      pp.itemName, pp.itemStatus, pp.productPolicy, pp.productCode, pp.tdPrice,
+      p.payment_reference, p.request_closure, pp.itemName, pp.itemStatus, pp.productPolicy, pp.productCode, pp.tdPrice,
       pp.discountRate, pp.discountedValue
     FROM purchasesinfo AS p
     INNER JOIN purchase_products AS pp ON p.id = pp.purchase_id

@@ -11,7 +11,7 @@ export default function CreditControlSection({
     <div className="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700">
       <div className="px-6 py-3">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-          Credit Control Verification and Approval
+          Credit Control Approval
         </h3>
       </div>
       <div className="grid grid-cols-1 gap-6 bg-white p-6 md:grid-cols-2 dark:bg-gray-950">

@@ -204,10 +204,17 @@ export default function GeneralViewPurchases({ id }) {
                   value={purchase.employee_payment_terms}
                 />
 
-                <DetailField
-                  label="Credit Period"
-                  value={formatCreditPeriod(purchase.user_credit_period)}
-                />
+                {(purchase.employee_payment_terms === "CREDIT" ||
+                  purchase.employee_payment_terms === "CASH AND CREDIT") && (
+                  <DetailField
+                    label="Credit Period"
+                    value={formatCreditPeriod(purchase.user_credit_period)}
+                  />
+                )}
+                {(purchase.employee_payment_terms === "CASH" ||
+                  purchase.employee_payment_terms === "CASH AND CREDIT") && (
+                  <DetailField label="Mpesa Code" value={purchase.mpesa_code} />
+                )}
               </div>
             </div>
           </div>
@@ -225,6 +232,10 @@ export default function GeneralViewPurchases({ id }) {
                 />
               </div>
 
+              <DetailField
+                label="Payroll Approver"
+                value={purchase.payroll_approver_name}
+              />
               <DetailField
                 label="Payroll Approval Date"
                 value={formatDateLong(purchase.payroll_approval_date)}
@@ -346,59 +357,18 @@ export default function GeneralViewPurchases({ id }) {
                     : "n/a"
                 }
               />
-
-              <DetailField
-                label="Invoiced By"
-                value={purchase.bi_approver_name || "n/a"}
-              />
-              <DetailField
-                label="Date Recorded"
-                value={formatDateLong(purchase.invoice_recorded_date)}
-              />
-            </div>
-          </div>
-
-          {/* Payment Received Section */}
-          <div className="border-t border-gray-200 p-6 dark:border-gray-700">
-            <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
-              Payment Received
-            </h2>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              <DetailField
-                label="Payment Method"
-                value={purchase.payment_method || "n/a"}
-              />
               <DetailField
                 label="Reference Details"
                 value={purchase.payment_reference || "n/a"}
               />
-              <DetailField
-                label="Payment Date"
-                value={formatDateLong(purchase.payment_date)}
-              />
-              <DetailField
-                label="Amount Received"
-                value={
-                  purchase.amount
-                    ? `Ksh ${Number(purchase.amount).toFixed(2)}`
-                    : "n/a"
-                }
-              />
-              <DetailField
-                label="Payment Balance"
-                value={
-                  purchase.payment_balance
-                    ? `Ksh ${Number(purchase.payment_balance).toFixed(2)}`
-                    : "n/a"
-                }
-              />
-              <DetailField
-                label="Payment Completion Status"
-                value={purchase.payment_completion || "n/a"}
-              />
               <ApprovalStatus
                 label="Invoicing Approval Status"
                 status={purchase.BI_Approval || "n/a"}
+              />
+
+              <DetailField
+                label="Invoiced By"
+                value={purchase.bi_approver_name || "n/a"}
               />
               <DetailField
                 label="Invoicing Approval Date"

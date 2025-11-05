@@ -1,8 +1,10 @@
 import pool from "@/lib/db";
 import { getCurrentUser } from "@/app/lib/auth";
 import { sendEmail } from "@/lib/emailSender";
+import { CachedEmails } from "@/utils/Cache/CachedConditions";
 import generatePurchaseEmailHTML from "@/utils/EmailTemplates/StaffEmails/SendtoPayrollEmail";
 import generateUserPurchaseEmailHTML from "@/utils/EmailTemplates/StaffEmails/SendtoStaffEmail";
+import generateCCDirectEmailHTML from "@/utils/EmailTemplates/CCDirectEmail/CCDirectEmail";
 
 const parseNumber = (value) => {
   return value === "" || value == null ? null : parseFloat(value);
@@ -29,9 +31,9 @@ export async function POST(request) {
     // Destructure directly in the parameter list to avoid extra lines
     const [result] = await connection.execute(
       `INSERT INTO purchasesInfo 
-       (staffName, user_id, user_email, payrollNo, department, employee_payment_terms, user_credit_period, invoicing_location, delivery_details, signature, Payroll_Approval, HR_Approval, 
+       (staffName, user_id, user_email, payrollNo, department, employee_payment_terms, mpesa_code, user_credit_period, invoicing_location, delivery_details, signature, Payroll_Approval, HR_Approval, 
         CC_Approval, BI_Approval, request_closure) 
-       VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', 'pending', 'pending', 'pending', 'open')`,
+       VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', 'pending', 'pending', 'pending', 'open')`,
       [
         staffInfo.staffName,
         user.id,
@@ -39,6 +41,7 @@ export async function POST(request) {
         staffInfo.payrollNo,
         staffInfo.department,
         paymentInfo.employee_payment_terms,
+        paymentInfo.mpesa_code,
         parseNumber(paymentInfo.user_credit_period),
         paymentInfo.invoicing_location,
         paymentInfo.delivery_details,
@@ -60,10 +63,10 @@ export async function POST(request) {
     //Get the purchase (id) from purchasesinfo table
     const [rows] = await connection.execute(
       `SELECT id from purchasesInfo
-       WHERE user_email = ?
+       WHERE increment_id = ?
        ORDER BY createdAt DESC
        LIMIT 1`,
-      [user.email],
+      [insertedId],
     );
 
     const generatedId = rows[0]?.id;
@@ -90,26 +93,72 @@ export async function POST(request) {
 
     await Promise.all(itemInsertPromises);
 
+    //If payment terms is cash, autofill both payroll and hr data with default values
+    if (paymentInfo.employee_payment_terms === "CASH") {
+      await connection.execute(
+        `
+        UPDATE purchasesinfo
+        SET 
+        payroll_approver_name = 'auto approval', 
+        payroll_approver_email = 'auto approval',
+        payroll_signature = 'auto approval',
+        payroll_approval_date = CURRENT_TIMESTAMP,
+        Payroll_Approval = 'approved',
+        one_third_rule = 'not applicable, cash payment',
+        hr_approver_name = 'auto approval',
+        hr_approver_email = 'auto approval',
+        hr_signature = 'auto approval',
+        hr_approval_date = CURRENT_TIMESTAMP,
+        is_employed = 'cash approval',
+        on_probation = 'cash approval',
+        HR_Approval = 'approved',
+        hr_comments = 'approved cash payment'
+        WHERE increment_id = ?
+        `,
+        [insertedId],
+      );
+    }
+
     //If all inserts succeed, commit the transaction
     await connection.commit();
 
+    //Payroll email html
     const emailHtml = generatePurchaseEmailHTML({
       staffInfo: staffInfo,
       products: products,
     });
+
+    //User Email html
     const userEmailHtml = generateUserPurchaseEmailHTML({
       staffInfo: staffInfo,
       products: products,
     });
 
-    //Send email to HR department
-    const payrollEmail = process.env.PAYROLL_APPROVER;
-
-    await sendEmail({
-      to: payrollEmail,
-      subject: `New Purchase Request from ${staffInfo.staffName} PayrollNo: (${staffInfo.payrollNo})`,
-      html: emailHtml,
+    //emailHtml to send to credit control if payment terms is cash
+    const ccEmailHtml = generateCCDirectEmailHTML({
+      staffInfo: staffInfo,
+      products: products,
     });
+
+    //Getting approver emails required
+    const emails = await CachedEmails();
+    const payrollEmail = emails[0].approver_email;
+    const ccEmail = emails[2].approver_email;
+
+    //IF STATEMENT which checks payment terms type to send an appropriate email (To credit control or to HR)
+    if (paymentInfo.employee_payment_terms === "CASH") {
+      await sendEmail({
+        to: ccEmail,
+        subject: `New Purchase Request ${staffInfo.staffName} PayrollNo: (${staffInfo.payrollNo})`,
+        html: ccEmailHtml,
+      });
+    } else {
+      await sendEmail({
+        to: payrollEmail,
+        subject: `New Purchase Request from ${staffInfo.staffName} PayrollNo: (${staffInfo.payrollNo})`,
+        html: emailHtml,
+      });
+    }
 
     //Send email to the user
     await sendEmail({

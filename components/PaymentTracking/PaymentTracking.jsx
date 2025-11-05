@@ -7,10 +7,12 @@ import { UseHandleViewClick } from "@/utils/HandleActionClicks/UseHandleViewClic
 import { UseHandleEditClick } from "@/utils/HandleActionClicks/UseHandleEditClick";
 import { formatDateLong } from "@/public/assets";
 import { PaymentStatus } from "../Reusables/TableApprovalStatus";
+import { TableApprovalStatus } from "../Reusables/TableApprovalStatus";
 import Alert from "../Alert";
 import Pagination from "../pagination/Pagination";
 import ColumnToggle from "../Reusables/ColumnToggle";
 import ImportExcelData from "../Reusables/Import/ImportExcelData";
+import { FetchPeriodsPolicies } from "@/app/lib/FetchPeriodsPolicies";
 
 export default function PaymentTracking({ fetchAllData, biApproval = true }) {
   const [purchases, setPurchases] = useState([]);
@@ -19,6 +21,9 @@ export default function PaymentTracking({ fetchAllData, biApproval = true }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  //Setting fetched credit periods
+  const [periods, setPeriods] = useState([]);
 
   //Filter States
   const [filterType, setFilterType] = useState("staff");
@@ -29,7 +34,7 @@ export default function PaymentTracking({ fetchAllData, biApproval = true }) {
   const [payrollNumber, setPayrollNumber] = useState("");
   const [monthPeriod, setMonthPeriod] = useState("");
   const [referenceNumber, setReferenceNumber] = useState("");
-  const [completion, setCompletion] = useState("");
+  const [requestClosure, setRequestClosure] = useState("");
 
   //Alert information state
   const [alertInfo, setAlertInfo] = useState({
@@ -43,6 +48,7 @@ export default function PaymentTracking({ fetchAllData, biApproval = true }) {
     submissionDate: true,
     nameOfStaff: true,
     termsOfPayment: true,
+    mpesaCode: true,
     creditPeriod: true,
     invoiceAmount: true,
   });
@@ -93,8 +99,6 @@ export default function PaymentTracking({ fetchAllData, biApproval = true }) {
         url += `&fromDate=${options.fromDate}&toDate=${options.toDate}`;
       } else if (options.filterType === "period" && options.monthPeriod) {
         url += `&monthPeriod=${options.monthPeriod}`;
-      } else if (options.filterType === "completion" && options.completion) {
-        url += `&completion=${options.completion}`;
       } else if (options.filterType === "terms" && options.paymentTerms) {
         url += `&paymentTerms=${options.paymentTerms}`;
       } else if (options.filterType === "payroll" && options.payrollNumber) {
@@ -104,6 +108,8 @@ export default function PaymentTracking({ fetchAllData, biApproval = true }) {
         options.referenceNumber
       ) {
         url += `&referenceNumber=${encodeURIComponent(options.referenceNumber.trim())}`;
+      } else if (options.filterType === "closure" && options.requestClosure) {
+        url += `&requestClosure=${options.requestClosure}`;
       }
 
       const response = await fetch(url);
@@ -124,6 +130,15 @@ export default function PaymentTracking({ fetchAllData, biApproval = true }) {
     fetchPurchases({ filterType: "staff" });
   }, []);
 
+  //useEffect for fetching credit periods
+  useEffect(() => {
+    const fetchPeriods = async () => {
+      const { periods } = await FetchPeriodsPolicies();
+      setPeriods(periods);
+    };
+    fetchPeriods();
+  }, []);
+
   // Button click handler
   const applyFilters = () => {
     fetchPurchases({
@@ -132,10 +147,10 @@ export default function PaymentTracking({ fetchAllData, biApproval = true }) {
       fromDate,
       toDate,
       monthPeriod,
-      completion,
       paymentTerms,
       payrollNumber,
       referenceNumber,
+      requestClosure,
     });
   };
 
@@ -167,10 +182,10 @@ export default function PaymentTracking({ fetchAllData, biApproval = true }) {
         <div className="flex flex-col items-center space-y-6 md:flex-row md:justify-between md:space-y-0">
           <div className="mt-3 mb-2 px-1 pb-3">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-              Staff Payments Tracking
+              Fully Approved Requests
             </h2>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              Tracking payments for all submitted purchase requests
+              Purchase requests approved by all approvers
             </p>
           </div>
 
@@ -195,8 +210,8 @@ export default function PaymentTracking({ fetchAllData, biApproval = true }) {
               <option value="reference">Filter by Reference Number</option>
               <option value="payroll">Filter by Payroll Number</option>
               <option value="date">Filter by Date</option>
+              <option value="closure">Filter by Request Closure</option>
               <option value="period">Filter by Credit Period</option>
-              <option value="completion">Filter by Completion Status</option>
               <option value="terms">Filter by Payment Terms</option>
             </select>
 
@@ -257,24 +272,11 @@ export default function PaymentTracking({ fetchAllData, biApproval = true }) {
                 <option value="" disabled>
                   Select period
                 </option>
-                <option value="1">1 month</option>
-                <option value="2">2 months</option>
-                <option value="3">3 months</option>
-                <option value="4">4 months</option>
-              </select>
-            )}
-
-            {filterType === "completion" && (
-              <select
-                value={completion}
-                onChange={(e) => setCompletion(e.target.value)}
-                className="rounded-md border border-gray-300 bg-white px-2 py-1 text-sm focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
-              >
-                <option value="" disabled>
-                  Select status
-                </option>
-                <option value="complete">Complete</option>
-                <option value="incomplete">Incomplete</option>
+                {periods.map((period) => (
+                  <option key={period.period_value} value={period.period_value}>
+                    {period.period_description}
+                  </option>
+                ))}
               </select>
             )}
 
@@ -289,6 +291,20 @@ export default function PaymentTracking({ fetchAllData, biApproval = true }) {
                 </option>
                 <option value="CASH">Cash</option>
                 <option value="CREDIT">Credit</option>
+              </select>
+            )}
+
+            {filterType === "closure" && (
+              <select
+                value={requestClosure}
+                onChange={(e) => setRequestClosure(e.target.value)}
+                className="rounded-md border border-gray-300 bg-white px-2 py-1 text-sm focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+              >
+                <option value="" disabled>
+                  Select option
+                </option>
+                <option value="open">Open</option>
+                <option value="closed">Closed</option>
               </select>
             )}
 
@@ -338,6 +354,14 @@ export default function PaymentTracking({ fetchAllData, biApproval = true }) {
                         Payment Terms
                       </th>
                     )}
+                    {visibleColumns.mpesaCode && (
+                      <th
+                        className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                        title="Mpesa Code"
+                      >
+                        Mpesa Code
+                      </th>
+                    )}
                     {visibleColumns.creditPeriod && (
                       <th
                         className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
@@ -354,20 +378,19 @@ export default function PaymentTracking({ fetchAllData, biApproval = true }) {
                         Invoice Amount
                       </th>
                     )}
+
                     <th
                       className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
-                      title="Amount Received"
+                      title="Invoicing Approval"
                     >
-                      Amount Received
+                      Invoicing Approval
                     </th>
-                    <th className="px-6 py-3 text-left text-sm font-semibold">
-                      Balance
-                    </th>
+
                     <th
                       className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
-                      title="Completion Status"
+                      title="Request Closure"
                     >
-                      Completion Status
+                      Request Closure
                     </th>
                     <th className="px-6 py-3 text-left text-sm font-semibold"></th>
                   </tr>
@@ -402,8 +425,19 @@ export default function PaymentTracking({ fetchAllData, biApproval = true }) {
                           {purchase.payrollNo}
                         </td>
                         {visibleColumns.termsOfPayment && (
-                          <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
+                          <td
+                            className="max-w-[150px] truncate px-6 py-4 text-sm text-gray-900 dark:text-white"
+                            title={purchase.employee_payment_terms}
+                          >
                             {purchase.employee_payment_terms}
+                          </td>
+                        )}
+                        {visibleColumns.mpesaCode && (
+                          <td
+                            className="px-6 py-4 text-sm text-gray-900 dark:text-white"
+                            title={purchase.mpesa_code}
+                          >
+                            {purchase.mpesa_code || "N/A"}
                           </td>
                         )}
                         {visibleColumns.creditPeriod && (
@@ -413,24 +447,21 @@ export default function PaymentTracking({ fetchAllData, biApproval = true }) {
                         )}
                         {visibleColumns.invoiceAmount && (
                           <td className="text-sm">
-                            <div className="mr-3 rounded-md border border-gray-300 px-6 py-2 dark:border-gray-600">
+                            <div className="mr-3 rounded-lg border border-gray-300 px-6 py-2 dark:border-gray-600">
                               {purchase.invoice_amount || "N/A"}
                             </div>
                           </td>
                         )}
-                        <td className="text-sm">
-                          <div className="mr-3 rounded-md border border-gray-300 px-6 py-2 dark:border-gray-600">
-                            {purchase.amount || "N/A"}
-                          </div>
+
+                        <td className="px-6 py-4 text-sm">
+                          <TableApprovalStatus
+                            status={purchase.BI_Approval || "N/A"}
+                          />
                         </td>
-                        <td className="text-sm">
-                          <div className="mr-3 rounded-md border border-gray-300 px-6 py-2 dark:border-gray-600">
-                            {purchase.payment_balance || "N/A"}
-                          </div>
-                        </td>
+
                         <td className="px-6 py-4 text-sm">
                           <PaymentStatus
-                            status={purchase.payment_completion || "N/A"}
+                            status={purchase.request_closure || "N/A"}
                           />
                         </td>
                         <td className="px-6 py-4">

@@ -195,6 +195,18 @@ export default function StaffPurchaseHistory({ fetchAllData }) {
                   >
                     Payment Terms
                   </th>
+                  <th
+                    className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                    title="Mpesa Code"
+                  >
+                    Mpesa Code
+                  </th>
+                  <th
+                    className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                    title="Credit Period"
+                  >
+                    Credit Period
+                  </th>
                   <th className="px-6 py-3 text-left text-sm font-semibold">
                     PayrollNo
                   </th>
@@ -247,8 +259,20 @@ export default function StaffPurchaseHistory({ fetchAllData }) {
                       >
                         {purchase.reference_number}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
+                      <td
+                        className="max-w-[150px] truncate px-6 py-4 text-sm text-gray-900 dark:text-white"
+                        title={purchase.employee_payment_terms}
+                      >
                         {purchase.employee_payment_terms}
+                      </td>
+                      <td
+                        className="px-6 py-4 text-sm text-gray-900 dark:text-white"
+                        title={purchase.mpesa_code}
+                      >
+                        {purchase.mpesa_code || "N/A"}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
+                        {purchase.user_credit_period || "N/A"}
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
                         {purchase.payrollNo}

@@ -1,4 +1,5 @@
 //app/lib/auth.js
+"use server";
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import { SignJWT, jwtVerify } from "jose";
@@ -23,7 +24,7 @@ export const createSession = async (
   payrollNo,
   department,
 ) => {
-  const expiresAt = Math.floor(Date.now() / 1000) + 12 * 60 * 60; //12hrs until expiration
+  const expiresAt = Math.floor(Date.now() / 1000) + 72 * 60 * 60; //72hrs until expiration
   const token = await new SignJWT({
     userId,
     role,
@@ -43,15 +44,15 @@ export const createSession = async (
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
-    // maxAge: 2 * 60 * 60, //Used to set the max age of the cookie for persistence after browser is closed
+    maxAge: 72 * 60 * 60, //Used to set the max age of the cookie (72hrs before expiry) for persistence after browser is closed
   });
 };
 
-//Verify JWT (returns user info or null)
+//Verify JWT (returns user info or an empty object)
 export const getCurrentUser = async () => {
   const cookieStore = await cookies();
   const token = cookieStore.get("session_token")?.value;
-  if (!token) return null;
+  if (!token) return {}; //Returning an empty object if token is null
 
   try {
     const { payload } = await jwtVerify(token, SECRET);

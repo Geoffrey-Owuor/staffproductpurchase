@@ -442,72 +442,49 @@ const PurchasePDFDocument = ({
                   <Text style={styles.subSectionTitle}>
                     Billing & Invoicing
                   </Text>
+
                   <View style={styles.infoRow}>
                     <Text style={styles.infoLabel}>Invoice Number</Text>
                     <Text style={styles.infoValue}>
                       {purchaseData.invoice_number || "N/A"}
                     </Text>
                   </View>
+
                   <View style={styles.infoRow}>
                     <Text style={styles.infoLabel}>Invoice Date</Text>
                     <Text style={styles.infoValue}>
                       {formatDate(purchaseData.invoice_date)}
                     </Text>
                   </View>
+
                   <View style={styles.infoRow}>
                     <Text style={styles.infoLabel}>Invoice Amount</Text>
                     <Text style={styles.infoValue}>
                       {formatCurrency(purchaseData.invoice_amount)}
                     </Text>
                   </View>
-                  <View style={styles.infoRow}>
-                    <Text style={styles.infoLabel}>Payment Method</Text>
-                    <Text style={styles.infoValue}>
-                      {purchaseData.payment_method || "N/A"}
-                    </Text>
-                  </View>
+
                   <View style={styles.infoRow}>
                     <Text style={styles.infoLabel}>Payment Reference</Text>
                     <Text style={styles.infoValue}>
                       {purchaseData.payment_reference || "N/A"}
                     </Text>
                   </View>
-                  <View style={styles.infoRow}>
-                    <Text style={styles.infoLabel}>Payment Date</Text>
-                    <Text style={styles.infoValue}>
-                      {formatDate(purchaseData.payment_date)}
-                    </Text>
-                  </View>
-                  <View style={styles.infoRow}>
-                    <Text style={styles.infoLabel}>Amount Received</Text>
-                    <Text style={styles.infoValue}>
-                      {formatCurrency(purchaseData.amount)}
-                    </Text>
-                  </View>
-                  <View style={styles.infoRow}>
-                    <Text style={styles.infoLabel}>Payment Balance</Text>
-                    <Text style={styles.infoValue}>
-                      {formatCurrency(purchaseData.payment_balance)}
-                    </Text>
-                  </View>
-                  <View style={styles.infoRow}>
-                    <Text style={styles.infoLabel}>Completion Status</Text>
-                    <Text style={styles.infoValue}>
-                      {purchaseData.payment_completion}
-                    </Text>
-                  </View>
+
                   <View style={styles.infoRow}>
                     <Text style={styles.infoLabel}>Approval Status</Text>
                     <Text style={styles.infoValue}>
                       {formatStatus(purchaseData.BI_Approval)}
                     </Text>
                   </View>
+
                   <View style={styles.infoRow}>
                     <Text style={styles.infoLabel}>Approved By</Text>
                     <Text style={styles.infoValue}>
                       {purchaseData.bi_approver_name || "N/A"}
                     </Text>
                   </View>
+
                   <View style={styles.infoRow}>
                     <Text style={styles.infoLabel}>Date</Text>
                     <Text style={styles.infoValue}>
@@ -516,6 +493,7 @@ const PurchasePDFDocument = ({
                       )}
                     </Text>
                   </View>
+
                   <View style={styles.infoRow}>
                     <Text style={styles.infoLabel}>Approval Time</Text>
                     <Text style={styles.infoValue}>

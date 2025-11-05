@@ -1,32 +1,34 @@
-"use client";
-import { useEffect, useState } from "react";
+//CURRENTLY NOT IN USE
 
-export function useSessionExpiry(expiresAt) {
-  const [expired, setExpired] = useState(false);
+// "use client";
+// import { useEffect, useState } from "react";
 
-  useEffect(() => {
-    if (!expiresAt) return;
+// export function useSessionExpiry(expiresAt) {
+//   const [expired, setExpired] = useState(false);
 
-    const now = Date.now();
-    const msUntilExpiry = expiresAt - now;
+//   useEffect(() => {
+//     if (!expiresAt) return;
 
-    // Helper to handle expiry actions
-    const handleExpiry = () => {
-      // Delete cookie immediately - THIS DOES NOT NECESSARILY WORK SINCE WE CAN NOT DIRECTLY MODIFY AN HTTP ONLY COOKIE USING document.cookie();
-      document.cookie = "session_token=; path=/; max-age=0";
-      setExpired(true);
-    };
+//     const now = Date.now();
+//     const msUntilExpiry = expiresAt - now;
 
-    //i
-    if (msUntilExpiry <= 0) {
-      handleExpiry();
-      return;
-    }
+//     // Helper to handle expiry actions
+//     const handleExpiry = () => {
+//       // Delete cookie immediately - THIS DOES NOT NECESSARILY WORK SINCE WE CAN NOT DIRECTLY MODIFY AN HTTP ONLY COOKIE USING document.cookie();
+//       document.cookie = "session_token=; path=/; max-age=0";
+//       setExpired(true);
+//     };
 
-    const timeout = setTimeout(handleExpiry, msUntilExpiry);
+//     //i
+//     if (msUntilExpiry <= 0) {
+//       handleExpiry();
+//       return;
+//     }
 
-    return () => clearTimeout(timeout);
-  }, [expiresAt]);
+//     const timeout = setTimeout(handleExpiry, msUntilExpiry);
 
-  return expired;
-}
+//     return () => clearTimeout(timeout);
+//   }, [expiresAt]);
+
+//   return expired;
+// }

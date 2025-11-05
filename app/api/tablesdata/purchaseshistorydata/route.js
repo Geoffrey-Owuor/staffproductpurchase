@@ -4,6 +4,7 @@ import { getCurrentUser } from "@/app/lib/auth";
 
 //role to column mapping
 const roleToColumnMap = {
+  payroll: "Payroll_Approval",
   hr: "HR_Approval",
   cc: "CC_Approval",
   bi: "BI_Approval",
@@ -11,6 +12,13 @@ const roleToColumnMap = {
 
 export async function GET(request) {
   const { role } = await getCurrentUser();
+
+  if (!role) {
+    return Response.json(
+      { message: "No user role found or session invalid" },
+      { status: 403 },
+    );
+  }
 
   let connection;
   try {
@@ -29,14 +37,14 @@ export async function GET(request) {
     const approvalStatus = searchParams.get("approvalStatus") || null;
     const paymentTerms = searchParams.get("paymentTerms") || null;
 
-    //Payment Completion and Credit period params
+    //Credit period and request closure params
     const monthPeriod = searchParams.get("monthPeriod") || null;
-    const completion = searchParams.get("completion") || null;
+    const requestClosure = searchParams.get("requestClosure") || null;
 
     connection = await pool.getConnection();
 
-    let query = `SELECT id, createdAt, reference_number, staffName, payrollNo, employee_payment_terms, user_credit_period, Payroll_Approval, HR_Approval, CC_Approval, BI_Approval,
-         invoice_amount, amount, payment_balance, payment_completion
+    let query = `SELECT id, createdAt, reference_number, staffName, payrollNo, employee_payment_terms, mpesa_code, user_credit_period, Payroll_Approval, HR_Approval, CC_Approval, BI_Approval,
+         invoice_amount, request_closure
          FROM purchasesInfo`;
 
     let params = [];
@@ -75,9 +83,9 @@ export async function GET(request) {
     } else if (filterType === "period" && monthPeriod) {
       whereClauses.push(`user_credit_period = ?`);
       params.push(Number(monthPeriod));
-    } else if (filterType === "completion" && completion) {
-      whereClauses.push(`payment_completion = ?`);
-      params.push(completion);
+    } else if (filterType === "closure" && requestClosure) {
+      whereClauses.push(`request_closure = ?`);
+      params.push(requestClosure);
     }
 
     if (whereClauses.length > 0) {

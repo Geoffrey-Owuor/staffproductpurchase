@@ -4,6 +4,13 @@ import { getCurrentUser } from "@/app/lib/auth";
 export async function GET(request) {
   const user = await getCurrentUser();
 
+  if (!user) {
+    return Response.json(
+      { message: "No user role found or session invalid" },
+      { status: 403 },
+    );
+  }
+
   let connection;
   try {
     const { searchParams } = new URL(request.url);
@@ -19,7 +26,7 @@ export async function GET(request) {
 
     connection = await pool.getConnection();
 
-    let query = `SELECT id, createdAt, reference_number, employee_payment_terms, payrollNo, invoicing_location, Payroll_Approval, HR_Approval, CC_Approval, BI_Approval 
+    let query = `SELECT id, createdAt, reference_number, employee_payment_terms, mpesa_code, user_credit_period, payrollNo, invoicing_location, Payroll_Approval, HR_Approval, CC_Approval, BI_Approval 
                  FROM purchasesInfo`;
 
     let params = [];

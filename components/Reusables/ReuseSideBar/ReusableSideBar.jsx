@@ -4,11 +4,11 @@ import {
   HomeIcon,
   ShoppingBagIcon,
   MessageCircleQuestion,
-  Wallet2,
   History,
   Menu,
-  ChevronsLeft,
   Link2,
+  BookOpenCheck,
+  ChevronsLeft,
 } from "lucide-react";
 
 import { useState } from "react";
@@ -183,13 +183,13 @@ export default function ReusableSidebar({ isOpen, toggleSidebar }) {
                         : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
                     }`}
                   >
-                    <Wallet2 className="h-4 w-4 flex-shrink-0" />
+                    <BookOpenCheck className="h-4 w-4 flex-shrink-0" />
                     <span
                       className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
                         isOpen ? "w-40" : "w-0"
                       }`}
                     >
-                      Track Payments
+                      Fully Approved
                     </span>
                   </div>
                 </li>
