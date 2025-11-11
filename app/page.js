@@ -7,7 +7,7 @@ import Footer from "@/components/landingpage/Footer";
 
 export default async function Home() {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="containerizing flex min-h-screen flex-col">
       <Header />
       <Hero />
       <Features />

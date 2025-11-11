@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 
-export function useInactivityTimer(timeoutDuration) {
+export function useInactivityTimer(timeoutDuration, user) {
+  const router = useRouter();
   const [isInactive, setIsInactive] = useState(false);
   const timerRef = useRef(null);
 
@@ -15,7 +17,7 @@ export function useInactivityTimer(timeoutDuration) {
     const handleInactiveClick = (e) => {
       e.preventDefault();
       e.stopPropagation();
-      window.location.href = "/login";
+      router.push("/login");
     };
 
     //Add a global click listener (in the capture phase) to intercept the click before it does anything else
@@ -83,4 +85,47 @@ export function useInactivityTimer(timeoutDuration) {
       });
     };
   }, [isInactive, timeoutDuration]); //Re run if isInactive changes
+
+  //UseEffect for cross-tab session checking
+  useEffect(() => {
+    const checkSession = async () => {
+      //tab is already locked, no need to check again
+      if (isInactive) return;
+
+      // Get the ID of the user this tab *thinks* is logged in
+      const localUserId = user?.id;
+      if (!localUserId) return; // Don't run if the user isn't loaded yet
+
+      try {
+        const response = await fetch("/api/check-session");
+        const data = await response.json();
+
+        if (data.loggedIn === false) {
+          //Session gone - logged out in another tab
+          //set isInactive to true to engage click interceptor
+          setIsInactive(true);
+        } else if (data.loggedIn === true && data.userId !== localUserId) {
+          // 1. Call the server to kill the imposter's httpOnly cookie.
+          await fetch("/api/logout", { method: "POST" });
+
+          // Force redirect to login
+          router.push("/login");
+        } else if (data.loggedIn === true && data.userId === localUserId) {
+          // All good, the correct user
+          // Refresh the current page
+          router.refresh();
+        }
+      } catch (error) {
+        console.error("Error checking session status:", error);
+      }
+    };
+
+    //Check session when user focuses on a tab
+    window.addEventListener("focus", checkSession);
+
+    //Cleanup
+    return () => {
+      window.removeEventListener("focus", checkSession);
+    };
+  }, [isInactive, user, router]); //Re-run if isInactive changes
 }

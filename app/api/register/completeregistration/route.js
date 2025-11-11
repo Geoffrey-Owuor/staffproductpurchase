@@ -18,11 +18,12 @@ const getRoleFromEmail = (email) => {
 };
 
 export async function POST(request) {
+  let conn;
   try {
     const { name, email, password, payrollNo, department } =
       await request.json();
 
-    const conn = await pool.getConnection();
+    conn = await pool.getConnection();
 
     // Verify email was previously verified
     const [verified] = await conn.execute(
@@ -31,7 +32,6 @@ export async function POST(request) {
     );
 
     if (verified.length === 0) {
-      conn.release();
       return Response.json(
         { success: false, message: "Email not verified" },
         { status: 400 },
@@ -61,8 +61,6 @@ export async function POST(request) {
       department,
     );
 
-    conn.release();
-
     // Delete the verify_email cookie now that it's no longer needed
     const cookieStore = await cookies();
     cookieStore.set({
@@ -87,5 +85,7 @@ export async function POST(request) {
       { success: false, message: "Registration failed" },
       { status: 500 },
     );
+  } finally {
+    if (conn) conn.release();
   }
 }

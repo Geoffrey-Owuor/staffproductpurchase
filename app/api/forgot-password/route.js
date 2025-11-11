@@ -5,9 +5,10 @@ import { sendResetEmail } from "@/lib/nodemailer";
 
 export async function POST(request) {
   const { email } = await request.json();
-  const conn = await pool.getConnection();
+  let conn;
 
   try {
+    conn = await pool.getConnection();
     const [users] = await conn.execute("SELECT id FROM users WHERE email = ?", [
       email,
     ]);
@@ -40,6 +41,6 @@ export async function POST(request) {
       { status: 500 },
     );
   } finally {
-    conn.release();
+    if (conn) conn.release();
   }
 }

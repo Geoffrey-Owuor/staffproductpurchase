@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/app/lib/auth";
 import UnauthorizedPage from "@/components/Reusables/UnauthorizedPage";
 import ReusableLayoutShell from "@/components/Reusables/ReuseLayoutShell/ReusableLayoutShell";
 import { FirstLoader } from "@/components/Reusables/FirstLoader";
+import { ApprovalCountsProvider } from "@/context/ApprovalCountsContext";
 
 export const metadata = {
   title: "HAL - Staff Dashboard",
@@ -13,7 +14,7 @@ export default async function layout({ children }) {
   const user = await getCurrentUser();
 
   if (!user?.valid) {
-    redirect("/login");
+    return redirect("/login");
   }
 
   if (user.role !== "staff") {
@@ -23,7 +24,9 @@ export default async function layout({ children }) {
   return (
     <>
       <FirstLoader />
-      <ReusableLayoutShell user={user}>{children}</ReusableLayoutShell>
+      <ReusableLayoutShell user={user}>
+        <ApprovalCountsProvider>{children}</ApprovalCountsProvider>
+      </ReusableLayoutShell>
     </>
   );
 }

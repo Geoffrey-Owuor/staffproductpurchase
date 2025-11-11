@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import {
   LogOutIcon,
   MoreVertical,
@@ -8,13 +9,14 @@ import {
   Settings,
   SlidersVertical,
 } from "lucide-react";
-import SettingsPage from "../UserSettings/SettingsPage";
+import SettingsPage from "../Settings/SettingsPage";
 import { useUser } from "@/context/UserContext";
 import ThemeToggle from "./ThemeProviders/ThemeToggle";
 import { LoggingOutOverlay } from "./LoadingBar";
 
 export default function UserMenu({ isSidebarOpen, hideMobileMenu }) {
   const user = useUser();
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [showUserSettings, setShowUserSettings] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
@@ -45,7 +47,7 @@ export default function UserMenu({ isSidebarOpen, hideMobileMenu }) {
       });
 
       if (response.ok) {
-        window.location.href = "/login";
+        router.push("/login");
       }
     } catch (error) {
       console.error("Logout failed:", error);

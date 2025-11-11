@@ -1,5 +1,5 @@
 "use client";
-import { Eye, MoreVertical } from "lucide-react";
+import { Eye, MoreVertical, Search, SearchX } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import TableSkeleton from "../skeletons/TableSkeleton";
@@ -9,10 +9,17 @@ import RecentPurchasesHeading from "../Reusables/Headings/RecentPurchasesHeading
 import { TableApprovalStatus } from "../Reusables/TableApprovalStatus";
 import Pagination from "../pagination/Pagination";
 import { formatDateLong } from "@/public/assets";
+import { useStaffPurchases } from "@/context/StaffPurchaseContext";
 
-export default function StaffPurchaseHistory({ fetchAllData }) {
-  const [purchases, setPurchases] = useState([]);
-  const [loading, setLoading] = useState(true);
+export default function StaffPurchaseHistory() {
+  const {
+    purchases,
+    loading,
+    fetchPurchases,
+    fetchAllData,
+    refetchDefaultPurchases,
+  } = useStaffPurchases();
+
   const [navigatingTo, setNavigatingTo] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -31,45 +38,7 @@ export default function StaffPurchaseHistory({ fetchAllData }) {
     router.push(`/staffdashboard/purchase-history/purchases/${id}`);
   };
 
-  // New fetch function
-  const fetchPurchases = async (options = {}) => {
-    try {
-      setLoading(true);
-
-      let url = `/api/staffpurchaseshistory?filterType=${options.filterType || filterType}`;
-
-      //Telling the api if we should fetch all the data
-      if (fetchAllData) {
-        url += `&fetchAll=true`;
-      }
-
-      if (options.filterType === "date" && options.fromDate && options.toDate) {
-        url += `&fromDate=${options.fromDate}&toDate=${options.toDate}`;
-      } else if (options.filterType === "approval" && options.approvalStatus) {
-        url += `&approvalStatus=${options.approvalStatus}`;
-      } else if (options.filterType === "terms" && options.paymentTerms) {
-        url += `&paymentTerms=${options.paymentTerms}`;
-      }
-
-      const response = await fetch(url);
-      const data = await response.json();
-
-      if (!response.ok) throw new Error("Failed to fetch purchases");
-      setPurchases(Array.isArray(data) ? data : []);
-    } catch (err) {
-      console.error("Error fetching purchases:", err);
-      setPurchases([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Initial fetch (unfiltered purchases)
-  useEffect(() => {
-    fetchPurchases({ filterType: "approval" });
-  }, []);
-
-  // Button click handler
+  // Apply Filters to call the fetchPurchases function
   const applyFilters = () => {
     fetchPurchases({
       filterType,
@@ -78,12 +47,25 @@ export default function StaffPurchaseHistory({ fetchAllData }) {
       approvalStatus,
       paymentTerms,
     });
+    setCurrentPage(1); //reset to first page on new search
+  };
+
+  //Function to return default purchases data and clear filters
+  const fetchDefaultPurchases = () => {
+    // Call refetch default purchases
+    refetchDefaultPurchases();
+    setCurrentPage(1);
+
+    // Clear previous filters
+    setPaymentTerms("");
+    setFromDate("");
+    setToDate("");
+    setApprovalStatus("");
   };
 
   // Recalculate total pages when purchases or rowsPerPage changes
   useEffect(() => {
     setTotalPages(Math.ceil(purchases.length / rowsPerPage));
-    setCurrentPage(1); // Optional: Reset to first page when rows per page changes
   }, [rowsPerPage, purchases]);
 
   const currentPurchases = purchases.slice(
@@ -161,9 +143,17 @@ export default function StaffPurchaseHistory({ fetchAllData }) {
 
             <button
               onClick={applyFilters}
-              className="mt-2 rounded-md bg-gray-900 px-3 py-1 text-sm text-white hover:bg-gray-700 sm:mt-0 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
+              className="mt-2 flex items-center space-x-1 rounded-md bg-gray-900 px-3 py-1 text-sm text-white hover:bg-gray-700 sm:mt-0 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
             >
-              Search
+              <Search className="h-3.5 w-3.5" />
+              <span>Search</span>
+            </button>
+            <button
+              onClick={fetchDefaultPurchases}
+              className="mt-2 flex items-center space-x-1 rounded-md bg-gray-700 px-3 py-1 text-sm text-white hover:bg-gray-800 sm:mt-0 dark:bg-gray-300 dark:text-gray-900 dark:hover:bg-white"
+            >
+              <SearchX className="h-3.5 w-3.5" />
+              <span>Clear</span>
             </button>
           </div>
         </div>

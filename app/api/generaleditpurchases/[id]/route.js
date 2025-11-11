@@ -391,7 +391,10 @@ export async function PUT(request, { params }) {
     }
 
     return Response.json(
-      { message: "Purchase Request Updated Successfully" },
+      {
+        message:
+          "Purchase request has been updated successfully, redirecting...",
+      },
       { status: 200 },
     );
   } catch (error) {

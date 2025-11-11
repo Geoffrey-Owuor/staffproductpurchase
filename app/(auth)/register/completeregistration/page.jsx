@@ -7,30 +7,32 @@ import { jwtVerify } from "jose";
 export default async function Step3Page() {
   const cookieStore = await cookies();
   const cookie = cookieStore.get("verify_email")?.value;
-  if (!cookie) redirect("/register");
+  if (!cookie) return redirect("/register");
+
+  let connection;
 
   try {
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
     const { payload } = await jwtVerify(cookie, secret);
     const email = payload.email;
 
-    if (!email) redirect("/register");
+    if (!email) return redirect("/register");
 
-    const conn = await pool.getConnection();
-    const [results] = await conn.execute(
+    connection = await pool.getConnection();
+    const [results] = await connection.execute(
       `SELECT * FROM verification_codes 
      WHERE email = ? AND verified = 1 AND expires_at > NOW()`,
       [email],
     );
-    conn.release();
 
     if (results.length === 0) {
-      redirect("/register");
+      return redirect("/register");
     }
-
+    connection.release();
     return <CompleteRegistrationComponent email={email} />;
   } catch (error) {
     console.error(error);
-    redirect("/register");
+    connection.release();
+    return redirect("/register");
   }
 }

@@ -110,9 +110,7 @@ export default function BIApprovalSection({
                 : "bg-white dark:bg-gray-950"
             }`}
           >
-            <option value="pending" disabled>
-              Pending
-            </option>
+            <option value="pending">Pending</option>
             <option value="approved">Approved</option>
             <option value="declined">Declined</option>
           </select>

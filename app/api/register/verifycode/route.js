@@ -2,9 +2,11 @@
 import pool from "@/lib/db";
 
 export async function POST(request) {
-  const conn = await pool.getConnection();
+  let conn;
   try {
     const { email, code } = await request.json();
+
+    conn = await pool.getConnection();
 
     // Verify the code
     const [results] = await conn.execute(
@@ -28,10 +30,8 @@ export async function POST(request) {
       [email],
     );
 
-    conn.release();
-
     return Response.json(
-      { success: true, message: "Code verified successfully" },
+      { success: true, message: "Your code has been verified successfully" },
       { status: 200 },
     );
   } catch (error) {
@@ -46,10 +46,12 @@ export async function POST(request) {
 }
 
 export async function PUT(request) {
-  const conn = await pool.getConnection();
+  let conn;
 
   try {
     const { code, newemail, oldemail } = await request.json();
+
+    conn = await pool.getConnection();
 
     //Verify the code
     const [result] = await conn.execute(
@@ -79,7 +81,7 @@ export async function PUT(request) {
       newemail,
     ]);
     return Response.json(
-      { message: "Email Updated Successfully, you'll be logged out shortly" },
+      { message: "Email updated successfully, you'll be logged out shortly" },
       { status: 200 },
     );
   } catch (error) {

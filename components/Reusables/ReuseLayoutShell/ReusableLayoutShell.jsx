@@ -4,7 +4,7 @@ import DashboardFooter from "../DashboardFooter";
 import { useState } from "react";
 import MobileHeader from "../Mobile/MobileHeader";
 // import { useSessionExpiry } from "@/app/hooks/useSessionExpiry";
-import { useInactivityTimer } from "@/app/hooks/useInactivityTimer";
+import { useInactivityTimer } from "@/hooks/useInactivityTimer";
 // import ExpiredSessionOverlay from "../ExpiredSessionOverlay";
 import UserContext from "@/context/UserContext";
 
@@ -13,7 +13,7 @@ export default function ReusableLayoutShell({ user, children }) {
   // const expired = useSessionExpiry(user?.expiresAt);
 
   //Hook used to track user inactivity so as to automatically logout
-  useInactivityTimer(30 * 60 * 1000); //30 minutes in milliseconds
+  useInactivityTimer(5 * 60 * 1000, user); //5 minutes in milliseconds for security reasons
 
   const toggleSidebar = () => {
     setSideBarOpen((prev) => !prev);
@@ -21,7 +21,7 @@ export default function ReusableLayoutShell({ user, children }) {
   return (
     <UserContext.Provider value={user}>
       {/* {expired && <ExpiredSessionOverlay />} */}
-      <div className="flex min-h-screen flex-col">
+      <div className="containerizing flex min-h-screen flex-col">
         <MobileHeader />
         <ReusableSidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
         <div className="flex flex-1 pb-4">

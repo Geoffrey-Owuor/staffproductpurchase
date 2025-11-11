@@ -53,7 +53,25 @@ Default for all approver names in General Edit Purchases - **DONE**
 Reduce the first loader time - Reduced to 1 second **DONE**
 Add an email that sends back to credit control notifying them of Billing Invoice Approval finishing - **DONE**
 
-(WILL BE USED BY CREDIT CONTROL - For closing requests after invoicing approval) **PENDING** **MAJOR & MEANINGFUL**
+(WILL BE USED BY CREDIT CONTROL - For closing requests after invoicing approval) **DONE** **MAJOR & MEANINGFUL**
 Add two approval cards for how many requests are open and how many are closed - **DONE**
 --RETURN request_closure (open & closed) - **DONE**
---Add Mark as closed (In RecentActionButtons with a boolean check)
+--Add Mark as closed (In RecentActionButtons with a boolean check) - **DONE**
+
+---ONE SECURITY AREA---
+How to invalidate all logged in browser cookies directly from your server (Regardless of all browsers) **PENDING**
+
+---Auto Code Verification---
+Done for register one
+Done for change email address
+
+--How to create a shortcut in next.js
+Alt + N (To open new purchase) - Done
+
+Test deleting a purchase request - Done
+Test closing a purchase request - Done
+Test updating a request with refresh of approval cards - Done
+Create a context for payment tracking approval cards - Done
+
+Once you approve (for any role) - you cannot delete - Pending
+The concatenation for the period given & mode of payments (payment terms and user credit period) - Pending

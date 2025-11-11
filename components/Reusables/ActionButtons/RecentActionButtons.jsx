@@ -1,9 +1,17 @@
 "use client";
-import { Eye, Settings2, Trash2, MoreVertical } from "lucide-react";
+import {
+  Eye,
+  Settings2,
+  Trash2,
+  MoreVertical,
+  GitPullRequestClosed,
+} from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import DeleteConfirmation from "../DeleteConfirmation/DeleteConfirmation";
+import ConfirmationDialog from "../ConfirmationDialog";
 import { DeletingOverlay } from "../LoadingBar";
+import { LoadingBarWave } from "../LoadingBar";
 import { useUser } from "@/context/UserContext";
 
 // Reusable style for the dropdown menu items
@@ -21,12 +29,18 @@ export const RecentActionButtons = ({
   onDeleteSuccess,
   onDeleteError,
   goingTo,
+  closeButton = false,
+  closureValue,
+  onCloseSuccess,
+  onCloseError,
   disableDelete = false,
 }) => {
   const { role: userRole } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const [deleting, setIsDeleting] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [showCloseConfirmation, setShowCloseConfirmation] = useState(false);
   const menuRef = useRef(null);
 
   // State to store the calculated menu coordinates
@@ -35,6 +49,32 @@ export const RecentActionButtons = ({
   const handleConfirmDelete = () => {
     setShowConfirmation(true);
     setIsOpen(false);
+  };
+
+  const handleConfirmClose = () => {
+    setShowCloseConfirmation(true);
+    setIsOpen(false);
+  };
+
+  const handleClose = async () => {
+    setShowCloseConfirmation(false);
+    setIsClosing(true);
+    try {
+      const response = await fetch(`/api/closepurchase/${id}`, {
+        method: "PUT",
+      });
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Error closing Purchase Request");
+      }
+      onCloseSuccess(result.message);
+    } catch (error) {
+      console.error("Error Closing Purchase Request:", error);
+      onCloseError(error.message);
+    } finally {
+      setIsClosing(false);
+    }
   };
 
   const handleDelete = async () => {
@@ -160,6 +200,18 @@ export const RecentActionButtons = ({
             <span>Delete</span>
           </button>
         </div>
+
+        {closeButton && (
+          <button
+            type="button"
+            onClick={handleConfirmClose}
+            disabled={goingTo === id || closureValue === "closed"}
+            className={menuItemStyles}
+          >
+            <GitPullRequestClosed className="mr-1 h-4 w-4" />
+            <span>Close</span>
+          </button>
+        )}
       </div>
     </div>
   );
@@ -173,7 +225,17 @@ export const RecentActionButtons = ({
         />
       )}
 
+      {showCloseConfirmation && (
+        <ConfirmationDialog
+          message="Are you sure you want to close this purchase request? (You cannot reopen after closing)"
+          onConfirm={handleClose}
+          onCancel={() => setShowCloseConfirmation(false)}
+          title="Close Purchase Request"
+        />
+      )}
+
       {deleting && <DeletingOverlay />}
+      <LoadingBarWave isLoading={isClosing} />
 
       <div className="relative inline-block text-left" ref={menuRef}>
         <button

@@ -1,8 +1,10 @@
 "use client";
 import { useUser } from "@/context/UserContext";
+import { useRouter } from "next/navigation";
 
 export function useHandleHrefLink() {
   const { role: userRole } = useUser();
+  const router = useRouter();
 
   return function handleHrefLink(id) {
     let dashboardPath;
@@ -25,6 +27,6 @@ export function useHandleHrefLink() {
         break;
     }
 
-    window.location.href = dashboardPath;
+    router.push(dashboardPath);
   };
 }

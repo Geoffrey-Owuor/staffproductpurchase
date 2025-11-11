@@ -20,7 +20,9 @@ export default function SaveCloseComponent({
     //Condition for 'hr' role
     if (userRole === "hr" && payrollApproval !== "approved") {
       event.preventDefault(); // Stop the form from submitting
-      setAlertMessage("Request is either not approved or declined by Payroll");
+      setAlertMessage(
+        "Purchase request is either not approved or has been declined by Payroll",
+      );
       setAlertType("error");
       setShowAlert(true);
       return; // End the function
@@ -32,7 +34,9 @@ export default function SaveCloseComponent({
       (payrollApproval !== "approved" || hrApproval !== "approved")
     ) {
       event.preventDefault(); // Stop the form from submitting
-      setAlertMessage("Request is either not approved or declined by HR");
+      setAlertMessage(
+        "Purchase request is either not approved or has been declined by HR/Payroll",
+      );
       setAlertType("error");
       setShowAlert(true);
       return; // End the function
@@ -47,7 +51,7 @@ export default function SaveCloseComponent({
     ) {
       event.preventDefault(); // Stop the form from submitting
       setAlertMessage(
-        "Request is either not approved or declined by HR/Credit",
+        "Purchase request is either not approved or has been declined by HR/Credit/Payroll",
       );
       setAlertType("error");
       setShowAlert(true);

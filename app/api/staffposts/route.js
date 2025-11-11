@@ -170,7 +170,7 @@ export async function POST(request) {
     return Response.json(
       {
         success: true,
-        message: "Purchase request sent successfully",
+        message: "Your purchase request has been submitted successfully",
         id: generatedId,
       },
       { status: 201 }, // 201 Created for successful resource creation

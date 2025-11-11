@@ -1,6 +1,6 @@
 "use client";
 
-import { XIcon, BadgeAlert, BadgeCheck } from "lucide-react";
+import { XIcon, AlertCircle, CheckCircle } from "lucide-react";
 import { useState, useEffect } from "react";
 
 const Alert = ({ message, type, onClose }) => {
@@ -21,7 +21,7 @@ const Alert = ({ message, type, onClose }) => {
   }, []);
 
   // Determine which icon to display based on type
-  const IconComponent = type === "success" ? BadgeCheck : BadgeAlert;
+  const IconComponent = type === "success" ? CheckCircle : AlertCircle;
 
   // Determine icon color
   const iconColorClass =
@@ -31,12 +31,12 @@ const Alert = ({ message, type, onClose }) => {
 
   return (
     <div
-      className={`fixed top-0 right-0 left-0 z-9999 flex justify-center ${
+      className={`fixed top-0 right-2 z-9999 ${
         isClosing ? "animate-slideUp" : "animate-slideDown"
       }`}
     >
       <div
-        className={`mt-4 flex max-w-md min-w-[300px] items-center justify-between rounded-xl border border-gray-200 bg-black/70 p-3 text-white shadow-md dark:border-gray-800 dark:bg-white/70 dark:text-black`}
+        className={`mt-4 flex w-auto items-center justify-between rounded-xl border border-gray-200 bg-black/80 px-3 py-4.5 text-white shadow-md dark:border-gray-800 dark:bg-white/80 dark:text-black`}
       >
         <div className="flex items-center gap-2">
           {/* Render the appropriate icon */}

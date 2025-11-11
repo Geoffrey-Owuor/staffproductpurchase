@@ -11,12 +11,12 @@ import {
   ChevronsLeft,
 } from "lucide-react";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import HotpointLogo from "../HotpointLogo";
 import UserMenu from "../UserMenu";
 import LoadingLine from "../LoadingLine";
-import { useFinishLoading } from "@/app/hooks/useFinishLoading";
+import { useFinishLoading } from "@/hooks/useFinishLoading";
 import { UseHandleHomeRoute } from "@/utils/HandleActionClicks/useHandleHomeRoute";
 import { UseHandleHistoryRoute } from "@/utils/HandleActionClicks/useHandleHistoryRoute";
 import { useUser } from "@/context/UserContext";
@@ -67,6 +67,31 @@ export default function ReusableSidebar({ isOpen, toggleSidebar }) {
     setIsLoading(true);
     handleHistoryRoute();
   };
+
+  // Hook for managing the new purchase shortcut
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      // Check for alt + N
+      if (event.altKey & (event.key === "n")) {
+        // Prevent browsers default new window action
+        event.preventDefault();
+
+        //check if user is allowed to use this shortcut
+        if (role === "staff") {
+          setIsLoading(true);
+          router.push("/staffdashboard/new-purchase");
+        }
+      }
+    };
+
+    // Add an event listener when the component mounts
+    document.addEventListener("keydown", handleKeyDown);
+
+    // remove event listener when component unmounts
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [role, router]); //dependencies
 
   useFinishLoading(isLoading, setIsLoading);
 

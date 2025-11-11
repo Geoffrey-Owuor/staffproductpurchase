@@ -2,7 +2,7 @@
 import { Edit, X, Download, View } from "lucide-react";
 import ApprovalStatus from "../Reusables/ApprovalStatus";
 import TopBarButtons from "../Reusables/TopBarButtons/TopBarButtons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import PurchaseDetailSkeleton from "../skeletons/PurchaseDetailsSkeleton";
 import DetailField from "../Reusables/DetailField";
@@ -17,10 +17,15 @@ import { formatCreditPeriod } from "@/public/assets";
 
 export default function GeneralViewPurchases({ id }) {
   const { role: userRole } = useUser();
-  const { purchase, loading, error } = usePurchase();
+  const { purchase, loading, error, refetchPurchaseDetails } = usePurchase();
   const [isEditing, setIsEditing] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
+
+  useEffect(() => {
+    // Ensures the component always shows up-to-date data
+    refetchPurchaseDetails();
+  }, [refetchPurchaseDetails]);
 
   const router = useRouter();
 

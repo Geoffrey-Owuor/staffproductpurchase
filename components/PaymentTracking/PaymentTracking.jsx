@@ -13,10 +13,11 @@ import Pagination from "../pagination/Pagination";
 import ColumnToggle from "../Reusables/ColumnToggle";
 import ImportExcelData from "../Reusables/Import/ImportExcelData";
 import { FetchPeriodsPolicies } from "@/app/lib/FetchPeriodsPolicies";
+import { useApproversPurchases } from "@/context/ApproversPurchaseContext";
+import { useTrackingApprovalCards } from "@/context/TrackingApprovalCardsContext";
+import { Search, SearchX } from "lucide-react";
 
-export default function PaymentTracking({ fetchAllData, biApproval = true }) {
-  const [purchases, setPurchases] = useState([]);
-  const [loading, setLoading] = useState(true);
+export default function PaymentTracking() {
   const [goingTo, setGoingTo] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -24,6 +25,13 @@ export default function PaymentTracking({ fetchAllData, biApproval = true }) {
 
   //Setting fetched credit periods
   const [periods, setPeriods] = useState([]);
+
+  // Get purchases details from approversContext hook
+  const { purchases, loading, fetchPurchases, refetchDefaultPurchases } =
+    useApproversPurchases();
+
+  // Getting function to refetch tracking approval cards
+  const { refetchCounts } = useTrackingApprovalCards();
 
   //Filter States
   const [filterType, setFilterType] = useState("staff");
@@ -74,62 +82,6 @@ export default function PaymentTracking({ fetchAllData, biApproval = true }) {
     handleViewClick(id);
   };
 
-  // New fetch function
-  const fetchPurchases = async (options = {}) => {
-    try {
-      setLoading(true);
-
-      let url = `/api/tablesdata/purchaseshistorydata?filterType=${options.filterType || filterType}`;
-
-      //Telling the api if we should fetch all the data
-      if (fetchAllData) {
-        url += `&fetchAll=true`;
-      }
-      if (biApproval) {
-        url += `&biApproval=true`;
-      }
-
-      if (options.filterType === "staff" && options.searchTerm) {
-        url += `&search=${encodeURIComponent(options.searchTerm.trim())}`;
-      } else if (
-        options.filterType === "date" &&
-        options.fromDate &&
-        options.toDate
-      ) {
-        url += `&fromDate=${options.fromDate}&toDate=${options.toDate}`;
-      } else if (options.filterType === "period" && options.monthPeriod) {
-        url += `&monthPeriod=${options.monthPeriod}`;
-      } else if (options.filterType === "terms" && options.paymentTerms) {
-        url += `&paymentTerms=${options.paymentTerms}`;
-      } else if (options.filterType === "payroll" && options.payrollNumber) {
-        url += `&payrollNumber=${encodeURIComponent(options.payrollNumber.trim())}`;
-      } else if (
-        options.filterType === "reference" &&
-        options.referenceNumber
-      ) {
-        url += `&referenceNumber=${encodeURIComponent(options.referenceNumber.trim())}`;
-      } else if (options.filterType === "closure" && options.requestClosure) {
-        url += `&requestClosure=${options.requestClosure}`;
-      }
-
-      const response = await fetch(url);
-      const data = await response.json();
-
-      if (!response.ok) throw new Error("Failed to fetch purchases");
-      setPurchases(Array.isArray(data) ? data : []);
-    } catch (err) {
-      console.error("Error fetching purchases:", err);
-      setPurchases([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Initial fetch (unfiltered purchases)
-  useEffect(() => {
-    fetchPurchases({ filterType: "staff" });
-  }, []);
-
   //useEffect for fetching credit periods
   useEffect(() => {
     const fetchPeriods = async () => {
@@ -152,12 +104,50 @@ export default function PaymentTracking({ fetchAllData, biApproval = true }) {
       referenceNumber,
       requestClosure,
     });
+    setCurrentPage(1); //Set to page one on new search
+  };
+
+  //Function to return default purchases data and clear filters
+  const fetchDefaultPurchases = () => {
+    // Call refetch default purchases
+    refetchDefaultPurchases();
+    setCurrentPage(1);
+
+    // Clear previous filters
+    setSearchTerm("");
+    setPaymentTerms("");
+    setReferenceNumber("");
+    setRequestClosure("");
+    setFromDate("");
+    setToDate("");
+    setMonthPeriod("");
+    setPayrollNumber("");
+  };
+
+  //Functions for handling close success and close errors
+  //close success
+  const handleCloseSuccess = (message) => {
+    setAlertInfo({
+      show: true,
+      type: "success",
+      message: message || "Request successfully closed",
+    });
+    fetchDefaultPurchases(); //refetch the table data again after close success
+    refetchCounts(); //refetch counts
+  };
+
+  // Handling close errors
+  const handleCloseError = (message) => {
+    setAlertInfo({
+      show: true,
+      type: "error",
+      message: message || "Error closing the request",
+    });
   };
 
   // Recalculate total pages when purchases or rowsPerPage changes
   useEffect(() => {
     setTotalPages(Math.ceil(purchases.length / rowsPerPage));
-    setCurrentPage(1); // Optional: Reset to first page when rows per page changes
   }, [rowsPerPage, purchases]);
 
   const currentPurchases = purchases.slice(
@@ -169,7 +159,7 @@ export default function PaymentTracking({ fetchAllData, biApproval = true }) {
     <>
       {goingTo && <LoadingBar isLoading={true} />}
 
-      {/* Alert Component for showing alerts from the recentAction delete functionality */}
+      {/* Alert Component for showing alerts from the recentAction close functionality */}
       {alertInfo.show && (
         <Alert
           message={alertInfo.message}
@@ -310,9 +300,17 @@ export default function PaymentTracking({ fetchAllData, biApproval = true }) {
 
             <button
               onClick={applyFilters}
-              className="mt-2 rounded-md bg-gray-900 px-3 py-1 text-sm text-white hover:bg-gray-700 sm:mt-0 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
+              className="mt-2 flex items-center space-x-1 rounded-md bg-gray-900 px-3 py-1 text-sm text-white hover:bg-gray-700 sm:mt-0 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-300"
             >
-              Search
+              <Search className="h-3.5 w-3.5" />
+              <span>Search</span>
+            </button>
+            <button
+              onClick={fetchDefaultPurchases}
+              className="mt-2 flex items-center space-x-1 rounded-md bg-gray-700 px-3 py-1 text-sm text-white hover:bg-gray-800 sm:mt-0 dark:bg-gray-300 dark:text-gray-900 dark:hover:bg-white"
+            >
+              <SearchX className="h-3.5 w-3.5" />
+              <span>Clear</span>
             </button>
           </div>
         </div>
@@ -474,6 +472,10 @@ export default function PaymentTracking({ fetchAllData, biApproval = true }) {
                             payrollApproval={purchase.Payroll_Approval}
                             biApproval={purchase.BI_Approval}
                             goingTo={goingTo}
+                            closeButton={true}
+                            closureValue={purchase.request_closure}
+                            onCloseSuccess={handleCloseSuccess}
+                            onCloseError={handleCloseError}
                             disableDelete={true}
                           />
                         </td>

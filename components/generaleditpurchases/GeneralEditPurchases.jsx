@@ -19,6 +19,7 @@ import SaveCloseComponent from "../EditPurchaseComponents/SaveCloseComponent";
 import { usePurchase } from "@/context/PurchaseDetailsContext";
 import { useUser } from "@/context/UserContext";
 import { FetchPeriodsPolicies } from "@/app/lib/FetchPeriodsPolicies";
+import { useApprovalCounts } from "@/context/ApprovalCountsContext";
 
 // The initial state for a single product
 const initialProductState = {
@@ -38,33 +39,92 @@ const month = (today.getMonth() + 1).toString().padStart(2, "0");
 const day = today.getDate().toString().padStart(2, "0");
 const localTodayString = `${year}-${month}-${day}`;
 
-export default function GeneralEditPurchases({ id }) {
-  const { role: userRole, name } = useUser();
-  const { purchase } = usePurchase();
-
-  //Calling the hook at the top level, not outside of the component
-  const handleHrefLink = useHandleHrefLink();
-
-  const [loading, setLoading] = useState(true);
-  const [submitting, setIsSubmitting] = useState(false);
-  const [discountPolicies, setDiscountPolicies] = useState([]);
-
+function PurchaseForm({
+  purchase,
+  userRole,
+  name,
+  refetchCounts,
+  handleHrefLink,
+  id,
+}) {
   //Other formdata from hr approval - billing & invoicing (initial state)
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState(() => {
+    //initial products from the purchase data and setting products
+    const initialProducts =
+      purchase.products && purchase.products.length > 0
+        ? purchase.products
+        : [{ ...initialProductState }];
+
+    // 2. Calculate the total from these initial products, mirroring your useMemo logic.
+    const calculatedPurchaseTotal = initialProducts.reduce((total, product) => {
+      const value = parseFloat(product.discountedValue) || 0;
+      return total + value;
+    }, 0);
+
+    return {
+      //Payroll Data
+      one_third_rule: purchase.one_third_rule || "",
+      Payroll_Approval: purchase.Payroll_Approval || "",
+      payroll_approver_name: purchase.payroll_approver_name || name,
+      payroll_approval_date: purchase.payroll_approval_date || "",
+
+      //HR Data
+      is_employed: purchase.is_employed || "",
+      on_probation: purchase.on_probation || "",
+      hr_comments: purchase.hr_comments || "",
+      HR_Approval: purchase.HR_Approval || "",
+      hr_approver_name: purchase.hr_approver_name || name,
+      hr_approval_date: purchase.hr_approval_date || "",
+
+      //Credit Control Data
+      credit_period: purchase.credit_period || purchase.employee_payment_terms,
+      purchase_history_comments: purchase.purchase_history_comments || "",
+      pending_invoices: purchase.pending_invoices || "",
+      CC_Approval: purchase.CC_Approval || "",
+      cc_approver_name: purchase.cc_approver_name || name,
+      cc_approval_date: purchase.cc_approval_date || "",
+
+      //Billing & Invoice Data
+      invoice_date: purchase.invoice_date
+        ? purchase.invoice_date.split("T")[0]
+        : localTodayString,
+      invoice_number: purchase.invoice_number || "",
+      invoice_amount:
+        purchase.invoice_amount || calculatedPurchaseTotal.toFixed(2),
+
+      payment_reference: purchase.payment_reference || "",
+      bi_approver_name: purchase.bi_approver_name || name,
+      bi_approval_date: purchase.bi_approval_date || "",
+      BI_Approval: purchase.BI_Approval || "",
+    };
+  });
 
   //Staff Information Data (initial state)
-  const [staffInfo, setStaffInfo] = useState({});
+  const [staffInfo, setStaffInfo] = useState(() => ({
+    staffName: purchase.staffName || "",
+    payrollNo: purchase.payrollNo || "",
+    department: purchase.department || "",
+  }));
 
   //Payment Information Data (initial state)
-  const [paymentInfo, setPaymentInfo] = useState({});
+  const [paymentInfo, setPaymentInfo] = useState(() => ({
+    employee_payment_terms: purchase.employee_payment_terms || "",
+    invoicing_location: purchase.invoicing_location || "",
+    delivery_details: purchase.delivery_details || "",
+    user_credit_period: purchase.user_credit_period || "",
+    mpesa_code: purchase.mpesa_code || "",
+    createdAt: purchase.createdAt || "",
+  }));
 
-  //Setting the products object into the array
-  const [products, setProducts] = useState([{ ...initialProductState }]);
+  const [products, setProducts] = useState(() =>
+    purchase.products && purchase.products.length > 0
+      ? purchase.products
+      : [{ ...initialProductState }],
+  );
+
+  const [submitting, setIsSubmitting] = useState(false);
+  const [discountPolicies, setDiscountPolicies] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
-  const [payrollApproval, setPayrollApproval] = useState(null);
-  const [hrApproval, setHrApproval] = useState(null);
-  const [ccApproval, setCCApproval] = useState(null);
-  const [biApproval, setBiApproval] = useState(null);
   const [alertMessage, setAlertMessage] = useState("");
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [alertType, setAlertType] = useState("success");
@@ -85,83 +145,76 @@ export default function GeneralEditPurchases({ id }) {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    if (purchase) {
-      //initial products from the purchase data and setting products
-      const initialProducts =
-        purchase.products && purchase.products.length > 0
-          ? purchase.products
-          : [{ ...initialProductState }];
+  // useEffect(() => {
+  //   if (purchase) {
+  //     //initial products from the purchase data and setting products
+  //     const initialProducts =
+  //       purchase.products && purchase.products.length > 0
+  //         ? purchase.products
+  //         : [{ ...initialProductState }];
 
-      // 2. Calculate the total from these initial products, mirroring your useMemo logic.
-      const calculatedPurchaseTotal = initialProducts.reduce(
-        (total, product) => {
-          const value = parseFloat(product.discountedValue) || 0;
-          return total + value;
-        },
-        0,
-      );
-      setProducts(initialProducts);
+  //     // 2. Calculate the total from these initial products, mirroring your useMemo logic.
+  //     const calculatedPurchaseTotal = initialProducts.reduce(
+  //       (total, product) => {
+  //         const value = parseFloat(product.discountedValue) || 0;
+  //         return total + value;
+  //       },
+  //       0,
+  //     );
+  //     setProducts(initialProducts);
 
-      setFormData({
-        //Payroll Data
-        one_third_rule: purchase.one_third_rule || "",
-        Payroll_Approval: purchase.Payroll_Approval || "",
-        payroll_approver_name: purchase.payroll_approver_name || name,
-        payroll_approval_date: purchase.payroll_approval_date || "",
+  //     setFormData({
+  //       //Payroll Data
+  //       one_third_rule: purchase.one_third_rule || "",
+  //       Payroll_Approval: purchase.Payroll_Approval || "",
+  //       payroll_approver_name: purchase.payroll_approver_name || name,
+  //       payroll_approval_date: purchase.payroll_approval_date || "",
 
-        //HR Data
-        is_employed: purchase.is_employed || "",
-        on_probation: purchase.on_probation || "",
-        hr_comments: purchase.hr_comments || "",
-        HR_Approval: purchase.HR_Approval || "",
-        hr_approver_name: purchase.hr_approver_name || name,
-        hr_approval_date: purchase.hr_approval_date || "",
+  //       //HR Data
+  //       is_employed: purchase.is_employed || "",
+  //       on_probation: purchase.on_probation || "",
+  //       hr_comments: purchase.hr_comments || "",
+  //       HR_Approval: purchase.HR_Approval || "",
+  //       hr_approver_name: purchase.hr_approver_name || name,
+  //       hr_approval_date: purchase.hr_approval_date || "",
 
-        //Credit Control Data
-        credit_period: purchase.credit_period || "",
-        purchase_history_comments: purchase.purchase_history_comments || "",
-        pending_invoices: purchase.pending_invoices || "",
-        CC_Approval: purchase.CC_Approval || "",
-        cc_approver_name: purchase.cc_approver_name || name,
-        cc_approval_date: purchase.cc_approval_date || "",
+  //       //Credit Control Data
+  //       credit_period:
+  //         purchase.credit_period || purchase.employee_payment_terms,
+  //       purchase_history_comments: purchase.purchase_history_comments || "",
+  //       pending_invoices: purchase.pending_invoices || "",
+  //       CC_Approval: purchase.CC_Approval || "",
+  //       cc_approver_name: purchase.cc_approver_name || name,
+  //       cc_approval_date: purchase.cc_approval_date || "",
 
-        //Billing & Invoice Data
-        invoice_date: purchase.invoice_date
-          ? purchase.invoice_date.split("T")[0]
-          : localTodayString,
-        invoice_number: purchase.invoice_number || "",
-        invoice_amount:
-          purchase.invoice_amount || calculatedPurchaseTotal.toFixed(2),
+  //       //Billing & Invoice Data
+  //       invoice_date: purchase.invoice_date
+  //         ? purchase.invoice_date.split("T")[0]
+  //         : localTodayString,
+  //       invoice_number: purchase.invoice_number || "",
+  //       invoice_amount:
+  //         purchase.invoice_amount || calculatedPurchaseTotal.toFixed(2),
 
-        payment_reference: purchase.payment_reference || "",
-        bi_approver_name: purchase.bi_approver_name || name,
-        bi_approval_date: purchase.bi_approval_date || "",
-        BI_Approval: purchase.BI_Approval || "",
-      });
-      setStaffInfo({
-        staffName: purchase.staffName || "",
-        payrollNo: purchase.payrollNo || "",
-        department: purchase.department || "",
-      });
-      setPaymentInfo({
-        employee_payment_terms: purchase.employee_payment_terms || "",
-        invoicing_location: purchase.invoicing_location || "",
-        delivery_details: purchase.delivery_details || "",
-        user_credit_period: purchase.user_credit_period || "",
-        mpesa_code: purchase.mpesa_code || "",
-        createdAt: purchase.createdAt || "",
-      });
-
-      //Approval statuses for security checks
-      setBiApproval(purchase.BI_Approval);
-      setHrApproval(purchase.HR_Approval);
-      setPayrollApproval(purchase.Payroll_Approval);
-      setCCApproval(purchase.CC_Approval);
-
-      setLoading(false);
-    }
-  }, [purchase]);
+  //       payment_reference: purchase.payment_reference || "",
+  //       bi_approver_name: purchase.bi_approver_name || name,
+  //       bi_approval_date: purchase.bi_approval_date || "",
+  //       BI_Approval: purchase.BI_Approval || "",
+  //     });
+  //     setStaffInfo({
+  //       staffName: purchase.staffName || "",
+  //       payrollNo: purchase.payrollNo || "",
+  //       department: purchase.department || "",
+  //     });
+  //     setPaymentInfo({
+  //       employee_payment_terms: purchase.employee_payment_terms || "",
+  //       invoicing_location: purchase.invoicing_location || "",
+  //       delivery_details: purchase.delivery_details || "",
+  //       user_credit_period: purchase.user_credit_period || "",
+  //       mpesa_code: purchase.mpesa_code || "",
+  //       createdAt: purchase.createdAt || "",
+  //     });
+  //   }
+  // }, [purchase, name]);
 
   //Handler for other formdata change
   const handleChange = (e) => {
@@ -278,16 +331,22 @@ export default function GeneralEditPurchases({ id }) {
         throw new Error(result.message || "failed to update purchase");
       }
 
-      setAlertMessage("Request Updated Successfully, Redirecting...");
+      setAlertMessage(
+        result.message ||
+          "Purchase request has been updated successfully, Redirecting...",
+      );
       setAlertType("success");
       setShowAlert(true);
 
       setIsSubmitting(false);
 
-      // Redirect back after 1 second
+      // Refetch approval counts
+      refetchCounts();
+
+      // Redirect back after 0.7 seconds
       setTimeout(() => {
         handleHrefLink(id);
-      }, 1000);
+      }, 700);
     } catch (err) {
       console.error("Error updating purchase:", err);
       setAlertMessage(err.message || "Failed to update purchase");
@@ -298,128 +357,116 @@ export default function GeneralEditPurchases({ id }) {
     }
   };
 
-  if (
-    (userRole === "payroll" && payrollApproval === "approved") ||
-    (userRole === "hr" && hrApproval === "approved") ||
-    (userRole === "cc" && ccApproval === "approved") ||
-    (userRole === "bi" && biApproval === "approved")
-  ) {
-    return <UnauthorizedEdit role={userRole} />;
-  }
-
-  if (loading) {
-    return <EditFormSkeleton />;
-  }
-
   return (
-    <div className="mx-auto p-2">
-      <EditPurchaseHeading />
+    <>
+      <div className="mx-auto p-2">
+        <EditPurchaseHeading />
 
-      <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
-        {submitting && <LoadingBarWave isLoading={true} />}
+        <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
+          {submitting && <LoadingBarWave isLoading={true} />}
 
-        {/* Staff Info Component */}
-        <StaffInformation
-          formData={staffInfo}
-          handleChange={handleStaffChange}
-          userRole={userRole}
-        />
+          {/* Staff Info Component */}
+          <StaffInformation
+            formData={staffInfo}
+            handleChange={handleStaffChange}
+            userRole={userRole}
+          />
 
-        {/* Payment Details Component */}
-        <PaymentDetails
-          formData={paymentInfo}
-          handleChange={handlePaymentChange}
-          userRole={userRole}
-          periods={periods}
-        />
+          {/* Payment Details Component */}
+          <PaymentDetails
+            formData={paymentInfo}
+            handleChange={handlePaymentChange}
+            userRole={userRole}
+            periods={periods}
+          />
 
-        {/* Main Product Pricing title */}
-        <div className="mt-8 mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
-          <PackagePlus className="h-6 w-6" />
-          <span className="text-xl">Product & Pricing Details</span>
-        </div>
+          {/* Main Product Pricing title */}
+          <div className="mt-8 mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
+            <PackagePlus className="h-6 w-6" />
+            <span className="text-xl">Product & Pricing Details</span>
+          </div>
 
-        {/* Map over the products array to render a component for each */}
-        {products.map((product, index) => (
-          <div key={index} className="relative">
-            <ProductPricing
-              formData={product}
-              handleChange={(e) => handleProductChange(index, e)}
-              setFormData={(data) => setProductData(index, data)}
-              discountPolicies={discountPolicies}
-              productNumber={index + 1}
-              userRole={userRole}
-              paymentTerms={paymentInfo.employee_payment_terms}
-            />
-            {/* Removing a product - Only when role is bi */}
-            {products.length > 1 && userRole === "bi" && (
+          {/* Map over the products array to render a component for each */}
+          {products.map((product, index) => (
+            <div key={index} className="relative">
+              <ProductPricing
+                formData={product}
+                handleChange={(e) => handleProductChange(index, e)}
+                setFormData={(data) => setProductData(index, data)}
+                discountPolicies={discountPolicies}
+                productNumber={index + 1}
+                userRole={userRole}
+                paymentTerms={paymentInfo.employee_payment_terms}
+              />
+              {/* Removing a product - Only when role is bi */}
+              {products.length > 1 && userRole === "bi" && (
+                <button
+                  type="button"
+                  onClick={() => removeProduct(index)}
+                  className="absolute top-2 right-4 rounded-full p-2 text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-[#4c2e2f]"
+                  title="Remove Product"
+                >
+                  <Trash2 className="h-5 w-5" />
+                </button>
+              )}
+            </div>
+          ))}
+
+          <div className="my-12 flex items-center justify-between">
+            {purchaseTotal > 0 && (
+              <span className="text-lg">
+                Total Purchase Value:{" "}
+                <span className="font-bold">{`Ksh ${purchaseTotal.toFixed(2)}`}</span>
+              </span>
+            )}
+            {/* Adding a product - Only when role is bi */}
+            {userRole === "bi" && (
               <button
                 type="button"
-                onClick={() => removeProduct(index)}
-                className="absolute top-2 right-4 rounded-full p-2 text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-[#4c2e2f]"
-                title="Remove Product"
+                onClick={addProduct}
+                className="flex items-center gap-2 rounded-xl bg-gray-950 px-4 py-2 text-sm text-white transition-colors hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
               >
-                <Trash2 className="h-5 w-5" />
+                <PlusCircle className="h-5 w-5" />
+                Add Product
               </button>
             )}
           </div>
-        ))}
 
-        <div className="my-12 flex items-center justify-between">
-          {purchaseTotal > 0 && (
-            <span className="text-lg">
-              Total Purchase Value:{" "}
-              <span className="font-bold">{`Ksh ${purchaseTotal.toFixed(2)}`}</span>
-            </span>
+          <PayrollApprovalSection
+            formData={formData}
+            userRole={userRole}
+            handleChange={handleChange}
+          />
+
+          {(userRole === "hr" || userRole === "cc" || userRole === "bi") && (
+            <HRApprovalSection
+              formData={formData}
+              handleChange={handleChange}
+              userRole={userRole}
+            />
           )}
-          {/* Adding a product - Only when role is bi */}
+          {(userRole === "cc" || userRole === "bi") && (
+            <CreditControlSection
+              formData={formData}
+              handleChange={handleChange}
+              userRole={userRole}
+            />
+          )}
           {userRole === "bi" && (
-            <button
-              type="button"
-              onClick={addProduct}
-              className="flex items-center gap-2 rounded-xl bg-gray-950 px-4 py-2 text-sm text-white transition-colors hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
-            >
-              <PlusCircle className="h-5 w-5" />
-              Add Product
-            </button>
+            <BIApprovalSection
+              formData={formData}
+              handleChange={handleChange}
+              userRole={userRole}
+            />
           )}
-        </div>
 
-        <PayrollApprovalSection
-          formData={formData}
-          userRole={userRole}
-          handleChange={handleChange}
-        />
-
-        {(userRole === "hr" || userRole === "cc" || userRole === "bi") && (
-          <HRApprovalSection
-            formData={formData}
-            handleChange={handleChange}
-            userRole={userRole}
+          <SaveCloseComponent
+            payrollApproval={purchase.Payroll_Approval}
+            hrApproval={purchase.HR_Approval}
+            ccApproval={purchase.CC_Approval}
           />
-        )}
-        {(userRole === "cc" || userRole === "bi") && (
-          <CreditControlSection
-            formData={formData}
-            handleChange={handleChange}
-            userRole={userRole}
-          />
-        )}
-        {userRole === "bi" && (
-          <BIApprovalSection
-            formData={formData}
-            handleChange={handleChange}
-            userRole={userRole}
-          />
-        )}
-
-        <SaveCloseComponent
-          payrollApproval={payrollApproval}
-          hrApproval={hrApproval}
-          ccApproval={ccApproval}
-        />
-      </form>
-
+        </form>
+      </div>
       {/* Confirmation Dialogue */}
       {showConfirmation && (
         <ConfirmationDialog
@@ -438,6 +485,52 @@ export default function GeneralEditPurchases({ id }) {
           onClose={() => setShowAlert(false)}
         />
       )}
-    </div>
+    </>
+  );
+}
+
+// The Loader component
+
+export default function GeneralEditPurchases({ id }) {
+  const { role: userRole, name } = useUser();
+  const { purchase, loading, error } = usePurchase();
+  const { refetchCounts } = useApprovalCounts();
+  const handleHrefLink = useHandleHrefLink();
+
+  // 1. Context Loading State
+  if (loading) {
+    return <EditFormSkeleton />;
+  }
+
+  // 2. Error or No Data State
+  if (error || !purchase) {
+    return (
+      <div className="p-8 text-center text-red-500">
+        <h2>Failed to Load</h2>
+        <p>{error || "Purchase details could not be found."}</p>
+      </div>
+    );
+  }
+
+  // 3. Authorization State
+  if (
+    (userRole === "payroll" && purchase.Payroll_Approval === "approved") ||
+    (userRole === "hr" && purchase.HR_Approval === "approved") ||
+    (userRole === "cc" && purchase.CC_Approval === "approved") ||
+    (userRole === "bi" && purchase.BI_Approval === "approved")
+  ) {
+    return <UnauthorizedEdit role={userRole} />;
+  }
+
+  return (
+    <PurchaseForm
+      key={purchase.id} //Forces a remount and all props when id changes
+      purchase={purchase}
+      userRole={userRole}
+      name={name}
+      refetchCounts={refetchCounts}
+      handleHrefLink={handleHrefLink}
+      id={id}
+    />
   );
 }

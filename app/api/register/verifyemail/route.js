@@ -6,9 +6,11 @@ import { cookies } from "next/headers";
 import { SignJWT } from "jose";
 
 export async function POST(request) {
-  const conn = await pool.getConnection();
+  let conn;
   try {
     const { email } = await request.json();
+
+    conn = await pool.getConnection();
 
     // Check if email already registered
     const [existingUsers] = await conn.execute(
@@ -17,9 +19,12 @@ export async function POST(request) {
     );
 
     if (existingUsers.length > 0) {
-      conn.release();
       return Response.json(
-        { success: false, message: "Email already registered" },
+        {
+          success: false,
+          message:
+            "We couldn't verify your email. Try another email or sign in.",
+        },
         { status: 400 },
       );
     }
@@ -55,10 +60,11 @@ export async function POST(request) {
     // Send verification email
     await sendVerificationEmail(email, code);
 
-    conn.release();
-
     return Response.json(
-      { success: true, message: "Verification code sent to your email" },
+      {
+        success: true,
+        message: "Verification code has been sent to your email",
+      },
       { status: 200 },
     );
   } catch (error) {
@@ -73,10 +79,12 @@ export async function POST(request) {
 }
 
 export async function PUT(request) {
-  const conn = await pool.getConnection();
+  let conn;
 
   try {
     const { email } = await request.json();
+
+    conn = await pool.getConnection();
 
     //Check if the email is already registered
     const [existingUsers] = await conn.execute(
@@ -86,7 +94,10 @@ export async function PUT(request) {
 
     if (existingUsers.length > 0) {
       return Response.json(
-        { message: "Email already registered" },
+        {
+          message:
+            "We couldn't verify your email. Try another email or sign in.",
+        },
         { status: 400 },
       );
     }
@@ -106,7 +117,7 @@ export async function PUT(request) {
     await sendVerificationEmail(email, code);
 
     return Response.json(
-      { message: "Verification code sent to your email" },
+      { message: "Verification code has been sent to your email" },
       { status: 200 },
     );
   } catch (error) {

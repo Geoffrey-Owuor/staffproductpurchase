@@ -2,9 +2,10 @@ import { verifyPassword, createSession } from "@/app/lib/auth";
 import pool from "@/lib/db";
 
 export async function POST(request) {
+  let conn;
   try {
     const { email, password } = await request.json();
-    const conn = await pool.getConnection();
+    conn = await pool.getConnection();
 
     //Find user by email
     const [users] = await conn.execute(
@@ -13,7 +14,6 @@ export async function POST(request) {
     );
 
     if (!users.length) {
-      conn.release();
       return Response.json(
         { success: false, message: "Wrong username or password" },
         { status: 401 },
@@ -24,8 +24,6 @@ export async function POST(request) {
     //Verify Password
     const isValid = await verifyPassword(password, user.password);
     if (!isValid) {
-      conn.release();
-
       return Response.json(
         { success: false, message: "Wrong username or password" },
         { status: 401 },
@@ -42,7 +40,6 @@ export async function POST(request) {
       user.payrollNo,
       user.department,
     );
-    conn.release();
 
     return Response.json({ success: true, role: user.role });
   } catch (error) {
@@ -51,5 +48,7 @@ export async function POST(request) {
       { success: false, message: "Server error. Please try again" },
       { status: 500 },
     );
+  } finally {
+    if (conn) conn.release();
   }
 }

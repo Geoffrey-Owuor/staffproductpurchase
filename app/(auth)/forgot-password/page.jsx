@@ -1,9 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { AuthPagesLogo } from "@/public/assets";
-import ThemeToggle from "@/components/Reusables/ThemeProviders/ThemeToggle";
 import Alert from "@/components/Alert";
+import AuthBackground from "@/components/Reusables/Images/AuthBackground";
 
 export default function ForgotPassword() {
   const [step, setStep] = useState(1); // step 1 = form, step 2 = message
@@ -101,15 +100,12 @@ export default function ForgotPassword() {
           onClose={() => setShowAlert(false)}
         />
       )}
-      <div className="relative flex min-h-screen flex-col items-center justify-center bg-white text-gray-900 dark:bg-gray-950 dark:text-white">
-        {/* Logo */}
-        <div className="fixed top-3.5 left-4 z-50">
-          <AuthPagesLogo />
-        </div>
-
-        <div className="w-full max-w-[400px] px-8">
+      <AuthBackground>
+        <div className="rounded-xl border border-gray-300 bg-white p-8 shadow-lg dark:border-gray-700 dark:bg-gray-950">
           <div className="mb-7 text-center">
-            <h1 className="text-3xl font-semibold">Forgot Password</h1>
+            <h1 className="text-2xl font-semibold">
+              {step === 1 ? "Forgot Password" : "Reset Link Sent"}
+            </h1>
             <p className="mt-8 text-sm text-gray-600 dark:text-gray-400">
               {step === 1 ? (
                 "Enter your email to receive a password reset link."
@@ -141,11 +137,11 @@ export default function ForgotPassword() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   placeholder=" "
-                  className="peer w-full rounded-full border border-gray-300 bg-transparent px-4 py-3 text-gray-900 placeholder-transparent focus:outline-none dark:border-gray-700 dark:text-white"
+                  className="peer w-full rounded-xl border border-gray-300 bg-transparent px-4 py-3 text-gray-900 placeholder-transparent focus:outline-none dark:border-gray-700 dark:text-white"
                 />
                 <label
                   htmlFor="email"
-                  className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300"
+                  className="absolute -top-3 left-4 rounded-md bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300"
                 >
                   Email Address
                 </label>
@@ -160,7 +156,7 @@ export default function ForgotPassword() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="mt-6 w-full rounded-full bg-gray-900 px-4 py-3 font-medium text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:bg-gray-400 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
+                className="mt-6 w-full rounded-xl bg-gray-900 px-4 py-3 font-medium text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:bg-gray-400 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
               >
                 {isLoading ? (
                   <span className="flex items-center justify-center gap-2">
@@ -202,12 +198,7 @@ export default function ForgotPassword() {
             </Link>
           </div>
         </div>
-
-        {/* Theme Toggle - Bottom Right */}
-        <div className="fixed right-4 bottom-4 z-50">
-          <ThemeToggle />
-        </div>
-      </div>
+      </AuthBackground>
     </>
   );
 }

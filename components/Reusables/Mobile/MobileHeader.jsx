@@ -16,7 +16,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import UserMenu from "../UserMenu";
 import LoadingLine from "../LoadingLine";
-import { useFinishLoading } from "@/app/hooks/useFinishLoading";
+import { useFinishLoading } from "@/hooks/useFinishLoading";
 import { UseHandleHomeRoute } from "@/utils/HandleActionClicks/useHandleHomeRoute";
 import { UseHandleHistoryRoute } from "@/utils/HandleActionClicks/useHandleHistoryRoute";
 import { useUser } from "@/context/UserContext";

@@ -3,9 +3,10 @@ import { hashPassword, verifyPassword } from "@/app/lib/auth";
 
 export async function POST(request) {
   const { token, newPassword } = await request.json();
-  const conn = await pool.getConnection();
+  let conn;
 
   try {
+    conn = await pool.getConnection();
     //Verify token
     const [users] = await conn.execute(
       "SELECT id from users WHERE reset_token = ? AND reset_token_expiry > NOW()",
@@ -28,7 +29,9 @@ export async function POST(request) {
       [hashedPassword, users[0].id],
     );
 
-    return Response.json({ message: "Password Updated Successfully" });
+    return Response.json({
+      message: "Your password has been updated successfully",
+    });
   } catch (error) {
     console.error("Password Reset Error:", error);
     return Response.json(
@@ -36,15 +39,16 @@ export async function POST(request) {
       { status: 500 },
     );
   } finally {
-    conn.release();
+    if (conn) conn.release();
   }
 }
 
 export async function PUT(request) {
   const { email, currentPassword, newPassword } = await request.json();
-  const conn = await pool.getConnection();
+  let conn;
 
   try {
+    conn = await pool.getConnection();
     //verify user
     const [verifyUser] = await conn.execute(
       "SELECT id, password from users WHERE email = ?",
@@ -62,7 +66,7 @@ export async function PUT(request) {
     );
     if (!isValid) {
       return Response.json(
-        { message: "Current Password Incorrect" },
+        { message: "You current password is incorrect" },
         { status: 401 },
       );
     }
@@ -77,7 +81,7 @@ export async function PUT(request) {
     ]);
 
     return Response.json(
-      { message: "Password Updated Successfully" },
+      { message: "Your password has been updated successfully" },
       { status: 200 },
     );
   } catch (error) {
@@ -87,6 +91,6 @@ export async function PUT(request) {
       { status: 500 },
     );
   } finally {
-    conn.release();
+    if (conn) conn.release();
   }
 }

@@ -1,5 +1,11 @@
 "use client";
-import { createContext, useContext, useState, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 
 const PurchaseDetailsContext = createContext();
 
@@ -10,27 +16,38 @@ export const PurchaseProvider = ({ id, children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Placing the fetching in a useCallback
+  const fetchPurchaseDetails = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/generalviewpurchases/${id}`);
+      if (!res.ok) throw new Error("Failed to fetch purchase");
+      const data = await res.json();
+      setPurchase(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [id]); //Recreate function when id changes
+
+  // First run on context mount
   useEffect(() => {
-    if (!id) return;
-
-    const fetchPurchaseDetails = async () => {
-      try {
-        setLoading(true);
-        const res = await fetch(`/api/generalviewpurchases/${id}`);
-        if (!res.ok) throw new Error("Failed to fetch purchase");
-        const data = await res.json();
-        setPurchase(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchPurchaseDetails();
-  }, [id]);
+  }, [fetchPurchaseDetails]);
 
-  const value = { purchase, loading, error };
+  // Refetch function for data refresh (not used for now)
+  const refetchPurchaseDetails = useCallback(() => {
+    fetchPurchaseDetails();
+  }, [fetchPurchaseDetails]);
+
+  const value = {
+    purchase,
+    setPurchase,
+    refetchPurchaseDetails,
+    loading,
+    error,
+  };
 
   return (
     <PurchaseDetailsContext.Provider value={value}>

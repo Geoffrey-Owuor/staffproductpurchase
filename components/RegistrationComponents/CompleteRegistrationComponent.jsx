@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import { Eye, EyeClosed } from "lucide-react";
-import { AuthPagesLogo } from "@/public/assets";
-import ThemeToggle from "../Reusables/ThemeProviders/ThemeToggle";
+import AuthBackground from "../Reusables/Images/AuthBackground";
 import Alert from "../Alert";
+import { useRouter } from "next/navigation";
 
 export default function CompleteRegistrationComponent({ email }) {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     password: "",
@@ -58,7 +59,7 @@ export default function CompleteRegistrationComponent({ email }) {
       else if (data.role === "staff") dashboardPath = "/staffdashboard";
       else dashboardPath = "/login";
 
-      window.location.href = dashboardPath;
+      router.push(dashboardPath);
     } catch (err) {
       setError(err.message);
       setLoading(false);
@@ -66,21 +67,18 @@ export default function CompleteRegistrationComponent({ email }) {
   };
 
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center bg-white text-gray-900 dark:bg-gray-950 dark:text-white">
+    <AuthBackground>
       {showAlert && (
         <Alert
-          message="Email verified Successfully"
+          message="Your email has been verified successfully"
           type="success"
           onClose={() => setShowAlert(false)}
         />
       )}
-      {/* Logo */}
-      <div className="fixed top-3.5 left-4 z-50">
-        <AuthPagesLogo />
-      </div>
+
       {/* Card */}
-      <div className="w-full max-w-[400px] px-8">
-        <h1 className="mb-8 text-center text-3xl font-semibold">
+      <div className="rounded-xl border border-gray-300 bg-white px-8 py-6 shadow-lg dark:border-gray-700 dark:bg-gray-950">
+        <h1 className="mb-8 text-center text-2xl font-semibold">
           Complete Registration
         </h1>
         {error && (
@@ -96,9 +94,9 @@ export default function CompleteRegistrationComponent({ email }) {
               onChange={handleChange}
               required
               placeholder=" "
-              className="peer w-full rounded-full border border-gray-300 bg-transparent px-4 py-3 placeholder-transparent focus:outline-none dark:border-gray-700 dark:text-white"
+              className="peer w-full rounded-xl border border-gray-300 bg-transparent px-4 py-3 placeholder-transparent focus:outline-none dark:border-gray-700 dark:text-white"
             />
-            <label className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300">
+            <label className="absolute -top-3 left-4 rounded-md bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300">
               Full Name
             </label>
           </div>
@@ -111,9 +109,9 @@ export default function CompleteRegistrationComponent({ email }) {
               onChange={handleChange}
               required
               placeholder=" "
-              className="peer w-full rounded-full border border-gray-300 bg-transparent px-4 py-3 placeholder-transparent focus:outline-none dark:border-gray-700 dark:text-white"
+              className="peer w-full rounded-xl border border-gray-300 bg-transparent px-4 py-3 placeholder-transparent focus:outline-none dark:border-gray-700 dark:text-white"
             />
-            <label className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300">
+            <label className="absolute -top-3 left-4 rounded-md bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300">
               Payroll Number
             </label>
           </div>
@@ -124,7 +122,7 @@ export default function CompleteRegistrationComponent({ email }) {
               value={formData.department}
               onChange={handleChange}
               required
-              className="peer w-full appearance-none rounded-full border border-gray-300 bg-white px-4 py-3 focus:ring-0 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+              className="peer w-full appearance-none rounded-xl border border-gray-300 bg-white px-4 py-3 focus:ring-0 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
             >
               <option value="" disabled>
                 Select a department
@@ -142,7 +140,7 @@ export default function CompleteRegistrationComponent({ email }) {
               <option value="Service Center">Service Center</option>
               <option value="Engineering & HVAC">Engineering & HVAC</option>
             </select>
-            <label className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-focus:-top-3 peer-focus:text-sm dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300">
+            <label className="absolute -top-3 left-4 rounded-md bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300">
               Department
             </label>
           </div>
@@ -156,9 +154,9 @@ export default function CompleteRegistrationComponent({ email }) {
               required
               minLength="8"
               placeholder=" "
-              className="peer w-full rounded-full border border-gray-300 bg-transparent px-4 py-3 placeholder-transparent focus:outline-none dark:border-gray-700 dark:text-white"
+              className="peer w-full rounded-xl border border-gray-300 bg-transparent px-4 py-3 placeholder-transparent focus:outline-none dark:border-gray-700 dark:text-white"
             />
-            <label className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300">
+            <label className="absolute -top-3 left-4 rounded-md bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300">
               Password
             </label>
             <div
@@ -177,7 +175,7 @@ export default function CompleteRegistrationComponent({ email }) {
               onChange={handleChange}
               required
               placeholder=" "
-              className="peer w-full rounded-full border border-gray-300 bg-transparent px-4 py-3 placeholder-transparent focus:outline-none dark:border-gray-700 dark:text-white"
+              className="peer w-full rounded-xl border border-gray-300 bg-transparent px-4 py-3 placeholder-transparent focus:outline-none dark:border-gray-700 dark:text-white"
             />
             {formData.confirmPassword &&
               formData.password !== formData.confirmPassword && (
@@ -185,7 +183,7 @@ export default function CompleteRegistrationComponent({ email }) {
                   passwords do not match
                 </p>
               )}
-            <label className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300">
+            <label className="absolute -top-3 left-4 rounded-md bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300">
               Confirm Password
             </label>
           </div>
@@ -196,7 +194,7 @@ export default function CompleteRegistrationComponent({ email }) {
               (formData.confirmPassword &&
                 formData.password !== formData.confirmPassword)
             }
-            className={`w-full rounded-full px-4 py-3 font-medium transition duration-200 ${
+            className={`w-full rounded-xl px-4 py-3 font-medium transition duration-200 ${
               loading ||
               (formData.confirmPassword &&
                 formData.password !== formData.confirmPassword)
@@ -219,10 +217,6 @@ export default function CompleteRegistrationComponent({ email }) {
           Secure company login • Do not share your credentials
         </p>
       </div>
-      {/* Theme Toggle - Bottom Right */}
-      <div className="fixed right-4 bottom-4 z-50">
-        <ThemeToggle />
-      </div>
-    </div>
+    </AuthBackground>
   );
 }

@@ -25,7 +25,7 @@ export default function RootLayout({ children }) {
         <meta name="apple-mobile-web-app-title" content="Hotpoint" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} containerizing bg-base-classes antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} bg-base-classes antialiased`}
       >
         <ThemeProvider
           enableSystem={true}

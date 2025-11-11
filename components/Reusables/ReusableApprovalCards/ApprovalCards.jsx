@@ -1,41 +1,14 @@
 "use client";
 import { Clock, XCircle, CheckCircle2 } from "lucide-react";
-import { useEffect, useState } from "react";
 import ApprovalCardsSkeleton from "@/components/skeletons/ApprovalCardsSkeleton";
 import { StatCard } from "../StatCard";
 import CardHeadings from "../Headings/CardHeadings";
 import { useUser } from "@/context/UserContext";
+import { useApprovalCounts } from "@/context/ApprovalCountsContext";
 
 export default function ApprovalCards() {
   const { role: userRole } = useUser();
-  const [counts, setCounts] = useState({
-    pending: 0,
-    declined: 0,
-    approved: 0,
-  });
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchApprovalCounts = async () => {
-      try {
-        const response = await fetch("/api/approval-counts");
-        if (!response.ok) throw new Error("Failed to fetch counts");
-
-        const data = await response.json();
-        setCounts({
-          pending: data.pending || 0,
-          declined: data.declined || 0,
-          approved: data.approved || 0,
-        });
-      } catch (error) {
-        console.error("Error fetching approval counts:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchApprovalCounts();
-  }, []);
+  const { counts, loading } = useApprovalCounts();
 
   return (
     <div className="mx-2 mt-4 mb-8 rounded-xl border border-gray-200 px-2 pt-2 pb-3 dark:border-gray-700 dark:bg-gray-950">

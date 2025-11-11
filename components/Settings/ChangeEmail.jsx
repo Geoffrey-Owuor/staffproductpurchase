@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Mail, Loader2, X } from "lucide-react";
 import { useUser } from "@/context/UserContext";
 import Alert from "../Alert";
@@ -11,7 +11,7 @@ export default function ChangeEmail({ onClose }) {
   const [step, setStep] = useState("step1");
   const [newEmail, setNewEmail] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
-  const [verificationCode, setVerificationCode] = useState("");
+  const [otp, setOtp] = useState(new Array(6).fill(""));
   const [error, setError] = useState("");
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState(false);
@@ -20,6 +20,12 @@ export default function ChangeEmail({ onClose }) {
   const [alertType, setAlertType] = useState("");
   const [coolDown, setCoolDown] = useState(0);
   const [loggingOut, setLoggingOut] = useState(false);
+
+  // Input ref to control where to focus
+  const inputRefs = useRef([]);
+
+  // Derived state to check if code is full
+  const isCodeFull = otp.join("").length === 6;
 
   // Simple email format validation regex
   const validateEmail = (email) => {
@@ -68,47 +74,114 @@ export default function ChangeEmail({ onClose }) {
     }
   };
 
-  const handleVerifyCode = async (e) => {
-    e.preventDefault();
-    setUpdating(true);
-    try {
-      const response = await fetch("/api/register/verifycode", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          newemail: newEmail,
-          code: verificationCode,
-          oldemail: oldEmail,
-        }),
-      });
+  // New code submission logic using useCallBack
+  const submitCode = useCallback(
+    async (codeToSubmit) => {
+      if (updating) return;
+      setUpdating(true);
+      setError("");
 
-      const data = await response.json();
-      if (response.ok) {
-        setShowAlert(true);
-        setAlertType("success");
-        setAlertMessage(data.message || "Email updated successfully");
-        setVerificationCode("");
+      try {
+        const response = await fetch("/api/register/verifycode", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            newemail: newEmail,
+            code: codeToSubmit,
+            oldemail: oldEmail,
+          }),
+        });
 
-        //Call the logout api endpoint
-        await fetch("/api/logout", { method: "POST" });
+        const data = await response.json();
+        if (response.ok) {
+          setShowAlert(true);
+          setAlertType("success");
+          setAlertMessage(data.message || "Email updated successfully");
+          setOtp(new Array(6).fill(""));
 
-        //Redirect to login page after a short delay
-        setTimeout(() => {
-          setLoggingOut(true);
-          window.location.href = "/login";
-        }, 3000); //3 second delay for the user to read the alert
-      } else {
+          //Call the logout api endpoint
+          await fetch("/api/logout", { method: "POST" });
+
+          //Redirect to login page after a short delay
+          setTimeout(() => {
+            setLoggingOut(true);
+            window.location.href = "/login";
+          }, 2000); //2 second delay for the user to read the alert
+        } else {
+          setShowAlert(true);
+          setAlertType("error");
+          setAlertMessage(data.message || "Failed to verify code");
+          setOtp(new Array(6).fill("")); //Clear otp on error
+          // Focus first input on error
+          inputRefs.current[0]?.focus();
+        }
+      } catch (error) {
+        console.error("Failed to verify the code:", error);
         setShowAlert(true);
         setAlertType("error");
-        setAlertMessage(data.message || "Failed to verify code");
+        setAlertMessage(error.message || "Failed to update email");
+        setOtp(new Array(6).fill("")); //Clear otp on error
+        // Focus first input on error
+        inputRefs.current[0]?.focus();
+      } finally {
+        setUpdating(false);
       }
-    } catch (error) {
-      console.error("Failed to update email", error);
-      setShowAlert(true);
-      setAlertType("error");
-      setAlertMessage(error.message || "Failed to update email");
-    } finally {
-      setUpdating(false);
+    },
+    [newEmail, oldEmail],
+  );
+
+  //useEffect for auto-submission
+  useEffect(() => {
+    if (isCodeFull) {
+      submitCode(otp.join(""));
+    }
+  }, [otp, submitCode, isCodeFull]);
+
+  // Manual handling of form submission via enter key or button clikc
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    if (isCodeFull) {
+      submitCode(otp.join(""));
+    }
+  };
+
+  // New function to handle typing and auto-focus next
+  const handleChange = (e, index) => {
+    const value = e.target.value;
+
+    // Only allow single digits
+    if (!/^\d*$/.test(value)) return;
+
+    const newOtp = [...otp];
+    newOtp[index] = value.slice(-1); //Get only the last character;
+    setOtp(newOtp);
+
+    //Move focus to the next input if a digit was entered
+    if (value && index < 5) {
+      inputRefs.current[index + 1]?.focus();
+    }
+  };
+
+  // Handling backspace pressing
+  const handleKeyDown = (e, index) => {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
+      // If backspace is pressed on empty input, focus previous one
+      inputRefs.current[index - 1]?.focus();
+
+      // Clear previous input value
+      const newOtp = [...otp];
+      newOtp[index - 1] = "";
+      setOtp(newOtp);
+    }
+  };
+
+  //Handle pasting a six digit code
+  const handlePaste = (e) => {
+    e.preventDefault();
+    const paste = e.clipboardData.getData("text");
+    if (/^\d{6}$/.test(paste)) {
+      setOtp(paste.split(""));
+      inputRefs.current[5]?.focus();
     }
   };
 
@@ -219,7 +292,7 @@ export default function ChangeEmail({ onClose }) {
                 <div className="flex justify-center">
                   <button
                     type="submit"
-                    disabled={!!error || !newEmail || !confirmEmail || sending}
+                    disabled={error || !newEmail || !confirmEmail || sending}
                     className="inline-flex items-center gap-1 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-red-500 dark:hover:bg-red-600"
                   >
                     {sending ? (
@@ -262,58 +335,62 @@ export default function ChangeEmail({ onClose }) {
                 </p>
               </div>
 
-              {/* Verification Form */}
-              <form onSubmit={handleVerifyCode} className="mt-4 space-y-4">
-                <div>
-                  <label
-                    htmlFor="verification-code"
-                    className="sr-only" // Screen-reader only label
-                  >
-                    Verification Code
-                  </label>
-                  <input
-                    type="text"
-                    value={verificationCode}
-                    onChange={(e) => setVerificationCode(e.target.value)}
-                    placeholder="------"
-                    maxLength="6"
-                    className="block w-full rounded-lg border border-gray-300 bg-white p-3 text-center text-2xl tracking-[0.5em] text-gray-900 shadow-sm focus:border-gray-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white"
-                    required
-                  />
+              <form
+                onSubmit={handleFormSubmit}
+                className="space-y-6"
+                autoComplete="off"
+              >
+                {/* 6 box input layout */}
+                <div
+                  className="flex justify-center space-x-2"
+                  onPaste={handlePaste}
+                >
+                  {otp.map((digit, index) => (
+                    <input
+                      key={index}
+                      type="text"
+                      inputMode="numeric"
+                      pattern="\d{1}"
+                      maxLength={1}
+                      value={digit}
+                      onChange={(e) => handleChange(e, index)}
+                      onKeyDown={(e) => handleKeyDown(e, index)}
+                      ref={(el) => (inputRefs.current[index] = el)}
+                      required
+                      disabled={updating}
+                      className="h-14 w-10 rounded-xl border border-gray-300 bg-transparent text-center text-2xl font-semibold tracking-widest focus:border-gray-900 focus:ring-2 focus:ring-gray-900 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:w-12 dark:border-gray-700 dark:text-white dark:focus:border-white dark:focus:ring-white"
+                    />
+                  ))}
                 </div>
 
-                {/* Action Buttons */}
-                <div className="flex flex-col items-center space-y-4 pt-2">
-                  <button
-                    type="submit"
-                    disabled={updating}
-                    className="inline-flex items-center gap-1 rounded-lg bg-gray-950 px-6 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-900 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-gray-950 dark:hover:bg-gray-50"
-                  >
-                    {updating ? (
-                      <>
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        Verifying...
-                      </>
-                    ) : (
-                      "Verify"
-                    )}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setStep("step1")} // Action to go back
-                    className="cursor-pointer text-xs text-gray-600 hover:underline dark:text-gray-400"
-                  >
-                    Use a different email
-                  </button>
-
+                <button
+                  type="submit"
+                  disabled={!isCodeFull || updating}
+                  className={`w-full rounded-xl px-4 py-3 font-medium text-white transition duration-200 dark:text-gray-900 ${
+                    !isCodeFull || updating
+                      ? "cursor-not-allowed disabled:bg-gray-400"
+                      : "bg-gray-900 hover:bg-gray-700 dark:bg-white dark:hover:bg-gray-200"
+                  }`}
+                >
+                  {updating ? (
+                    <div className="flex items-center justify-center gap-2">
+                      Verifying...
+                      <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent dark:border-gray-900 dark:border-t-transparent"></div>
+                    </div>
+                  ) : (
+                    <>Verify</>
+                  )}
+                </button>
+                <div className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
+                  Didn't receive a code?{" "}
                   <button
                     type="button"
-                    onClick={handleResendCode} // Action to resend code
-                    className={`${coolDown > 0 ? "cursor-default" : "cursor-pointer hover:underline"} text-xs text-gray-600 dark:text-gray-400`}
+                    onClick={handleResendCode}
+                    className={`${coolDown > 0 ? "cursor-default" : "cursor-pointer hover:underline"} font-medium text-gray-700 dark:text-gray-300 dark:hover:text-white`}
                   >
                     {coolDown > 0
                       ? `Resend code in ${coolDown}s`
-                      : "Resend code?"}
+                      : "Resend code"}
                   </button>
                 </div>
               </form>

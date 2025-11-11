@@ -93,9 +93,7 @@ export default function CreditControlSection({
             className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${isReadOnly ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
             required
           >
-            <option value="pending" disabled>
-              Pending
-            </option>
+            <option value="pending">Pending</option>
             <option value="approved">Approved</option>
             <option value="declined">Declined</option>
           </select>

@@ -13,14 +13,28 @@ import Alert from "../Alert";
 import Pagination from "../pagination/Pagination";
 import ColumnToggle from "../Reusables/ColumnToggle";
 import ImportExcelData from "../Reusables/Import/ImportExcelData";
+import { useApprovalCounts } from "@/context/ApprovalCountsContext";
+import { useApproversPurchases } from "@/context/ApproversPurchaseContext";
+import { Search, SearchX } from "lucide-react";
 
-export default function PurchasesHistory({ fetchAllData }) {
-  const [purchases, setPurchases] = useState([]);
-  const [loading, setLoading] = useState(true);
+export default function PurchasesHistory() {
   const [goingTo, setGoingTo] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  // Get purchases details from approversContext hook
+  const {
+    purchases,
+    setPurchases,
+    loading,
+    fetchPurchases,
+    fetchAllData,
+    refetchDefaultPurchases,
+  } = useApproversPurchases();
+
+  // Get the refetch counts function
+  const { refetchCounts } = useApprovalCounts();
 
   //Filter States
   const [filterType, setFilterType] = useState("staff");
@@ -72,57 +86,6 @@ export default function PurchasesHistory({ fetchAllData }) {
     handleViewClick(id);
   };
 
-  // New fetch function
-  const fetchPurchases = async (options = {}) => {
-    try {
-      setLoading(true);
-
-      let url = `/api/tablesdata/purchaseshistorydata?filterType=${options.filterType || filterType}`;
-
-      //Telling the api if we should fetch all the data
-      if (fetchAllData) {
-        url += `&fetchAll=true`;
-      }
-
-      if (options.filterType === "staff" && options.searchTerm) {
-        url += `&search=${encodeURIComponent(options.searchTerm.trim())}`;
-      } else if (
-        options.filterType === "date" &&
-        options.fromDate &&
-        options.toDate
-      ) {
-        url += `&fromDate=${options.fromDate}&toDate=${options.toDate}`;
-      } else if (options.filterType === "approval" && options.approvalStatus) {
-        url += `&approvalStatus=${options.approvalStatus}`;
-      } else if (options.filterType === "terms" && options.paymentTerms) {
-        url += `&paymentTerms=${options.paymentTerms}`;
-      } else if (options.filterType === "payroll" && options.payrollNumber) {
-        url += `&payrollNumber=${encodeURIComponent(options.payrollNumber.trim())}`;
-      } else if (
-        options.filterType === "reference" &&
-        options.referenceNumber
-      ) {
-        url += `&referenceNumber=${encodeURIComponent(options.referenceNumber.trim())}`;
-      }
-
-      const response = await fetch(url);
-      const data = await response.json();
-
-      if (!response.ok) throw new Error("Failed to fetch purchases");
-      setPurchases(Array.isArray(data) ? data : []);
-    } catch (err) {
-      console.error("Error fetching purchases:", err);
-      setPurchases([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Initial fetch (unfiltered purchases)
-  useEffect(() => {
-    fetchPurchases({ filterType: "staff" });
-  }, []);
-
   // Button click handler
   const applyFilters = () => {
     fetchPurchases({
@@ -135,12 +98,28 @@ export default function PurchasesHistory({ fetchAllData }) {
       payrollNumber,
       referenceNumber,
     });
+    setCurrentPage(1); //set to first page on new search
+  };
+
+  //Function to return default purchases data and clear filters
+  const fetchDefaultPurchases = () => {
+    // Call refetch default purchases
+    refetchDefaultPurchases();
+    setCurrentPage(1);
+
+    // Clear previous filters
+    setSearchTerm("");
+    setApprovalStatus("");
+    setPaymentTerms("");
+    setReferenceNumber("");
+    setFromDate("");
+    setToDate("");
+    setPayrollNumber("");
   };
 
   // Recalculate total pages when purchases or rowsPerPage changes
   useEffect(() => {
     setTotalPages(Math.ceil(purchases.length / rowsPerPage));
-    setCurrentPage(1); // Optional: Reset to first page when rows per page changes
   }, [rowsPerPage, purchases]);
 
   const currentPurchases = purchases.slice(
@@ -158,6 +137,9 @@ export default function PurchasesHistory({ fetchAllData }) {
       type: "success",
       message: message || "Purchase Request Succesfully Deleted",
     });
+
+    // Call the refetch function to refetch approval counts
+    refetchCounts();
   };
 
   //Handler for deletion errors
@@ -298,9 +280,17 @@ export default function PurchasesHistory({ fetchAllData }) {
 
             <button
               onClick={applyFilters}
-              className="rounded-md bg-gray-900 px-3 py-1 text-sm text-white hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
+              className="mt-2 flex items-center space-x-1 rounded-md bg-gray-900 px-3 py-1 text-sm text-white hover:bg-gray-700 sm:mt-0 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
             >
-              Search
+              <Search className="h-3.5 w-3.5" />
+              <span>Search</span>
+            </button>
+            <button
+              onClick={fetchDefaultPurchases}
+              className="mt-2 flex items-center space-x-1 rounded-md bg-gray-700 px-3 py-1 text-sm text-white hover:bg-gray-800 sm:mt-0 dark:bg-gray-300 dark:text-gray-900 dark:hover:bg-white"
+            >
+              <SearchX className="h-3.5 w-3.5" />
+              <span>Clear</span>
             </button>
           </div>
         </div>

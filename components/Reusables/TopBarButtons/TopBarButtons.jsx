@@ -4,7 +4,7 @@ import { useState } from "react";
 import { UseHandleHomeRoute } from "@/utils/HandleActionClicks/useHandleHomeRoute";
 import { UseHandleHistoryRoute } from "@/utils/HandleActionClicks/useHandleHistoryRoute";
 import LoadingLine from "../LoadingLine";
-import { useFinishLoading } from "@/app/hooks/useFinishLoading";
+import { useFinishLoading } from "@/hooks/useFinishLoading";
 import { Undo2, ArrowLeft, History } from "lucide-react";
 
 export default function TopBarButtons() {

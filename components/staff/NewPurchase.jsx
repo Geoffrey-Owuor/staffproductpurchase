@@ -10,6 +10,7 @@ import PaymentDetails from "../PaymentDetails";
 import TopBarButtons from "../Reusables/TopBarButtons/TopBarButtons";
 import { FetchPeriodsPolicies } from "@/app/lib/FetchPeriodsPolicies";
 import { useUser } from "@/context/UserContext";
+import { useApprovalCounts } from "@/context/ApprovalCountsContext";
 
 // The initial state for a single product
 const initialProductState = {
@@ -25,18 +26,20 @@ const initialProductState = {
 export default function NewPurchase() {
   const user = useUser();
 
+  const { refetchCounts } = useApprovalCounts();
+
   const [discountPolicies, setDiscountPolicies] = useState([]);
-  const [staffInfo, setStaffInfo] = useState({
+  const [staffInfo, setStaffInfo] = useState(() => ({
     // Staff Information
     staffName: user.name,
     payrollNo: user.payrollNo,
     department: user.department,
-  });
+  }));
 
   //Initially setting periods to an empty array
   const [periods, setPeriods] = useState([]);
 
-  const [products, setProducts] = useState([{ ...initialProductState }]);
+  const [products, setProducts] = useState(() => [{ ...initialProductState }]);
 
   //Calculating the total discountedValue from the products
   const purchaseTotal = useMemo(() => {
@@ -47,14 +50,14 @@ export default function NewPurchase() {
     }, 0);
   }, [products]);
 
-  const [paymentInfo, setPaymentInfo] = useState({
+  const [paymentInfo, setPaymentInfo] = useState(() => ({
     employee_payment_terms: "",
     invoicing_location: "",
     delivery_details: "",
     mpesa_code: "",
     user_credit_period: "",
     createdAt: "",
-  });
+  }));
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -158,6 +161,9 @@ export default function NewPurchase() {
       setAlertType("success");
       setShowAlert(true);
 
+      // Refetch Approval Counts
+      refetchCounts();
+
       // Reset the form
       setProducts([{ ...initialProductState }]);
       setPaymentInfo({
@@ -168,7 +174,11 @@ export default function NewPurchase() {
         mpesa_code: "",
         createdAt: "",
       });
-      setStaffInfo({ staffName: "", payrollNo: "", department: "" });
+      setStaffInfo({
+        staffName: user.name,
+        payrollNo: user.payrollNo,
+        department: user.department,
+      });
     } catch (error) {
       console.error("Error submitting form:", error);
       setAlertMessage(
@@ -272,16 +282,17 @@ export default function NewPurchase() {
             Submit Purchase
           </button>
         </form>
-
-        {/* Alert Component */}
-        {showAlert && (
-          <Alert
-            message={alertMessage}
-            type={alertType}
-            onClose={() => setShowAlert(false)}
-          />
-        )}
       </div>
+
+      {/* Alert Component */}
+      {showAlert && (
+        <Alert
+          message={alertMessage}
+          type={alertType}
+          onClose={() => setShowAlert(false)}
+        />
+      )}
+
       {showConfirmDialog && (
         <ConfirmationDialog
           message="Are you sure you want to submit this purchase request? (You cannot edit after submission)"

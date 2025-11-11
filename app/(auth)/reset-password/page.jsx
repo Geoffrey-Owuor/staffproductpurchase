@@ -1,14 +1,3 @@
-// import { Suspense } from "react";
-// import ResetPasswordClient from "@/components/ResetPasswordClient";
-
-// export default function ResetPasswordPage() {
-//   return (
-//     <Suspense fallback={<div>Loading...</div>}>
-//       <ResetPasswordClient />
-//     </Suspense>
-//   );
-// }
-
 // app/(auth)/reset-password/page.jsx or page.tsx
 import { Suspense } from "react";
 import ResetPasswordClient from "@/components/ResetPasswordClient";
@@ -23,10 +12,11 @@ export default async function ResetPasswordPage({ searchParams }) {
     return <InvalidTokenUi />;
   }
 
-  const conn = await pool.getConnection();
+  let conn;
   let isValid = false;
 
   try {
+    conn = await pool.getConnection();
     const [users] = await conn.execute(
       "SELECT id FROM users WHERE reset_token = ? AND reset_token_expiry > NOW()",
       [token],
@@ -38,7 +28,7 @@ export default async function ResetPasswordPage({ searchParams }) {
   } catch (error) {
     console.error("Error validating reset token:", error);
   } finally {
-    conn.release();
+    if (conn) conn.release();
   }
 
   if (!isValid) {
