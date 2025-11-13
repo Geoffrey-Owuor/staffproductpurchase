@@ -44,7 +44,7 @@ export const PaymentStatus = ({ status }) => {
   switch (status) {
     case "closed":
       return (
-        <div className="inline-flex items-center gap-x-1 rounded-[9px] bg-green-100 px-2 py-1 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-200">
+        <div className="inline-flex items-center gap-x-1 rounded-[9px] bg-blue-100 px-2 py-1 text-xs font-medium text-blue-700 dark:bg-blue-900 dark:text-blue-200">
           <CircleCheck className="h-3 w-3" />
           {formattedStatus}
         </div>

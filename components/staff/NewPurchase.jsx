@@ -1,5 +1,6 @@
 "use client";
 import { useState, useMemo, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import StaffInformation from "../StaffInformation";
 import ProductPricing from "../ProductPricing";
 import Alert from "../Alert";
@@ -25,6 +26,7 @@ const initialProductState = {
 
 export default function NewPurchase() {
   const user = useUser();
+  const router = useRouter();
 
   const { refetchCounts } = useApprovalCounts();
 
@@ -164,21 +166,10 @@ export default function NewPurchase() {
       // Refetch Approval Counts
       refetchCounts();
 
-      // Reset the form
-      setProducts([{ ...initialProductState }]);
-      setPaymentInfo({
-        employee_payment_terms: "",
-        invoicing_location: "",
-        delivery_details: "",
-        user_credit_period: "",
-        mpesa_code: "",
-        createdAt: "",
-      });
-      setStaffInfo({
-        staffName: user.name,
-        payrollNo: user.payrollNo,
-        department: user.department,
-      });
+      // Redirect to staff dashboard after 0.7 seconds
+      setTimeout(() => {
+        router.push("/staffdashboard");
+      }, 700);
     } catch (error) {
       console.error("Error submitting form:", error);
       setAlertMessage(

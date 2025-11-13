@@ -51,25 +51,32 @@ export async function POST(request) {
 
     //Get the resultant inserted id (Next auto_inceremented value)
     const insertedId = result.insertId;
+    const referenceNumber = `PRQ-${insertedId}`;
 
     //Run an update query to insert reference_number into purchasesinfo
     await connection.execute(
       `UPDATE purchasesinfo 
        SET reference_number = ? 
        WHERE increment_id = ?`,
-      [`PRQ-${insertedId}`, insertedId],
+      [referenceNumber, insertedId],
     );
 
     //Get the purchase (id) from purchasesinfo table
     const [rows] = await connection.execute(
       `SELECT id from purchasesInfo
-       WHERE increment_id = ?
-       ORDER BY createdAt DESC
-       LIMIT 1`,
-      [insertedId],
+       WHERE reference_number = ?`,
+      [referenceNumber],
     );
 
-    const generatedId = rows[0]?.id;
+    const purchaseId = rows[0]?.id;
+    if (!purchaseId) {
+      // Failsafe
+      await connection.rollback();
+      return Response.json(
+        { success: false, message: "Failed to retrieve final purchase ID." },
+        { status: 500 },
+      );
+    }
 
     //Insert each product/item into the purchase_products table
 
@@ -79,7 +86,7 @@ export async function POST(request) {
         (purchase_id, itemName, itemStatus, productPolicy, productCode, tdPrice, discountRate, discountedValue)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
         [
-          generatedId,
+          purchaseId,
           product.itemName,
           product.itemStatus,
           product.productPolicy,
@@ -145,33 +152,45 @@ export async function POST(request) {
     const payrollEmail = emails[0].approver_email;
     const ccEmail = emails[2].approver_email;
 
+    // Email sending promises array
+    const emailPromises = [];
+
     //IF STATEMENT which checks payment terms type to send an appropriate email (To credit control or to HR)
     if (paymentInfo.employee_payment_terms === "CASH") {
-      await sendEmail({
-        to: ccEmail,
-        subject: `New Purchase Request ${staffInfo.staffName} PayrollNo: (${staffInfo.payrollNo})`,
-        html: ccEmailHtml,
-      });
+      emailPromises.push(
+        sendEmail({
+          to: ccEmail,
+          subject: `New Purchase Request ${staffInfo.staffName} PayrollNo: (${staffInfo.payrollNo})`,
+          html: ccEmailHtml,
+        }),
+      );
     } else {
-      await sendEmail({
-        to: payrollEmail,
-        subject: `New Purchase Request from ${staffInfo.staffName} PayrollNo: (${staffInfo.payrollNo})`,
-        html: emailHtml,
-      });
+      emailPromises.push(
+        sendEmail({
+          to: payrollEmail,
+          subject: `New Purchase Request from ${staffInfo.staffName} PayrollNo: (${staffInfo.payrollNo})`,
+          html: emailHtml,
+        }),
+      );
     }
 
     //Send email to the user
-    await sendEmail({
-      to: user.email,
-      subject: `Purchase Request Submitted Successfully, PayrollNo: (${staffInfo.payrollNo})`,
-      html: userEmailHtml,
-    });
+    emailPromises.push(
+      sendEmail({
+        to: user.email,
+        subject: `Purchase Request Submitted Successfully, PayrollNo: (${staffInfo.payrollNo})`,
+        html: userEmailHtml,
+      }),
+    );
+
+    //Send the emails
+    await Promise.all(emailPromises);
 
     return Response.json(
       {
         success: true,
         message: "Your purchase request has been submitted successfully",
-        id: generatedId,
+        id: purchaseId,
       },
       { status: 201 }, // 201 Created for successful resource creation
     );

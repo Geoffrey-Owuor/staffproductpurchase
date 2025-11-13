@@ -20,7 +20,7 @@ export default function Pagination({
           <button
             key={i}
             onClick={() => handlePageChange(i)}
-            className={`mx-1 flex h-8 w-8 items-center justify-center rounded-full ${currentPage === i ? "bg-gray-900 text-white dark:bg-gray-200 dark:text-gray-900" : "bg-transparent text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"}`}
+            className={`mx-1 flex h-6 w-6 items-center justify-center rounded-full ${currentPage === i ? "bg-gray-900 text-white dark:bg-gray-200 dark:text-gray-900" : "bg-transparent text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"}`}
           >
             {i}
           </button>,
@@ -32,7 +32,7 @@ export default function Pagination({
           <button
             key={i}
             onClick={() => handlePageChange(i)}
-            className={`mx-1 flex h-8 w-8 items-center justify-center rounded-full ${currentPage === i ? "bg-gray-900 text-white dark:bg-gray-200 dark:text-gray-900" : "bg-transparent text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"}`}
+            className={`mx-1 flex h-6 w-6 items-center justify-center rounded-full ${currentPage === i ? "bg-gray-900 text-white dark:bg-gray-200 dark:text-gray-900" : "bg-transparent text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"}`}
           >
             {i}
           </button>,
@@ -70,7 +70,7 @@ export default function Pagination({
         <button
           key={totalPages}
           onClick={() => handlePageChange(totalPages)}
-          className={`mx-1 flex h-8 w-8 items-center justify-center rounded-full ${currentPage === totalPages ? "bg-gray-900 text-white dark:bg-gray-200 dark:text-gray-900" : "bg-transparent text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"}`}
+          className={`mx-1 flex h-6 w-6 items-center justify-center rounded-full ${currentPage === totalPages ? "bg-gray-900 text-white dark:bg-gray-200 dark:text-gray-900" : "bg-transparent text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"}`}
         >
           {totalPages}
         </button>,
@@ -80,18 +80,18 @@ export default function Pagination({
   };
 
   return (
-    <div className="mt-4 mb-1 flex items-center justify-center space-x-7">
+    <div className="mt-4 mb-1 flex items-center justify-center space-x-2">
       {/* Rows Per Page Drop Down */}
       <div className="flex items-center">
-        <span className="mr-2 text-sm text-gray-700 dark:text-gray-400">
-          Rows per page:
+        <span className="mr-2 hidden text-sm text-gray-700 md:flex dark:text-gray-400">
+          Rows:
         </span>
         <select
           value={rowsPerPage}
           onChange={(e) => {
             onRowsPerPageChange(Number(e.target.value));
           }}
-          className="rounded-md border border-gray-300 bg-white px-2 py-1 text-sm text-gray-700 focus:border-gray-500 focus:ring-1 focus:ring-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-gray-400"
+          className="rounded-md border border-gray-300 bg-white p-1 text-sm text-gray-700 focus:border-gray-500 focus:ring-1 focus:ring-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-gray-400"
         >
           {[10, 20, 50, 100].map((size) => (
             <option key={size} value={size}>

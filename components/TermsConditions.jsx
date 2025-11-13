@@ -19,7 +19,7 @@ const TermsConditions = async () => {
         ) : (
           terms.map((term, index) => (
             <div key={term.condition_id || index} className="flex items-start">
-              <span className="mr-3 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gray-100 text-xs font-bold text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+              <span className="mr-3 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-red-50 text-xs font-bold text-gray-600 dark:bg-gray-800 dark:text-gray-300">
                 {index + 1}
               </span>
               <p className="leading-relaxed text-gray-700 dark:text-gray-400">

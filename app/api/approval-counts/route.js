@@ -117,23 +117,23 @@ export async function GET(request) {
     //Execute queries
     connection = await pool.getConnection();
 
-    //Pending results
-    const [pendingResult] = await connection.execute(
+    // Prepare all three concurrent query promises
+    const pendingPromise = connection.execute(
       queryConfigs.pending.sql,
       queryConfigs.pending.params,
     );
-
-    //Declined results
-    const [declinedResult] = await connection.execute(
+    const declinedPromise = connection.execute(
       queryConfigs.declined.sql,
       queryConfigs.declined.params,
     );
-
-    //Approved results
-    const [approvedResult] = await connection.execute(
+    const approvedPromise = connection.execute(
       queryConfigs.approved.sql,
       queryConfigs.approved.params,
     );
+
+    // Execute all three queries in parallel
+    const [[pendingResult], [declinedResult], [approvedResult]] =
+      await Promise.all([pendingPromise, declinedPromise, approvedPromise]);
 
     //Return the combined result
     return Response.json({

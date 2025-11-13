@@ -67,24 +67,36 @@ export async function PUT(request) {
       );
     }
 
+    // --- Start Transaction for Modification Steps ---
+    await conn.beginTransaction();
+
     const [emailUpdate] = await conn.execute(
       `UPDATE users SET email = ? WHERE email = ?`,
       [newemail, oldemail],
     );
 
     if (emailUpdate.affectedRows === 0) {
-      return Response.json({ message: "Email Not Updated" }, { status: 400 });
+      await conn.rollback();
+      return Response.json(
+        { message: "Email not updated or old email not found" },
+        { status: 400 },
+      );
     }
 
     // Clean up verification code
     await conn.execute(`DELETE FROM verification_codes WHERE email = ?`, [
       newemail,
     ]);
+
+    // 4. Commit all changes
+    await conn.commit();
+
     return Response.json(
       { message: "Email updated successfully, you'll be logged out shortly" },
       { status: 200 },
     );
   } catch (error) {
+    if (conn) await conn.rollback(); // Rollback in case of failure during transaction
     console.error("Code verification error:", error);
     return Response.json({ message: "Verification failed" }, { status: 500 });
   } finally {

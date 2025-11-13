@@ -175,6 +175,7 @@ export const RecentActionButtons = ({
           type="button"
           onClick={() => handleActionClick(gotoPurchaseEdit)}
           disabled={
+            //Approver cannot edit once approved
             goingTo === id ||
             (userRole === "payroll" && payrollApproval === "approved") ||
             (userRole === "hr" && hrApproval === "approved") ||
@@ -192,7 +193,12 @@ export const RecentActionButtons = ({
             type="button"
             onClick={handleConfirmDelete}
             disabled={
-              goingTo === id || disableDelete || biApproval === "approved"
+              //Approver cannot delete once approved
+              goingTo === id ||
+              (userRole === "payroll" && payrollApproval === "approved") ||
+              (userRole === "hr" && hrApproval === "approved") ||
+              (userRole === "cc" && ccApproval === "approved") ||
+              (userRole === "bi" && biApproval === "approved")
             }
             className="mt-1 flex w-full items-center rounded-md p-2 text-left text-sm text-red-600 hover:bg-red-50 disabled:opacity-50 disabled:hover:bg-transparent dark:text-red-400 dark:hover:bg-red-600/15"
           >

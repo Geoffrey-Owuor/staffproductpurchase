@@ -130,10 +130,10 @@
     }
 
     @media (width >= 78rem /* 1250px */) {
-      max-width: 80rem /* 1280px */;
+      max-width: 90rem /* 1280px */;
     }
     @media (width >= 96rem /* 1536px */) {
-      max-width: 96rem /* 1536px */;
+      max-width: 100rem /* 1536px */;
     }
   }
 }

@@ -9,23 +9,29 @@ export async function POST(request) {
 
   try {
     conn = await pool.getConnection();
+
+    // --- Start Transaction ---
+    await conn.beginTransaction();
+
     const [users] = await conn.execute("SELECT id FROM users WHERE email = ?", [
       email,
     ]);
 
     // Always return the same message to prevent email enumeration
     if (users.length === 0) {
+      await conn.rollback();
       return Response.json(
         { message: "If an account exists, a reset link has been sent" },
         { status: 200 },
       );
     }
 
+    const userId = users[0].id;
     const token = uuidv4();
 
     await conn.execute(
       "UPDATE users SET reset_token = ?, reset_token_expiry = NOW() + INTERVAL 1 HOUR WHERE id = ?",
-      [token, users[0].id],
+      [token, userId],
     );
 
     const resetLink = `${process.env.NEXT_PUBLIC_BASE_URL}/reset-password?token=${token}`;
@@ -35,6 +41,8 @@ export async function POST(request) {
       message: "If an account exists, a reset link has been sent",
     });
   } catch (error) {
+    // --- Rollback on Error ---
+    if (conn) await conn.rollback();
     console.error("Password reset error:", error);
     return Response.json(
       { message: "Failed to process request" },

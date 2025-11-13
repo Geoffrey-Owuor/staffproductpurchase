@@ -27,16 +27,22 @@ export async function POST(request) {
 
     // Verify email was previously verified
     const [verified] = await conn.execute(
-      `SELECT * FROM verification_codes WHERE email = ?`,
+      `SELECT * FROM verification_codes WHERE email = ? AND verified = 1 and expires_at > NOW()`,
       [email],
     );
 
     if (verified.length === 0) {
       return Response.json(
-        { success: false, message: "Email not verified" },
+        {
+          success: false,
+          message: "Email not verified or verification pending",
+        },
         { status: 400 },
       );
     }
+
+    // --- START TRANSACTION: Ensure atomicity for DB writes ---
+    await conn.beginTransaction();
 
     const role = getRoleFromEmail(email);
     const hashedPassword = await hashPassword(password);
@@ -47,19 +53,17 @@ export async function POST(request) {
       [name, email, hashedPassword, payrollNo, department, role],
     );
 
+    const userId = userResult.insertId;
+
     // Clean up verification code
     await conn.execute(`DELETE FROM verification_codes WHERE email = ?`, [
       email,
     ]);
 
-    await createSession(
-      userResult.insertId,
-      role,
-      name,
-      email,
-      payrollNo,
-      department,
-    );
+    // --- COMMIT: Save all changes permanently to the DB ---
+    await conn.commit();
+
+    await createSession(userId, role, name, email, payrollNo, department);
 
     // Delete the verify_email cookie now that it's no longer needed
     const cookieStore = await cookies();
@@ -73,16 +77,21 @@ export async function POST(request) {
     return Response.json(
       {
         success: true,
-        userId: userResult.insertId,
+        userId,
         role,
       },
       { status: 201 },
     );
   } catch (error) {
+    // Attempt rollback if error occurred during transaction phase
+    if (conn) await conn.rollback();
     console.error("Complete registration error:", error);
 
     return Response.json(
-      { success: false, message: "Registration failed" },
+      {
+        success: false,
+        message: "Registration failed. This may be due to an existing account.",
+      },
       { status: 500 },
     );
   } finally {

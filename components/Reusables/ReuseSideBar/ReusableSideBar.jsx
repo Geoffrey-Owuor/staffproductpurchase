@@ -108,7 +108,7 @@ export default function ReusableSidebar({ isOpen, toggleSidebar }) {
             className={`absolute top-60 transition-all duration-200 ${isOpen ? "left-52" : "left-10"}`}
           >
             <button
-              className="rounded-full border border-gray-400 bg-white p-2 text-gray-900 hover:bg-gray-100 dark:border-gray-500 dark:bg-gray-950 dark:text-white dark:hover:bg-gray-900"
+              className="rounded-full bg-gray-800 p-2 text-white hover:bg-gray-700 dark:border dark:border-gray-500 dark:bg-gray-950 dark:hover:bg-gray-900"
               onClick={toggleSidebar}
             >
               <Menu className="h-4 w-4" />

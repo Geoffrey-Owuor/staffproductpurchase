@@ -141,20 +141,22 @@ export default function StaffPurchaseHistory() {
               </select>
             )}
 
-            <button
-              onClick={applyFilters}
-              className="mt-2 flex items-center space-x-1 rounded-md bg-gray-900 px-3 py-1 text-sm text-white hover:bg-gray-700 sm:mt-0 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
-            >
-              <Search className="h-3.5 w-3.5" />
-              <span>Search</span>
-            </button>
-            <button
-              onClick={fetchDefaultPurchases}
-              className="mt-2 flex items-center space-x-1 rounded-md bg-gray-700 px-3 py-1 text-sm text-white hover:bg-gray-800 sm:mt-0 dark:bg-gray-300 dark:text-gray-900 dark:hover:bg-white"
-            >
-              <SearchX className="h-3.5 w-3.5" />
-              <span>Clear</span>
-            </button>
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={applyFilters}
+                className="mt-2 flex items-center space-x-1 rounded-md bg-gray-900 px-3 py-1 text-sm text-white hover:bg-gray-700 sm:mt-0 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
+              >
+                <Search className="h-3.5 w-3.5" />
+                <span>Search</span>
+              </button>
+              <button
+                onClick={fetchDefaultPurchases}
+                className="mt-2 flex items-center space-x-1 rounded-md bg-gray-700 px-3 py-1 text-sm text-white hover:bg-gray-800 sm:mt-0 dark:bg-gray-300 dark:text-gray-900 dark:hover:bg-white"
+              >
+                <SearchX className="h-3.5 w-3.5" />
+                <span>Clear</span>
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -165,7 +167,7 @@ export default function StaffPurchaseHistory() {
         <>
           <div className="overflow-x-auto">
             <table className="mb-6 min-w-full">
-              <thead className="bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-white">
+              <thead className="bg-gray-700 text-white dark:bg-gray-800">
                 <tr>
                   <th
                     className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"

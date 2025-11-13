@@ -19,12 +19,17 @@ export async function GET(_req) {
   try {
     connection = await pool.getConnection();
 
-    //Running the prepared statements
-    const [openResult] = await connection.execute(queryConfigs.openQuery);
-    const [closedResult] = await connection.execute(queryConfigs.closedQuery);
-    const [approvedResult] = await connection.execute(
-      queryConfigs.approvedQuery,
-    );
+    // 2. Prepare all three concurrent query promises
+    const openPromise = connection.execute(queryConfigs.openQuery);
+    const closedPromise = connection.execute(queryConfigs.closedQuery);
+    const approvedPromise = connection.execute(queryConfigs.approvedQuery);
+
+    // 3. Execute all three queries in parallel
+    const [[openResult], [closedResult], [approvedResult]] = await Promise.all([
+      openPromise,
+      closedPromise,
+      approvedPromise,
+    ]);
 
     //Returning the combined result
     return Response.json({

@@ -211,6 +211,9 @@ export async function PUT(request, { params }) {
     const ccEmail = emails[2].approver_email;
     const biEmail = emails[3].approver_email;
 
+    //Create a promise array to send emails after a commit
+    const emailPromises = [];
+
     //Payroll Approval and decline Emails
     if (
       user.role === "payroll" &&
@@ -218,38 +221,44 @@ export async function PUT(request, { params }) {
       newData.Payroll_Approval != oldData.Payroll_Approval
     ) {
       if (newData.Payroll_Approval === "approved") {
-        await sendEmail({
-          to: hrEmail,
-          subject: `Purchase Request Requires Approval - Staff Name: ${newData.staffName}`,
-          html: generatePayrollApprovalEmailHTML({
-            staffName: newData.staffName,
-            payrollNo: newData.payrollNo,
-            payroll_approver_name: newData.payroll_approver_name,
-            products: products,
+        emailPromises.push(
+          sendEmail({
+            to: hrEmail,
+            subject: `Purchase Request Requires Approval - Staff Name: ${newData.staffName}`,
+            html: generatePayrollApprovalEmailHTML({
+              staffName: newData.staffName,
+              payrollNo: newData.payrollNo,
+              payroll_approver_name: newData.payroll_approver_name,
+              products: products,
+            }),
           }),
-        });
-        await sendEmail({
-          to: oldData.user_email,
-          subject: `Purchase Request Approved by Payroll - Staff Name: ${newData.staffName}`,
-          html: generateStaffPayrollApprovedEmailHTML({
-            staffName: newData.staffName,
-            payrollNo: newData.payrollNo,
-            payroll_approver_name: newData.payroll_approver_name,
-            products: products,
+        );
+        emailPromises.push(
+          sendEmail({
+            to: oldData.user_email,
+            subject: `Purchase Request Approved by Payroll - Staff Name: ${newData.staffName}`,
+            html: generateStaffPayrollApprovedEmailHTML({
+              staffName: newData.staffName,
+              payrollNo: newData.payrollNo,
+              payroll_approver_name: newData.payroll_approver_name,
+              products: products,
+            }),
           }),
-        });
+        );
       } else if (newData.Payroll_Approval === "declined") {
-        await sendEmail({
-          to: oldData.user_email,
-          subject: `Purchase Request Declined by Payroll - Staff Name: ${newData.staffName}`,
-          html: generatePayrollRejectionEmailHTML({
-            staffName: newData.staffName,
-            payrollNo: newData.payrollNo,
-            payroll_approver_name: newData.payroll_approver_name,
-            one_third_rule: newData.one_third_rule,
-            products: products,
+        emailPromises.push(
+          sendEmail({
+            to: oldData.user_email,
+            subject: `Purchase Request Declined by Payroll - Staff Name: ${newData.staffName}`,
+            html: generatePayrollRejectionEmailHTML({
+              staffName: newData.staffName,
+              payrollNo: newData.payrollNo,
+              payroll_approver_name: newData.payroll_approver_name,
+              one_third_rule: newData.one_third_rule,
+              products: products,
+            }),
           }),
-        });
+        );
       }
     }
 
@@ -260,38 +269,44 @@ export async function PUT(request, { params }) {
       newData.HR_Approval !== oldData.HR_Approval
     ) {
       if (newData.HR_Approval === "approved") {
-        await sendEmail({
-          to: ccEmail,
-          subject: `Purchase Request Requires Approval - Staff Name: ${newData.staffName}`,
-          html: generateHrApprovalEmailHTML({
-            staffName: newData.staffName,
-            payrollNo: newData.payrollNo,
-            hr_approver_name: newData.hr_approver_name,
-            products: products,
+        emailPromises.push(
+          sendEmail({
+            to: ccEmail,
+            subject: `Purchase Request Requires Approval - Staff Name: ${newData.staffName}`,
+            html: generateHrApprovalEmailHTML({
+              staffName: newData.staffName,
+              payrollNo: newData.payrollNo,
+              hr_approver_name: newData.hr_approver_name,
+              products: products,
+            }),
           }),
-        });
-        await sendEmail({
-          to: oldData.user_email,
-          subject: `Purchase Request Approved by HR - Staff Name: ${newData.staffName}`,
-          html: generateStaffHrApprovedEmailHTML({
-            staffName: newData.staffName,
-            payrollNo: newData.payrollNo,
-            hr_approver_name: newData.hr_approver_name,
-            products: products,
+        );
+        emailPromises.push(
+          sendEmail({
+            to: oldData.user_email,
+            subject: `Purchase Request Approved by HR - Staff Name: ${newData.staffName}`,
+            html: generateStaffHrApprovedEmailHTML({
+              staffName: newData.staffName,
+              payrollNo: newData.payrollNo,
+              hr_approver_name: newData.hr_approver_name,
+              products: products,
+            }),
           }),
-        });
+        );
       } else if (newData.HR_Approval === "declined") {
-        await sendEmail({
-          to: oldData.user_email,
-          subject: `Purchase Request Declined by HR - Staff Name: ${newData.staffName}`,
-          html: generateHrRejectionEmailHTML({
-            staffName: newData.staffName,
-            payrollNo: newData.payrollNo,
-            hr_approver_name: newData.hr_approver_name,
-            hr_comments: newData.hr_comments,
-            products: products,
+        emailPromises.push(
+          sendEmail({
+            to: oldData.user_email,
+            subject: `Purchase Request Declined by HR - Staff Name: ${newData.staffName}`,
+            html: generateHrRejectionEmailHTML({
+              staffName: newData.staffName,
+              payrollNo: newData.payrollNo,
+              hr_approver_name: newData.hr_approver_name,
+              hr_comments: newData.hr_comments,
+              products: products,
+            }),
           }),
-        });
+        );
       }
     }
 
@@ -302,39 +317,45 @@ export async function PUT(request, { params }) {
       newData.CC_Approval !== oldData.CC_Approval
     ) {
       if (newData.CC_Approval === "approved") {
-        await sendEmail({
-          to: biEmail,
-          subject: `Purchase Request Requires Approval - Staff Name: ${newData.staffName}`,
-          html: generateCCApprovalEmailHTML({
-            staffName: newData.staffName,
-            payrollNo: newData.payrollNo,
-            cc_approver_name: newData.cc_approver_name,
-            products: products,
+        emailPromises.push(
+          sendEmail({
+            to: biEmail,
+            subject: `Purchase Request Requires Approval - Staff Name: ${newData.staffName}`,
+            html: generateCCApprovalEmailHTML({
+              staffName: newData.staffName,
+              payrollNo: newData.payrollNo,
+              cc_approver_name: newData.cc_approver_name,
+              products: products,
+            }),
           }),
-        });
+        );
 
-        await sendEmail({
-          to: oldData.user_email,
-          subject: `Purchase Request Approved by Credit Control - Staff Name: ${newData.staffName}`,
-          html: generateStaffCCApprovedEmailHTML({
-            staffName: newData.staffName,
-            payrollNo: newData.payrollNo,
-            cc_approver_name: newData.cc_approver_name,
-            products: products,
+        emailPromises.push(
+          sendEmail({
+            to: oldData.user_email,
+            subject: `Purchase Request Approved by Credit Control - Staff Name: ${newData.staffName}`,
+            html: generateStaffCCApprovedEmailHTML({
+              staffName: newData.staffName,
+              payrollNo: newData.payrollNo,
+              cc_approver_name: newData.cc_approver_name,
+              products: products,
+            }),
           }),
-        });
+        );
       } else if (newData.CC_Approval === "declined") {
-        await sendEmail({
-          to: oldData.user_email,
-          subject: `Purchase Request Declined by Credit Control - Staff Name: ${newData.staffName}`,
-          html: generateCCRejectionEmailHTML({
-            staffName: newData.staffName,
-            payrollNo: newData.payrollNo,
-            cc_approver_name: newData.cc_approver_name,
-            purchase_history_comments: newData.purchase_history_comments,
-            products: products,
+        emailPromises.push(
+          sendEmail({
+            to: oldData.user_email,
+            subject: `Purchase Request Declined by Credit Control - Staff Name: ${newData.staffName}`,
+            html: generateCCRejectionEmailHTML({
+              staffName: newData.staffName,
+              payrollNo: newData.payrollNo,
+              cc_approver_name: newData.cc_approver_name,
+              purchase_history_comments: newData.purchase_history_comments,
+              products: products,
+            }),
           }),
-        });
+        );
       }
     }
 
@@ -351,6 +372,7 @@ export async function PUT(request, { params }) {
           createdAt: oldData.createdAt,
           reference: oldData.reference_number,
         });
+
         await sendEmail({
           to: oldData.user_email,
           subject: `Purchase Request Approved By Billing and Invoice - Staff Name: ${newData.staffName}`,
@@ -364,31 +386,38 @@ export async function PUT(request, { params }) {
           attachments: [pdfAttachment], //Attaching the generated PDF
         });
 
-        await sendEmail({
-          to: ccEmail,
-          subject: `Close Purchase Request for Staff: ${newData.staffName} , Payroll: ${newData.payrollNo}`,
-          html: generateBICCApprovedEmailHTML({
-            staffName: newData.staffName,
-            payrollNo: newData.payrollNo,
-            createdAt: oldData.createdAt,
-            bi_approver_name: newData.bi_approver_name,
-            products: products,
+        emailPromises.push(
+          sendEmail({
+            to: ccEmail,
+            subject: `Close Purchase Request for Staff: ${newData.staffName} , Payroll: ${newData.payrollNo}`,
+            html: generateBICCApprovedEmailHTML({
+              staffName: newData.staffName,
+              payrollNo: newData.payrollNo,
+              createdAt: oldData.createdAt,
+              bi_approver_name: newData.bi_approver_name,
+              products: products,
+            }),
           }),
-        });
+        );
       } else if (newData.BI_Approval === "declined") {
-        await sendEmail({
-          to: oldData.user_email,
-          subject: `Purchase Request Declined by Billing & Invoice - Staff Name: ${newData.staffName}`,
-          html: generateBIRejectionEmailHTML({
-            staffName: newData.staffName,
-            payrollNo: newData.payrollNo,
-            bi_approver_name: newData.bi_approver_name,
-            purchase_history_comments: newData.purchase_history_comments,
-            products: products,
+        emailPromises.push(
+          sendEmail({
+            to: oldData.user_email,
+            subject: `Purchase Request Declined by Billing & Invoice - Staff Name: ${newData.staffName}`,
+            html: generateBIRejectionEmailHTML({
+              staffName: newData.staffName,
+              payrollNo: newData.payrollNo,
+              bi_approver_name: newData.bi_approver_name,
+              purchase_history_comments: newData.purchase_history_comments,
+              products: products,
+            }),
           }),
-        });
+        );
       }
     }
+
+    // Commit the email promises
+    await Promise.all(emailPromises);
 
     return Response.json(
       {

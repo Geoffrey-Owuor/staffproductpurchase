@@ -2,13 +2,11 @@ import { verifyPassword, createSession } from "@/app/lib/auth";
 import pool from "@/lib/db";
 
 export async function POST(request) {
-  let conn;
   try {
     const { email, password } = await request.json();
-    conn = await pool.getConnection();
 
     //Find user by email
-    const [users] = await conn.execute(
+    const [users] = await pool.execute(
       "SELECT id, password, name, payrollNo, department, role FROM users WHERE email = ? LIMIT 1",
       [email],
     );
@@ -48,7 +46,5 @@ export async function POST(request) {
       { success: false, message: "Server error. Please try again" },
       { status: 500 },
     );
-  } finally {
-    if (conn) conn.release();
   }
 }

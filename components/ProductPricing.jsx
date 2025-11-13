@@ -68,6 +68,11 @@ const ProductPricing = ({
 
   //useEffect for automatic policy and rate selection
   useEffect(() => {
+    // Guard clause to make sure this useEffect only runs when the user is a staff
+    if (userRole !== "staff") {
+      return;
+    }
+
     const { itemName, itemStatus } = formData;
 
     // Guard clause: Don't run if we don't have all the needed info
@@ -119,7 +124,13 @@ const ProductPricing = ({
         discountRate: 0,
       }));
     }
-  }, [formData.itemName, formData.itemStatus, paymentTerms, discountPolicies]);
+  }, [
+    formData.itemName,
+    formData.itemStatus,
+    paymentTerms,
+    discountPolicies,
+    userRole,
+  ]);
 
   useEffect(() => {
     const tdPrice = parseFloat(formData.tdPrice) || 0;

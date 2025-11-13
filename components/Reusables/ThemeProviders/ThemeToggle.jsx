@@ -23,7 +23,7 @@ export default function ThemeToggle() {
   }
 
   return (
-    <div className="flex items-center space-x-1 rounded-full bg-gray-100 px-2 py-1 dark:bg-gray-800">
+    <div className="flex items-center space-x-1 rounded-full bg-gray-100 p-2 dark:bg-gray-800">
       {themeOptions.map(({ name, Icon }) => (
         <button
           key={name}
@@ -35,7 +35,7 @@ export default function ThemeToggle() {
           }`}
           aria-label={`Switch to ${name} theme`}
         >
-          <Icon className="h-3.5 w-3.5" />
+          <Icon className="h-4 w-4" />
         </button>
       ))}
     </div>

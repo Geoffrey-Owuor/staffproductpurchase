@@ -7,19 +7,14 @@ export async function GET(_req, { params }) {
     const { id } = await params;
     connection = await pool.getConnection();
 
-    //Query 1: Main purchase details from purchasesInfo
-    const [purchaseRows] = await connection.execute(
+    //Create main purchasesinfo promise
+    const purchasePromise = connection.execute(
       `SELECT * FROM purchasesInfo WHERE id= ?`,
       [id],
     );
 
-    if (purchaseRows.length === 0) {
-      return Response.json({ error: "Purchase not found" }, { status: 404 });
-    }
-    const purchaseDetails = purchaseRows[0];
-
-    //Query 2: Getting product details
-    const [productRows] = await connection.execute(
+    //The purchase_products promise
+    const productsPromise = connection.execute(
       `
     SELECT
     itemName,
@@ -34,6 +29,17 @@ export async function GET(_req, { params }) {
       `,
       [id],
     );
+
+    // Execute both queries in parallel using promise.all
+    const [[purchaseRows], [productRows]] = await Promise.all([
+      purchasePromise,
+      productsPromise,
+    ]);
+
+    if (purchaseRows.length === 0) {
+      return Response.json({ error: "Purchase not found" }, { status: 404 });
+    }
+    const purchaseDetails = purchaseRows[0];
 
     //Combine results into a single object
     const responseData = {

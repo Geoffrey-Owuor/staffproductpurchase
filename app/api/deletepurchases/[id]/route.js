@@ -20,7 +20,7 @@ export async function DELETE(_req, { params }) {
 
     //Check if the purchase request exists in the database first (And locking it for update)
     const [checkPurchase] = await connection.execute(
-      `SELECT * FROM purchasesinfo WHERE id = ? FOR UPDATE`,
+      `SELECT BI_Approval FROM purchasesinfo WHERE id = ? FOR UPDATE`,
       [id],
     );
 
@@ -32,13 +32,9 @@ export async function DELETE(_req, { params }) {
       );
     }
 
-    //Check if biApproval is approved for the purchase about to be deleted
-    const [biApproval] = await connection.execute(
-      "SELECT BI_Approval from purchasesinfo WHERE id = ? AND BI_Approval = 'approved'",
-      [id],
-    );
+    const biApproval = checkPurchase[0].BI_Approval === "approved";
 
-    if (biApproval.length > 0) {
+    if (biApproval) {
       await connection.rollback();
       return Response.json(
         {
@@ -50,26 +46,13 @@ export async function DELETE(_req, { params }) {
     }
 
     //Delete associated products from the purchase_products table (Deleted first to avoid foreign key error constraints)
-    const [deletedProducts] = await connection.execute(
+    await connection.execute(
       "DELETE FROM purchase_products WHERE purchase_id = ?",
       [id],
     );
 
-    if (deletedProducts.affectedRows === 0) {
-      await connection.rollback();
-      return Response.json({ message: "Products not found" }, { status: 404 });
-    }
-
     //Delete the record from the purchasesinfo table
-    const [result] = await connection.execute(
-      "DELETE FROM purchasesinfo WHERE id = ?",
-      [id],
-    );
-
-    if (result.affectedRows === 0) {
-      await connection.rollback();
-      return Response.json({ message: "Purchase not found" }, { status: 404 });
-    }
+    await connection.execute("DELETE FROM purchasesinfo WHERE id = ?", [id]);
 
     //Commit transactions if both deletions succeed
     await connection.commit();

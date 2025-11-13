@@ -12,12 +12,10 @@ export default async function ResetPasswordPage({ searchParams }) {
     return <InvalidTokenUi />;
   }
 
-  let conn;
   let isValid = false;
 
   try {
-    conn = await pool.getConnection();
-    const [users] = await conn.execute(
+    const [users] = await pool.execute(
       "SELECT id FROM users WHERE reset_token = ? AND reset_token_expiry > NOW()",
       [token],
     );
@@ -27,8 +25,6 @@ export default async function ResetPasswordPage({ searchParams }) {
     }
   } catch (error) {
     console.error("Error validating reset token:", error);
-  } finally {
-    if (conn) conn.release();
   }
 
   if (!isValid) {

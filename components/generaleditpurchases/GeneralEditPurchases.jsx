@@ -61,6 +61,24 @@ function PurchaseForm({
       return total + value;
     }, 0);
 
+    // Get default data for credit_period field
+    const formulateCreditPeriod = () => {
+      let formulatedPeriod;
+      if (
+        (purchase.employee_payment_terms === "CREDIT" ||
+          purchase.employee_payment_terms === "CASH AND CREDIT") &&
+        purchase.user_credit_period
+      ) {
+        formulatedPeriod = `${purchase.user_credit_period} ${purchase.user_credit_period === 1 ? "Month" : "Months"} Period`;
+      } else if (purchase.employee_payment_terms === "CASH") {
+        formulatedPeriod = "Cash Payment";
+      } else {
+        formulatedPeriod = "";
+      }
+
+      return formulatedPeriod;
+    };
+
     return {
       //Payroll Data
       one_third_rule: purchase.one_third_rule || "",
@@ -77,7 +95,7 @@ function PurchaseForm({
       hr_approval_date: purchase.hr_approval_date || "",
 
       //Credit Control Data
-      credit_period: purchase.credit_period || purchase.employee_payment_terms,
+      credit_period: purchase.credit_period || formulateCreditPeriod(),
       purchase_history_comments: purchase.purchase_history_comments || "",
       pending_invoices: purchase.pending_invoices || "",
       CC_Approval: purchase.CC_Approval || "",
@@ -144,77 +162,6 @@ function PurchaseForm({
     };
     fetchData();
   }, []);
-
-  // useEffect(() => {
-  //   if (purchase) {
-  //     //initial products from the purchase data and setting products
-  //     const initialProducts =
-  //       purchase.products && purchase.products.length > 0
-  //         ? purchase.products
-  //         : [{ ...initialProductState }];
-
-  //     // 2. Calculate the total from these initial products, mirroring your useMemo logic.
-  //     const calculatedPurchaseTotal = initialProducts.reduce(
-  //       (total, product) => {
-  //         const value = parseFloat(product.discountedValue) || 0;
-  //         return total + value;
-  //       },
-  //       0,
-  //     );
-  //     setProducts(initialProducts);
-
-  //     setFormData({
-  //       //Payroll Data
-  //       one_third_rule: purchase.one_third_rule || "",
-  //       Payroll_Approval: purchase.Payroll_Approval || "",
-  //       payroll_approver_name: purchase.payroll_approver_name || name,
-  //       payroll_approval_date: purchase.payroll_approval_date || "",
-
-  //       //HR Data
-  //       is_employed: purchase.is_employed || "",
-  //       on_probation: purchase.on_probation || "",
-  //       hr_comments: purchase.hr_comments || "",
-  //       HR_Approval: purchase.HR_Approval || "",
-  //       hr_approver_name: purchase.hr_approver_name || name,
-  //       hr_approval_date: purchase.hr_approval_date || "",
-
-  //       //Credit Control Data
-  //       credit_period:
-  //         purchase.credit_period || purchase.employee_payment_terms,
-  //       purchase_history_comments: purchase.purchase_history_comments || "",
-  //       pending_invoices: purchase.pending_invoices || "",
-  //       CC_Approval: purchase.CC_Approval || "",
-  //       cc_approver_name: purchase.cc_approver_name || name,
-  //       cc_approval_date: purchase.cc_approval_date || "",
-
-  //       //Billing & Invoice Data
-  //       invoice_date: purchase.invoice_date
-  //         ? purchase.invoice_date.split("T")[0]
-  //         : localTodayString,
-  //       invoice_number: purchase.invoice_number || "",
-  //       invoice_amount:
-  //         purchase.invoice_amount || calculatedPurchaseTotal.toFixed(2),
-
-  //       payment_reference: purchase.payment_reference || "",
-  //       bi_approver_name: purchase.bi_approver_name || name,
-  //       bi_approval_date: purchase.bi_approval_date || "",
-  //       BI_Approval: purchase.BI_Approval || "",
-  //     });
-  //     setStaffInfo({
-  //       staffName: purchase.staffName || "",
-  //       payrollNo: purchase.payrollNo || "",
-  //       department: purchase.department || "",
-  //     });
-  //     setPaymentInfo({
-  //       employee_payment_terms: purchase.employee_payment_terms || "",
-  //       invoicing_location: purchase.invoicing_location || "",
-  //       delivery_details: purchase.delivery_details || "",
-  //       user_credit_period: purchase.user_credit_period || "",
-  //       mpesa_code: purchase.mpesa_code || "",
-  //       createdAt: purchase.createdAt || "",
-  //     });
-  //   }
-  // }, [purchase, name]);
 
   //Handler for other formdata change
   const handleChange = (e) => {

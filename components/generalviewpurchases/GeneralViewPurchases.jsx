@@ -118,7 +118,7 @@ export default function GeneralViewPurchases({ id }) {
 
             <button
               onClick={handleDownload}
-              className={`relative flex items-center justify-center gap-1 rounded-full bg-gray-100 p-2 text-sm text-black shadow-sm hover:bg-gray-200 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700`}
+              className={`relative flex items-center justify-center gap-1 rounded-full bg-gray-800 p-2 text-sm text-white shadow-sm hover:bg-gray-700`}
               disabled={isDownloading}
             >
               {isDownloading && (

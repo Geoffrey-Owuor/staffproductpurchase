@@ -9,7 +9,7 @@ export async function POST(request) {
     conn = await pool.getConnection();
     //Verify token
     const [users] = await conn.execute(
-      "SELECT id from users WHERE reset_token = ? AND reset_token_expiry > NOW()",
+      "SELECT id, password from users WHERE reset_token = ? AND reset_token_expiry > NOW()",
       [token],
     );
 
@@ -20,13 +20,31 @@ export async function POST(request) {
       );
     }
 
+    const userId = users[0].id;
+    const currentHashedPassword = users[0].password;
+
+    // Optional Security Check: Prevent reuse of the *current* password
+    const isSameAsCurrent = await verifyPassword(
+      newPassword,
+      currentHashedPassword,
+    );
+    if (isSameAsCurrent) {
+      return Response.json(
+        {
+          message:
+            "The new password cannot be the same as your current password.",
+        },
+        { status: 400 },
+      );
+    }
+
     //Hash New Password
     const hashedPassword = await hashPassword(newPassword);
 
     //Update password and clear the token
     await conn.execute(
       "UPDATE users SET password = ?, reset_token = NULL, reset_token_expiry = NULL WHERE id = ?",
-      [hashedPassword, users[0].id],
+      [hashedPassword, userId],
     );
 
     return Response.json({
@@ -56,18 +74,36 @@ export async function PUT(request) {
     );
 
     if (verifyUser.length === 0) {
-      return Response.json({ message: "User does not exist" }, { status: 400 });
+      return Response.json({ message: "Invalid credentials" }, { status: 401 });
     }
+
+    const userId = verifyUser[0].id;
+    const currentHashedPassword = verifyUser[0].password;
 
     //verify password
     const isValid = await verifyPassword(
       currentPassword,
-      verifyUser[0].password,
+      currentHashedPassword,
     );
     if (!isValid) {
       return Response.json(
         { message: "You current password is incorrect" },
         { status: 401 },
+      );
+    }
+
+    // 3. Prevent reuse of the current password (Security Enhancement)
+    const isSameAsCurrent = await verifyPassword(
+      newPassword,
+      currentHashedPassword,
+    );
+    if (isSameAsCurrent) {
+      return Response.json(
+        {
+          message:
+            "The new password cannot be the same as your current password.",
+        },
+        { status: 400 },
       );
     }
 
@@ -77,7 +113,7 @@ export async function PUT(request) {
     //Update the previous password
     await conn.execute("UPDATE users SET password = ? WHERE id = ?", [
       hashedNewPassword,
-      verifyUser[0].id,
+      userId,
     ]);
 
     return Response.json(

@@ -25,7 +25,7 @@ export async function POST(request) {
           message:
             "We couldn't verify your email. Try another email or sign in.",
         },
-        { status: 400 },
+        { status: 409 },
       );
     }
 
@@ -98,7 +98,7 @@ export async function PUT(request) {
           message:
             "We couldn't verify your email. Try another email or sign in.",
         },
-        { status: 400 },
+        { status: 409 },
       );
     }
 

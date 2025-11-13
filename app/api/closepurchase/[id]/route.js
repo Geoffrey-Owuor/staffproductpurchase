@@ -20,7 +20,7 @@ export async function PUT(_req, { params }) {
 
     //Check if the purchase request exists in the database first (And locking it for update)
     const [checkPurchase] = await connection.execute(
-      `SELECT * FROM purchasesinfo WHERE id = ? FOR UPDATE`,
+      `SELECT request_closure FROM purchasesinfo WHERE id = ? FOR UPDATE`,
       [id],
     );
 
@@ -32,13 +32,9 @@ export async function PUT(_req, { params }) {
       );
     }
 
-    //Check if request was already  closed
-    const [checkClosure] = await connection.execute(
-      `SELECT request_closure FROM purchasesinfo WHERE id = ? and request_closure = 'closed'`,
-      [id],
-    );
+    const isClosed = checkPurchase[0].request_closure === "closed";
 
-    if (checkClosure.length > 0) {
+    if (isClosed) {
       await connection.rollback();
       return Response.json(
         { message: "Request already closed" },
@@ -47,18 +43,10 @@ export async function PUT(_req, { params }) {
     }
 
     //Update the request closure to closed
-    const [updateClosure] = await connection.execute(
+    await connection.execute(
       `UPDATE purchasesinfo SET request_closure = 'closed' WHERE id = ?`,
       [id],
     );
-
-    if (updateClosure.affectedRows === 0) {
-      await connection.rollback();
-      return Response.json(
-        { message: "Purchase request not found" },
-        { status: 404 },
-      );
-    }
 
     //Commit the transaction
     await connection.commit();

@@ -59,7 +59,7 @@ Add two approval cards for how many requests are open and how many are closed - 
 --Add Mark as closed (In RecentActionButtons with a boolean check) - **DONE**
 
 ---ONE SECURITY AREA---
-How to invalidate all logged in browser cookies directly from your server (Regardless of all browsers) **PENDING**
+How to invalidate all logged in browser cookies directly from your server (Regardless of all browsers) **PENDING** (Server-side session validation)
 
 ---Auto Code Verification---
 Done for register one
@@ -73,5 +73,24 @@ Test closing a purchase request - Done
 Test updating a request with refresh of approval cards - Done
 Create a context for payment tracking approval cards - Done
 
-Once you approve (for any role) - you cannot delete - Pending
-The concatenation for the period given & mode of payments (payment terms and user credit period) - Pending
+Once you approve (for any role) - you cannot delete - Done
+The concatenation for the period given & mode of payments (payment terms and user credit period) - Pending - Done
+
+SHOW VARIABLES; -- All settings
+
+-- Common ones
+SHOW VARIABLES LIKE 'innodb_buffer_pool_size';
+SHOW VARIABLES LIKE 'key_buffer_size';
+SHOW VARIABLES LIKE 'query_cache_size';
+SHOW VARIABLES LIKE 'sort_buffer_size';
+SHOW VARIABLES LIKE 'join_buffer_size';
+SHOW VARIABLES LIKE 'read_buffer_size';
+
+Check if a port is available in windows command prompt: netstat -ano | findstr :1556 (Our default port)
+
+our url will be http://192.168.0.27:1556 (our url)
+
+(DEPLOYMENT TO PRODUCTION REMAINING) - EXPLORE THIS
+--HOSTING YOUR APPLICATION (Intranet Server Host) WITH PM2--
+--With best deployment practices - like utilizing all the cores of the server's cpu and such
+-- Restrarting the application when it fails to run (PM2)

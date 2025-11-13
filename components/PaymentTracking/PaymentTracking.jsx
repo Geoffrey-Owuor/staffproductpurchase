@@ -320,7 +320,7 @@ export default function PaymentTracking() {
           <>
             <div className="custom-scroll overflow-x-auto">
               <table className="mb-6 min-w-full">
-                <thead className="bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-white">
+                <thead className="bg-gray-700 text-white dark:bg-gray-800">
                   <tr>
                     {visibleColumns.submissionDate && (
                       <th
