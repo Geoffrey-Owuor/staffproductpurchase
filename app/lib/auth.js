@@ -41,7 +41,7 @@ export const createSession = async (
   const cookieStore = await cookies();
   cookieStore.set("session_token", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: false,
     sameSite: "lax",
     path: "/",
     maxAge: 72 * 60 * 60, //Used to set the max age of the cookie (72hrs before expiry) for persistence after browser is closed

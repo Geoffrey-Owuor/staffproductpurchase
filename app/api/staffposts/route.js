@@ -1,10 +1,6 @@
 import pool from "@/lib/db";
 import { getCurrentUser } from "@/app/lib/auth";
-import { sendEmail } from "@/lib/emailSender";
-import { CachedEmails } from "@/utils/Cache/CachedConditions";
-import generatePurchaseEmailHTML from "@/utils/EmailTemplates/StaffEmails/SendtoPayrollEmail";
-import generateUserPurchaseEmailHTML from "@/utils/EmailTemplates/StaffEmails/SendtoStaffEmail";
-import generateCCDirectEmailHTML from "@/utils/EmailTemplates/CCDirectEmail/CCDirectEmail";
+import { userEmailHandler } from "@/lib/Email/userEmailHandler";
 
 const parseNumber = (value) => {
   return value === "" || value == null ? null : parseFloat(value);
@@ -12,9 +8,12 @@ const parseNumber = (value) => {
 
 export async function POST(request) {
   let connection;
+  let referenceNumber = null;
+  let user = null;
+  let staffInfo, products, paymentInfo;
   try {
     // 1. Get the logged-in user
-    const user = await getCurrentUser();
+    user = await getCurrentUser();
     if (!user) {
       return Response.json(
         { success: false, message: "Not authenticated" },
@@ -23,7 +22,7 @@ export async function POST(request) {
     }
 
     connection = await pool.getConnection();
-    const { staffInfo, products, paymentInfo } = await request.json();
+    ({ staffInfo, products, paymentInfo } = await request.json());
 
     //Start a transaction
     await connection.beginTransaction();
@@ -51,7 +50,7 @@ export async function POST(request) {
 
     //Get the resultant inserted id (Next auto_inceremented value)
     const insertedId = result.insertId;
-    const referenceNumber = `PRQ-${insertedId}`;
+    referenceNumber = `PRQ-${insertedId}`;
 
     //Run an update query to insert reference_number into purchasesinfo
     await connection.execute(
@@ -129,62 +128,16 @@ export async function POST(request) {
     //If all inserts succeed, commit the transaction
     await connection.commit();
 
-    //Payroll email html
-    const emailHtml = generatePurchaseEmailHTML({
-      staffInfo: staffInfo,
-      products: products,
+    // 5. --- FIRE-AND-FORGET ---
+    // Call the handler but DO NOT await it.
+    // The code will continue immediately to the return statement.
+    userEmailHandler({
+      staffInfo,
+      products,
+      paymentInfo,
+      user,
+      referenceNumber,
     });
-
-    //User Email html
-    const userEmailHtml = generateUserPurchaseEmailHTML({
-      staffInfo: staffInfo,
-      products: products,
-    });
-
-    //emailHtml to send to credit control if payment terms is cash
-    const ccEmailHtml = generateCCDirectEmailHTML({
-      staffInfo: staffInfo,
-      products: products,
-    });
-
-    //Getting approver emails required
-    const emails = await CachedEmails();
-    const payrollEmail = emails[0].approver_email;
-    const ccEmail = emails[2].approver_email;
-
-    // Email sending promises array
-    const emailPromises = [];
-
-    //IF STATEMENT which checks payment terms type to send an appropriate email (To credit control or to HR)
-    if (paymentInfo.employee_payment_terms === "CASH") {
-      emailPromises.push(
-        sendEmail({
-          to: ccEmail,
-          subject: `New Purchase Request ${staffInfo.staffName} PayrollNo: (${staffInfo.payrollNo})`,
-          html: ccEmailHtml,
-        }),
-      );
-    } else {
-      emailPromises.push(
-        sendEmail({
-          to: payrollEmail,
-          subject: `New Purchase Request from ${staffInfo.staffName} PayrollNo: (${staffInfo.payrollNo})`,
-          html: emailHtml,
-        }),
-      );
-    }
-
-    //Send email to the user
-    emailPromises.push(
-      sendEmail({
-        to: user.email,
-        subject: `Purchase Request Submitted Successfully, PayrollNo: (${staffInfo.payrollNo})`,
-        html: userEmailHtml,
-      }),
-    );
-
-    //Send the emails
-    await Promise.all(emailPromises);
 
     return Response.json(
       {
@@ -196,11 +149,11 @@ export async function POST(request) {
     );
   } catch (error) {
     if (connection) await connection.rollback();
-    console.error("Database or email error:", error);
+    console.error("Database error:", error);
     return Response.json(
       {
         success: false,
-        message: "Error recording purchase or sending notifications",
+        message: "Error recording the purchase request",
         error: error.message,
       },
       { status: 500 },

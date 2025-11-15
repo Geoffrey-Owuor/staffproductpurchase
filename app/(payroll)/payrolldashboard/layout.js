@@ -4,6 +4,7 @@ import UnauthorizedPage from "@/components/Reusables/UnauthorizedPage";
 import ReusableLayoutShell from "@/components/Reusables/ReuseLayoutShell/ReusableLayoutShell";
 import { FirstLoader } from "@/components/Reusables/FirstLoader";
 import { ApprovalCountsProvider } from "@/context/ApprovalCountsContext";
+import { TrackingApprovalCardsProvider } from "@/context/TrackingApprovalCardsContext";
 
 export const metadata = {
   title: "HAL - Payroll Dashboard",
@@ -25,7 +26,9 @@ export default async function layout({ children }) {
     <>
       <FirstLoader />
       <ReusableLayoutShell user={user}>
-        <ApprovalCountsProvider>{children}</ApprovalCountsProvider>
+        <TrackingApprovalCardsProvider>
+          <ApprovalCountsProvider>{children}</ApprovalCountsProvider>
+        </TrackingApprovalCardsProvider>
       </ReusableLayoutShell>
     </>
   );
