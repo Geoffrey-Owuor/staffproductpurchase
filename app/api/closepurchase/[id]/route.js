@@ -37,7 +37,7 @@ export async function PUT(_req, { params }) {
     if (isClosed) {
       await connection.rollback();
       return Response.json(
-        { message: "Request already closed" },
+        { message: "Purchase request is already closed" },
         { status: 403 },
       );
     }

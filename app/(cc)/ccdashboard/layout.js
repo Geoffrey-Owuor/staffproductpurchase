@@ -26,11 +26,9 @@ export default async function layout({ children }) {
     <>
       <FirstLoader />
       <ReusableLayoutShell user={user}>
-        <ApprovalCountsProvider>
-          <TrackingApprovalCardsProvider>
-            {children}
-          </TrackingApprovalCardsProvider>
-        </ApprovalCountsProvider>
+        <TrackingApprovalCardsProvider>
+          <ApprovalCountsProvider>{children}</ApprovalCountsProvider>
+        </TrackingApprovalCardsProvider>
       </ReusableLayoutShell>
     </>
   );

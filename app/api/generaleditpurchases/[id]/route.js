@@ -1,20 +1,6 @@
 import pool from "@/lib/db";
 import { getCurrentUser } from "@/app/lib/auth";
-import { sendEmail } from "@/lib/emailSender";
-import { CachedEmails } from "@/utils/Cache/CachedConditions";
-import { generatePurchasePDF } from "@/utils/returnPurchasePDF";
-import generatePayrollApprovalEmailHTML from "@/utils/EmailTemplates/PayrollEmails/PayrollApprovalEmail";
-import generatePayrollRejectionEmailHTML from "@/utils/EmailTemplates/PayrollEmails/PayrollRejectionEmail";
-import generateStaffPayrollApprovedEmailHTML from "@/utils/EmailTemplates/PayrollEmails/StaffPayrollApprovedEmail";
-import generateHrApprovalEmailHTML from "@/utils/EmailTemplates/HREmails/HrApprovalEmail";
-import generateHrRejectionEmailHTML from "@/utils/EmailTemplates/HREmails/HrRejectionEmail";
-import generateStaffHrApprovedEmailHTML from "@/utils/EmailTemplates/HREmails/StaffHrApprovedEmail";
-import generateCCApprovalEmailHTML from "@/utils/EmailTemplates/CCEmails/CCApprovalEmail";
-import generateCCRejectionEmailHTML from "@/utils/EmailTemplates/CCEmails/CCRejectionEmail";
-import generateStaffCCApprovedEmailHTML from "@/utils/EmailTemplates/CCEmails/StaffCCApprovedEmail";
-import generateStaffBIApprovedEmailHTML from "@/utils/EmailTemplates/BIEmails/BIApprovalEmail";
-import generateBIRejectionEmailHTML from "@/utils/EmailTemplates/BIEmails/BIRejectionEmail";
-import generateBICCApprovedEmailHTML from "@/utils/EmailTemplates/BIEmails/BICCEmail";
+import { ApproversEmailHandler } from "@/lib/Email/ApproversEmailHandler";
 
 const parseNumber = (value) => {
   return value === "" || value == null ? null : parseFloat(value);
@@ -22,13 +8,16 @@ const parseNumber = (value) => {
 
 export async function PUT(request, { params }) {
   const { id } = await params;
-  const user = await getCurrentUser();
+  let connection;
+
+  let oldData;
+  let user;
+
+  user = await getCurrentUser();
 
   if (!user) {
     return Response.json({ message: "Unauthorized" }, { status: 401 });
   }
-
-  let connection;
 
   try {
     connection = await pool.getConnection();
@@ -43,7 +32,7 @@ export async function PUT(request, { params }) {
       await connection.rollback();
       return Response.json({ message: "Purchase not found" }, { status: 404 });
     }
-    const oldData = currentPurchaseRows[0];
+    oldData = currentPurchaseRows[0];
 
     //Approval Check to make sure there is no further update after approval by various roles/approvers
 
@@ -203,221 +192,14 @@ export async function PUT(request, { params }) {
     //If all succeed, commit the transaction
     await connection.commit();
 
-    //HANDLING EMAIL NOTIFICATIONS AFTER A SUCCESSFULL COMMIT
-
-    //Getting required approver emails
-    const emails = await CachedEmails();
-    const hrEmail = emails[1].approver_email;
-    const ccEmail = emails[2].approver_email;
-    const biEmail = emails[3].approver_email;
-
-    //Create a promise array to send emails after a commit
-    const emailPromises = [];
-
-    //Payroll Approval and decline Emails
-    if (
-      user.role === "payroll" &&
-      newData.Payroll_Approval &&
-      newData.Payroll_Approval != oldData.Payroll_Approval
-    ) {
-      if (newData.Payroll_Approval === "approved") {
-        emailPromises.push(
-          sendEmail({
-            to: hrEmail,
-            subject: `Purchase Request Requires Approval - Staff Name: ${newData.staffName}`,
-            html: generatePayrollApprovalEmailHTML({
-              staffName: newData.staffName,
-              payrollNo: newData.payrollNo,
-              payroll_approver_name: newData.payroll_approver_name,
-              products: products,
-            }),
-          }),
-        );
-        emailPromises.push(
-          sendEmail({
-            to: oldData.user_email,
-            subject: `Purchase Request Approved by Payroll - Staff Name: ${newData.staffName}`,
-            html: generateStaffPayrollApprovedEmailHTML({
-              staffName: newData.staffName,
-              payrollNo: newData.payrollNo,
-              payroll_approver_name: newData.payroll_approver_name,
-              products: products,
-            }),
-          }),
-        );
-      } else if (newData.Payroll_Approval === "declined") {
-        emailPromises.push(
-          sendEmail({
-            to: oldData.user_email,
-            subject: `Purchase Request Declined by Payroll - Staff Name: ${newData.staffName}`,
-            html: generatePayrollRejectionEmailHTML({
-              staffName: newData.staffName,
-              payrollNo: newData.payrollNo,
-              payroll_approver_name: newData.payroll_approver_name,
-              one_third_rule: newData.one_third_rule,
-              products: products,
-            }),
-          }),
-        );
-      }
-    }
-
-    //Hr Approval And Decline Emails
-    if (
-      user.role === "hr" &&
-      newData.HR_Approval &&
-      newData.HR_Approval !== oldData.HR_Approval
-    ) {
-      if (newData.HR_Approval === "approved") {
-        emailPromises.push(
-          sendEmail({
-            to: ccEmail,
-            subject: `Purchase Request Requires Approval - Staff Name: ${newData.staffName}`,
-            html: generateHrApprovalEmailHTML({
-              staffName: newData.staffName,
-              payrollNo: newData.payrollNo,
-              hr_approver_name: newData.hr_approver_name,
-              products: products,
-            }),
-          }),
-        );
-        emailPromises.push(
-          sendEmail({
-            to: oldData.user_email,
-            subject: `Purchase Request Approved by HR - Staff Name: ${newData.staffName}`,
-            html: generateStaffHrApprovedEmailHTML({
-              staffName: newData.staffName,
-              payrollNo: newData.payrollNo,
-              hr_approver_name: newData.hr_approver_name,
-              products: products,
-            }),
-          }),
-        );
-      } else if (newData.HR_Approval === "declined") {
-        emailPromises.push(
-          sendEmail({
-            to: oldData.user_email,
-            subject: `Purchase Request Declined by HR - Staff Name: ${newData.staffName}`,
-            html: generateHrRejectionEmailHTML({
-              staffName: newData.staffName,
-              payrollNo: newData.payrollNo,
-              hr_approver_name: newData.hr_approver_name,
-              hr_comments: newData.hr_comments,
-              products: products,
-            }),
-          }),
-        );
-      }
-    }
-
-    //Credit Control Approval and Decline Emails
-    if (
-      user.role === "cc" &&
-      newData.CC_Approval &&
-      newData.CC_Approval !== oldData.CC_Approval
-    ) {
-      if (newData.CC_Approval === "approved") {
-        emailPromises.push(
-          sendEmail({
-            to: biEmail,
-            subject: `Purchase Request Requires Approval - Staff Name: ${newData.staffName}`,
-            html: generateCCApprovalEmailHTML({
-              staffName: newData.staffName,
-              payrollNo: newData.payrollNo,
-              cc_approver_name: newData.cc_approver_name,
-              products: products,
-            }),
-          }),
-        );
-
-        emailPromises.push(
-          sendEmail({
-            to: oldData.user_email,
-            subject: `Purchase Request Approved by Credit Control - Staff Name: ${newData.staffName}`,
-            html: generateStaffCCApprovedEmailHTML({
-              staffName: newData.staffName,
-              payrollNo: newData.payrollNo,
-              cc_approver_name: newData.cc_approver_name,
-              products: products,
-            }),
-          }),
-        );
-      } else if (newData.CC_Approval === "declined") {
-        emailPromises.push(
-          sendEmail({
-            to: oldData.user_email,
-            subject: `Purchase Request Declined by Credit Control - Staff Name: ${newData.staffName}`,
-            html: generateCCRejectionEmailHTML({
-              staffName: newData.staffName,
-              payrollNo: newData.payrollNo,
-              cc_approver_name: newData.cc_approver_name,
-              purchase_history_comments: newData.purchase_history_comments,
-              products: products,
-            }),
-          }),
-        );
-      }
-    }
-
-    //Billing & Invoice Approval and Decline Emails
-    if (
-      user.role === "bi" &&
-      newData.BI_Approval &&
-      newData.BI_Approval !== oldData.BI_Approval
-    ) {
-      if (newData.BI_Approval === "approved") {
-        const pdfAttachment = await generatePurchasePDF({
-          purchaseData,
-          products,
-          createdAt: oldData.createdAt,
-          reference: oldData.reference_number,
-        });
-
-        await sendEmail({
-          to: oldData.user_email,
-          subject: `Purchase Request Approved By Billing and Invoice - Staff Name: ${newData.staffName}`,
-          html: generateStaffBIApprovedEmailHTML({
-            staffName: newData.staffName,
-            payrollNo: newData.payrollNo,
-            createdAt: oldData.createdAt,
-            bi_approver_name: newData.bi_approver_name,
-            products: products,
-          }),
-          attachments: [pdfAttachment], //Attaching the generated PDF
-        });
-
-        emailPromises.push(
-          sendEmail({
-            to: ccEmail,
-            subject: `Close Purchase Request for Staff: ${newData.staffName} , Payroll: ${newData.payrollNo}`,
-            html: generateBICCApprovedEmailHTML({
-              staffName: newData.staffName,
-              payrollNo: newData.payrollNo,
-              createdAt: oldData.createdAt,
-              bi_approver_name: newData.bi_approver_name,
-              products: products,
-            }),
-          }),
-        );
-      } else if (newData.BI_Approval === "declined") {
-        emailPromises.push(
-          sendEmail({
-            to: oldData.user_email,
-            subject: `Purchase Request Declined by Billing & Invoice - Staff Name: ${newData.staffName}`,
-            html: generateBIRejectionEmailHTML({
-              staffName: newData.staffName,
-              payrollNo: newData.payrollNo,
-              bi_approver_name: newData.bi_approver_name,
-              purchase_history_comments: newData.purchase_history_comments,
-              products: products,
-            }),
-          }),
-        );
-      }
-    }
-
-    // Commit the email promises
-    await Promise.all(emailPromises);
+    // 5. --- FIRE-AND-FORGET ---
+    // Call the handler but DO NOT await it.
+    // The code will continue immediately to the return statement.
+    ApproversEmailHandler({
+      user,
+      oldData,
+      newData,
+    });
 
     return Response.json(
       {

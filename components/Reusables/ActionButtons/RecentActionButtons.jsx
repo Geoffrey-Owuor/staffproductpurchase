@@ -195,6 +195,7 @@ export const RecentActionButtons = ({
             disabled={
               //Approver cannot delete once approved
               goingTo === id ||
+              disableDelete ||
               (userRole === "payroll" && payrollApproval === "approved") ||
               (userRole === "hr" && hrApproval === "approved") ||
               (userRole === "cc" && ccApproval === "approved") ||

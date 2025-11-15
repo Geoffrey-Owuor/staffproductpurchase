@@ -13,7 +13,7 @@ export default function ReusableLayoutShell({ user, children }) {
   // const expired = useSessionExpiry(user?.expiresAt);
 
   //Hook used to track user inactivity so as to automatically logout
-  useInactivityTimer(5 * 60 * 1000, user); //5 minutes in milliseconds for security reasons
+  useInactivityTimer(20 * 60 * 1000, user); //20 minutes in milliseconds for security reasons
 
   const toggleSidebar = () => {
     setSideBarOpen((prev) => !prev);

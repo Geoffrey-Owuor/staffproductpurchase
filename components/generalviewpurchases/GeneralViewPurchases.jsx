@@ -1,5 +1,5 @@
 "use client";
-import { Edit, X, Download, View } from "lucide-react";
+import { Edit, X, Download, View, GitPullRequestClosed } from "lucide-react";
 import ApprovalStatus from "../Reusables/ApprovalStatus";
 import TopBarButtons from "../Reusables/TopBarButtons/TopBarButtons";
 import { useState, useEffect } from "react";
@@ -14,13 +14,53 @@ import ProductItemsInfo from "../ProductItemsInfo/ProductItemsInfo";
 import { usePurchase } from "@/context/PurchaseDetailsContext";
 import { useUser } from "@/context/UserContext";
 import { formatCreditPeriod } from "@/public/assets";
+import ConfirmationDialog from "../Reusables/ConfirmationDialog";
+import Alert from "../Alert";
+import { LoadingBarWave } from "../Reusables/LoadingBar";
+import { useTrackingApprovalCards } from "@/context/TrackingApprovalCardsContext";
 
 export default function GeneralViewPurchases({ id }) {
   const { role: userRole } = useUser();
+  const { refetchCounts } = useTrackingApprovalCards();
   const { purchase, loading, error, refetchPurchaseDetails } = usePurchase();
   const [isEditing, setIsEditing] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+  const [updating, setUpdating] = useState(false);
+
+  const handleConfirmClose = () => {
+    setShowConfirmationDialog(true);
+  };
+
+  const handleUpdateClose = async () => {
+    setShowConfirmationDialog(false);
+    setUpdating(true);
+    try {
+      const response = await fetch(`/api/closepurchase/${id}`, {
+        method: "PUT",
+      });
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Error closing Purchase Request");
+      }
+      setAlertType("success");
+      setAlertMessage(result.message || "Purchase request closed successfully");
+      setShowAlert(true);
+      refetchCounts();
+    } catch (error) {
+      console.error("Error Closing Purchase Request:", error);
+      setAlertType("error");
+      setAlertMessage(error.message || "Error closing the purchase request");
+      setShowAlert(true);
+    } finally {
+      setUpdating(false);
+    }
+  };
 
   useEffect(() => {
     // Ensures the component always shows up-to-date data
@@ -408,8 +448,37 @@ export default function GeneralViewPurchases({ id }) {
             <X className="h-4 w-4" />
             Close
           </button>
+          {userRole === "cc" && purchase.BI_Approval === "approved" && (
+            <button
+              disabled={updating}
+              onClick={handleConfirmClose}
+              className="inline-flex items-center justify-center gap-1 rounded-xl bg-gray-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
+            >
+              <GitPullRequestClosed className="mr-1 h-4 w-4" />
+              Mark as closed
+            </button>
+          )}
         </div>
       </div>
+
+      {showAlert && (
+        <Alert
+          message={alertMessage}
+          type={alertType}
+          onClose={() => setShowAlert(false)}
+        />
+      )}
+
+      {showConfirmationDialog && (
+        <ConfirmationDialog
+          message="Are you sure you want to close this purchase request? (You cannot reopen after closing)"
+          onConfirm={handleUpdateClose}
+          onCancel={() => setShowConfirmationDialog(false)}
+          title="Close Purchase Request"
+        />
+      )}
+
+      <LoadingBarWave isLoading={updating} />
     </>
   );
 }
