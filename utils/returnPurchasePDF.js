@@ -265,7 +265,7 @@ const PurchasePDFDocument = ({
 
           {/* Products Table */}
           <View style={styles.section}>
-            <Text style={styles.sectionTitle2}>Purchased Items</Text>
+            <Text style={styles.sectionTitle2}>Requested Items</Text>
             <View style={styles.table}>
               <View style={styles.tableHeader}>
                 <Text style={styles.tableCol1}>Item Description</Text>
