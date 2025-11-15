@@ -34,7 +34,6 @@ yarn-error.log*
 .env*
 .prettierrc*
 ecosystem.config.js*
-start.js*
 
 # vercel
 .vercel
