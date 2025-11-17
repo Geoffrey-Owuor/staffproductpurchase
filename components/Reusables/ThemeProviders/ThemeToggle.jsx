@@ -23,7 +23,7 @@ export default function ThemeToggle() {
   }
 
   return (
-    <div className="flex items-center space-x-1 rounded-full bg-gray-100 p-2 dark:bg-gray-800">
+    <div className="flex items-center space-x-1 rounded-full bg-gray-100 p-1 md:p-2 dark:bg-gray-800">
       {themeOptions.map(({ name, Icon }) => (
         <button
           key={name}
