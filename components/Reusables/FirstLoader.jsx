@@ -31,7 +31,7 @@ export const FirstLoader = () => {
       {/* Empty space at the top (optional padding) */}
       <div className="flex flex-1 items-center justify-center">
         <div
-          className={`transition-opacity duration-[1500ms] ${
+          className={`transition-opacity duration-1500 ${
             logoVisible ? "opacity-100" : "opacity-0"
           }`}
         >
