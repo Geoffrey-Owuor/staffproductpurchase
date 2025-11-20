@@ -57,6 +57,12 @@ export default function Header() {
             >
               How It Works
             </a>
+            <Link
+              href="/usermanual"
+              className="font-medium text-gray-600 transition hover:text-red-600 dark:text-gray-300 dark:hover:text-red-400"
+            >
+              User Manual
+            </Link>
           </nav>
 
           {/* Auth Buttons  */}

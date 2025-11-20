@@ -2,6 +2,7 @@
 import { ShoppingBag } from "lucide-react";
 import ThemeToggle from "../Reusables/ThemeProviders/ThemeToggle";
 import { BrainCog } from "lucide-react";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -27,18 +28,24 @@ export default function Footer() {
               Quick Links
             </h3>
             <ul className="space-y-2">
-              {["Features", "How It Works", "Testimonials", "FAQs"].map(
-                (item, idx) => (
-                  <li key={idx}>
-                    <a
-                      href={`#${item.toLowerCase().replace(/\s+/g, "-")}`}
-                      className="text-gray-600 transition hover:text-red-600 dark:text-gray-400 dark:hover:text-white"
-                    >
-                      {item}
-                    </a>
-                  </li>
-                ),
-              )}
+              {["Features", "How It Works"].map((item, idx) => (
+                <li key={idx}>
+                  <a
+                    href={`#${item.toLowerCase().replace(/\s+/g, "-")}`}
+                    className="text-gray-600 transition hover:text-red-600 dark:text-gray-400 dark:hover:text-white"
+                  >
+                    {item}
+                  </a>
+                </li>
+              ))}
+              <li>
+                <Link
+                  href="/usermanual"
+                  className="text-gray-600 transition hover:text-red-600 dark:text-gray-400 dark:hover:text-white"
+                >
+                  User Manual
+                </Link>
+              </li>
             </ul>
           </div>
 
