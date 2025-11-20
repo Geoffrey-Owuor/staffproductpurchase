@@ -6,7 +6,7 @@ export async function POST(request) {
 
   try {
     const [result] = await pool.execute(
-      ` SELECT password from users WHERE email = ? LIMIT 1`,
+      `SELECT password from users WHERE email = ? LIMIT 1`,
       [email],
     );
 

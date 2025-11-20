@@ -10,7 +10,6 @@ export default function DeleteConfirmation({ onConfirm, onCancel }) {
   const [loading, setLoading] = useState(false);
   const [confirmationText, setConfirmationText] = useState("");
   const [step, setStep] = useState(1);
-  const [isValid, setIsValid] = useState(false);
 
   //   Text for matching typed in text in step 2
   const textMatch = "I AM SURE";
@@ -29,9 +28,8 @@ export default function DeleteConfirmation({ onConfirm, onCancel }) {
         throw new Error("Failed to verify your password");
       }
       const result = await response.json();
-      setIsValid(result.valid);
 
-      if (isValid) {
+      if (result.valid) {
         setStep(2);
       } else {
         setMessage("Wrong password, please try again");
@@ -117,6 +115,7 @@ export default function DeleteConfirmation({ onConfirm, onCancel }) {
             </h3>
             <button
               onClick={onCancel}
+              type="button"
               className="cursor-pointer text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
               aria-label="Close dialog"
             >
@@ -148,6 +147,7 @@ export default function DeleteConfirmation({ onConfirm, onCancel }) {
           <div className="mt-4 flex justify-center space-x-4">
             <button
               onClick={onCancel}
+              type="button"
               className="rounded-3xl border border-gray-300 bg-white px-4 py-2 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
             >
               Cancel
