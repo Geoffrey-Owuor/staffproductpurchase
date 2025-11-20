@@ -3,6 +3,7 @@ import { assets } from "@/public/assets";
 import { useTheme } from "next-themes";
 import ThemeToggle from "../ThemeProviders/ThemeToggle";
 import { AuthPagesLogo } from "@/public/assets";
+import { BrainCog } from "lucide-react";
 
 export default function AuthBackground({ children }) {
   // Dark mode backgrounds
@@ -36,10 +37,22 @@ export default function AuthBackground({ children }) {
       </div>
 
       {/* Page-specific content (e.g., Login card, Register card) */}
-      <div className="w-[350px] md:w-[400px]">{children}</div>
+      <div className="w-[350px] pb-8 md:w-[400px]">{children}</div>
+
+      {/* Footer text */}
+      <div className="absolute bottom-6">
+        <div className="flex items-center justify-center space-x-1 text-sm text-gray-700 dark:text-gray-400">
+          <span>
+            © {new Date().getFullYear()} Hotpoint Appliances Ltd. Built by
+          </span>
+          <span className="font-semibold">Jeff</span>
+
+          <BrainCog className="h-3.5 w-3.5" />
+        </div>
+      </div>
 
       {/* Theme Toggle - Bottom Right */}
-      <div className="fixed right-4 bottom-4 z-50">
+      <div className="absolute right-4 bottom-4 z-50">
         <ThemeToggle />
       </div>
     </div>
