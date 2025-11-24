@@ -1,38 +1,17 @@
 // app/components/Hero.js
-"use client";
-import { assets } from "@/public/assets";
 import { ShoppingBag, ArrowRight, Check } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { useTheme } from "next-themes";
+import LandingLogo from "./LandingLogo";
 
 export default function Hero() {
-  const { theme, systemTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
-
-  const currentTheme = theme === "system" ? systemTheme : theme;
-  const logoSrc =
-    currentTheme === "dark" ? assets.hotpoint_white_logo : assets.hotpoint_logo;
-
   return (
     <section className="bg-white py-20 dark:bg-gray-950">
       <div className="px-6">
         <div className="flex flex-col items-center md:flex-row">
           {/* Left content */}
           <div className="mb-10 md:mb-0 md:w-1/2">
-            <Image
-              src={logoSrc}
-              alt="hotpoint logo"
-              className="w-120 dark:brightness-90"
-              priority
-            />
+            {/* Landing Logo */}
+            <LandingLogo />
             <h1 className="mb-6 text-4xl font-bold text-gray-900 md:text-5xl dark:text-gray-100">
               <span className="text-red-600 dark:text-red-500">
                 Staff Purchase Portal

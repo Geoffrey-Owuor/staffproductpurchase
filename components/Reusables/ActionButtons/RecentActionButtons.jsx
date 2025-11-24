@@ -17,7 +17,7 @@ import { useUser } from "@/context/UserContext";
 
 // Reusable style for the dropdown menu items
 const menuItemStyles =
-  "flex items-center rounded-md w-full p-2 text-left text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white disabled:opacity-50 disabled:hover:bg-transparent";
+  "flex items-center rounded-lg w-full p-2 text-left text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white disabled:opacity-50 disabled:hover:bg-transparent";
 
 export const RecentActionButtons = ({
   id,
@@ -46,6 +46,7 @@ export const RecentActionButtons = ({
 
   // State to store the calculated menu coordinates
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
+  const [openUpwards, setOpenUpwards] = useState(false); //state that tracks whether the menu opens upwards or downwards
 
   const handleConfirmDelete = () => {
     setShowConfirmation(true);
@@ -134,13 +135,18 @@ export const RecentActionButtons = ({
       const dropdownHeight = 150; // Estimated height of the dropdown
       const dropdownWidth = 128; // w-32 = 8rem = 128px
       let topPosition;
+      let shouldOpenUpwards = false; //Track direction boolean variable
 
       // Decide if the menu should open upwards
       if (window.innerHeight - rect.bottom < dropdownHeight) {
         topPosition = rect.top - dropdownHeight + 19;
+        shouldOpenUpwards = true; //true when opening upwards
       } else {
         topPosition = rect.bottom + 4;
+        shouldOpenUpwards = false; //false when opening downwards
       }
+
+      setOpenUpwards(shouldOpenUpwards); //Update tracking state
 
       setMenuPosition({
         top: topPosition + window.scrollY,
@@ -153,9 +159,9 @@ export const RecentActionButtons = ({
   // The JSX for the menu, to be rendered in the portal
   const DropdownMenu = () => (
     <motion.div
-      initial={{ scale: 0.95, opacity: 0, y: -10 }}
+      initial={{ scale: 0.95, opacity: 0, y: openUpwards ? 10 : -10 }}
       animate={{ scale: 1, opacity: 1, y: 0 }}
-      exit={{ scale: 0.95, opacity: 0, y: -10 }}
+      exit={{ scale: 0.95, opacity: 0, y: openUpwards ? 10 : -10 }}
       transition={{
         type: "spring",
         stiffness: 300,
@@ -167,7 +173,7 @@ export const RecentActionButtons = ({
         top: `${menuPosition.top}px`,
         left: `${menuPosition.left}px`,
       }}
-      className="z-50 w-32 rounded-md border border-gray-200 bg-white shadow-lg focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+      className="z-50 w-32 rounded-xl border border-gray-200 bg-white shadow-lg focus:outline-none dark:border-gray-700 dark:bg-gray-800"
     >
       <div className="p-1">
         <button
@@ -210,7 +216,7 @@ export const RecentActionButtons = ({
               (userRole === "cc" && ccApproval === "approved") ||
               (userRole === "bi" && biApproval === "approved")
             }
-            className="mt-1 flex w-full items-center rounded-md p-2 text-left text-sm text-red-600 hover:bg-red-50 disabled:opacity-50 disabled:hover:bg-transparent dark:text-red-400 dark:hover:bg-red-600/15"
+            className="mt-1 flex w-full items-center rounded-lg p-2 text-left text-sm text-red-600 hover:bg-red-50 disabled:opacity-50 disabled:hover:bg-transparent dark:text-red-400 dark:hover:bg-red-600/15"
           >
             <Trash2 className="mr-1 h-4 w-4" />
             <span>Delete</span>

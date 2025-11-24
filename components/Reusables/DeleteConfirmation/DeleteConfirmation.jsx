@@ -174,9 +174,9 @@ export default function DeleteConfirmation({ onConfirm, onCancel }) {
               <button
                 onClick={onConfirm}
                 disabled={confirmationText !== textMatch}
-                className="rounded-3xl bg-gray-900 px-4 py-2 text-white hover:bg-gray-700 disabled:opacity-50 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
+                className="rounded-3xl bg-red-500 px-4 py-2 text-white hover:bg-red-600 disabled:opacity-50"
               >
-                Confirm
+                Delete
               </button>
             </div>
           </div>

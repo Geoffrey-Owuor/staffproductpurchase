@@ -5,8 +5,8 @@ import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import {
+  ChevronsUpDown,
   LogOutIcon,
-  MoreVertical,
   Palette,
   Settings,
   SlidersVertical,
@@ -70,9 +70,11 @@ export default function UserMenu({ isSidebarOpen, hideMobileMenu }) {
         {/* Toggle button */}
         <div
           onClick={() => setIsOpen((prev) => !prev)}
-          className="flex cursor-default items-center justify-between gap-2 rounded-xl px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-white"
+          className="flex cursor-default items-center justify-between gap-2 rounded-xl p-2 text-sm text-gray-700 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-white"
         >
-          <SlidersVertical className="h-4 w-4 shrink-0" />
+          <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gray-900 text-sm text-white dark:bg-gray-100 dark:text-gray-950">
+            <span className="mb-0.5">{user.name.charAt(0).toUpperCase()}</span>
+          </div>
           <div
             className={`flex flex-col whitespace-nowrap transition-all duration-200 ${
               isSidebarOpen ? "w-40" : "w-0"
@@ -83,7 +85,7 @@ export default function UserMenu({ isSidebarOpen, hideMobileMenu }) {
             </span>
             <span className="max-w-[100px] truncate text-xs">{user.email}</span>
           </div>
-          <MoreVertical className="h-4 w-4" />
+          <ChevronsUpDown className="h-5 w-5" />
         </div>
         {/* Dropdown */}
         <AnimatePresence>
@@ -97,7 +99,7 @@ export default function UserMenu({ isSidebarOpen, hideMobileMenu }) {
                 stiffness: 300,
                 damping: 30,
               }}
-              className="absolute bottom-full -left-0.5 z-50 mt-2 mb-2 w-52.5 rounded-lg border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-900"
+              className="absolute bottom-full -left-0.5 z-50 mt-2 mb-2 w-52.5 rounded-2xl border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-900"
             >
               <div className="border-b border-gray-100 px-4 py-3 dark:border-gray-800">
                 <p className="max-w-40 truncate text-sm font-semibold text-gray-900 dark:text-white">
@@ -126,7 +128,7 @@ export default function UserMenu({ isSidebarOpen, hideMobileMenu }) {
                     setShowUserSettings(true);
                     setIsOpen(false);
                   }}
-                  className="flex w-full items-center space-x-1 rounded-lg px-2 py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
+                  className="flex w-full items-center space-x-1 rounded-xl px-2 py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
                 >
                   <Settings className="h-5 w-5 text-gray-800 dark:text-white" />
                   <span className="text-gray-800 dark:text-white">
@@ -135,7 +137,7 @@ export default function UserMenu({ isSidebarOpen, hideMobileMenu }) {
                 </button>
                 <button
                   onClick={handleLogout}
-                  className="flex w-full items-center space-x-1 rounded-lg px-2 py-2 text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-600/15"
+                  className="flex w-full items-center space-x-1 rounded-xl px-2 py-2 text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-600/15"
                 >
                   <LogOutIcon className="h-5 w-5" />
                   <span>Logout</span>
