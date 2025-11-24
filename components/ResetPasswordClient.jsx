@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import AuthBackground from "./Reusables/Images/AuthBackground";
 import { Eye, EyeClosed } from "lucide-react";
 import Alert from "./Alert";
 
 export default function ResetPasswordClient({ token }) {
+  const router = useRouter();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -62,7 +64,7 @@ export default function ResetPasswordClient({ token }) {
         setPassword("");
         setConfirmPassword("");
         setTimeout(() => {
-          window.location.href = "/login";
+          router.push("/login");
         }, 2000);
       } else {
         setShowAlert(true);

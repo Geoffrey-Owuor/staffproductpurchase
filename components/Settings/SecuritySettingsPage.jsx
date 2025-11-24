@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useUser } from "@/context/UserContext";
+import { AnimatePresence } from "framer-motion";
 import { Eye, EyeClosed, Loader2 } from "lucide-react"; // Import icons
 import Alert from "../Alert";
 import FormAsterisk from "../Reusables/FormAsterisk/FormAsterisk";
@@ -79,9 +80,20 @@ export default function SecuritySettingsPage() {
   };
   return (
     <>
-      {showChangeEmail && (
-        <ChangeEmail onClose={() => setShowChangeEmail(false)} />
-      )}
+      <AnimatePresence>
+        {showChangeEmail && (
+          <ChangeEmail onClose={() => setShowChangeEmail(false)} />
+        )}
+
+        {confirmationDialogue && (
+          <ConfirmationDialog
+            title="Confirm password update"
+            message="Are you sure you want to update your password?"
+            onConfirm={handleUpdatePassword}
+            onCancel={() => setConfirmationDialogue(false)}
+          />
+        )}
+      </AnimatePresence>
 
       {showAlert && (
         <Alert
@@ -91,14 +103,6 @@ export default function SecuritySettingsPage() {
         />
       )}
 
-      {confirmationDialogue && (
-        <ConfirmationDialog
-          title="Confirm password update"
-          message="Are you sure you want to update your password?"
-          onConfirm={handleUpdatePassword}
-          onCancel={() => setConfirmationDialogue(false)}
-        />
-      )}
       <div className="space-y-6">
         <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
           Security Settings

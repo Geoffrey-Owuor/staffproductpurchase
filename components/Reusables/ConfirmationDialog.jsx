@@ -1,11 +1,28 @@
 "use client";
 
 import { X } from "lucide-react";
+import { motion } from "framer-motion";
 
 const ConfirmationDialog = ({ message, onConfirm, onCancel, title }) => {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/50 dark:bg-gray-950/50">
-      <div className="mx-auto max-w-90 rounded-2xl border border-gray-200 bg-gray-50 p-4 shadow-2xl md:max-w-md dark:border-gray-700 dark:bg-gray-950">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-white/50 dark:bg-gray-950/50"
+    >
+      <motion.div
+        initial={{ scale: 0.95, opacity: 0, y: 20 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.95, opacity: 0, y: 20 }}
+        transition={{
+          type: "spring",
+          stiffness: 300,
+          damping: 30,
+        }}
+        className="mx-auto max-w-90 rounded-2xl border border-gray-200 bg-gray-50 p-4 shadow-2xl md:max-w-md dark:border-gray-700 dark:bg-gray-950"
+      >
         <div className="flex items-start justify-between">
           <h3 className="mb-3 text-xl font-bold text-gray-900 dark:text-white">
             {title}
@@ -37,8 +54,8 @@ const ConfirmationDialog = ({ message, onConfirm, onCancel, title }) => {
             Proceed
           </button>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

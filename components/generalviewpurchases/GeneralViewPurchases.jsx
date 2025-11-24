@@ -1,6 +1,7 @@
 "use client";
 import { Edit, X, Download, View, GitPullRequestClosed } from "lucide-react";
 import ApprovalStatus from "../Reusables/ApprovalStatus";
+import { AnimatePresence } from "framer-motion";
 import TopBarButtons from "../Reusables/TopBarButtons/TopBarButtons";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -469,14 +470,16 @@ export default function GeneralViewPurchases({ id }) {
         />
       )}
 
-      {showConfirmationDialog && (
-        <ConfirmationDialog
-          message="Are you sure you want to close this purchase request? (You cannot reopen after closing)"
-          onConfirm={handleUpdateClose}
-          onCancel={() => setShowConfirmationDialog(false)}
-          title="Close Purchase Request"
-        />
-      )}
+      <AnimatePresence>
+        {showConfirmationDialog && (
+          <ConfirmationDialog
+            message="Are you sure you want to close this purchase request? (You cannot reopen after closing)"
+            onConfirm={handleUpdateClose}
+            onCancel={() => setShowConfirmationDialog(false)}
+            title="Close Purchase Request"
+          />
+        )}
+      </AnimatePresence>
 
       <LoadingBarWave isLoading={updating} />
     </>

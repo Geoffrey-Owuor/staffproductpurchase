@@ -7,6 +7,7 @@ import {
   GitPullRequestClosed,
 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { createPortal } from "react-dom";
 import DeleteConfirmation from "../DeleteConfirmation/DeleteConfirmation";
 import ConfirmationDialog from "../ConfirmationDialog";
@@ -151,7 +152,15 @@ export const RecentActionButtons = ({
 
   // The JSX for the menu, to be rendered in the portal
   const DropdownMenu = () => (
-    <div
+    <motion.div
+      initial={{ scale: 0.95, opacity: 0, y: -10 }}
+      animate={{ scale: 1, opacity: 1, y: 0 }}
+      exit={{ scale: 0.95, opacity: 0, y: -10 }}
+      transition={{
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+      }}
       id={`action-menu-${id}`}
       style={{
         position: "absolute",
@@ -220,26 +229,28 @@ export const RecentActionButtons = ({
           </button>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 
   return (
     <>
-      {showConfirmation && (
-        <DeleteConfirmation
-          onConfirm={handleDelete}
-          onCancel={() => setShowConfirmation(false)}
-        />
-      )}
+      <AnimatePresence>
+        {showConfirmation && (
+          <DeleteConfirmation
+            onConfirm={handleDelete}
+            onCancel={() => setShowConfirmation(false)}
+          />
+        )}
 
-      {showCloseConfirmation && (
-        <ConfirmationDialog
-          message="Are you sure you want to close this purchase request? (You cannot reopen after closing)"
-          onConfirm={handleClose}
-          onCancel={() => setShowCloseConfirmation(false)}
-          title="Close Purchase Request"
-        />
-      )}
+        {showCloseConfirmation && (
+          <ConfirmationDialog
+            message="Are you sure you want to close this purchase request? (You cannot reopen after closing)"
+            onConfirm={handleClose}
+            onCancel={() => setShowCloseConfirmation(false)}
+            title="Close Purchase Request"
+          />
+        )}
+      </AnimatePresence>
 
       {deleting && <DeletingOverlay />}
       <LoadingBarWave isLoading={isClosing} />
@@ -254,7 +265,13 @@ export const RecentActionButtons = ({
           <MoreVertical className="h-4 w-4" />
         </button>
 
-        {isOpen && createPortal(<DropdownMenu />, document.body)}
+        {isOpen &&
+          createPortal(
+            <AnimatePresence>
+              <DropdownMenu />
+            </AnimatePresence>,
+            document.body,
+          )}
       </div>
     </>
   );

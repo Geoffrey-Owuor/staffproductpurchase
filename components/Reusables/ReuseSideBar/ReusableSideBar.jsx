@@ -102,7 +102,7 @@ export default function ReusableSidebar({ isOpen, toggleSidebar }) {
           isOpen ? "w-56" : "w-14"
         }`}
       >
-        <div className="relative flex flex-grow flex-col">
+        <div className="relative flex grow flex-col">
           {/* Toggling the sidebar */}
           <div
             className={`absolute top-60 transition-all duration-200 ${isOpen ? "left-52" : "left-10"}`}
@@ -130,7 +130,7 @@ export default function ReusableSidebar({ isOpen, toggleSidebar }) {
 
           {/* Navigation Buttons */}
           <nav
-            className={`${isOpen ? "mt-6" : "mt-12"} flex-grow px-2 transition-all duration-200`}
+            className={`${isOpen ? "mt-6" : "mt-12"} grow px-2 transition-all duration-200`}
           >
             <ul className="space-y-1">
               <li>
@@ -142,7 +142,7 @@ export default function ReusableSidebar({ isOpen, toggleSidebar }) {
                       : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
                   }`}
                 >
-                  <HomeIcon className="h-4 w-4 flex-shrink-0" />
+                  <HomeIcon className="h-4 w-4 shrink-0" />
                   <span
                     className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
                       isOpen ? "w-40" : "w-0"
@@ -165,7 +165,7 @@ export default function ReusableSidebar({ isOpen, toggleSidebar }) {
                         : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
                     }`}
                   >
-                    <ShoppingBagIcon className="h-4 w-4 flex-shrink-0" />
+                    <ShoppingBagIcon className="h-4 w-4 shrink-0" />
                     <span
                       className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
                         isOpen ? "w-40" : "w-0"
@@ -185,7 +185,7 @@ export default function ReusableSidebar({ isOpen, toggleSidebar }) {
                       : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
                   }`}
                 >
-                  <History className="h-4 w-4 flex-shrink-0" />
+                  <History className="h-4 w-4 shrink-0" />
                   <span
                     className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
                       isOpen ? "w-40" : "w-0"
@@ -208,7 +208,7 @@ export default function ReusableSidebar({ isOpen, toggleSidebar }) {
                         : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
                     }`}
                   >
-                    <BookOpenCheck className="h-4 w-4 flex-shrink-0" />
+                    <BookOpenCheck className="h-4 w-4 shrink-0" />
                     <span
                       className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
                         isOpen ? "w-40" : "w-0"
@@ -229,7 +229,7 @@ export default function ReusableSidebar({ isOpen, toggleSidebar }) {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Link2 className="h-4 w-4 flex-shrink-0" />
+              <Link2 className="h-4 w-4 shrink-0" />
               <span
                 className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
                   isOpen ? "w-40" : "w-0"
@@ -242,7 +242,7 @@ export default function ReusableSidebar({ isOpen, toggleSidebar }) {
               href="mailto:helpdesk@hotpoint.co.ke"
               className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-blue-600 transition-colors hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-gray-800"
             >
-              <MessageCircleQuestion className="h-4 w-4 flex-shrink-0" />
+              <MessageCircleQuestion className="h-4 w-4 shrink-0" />
               <span
                 className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
                   isOpen ? "w-40" : "w-0"

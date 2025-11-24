@@ -4,9 +4,12 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Mail, Loader2, X } from "lucide-react";
 import { useUser } from "@/context/UserContext";
 import Alert from "../Alert";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { LoggingOutOverlay } from "../Reusables/LoadingBar";
 
 export default function ChangeEmail({ onClose }) {
+  const router = useRouter();
   const { email: oldEmail } = useUser();
   const [step, setStep] = useState("step1");
   const [newEmail, setNewEmail] = useState("");
@@ -105,7 +108,7 @@ export default function ChangeEmail({ onClose }) {
           //Redirect to login page after a short delay
           setTimeout(() => {
             setLoggingOut(true);
-            window.location.href = "/login";
+            router.push("/login");
           }, 2000); //2 second delay for the user to read the alert
         } else {
           setShowAlert(true);
@@ -210,8 +213,24 @@ export default function ChangeEmail({ onClose }) {
         />
       )}
       {loggingOut && <LoggingOutOverlay isLoggingOut={loggingOut} />}
-      <div className="custom-blur fixed inset-0 z-50 flex items-center justify-center bg-white/50 p-4 dark:bg-gray-950/50">
-        <div className="mx-auto w-90 rounded-2xl border border-gray-200 bg-gray-50 p-6 shadow-2xl md:w-full md:max-w-md dark:border-gray-700 dark:bg-gray-950">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        className="custom-blur fixed inset-0 z-50 flex items-center justify-center bg-white/50 p-4 dark:bg-gray-950/50"
+      >
+        <motion.div
+          initial={{ scale: 0.95, opacity: 0, y: 20 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          exit={{ scale: 0.95, opacity: 0, y: 20 }}
+          transition={{
+            type: "spring",
+            stiffness: 300,
+            damping: 30,
+          }}
+          className="mx-auto w-90 rounded-2xl border border-gray-200 bg-gray-50 p-6 shadow-2xl md:w-full md:max-w-md dark:border-gray-700 dark:bg-gray-950"
+        >
           {step === "step1" && (
             <>
               <div className="flex items-start justify-between">
@@ -396,8 +415,8 @@ export default function ChangeEmail({ onClose }) {
               </form>
             </>
           )}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </>
   );
 }
