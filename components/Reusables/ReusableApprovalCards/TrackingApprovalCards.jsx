@@ -29,14 +29,14 @@ export default function TrackingApprovalCards() {
           <StatCard
             title="Open"
             count={counts.open}
-            description="Summary of all open requests"
+            description="Summary of open requests"
             IconComponent={Loader}
           />
           {/* Closed Card */}
           <StatCard
             title="Closed"
             count={counts.closed}
-            description="Summary of all closed requests"
+            description="Summary of closed requests"
             IconComponent={UserRoundCheck}
           />
 
@@ -44,7 +44,7 @@ export default function TrackingApprovalCards() {
           <StatCard
             title="Approved"
             count={counts.approved}
-            description="Summary of all requests fully approved"
+            description="Summary of approved requests"
             IconComponent={CheckCircle2}
           />
         </div>

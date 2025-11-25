@@ -6,7 +6,13 @@ import StaffInformation from "../StaffInformation";
 import ProductPricing from "../ProductPricing";
 import Alert from "../Alert";
 import { LoadingBarWave } from "../Reusables/LoadingBar";
-import { ClipboardList, PackagePlus, PlusCircle, Trash2 } from "lucide-react";
+import {
+  ClipboardList,
+  PackagePlus,
+  PlusCircle,
+  SendHorizonal,
+  Trash2,
+} from "lucide-react";
 import ConfirmationDialog from "../Reusables/ConfirmationDialog";
 import PaymentDetails from "../PaymentDetails";
 import TopBarButtons from "../Reusables/TopBarButtons/TopBarButtons";
@@ -189,7 +195,7 @@ export default function NewPurchase() {
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center justify-center gap-2 text-gray-900 dark:text-gray-200">
             <ClipboardList className="h-6 w-6" />
-            <h1 className="text-xl font-semibold">Purchase Request Form</h1>
+            <h1 className="text-xl font-semibold">Request Form</h1>
           </div>
           <TopBarButtons />
         </div>
@@ -269,8 +275,9 @@ export default function NewPurchase() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="mx-auto mt-8 block rounded-xl bg-gray-900 px-6 py-2.5 text-sm text-white transition-colors hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
+            className="mx-auto mt-8 flex items-center justify-center gap-2 rounded-xl bg-gray-900 px-4 py-2.5 text-sm text-white transition-colors hover:bg-gray-700 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200"
           >
+            <SendHorizonal className="h-5 w-5" />
             Submit Purchase
           </button>
         </form>

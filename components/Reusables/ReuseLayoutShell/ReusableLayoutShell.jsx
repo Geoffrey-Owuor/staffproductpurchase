@@ -26,9 +26,9 @@ export default function ReusableLayoutShell({ user, children }) {
         <ReusableSidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
         <div className="flex flex-1 pb-4">
           <main
-            className={`min-w-0 flex-1 px-2 transition-all duration-200 ${sidebarOpen ? "md:ml-58" : "md:ml-16"}`}
+            className={`min-w-0 flex-1 px-2 transition-all duration-200 ${sidebarOpen ? "custom:ml-58" : "custom:ml-16"}`}
           >
-            <div className="mt-16 md:mt-4">{children}</div>
+            <div className="custom:mt-4 mt-16">{children}</div>
           </main>
         </div>
         <DashboardFooter isSidebarOpen={sidebarOpen} />

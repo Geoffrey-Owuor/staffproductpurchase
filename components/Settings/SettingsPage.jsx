@@ -14,7 +14,7 @@ export default function SettingsPage({ onClose }) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
-      className="custom-blur fixed inset-0 -left-159 z-80 flex items-center justify-center bg-white/50 md:inset-0 md:p-4 dark:bg-gray-950/50"
+      className="custom-blur fixed inset-0 z-80 flex items-center justify-center bg-white/50 md:p-4 dark:bg-gray-950/50"
     >
       <motion.div
         initial={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -70,10 +70,10 @@ export default function SettingsPage({ onClose }) {
         {/* Close Icon - (Optional) We can animate this too or let it move with the container */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 cursor-pointer rounded-full bg-gray-900 p-1.5 text-white transition-colors hover:text-gray-100 md:top-0.5 md:-right-11 dark:bg-white dark:text-black dark:hover:text-gray-800"
+          className="absolute top-4 right-4 cursor-pointer rounded-full p-1.5 text-gray-900 transition-colors hover:text-gray-700 dark:text-gray-200 dark:hover:text-gray-400"
           aria-label="Close dialog"
         >
-          <X className="h-5 w-5" />
+          <X className="h-6 w-6" />
         </button>
       </motion.div>
     </motion.div>

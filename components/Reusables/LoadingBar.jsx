@@ -48,7 +48,7 @@ export const LoggingOutOverlay = ({ isLoggingOut }) => {
 
   return (
     // This main div provides the full-screen semi-transparent overlay
-    <div className="fixed inset-0 -left-35 z-[80] flex h-screen items-center justify-center bg-white md:inset-0 dark:bg-gray-950">
+    <div className="fixed inset-0 z-80 flex h-screen items-center justify-center bg-white dark:bg-gray-950">
       {/* Container to align the spinner and text horizontally */}
       <div className="flex items-center space-x-2">
         {/* The Lucide Loader spinner */}

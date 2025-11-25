@@ -137,7 +137,7 @@ export default function GeneralViewPurchases({ id }) {
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <View className="h-6 w-6" />
-            <span className="text-xl font-semibold">View Purchase Request</span>
+            <span className="text-xl font-semibold">View Request</span>
           </div>
           <div className="flex items-center justify-end gap-4">
             {/* Middle Edit Button */}

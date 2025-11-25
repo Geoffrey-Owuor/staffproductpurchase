@@ -2,6 +2,10 @@
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
+@theme {
+  --breakpoint-custom: 1200px;
+}
+
 :root {
   --shimmer-background: #e5e7eb;
 
@@ -120,20 +124,21 @@
     margin-left: auto;
     margin-right: auto;
     @media (width >= 40rem /* 640px */) {
-      max-width: 40rem /* 640px */;
+      max-width: 65rem /* 640px */;
     }
-    @media (width >= 48rem /* 768px */) {
-      max-width: 48rem /* 768px */;
-    }
+
     @media (width >= 64rem /* 1024px */) {
-      max-width: 64rem /* 1024px */;
+      max-width: 90rem /* 1280px */;
     }
 
     @media (width >= 78rem /* 1250px */) {
       max-width: 90rem /* 1280px */;
     }
-    @media (width >= 96rem /* 1536px */) {
-      max-width: 100rem /* 1536px */;
+    @media (width >= 100rem) {
+      max-width: 100rem;
+    }
+    @media (width >= 120rem /* 1536px */) {
+      max-width: 125rem /* 1536px */;
     }
   }
 }

@@ -4,13 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import {
-  ChevronsUpDown,
-  LogOutIcon,
-  Palette,
-  Settings,
-  SlidersVertical,
-} from "lucide-react";
+import { ChevronsUpDown, LogOutIcon, Palette, Settings } from "lucide-react";
 import SettingsPage from "../Settings/SettingsPage";
 import { useUser } from "@/context/UserContext";
 import ThemeToggle from "./ThemeProviders/ThemeToggle";
@@ -65,7 +59,11 @@ export default function UserMenu({ isSidebarOpen, hideMobileMenu }) {
 
   return (
     <>
-      <LoggingOutOverlay isLoggingOut={loggingOut} />
+      {/* Display overlay in a portal */}
+      {createPortal(
+        <LoggingOutOverlay isLoggingOut={loggingOut} />,
+        document.body,
+      )}
       <div className="relative" ref={menuRef}>
         {/* Toggle button */}
         <div
@@ -73,7 +71,9 @@ export default function UserMenu({ isSidebarOpen, hideMobileMenu }) {
           className="flex cursor-default items-center justify-between gap-2 rounded-xl p-2 text-sm text-gray-700 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-white"
         >
           <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gray-900 text-sm text-white dark:bg-gray-100 dark:text-gray-950">
-            <span className="mb-0.5">{user.name.charAt(0).toUpperCase()}</span>
+            <span className="mb-0 sm:mb-0.5">
+              {user.name.charAt(0).toUpperCase()}
+            </span>
           </div>
           <div
             className={`flex flex-col whitespace-nowrap transition-all duration-200 ${
@@ -116,7 +116,7 @@ export default function UserMenu({ isSidebarOpen, hideMobileMenu }) {
 
               <div className="p-2">
                 <div className="flex w-full items-center space-x-1 rounded-lg px-2 py-2 text-gray-800 dark:text-white">
-                  <Palette className="h-5 w-5" />
+                  <Palette className="h-5 w-5 shrink-0" />
                   <span>Theme </span>
                   <div className="mt-1 ml-2">
                     <ThemeToggle />

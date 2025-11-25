@@ -38,7 +38,7 @@ export default function ApprovalCards() {
             count={counts.pending}
             description={
               userRole === "staff"
-                ? "Awaiting approval from invoicing"
+                ? "Awaiting invoicing approval"
                 : "Awaiting your approval"
             }
             IconComponent={Clock}
@@ -61,7 +61,7 @@ export default function ApprovalCards() {
             count={counts.approved}
             description={
               userRole === "staff"
-                ? "Requests approved by invoicing"
+                ? "Approved by invoicing"
                 : "Requests you've approved"
             }
             IconComponent={CheckCircle2}
