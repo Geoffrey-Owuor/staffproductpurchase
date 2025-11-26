@@ -165,7 +165,7 @@ export default function StaffPurchaseHistory() {
         <TableSkeleton />
       ) : (
         <>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto rounded-xl">
             <table className="mb-6 min-w-full">
               <thead className="bg-gray-700 text-white dark:bg-gray-800">
                 <tr>
@@ -304,7 +304,7 @@ export default function StaffPurchaseHistory() {
                 ) : (
                   <tr>
                     <td
-                      colSpan="8"
+                      colSpan="12"
                       className="px-6 py-4 text-center text-sm whitespace-nowrap text-gray-500 dark:text-gray-400"
                     >
                       No purchase data found

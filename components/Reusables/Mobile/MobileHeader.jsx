@@ -73,7 +73,7 @@ export default function MobileHeader() {
     <>
       {/* --- Mobile Header Bar --- */}
       <div
-        className={`custom:hidden fixed right-0 left-0 z-50 h-14 transition-all duration-200 ease-in-out ${
+        className={`custom:hidden fixed right-0 left-0 z-50 transition-all duration-200 ease-in-out ${
           isScrolled
             ? "custom-blur bg-white/50 shadow-xs dark:bg-gray-950/50"
             : "bg-white dark:bg-gray-950"

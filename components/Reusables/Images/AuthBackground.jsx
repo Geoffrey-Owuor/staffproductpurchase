@@ -41,13 +41,19 @@ export default function AuthBackground({ children }) {
 
       {/* Footer text */}
       <div className="absolute bottom-6">
-        <div className="flex items-center justify-center space-x-1 text-sm text-gray-700 dark:text-gray-400">
-          <span>
+        <div className="flex items-center justify-center space-x-1 text-sm">
+          <span className="text-gray-700 dark:text-gray-400">
             © {new Date().getFullYear()} Hotpoint Appliances Ltd. Built by
           </span>
-          <span className="font-semibold">Jeff</span>
-
-          <BrainCog className="h-3.5 w-3.5" />
+          <a
+            href="https://github.com/Geoffrey-Owuor"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 text-gray-500 hover:text-gray-600 hover:underline dark:hover:text-gray-400"
+          >
+            <span className="font-semibold">Jeff</span>
+            <BrainCog className="h-3.5 w-3.5" />
+          </a>
         </div>
       </div>
 
