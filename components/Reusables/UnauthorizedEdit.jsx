@@ -41,7 +41,8 @@ export default function UnauthorizedEdit({ role }) {
             Edit Unauthorized
           </h2>
           <p className="mt-2 text-gray-600 dark:text-gray-300">
-            You have already approved this request and can no longer modify it
+            Purchase request is either already approved by this role or has been
+            declined by a previous approver
           </p>
           <div className="mt-6">
             <button

@@ -59,11 +59,12 @@ export default function UserMenu({ isSidebarOpen, hideMobileMenu }) {
 
   return (
     <>
-      {/* Display overlay in a portal */}
-      {createPortal(
-        <LoggingOutOverlay isLoggingOut={loggingOut} />,
-        document.body,
-      )}
+      {/* Logout display overlay in a portal */}
+      {mounted &&
+        createPortal(
+          <LoggingOutOverlay isLoggingOut={loggingOut} />,
+          document.body,
+        )}
       <div className="relative" ref={menuRef}>
         {/* Toggle button */}
         <div

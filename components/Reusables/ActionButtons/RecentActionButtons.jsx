@@ -36,6 +36,12 @@ export const RecentActionButtons = ({
   onCloseError,
   disableDelete = false,
 }) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const { role: userRole } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const [deleting, setIsDeleting] = useState(false);
@@ -192,10 +198,24 @@ export const RecentActionButtons = ({
           disabled={
             //Approver cannot edit once approved
             goingTo === id ||
-            (userRole === "payroll" && payrollApproval === "approved") ||
-            (userRole === "hr" && hrApproval === "approved") ||
-            (userRole === "cc" && ccApproval === "approved") ||
-            (userRole === "bi" && biApproval === "approved")
+            (userRole === "payroll" &&
+              (payrollApproval === "approved" ||
+                payrollApproval === "declined")) ||
+            (userRole === "hr" &&
+              (hrApproval === "approved" ||
+                hrApproval === "declined" ||
+                payrollApproval === "declined")) ||
+            (userRole === "cc" &&
+              (ccApproval === "approved" ||
+                ccApproval === "declined" ||
+                payrollApproval === "declined" ||
+                hrApproval === "declined")) ||
+            (userRole === "bi" &&
+              (biApproval === "approved" ||
+                biApproval === "declined" ||
+                payrollApproval === "declined" ||
+                hrApproval === "declined" ||
+                ccApproval === "declined"))
           }
           className={menuItemStyles}
         >
@@ -209,12 +229,7 @@ export const RecentActionButtons = ({
             onClick={handleConfirmDelete}
             disabled={
               //Approver cannot delete once approved
-              goingTo === id ||
-              disableDelete ||
-              (userRole === "payroll" && payrollApproval === "approved") ||
-              (userRole === "hr" && hrApproval === "approved") ||
-              (userRole === "cc" && ccApproval === "approved") ||
-              (userRole === "bi" && biApproval === "approved")
+              goingTo === id || disableDelete || userRole !== "admin"
             }
             className="mt-1 flex w-full items-center rounded-lg p-2 text-left text-sm text-red-600 hover:bg-red-50 disabled:opacity-50 disabled:hover:bg-transparent dark:text-red-400 dark:hover:bg-red-600/15"
           >
@@ -271,7 +286,8 @@ export const RecentActionButtons = ({
           <MoreVertical className="h-4 w-4" />
         </button>
 
-        {isOpen &&
+        {mounted &&
+          isOpen &&
           createPortal(
             <AnimatePresence>
               <DropdownMenu />

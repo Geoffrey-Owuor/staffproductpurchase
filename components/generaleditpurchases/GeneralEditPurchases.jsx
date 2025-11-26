@@ -465,10 +465,24 @@ export default function GeneralEditPurchases({ id }) {
 
   // 3. Authorization State
   if (
-    (userRole === "payroll" && purchase.Payroll_Approval === "approved") ||
-    (userRole === "hr" && purchase.HR_Approval === "approved") ||
-    (userRole === "cc" && purchase.CC_Approval === "approved") ||
-    (userRole === "bi" && purchase.BI_Approval === "approved")
+    (userRole === "payroll" &&
+      (purchase.Payroll_Approval === "approved" ||
+        purchase.Payroll_Approval === "declined")) ||
+    (userRole === "hr" &&
+      (purchase.HR_Approval === "approved" ||
+        purchase.HR_Approval === "declined" ||
+        purchase.Payroll_Approval === "declined")) ||
+    (userRole === "cc" &&
+      (purchase.CC_Approval === "approved" ||
+        purchase.CC_Approval === "declined" ||
+        purchase.Payroll_Approval === "declined" ||
+        purchase.HR_Approval === "declined")) ||
+    (userRole === "bi" &&
+      (purchase.BI_Approval === "approved" ||
+        purchase.BI_Approval === "declined" ||
+        purchase.Payroll_Approval === "declined" ||
+        purchase.HR_Approval === "declined" ||
+        purchase.CC_Approval === "declined"))
   ) {
     return <UnauthorizedEdit role={userRole} />;
   }

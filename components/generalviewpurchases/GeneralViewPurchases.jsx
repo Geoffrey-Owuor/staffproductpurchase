@@ -141,11 +141,24 @@ export default function GeneralViewPurchases({ id }) {
           </div>
           <div className="flex items-center justify-end gap-4">
             {/* Middle Edit Button */}
-            {((userRole === "bi" && purchase.BI_Approval !== "approved") ||
-              (userRole === "cc" && purchase.CC_Approval !== "approved") ||
-              (userRole === "payroll" &&
-                purchase.Payroll_Approval !== "approved") ||
-              (userRole === "hr" && purchase.HR_Approval !== "approved")) &&
+            {((userRole === "payroll" &&
+              purchase.Payroll_Approval !== "approved" &&
+              purchase.Payroll_Approval !== "declined") ||
+              (userRole === "hr" &&
+                purchase.HR_Approval !== "approved" &&
+                purchase.HR_Approval !== "declined" &&
+                purchase.Payroll_Approval !== "declined") ||
+              (userRole === "cc" &&
+                purchase.CC_Approval !== "approved" &&
+                purchase.CC_Approval !== "declined" &&
+                purchase.Payroll_Approval !== "declined" &&
+                purchase.HR_Approval !== "declined") ||
+              (userRole === "bi" &&
+                purchase.BI_Approval !== "approved" &&
+                purchase.BI_Approval !== "declined" &&
+                purchase.Payroll_Approval !== "declined" &&
+                purchase.HR_Approval !== "declined" &&
+                purchase.CC_Approval !== "declined")) &&
               userRole !== "staff" && (
                 <button
                   onClick={() => gotoPurchaseEdit(id)}
@@ -426,11 +439,24 @@ export default function GeneralViewPurchases({ id }) {
 
         {/* Bottom Buttons - Centered */}
         <div className="mt-6 flex justify-center gap-4">
-          {((userRole === "bi" && purchase.BI_Approval !== "approved") ||
-            (userRole === "cc" && purchase.CC_Approval !== "approved") ||
-            (userRole === "payroll" &&
-              purchase.Payroll_Approval !== "approved") ||
-            (userRole === "hr" && purchase.HR_Approval !== "approved")) &&
+          {((userRole === "payroll" &&
+            purchase.Payroll_Approval !== "approved" &&
+            purchase.Payroll_Approval !== "declined") ||
+            (userRole === "hr" &&
+              purchase.HR_Approval !== "approved" &&
+              purchase.HR_Approval !== "declined" &&
+              purchase.Payroll_Approval !== "declined") ||
+            (userRole === "cc" &&
+              purchase.CC_Approval !== "approved" &&
+              purchase.CC_Approval !== "declined" &&
+              purchase.Payroll_Approval !== "declined" &&
+              purchase.HR_Approval !== "declined") ||
+            (userRole === "bi" &&
+              purchase.BI_Approval !== "approved" &&
+              purchase.BI_Approval !== "declined" &&
+              purchase.Payroll_Approval !== "declined" &&
+              purchase.HR_Approval !== "declined" &&
+              purchase.CC_Approval !== "declined")) &&
             userRole !== "staff" && (
               <button
                 onClick={() => gotoPurchaseEdit(id)}

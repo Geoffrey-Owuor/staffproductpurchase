@@ -53,14 +53,15 @@ export async function GET(request) {
     if (filterType === "approval" && approvalStatus) {
       if (approvalStatus === "declined") {
         whereClauses.push(`
-      (BI_Approval = ? OR HR_Approval = ? OR CC_Approval = ?)
+      (Payroll_Approval = ? OR BI_Approval = ? OR HR_Approval = ? OR CC_Approval = ?)
     `);
-        params.push("declined", "declined", "declined");
+        params.push("declined", "declined", "declined", "declined");
       } else if (approvalStatus != "declined") {
         whereClauses.push(`
       BI_Approval = ? AND 
       CC_Approval <> 'declined' AND 
-      HR_Approval <> 'declined'
+      HR_Approval <> 'declined' AND
+      Payroll_Approval <> 'declined'
     `);
         params.push(approvalStatus);
       }

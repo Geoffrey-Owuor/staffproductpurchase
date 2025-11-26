@@ -76,6 +76,17 @@ export async function GET(request) {
       if (columnName) {
         whereClauses.push(`${columnName} = ?`);
         params.push(approvalStatus);
+
+        //Sequential logic - Only apply if looking for pending items
+        if (approvalStatus === "pending") {
+          if (role === "hr") {
+            whereClauses.push(`Payroll_Approval = 'approved'`);
+          } else if (role === "cc") {
+            whereClauses.push(`HR_Approval = 'approved'`);
+          } else if (role === "bi") {
+            whereClauses.push(`CC_Approval = 'approved'`);
+          }
+        }
       }
     } else if (filterType === "terms" && paymentTerms) {
       whereClauses.push(`employee_payment_terms = ?`);

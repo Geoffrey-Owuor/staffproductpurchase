@@ -27,7 +27,8 @@ const ROLE_QUERY_CONFIGS = {
             WHERE user_id = ? 
             AND BI_Approval = 'pending' 
             AND CC_Approval <> 'declined' 
-            AND HR_Approval <> 'declined'`,
+            AND HR_Approval <> 'declined'
+            AND Payroll_Approval <> 'declined'`,
       params: [userId],
     }),
     getDeclinedQuery: (userId) => ({
@@ -35,7 +36,8 @@ const ROLE_QUERY_CONFIGS = {
             WHERE user_id = ? AND (
             BI_Approval = 'declined' OR 
             HR_Approval = 'declined' OR 
-            CC_Approval = 'declined')`,
+            CC_Approval = 'declined' OR
+            Payroll_Approval = 'declined')`,
       params: [userId],
     }),
     getApprovedQuery: (userId) => ({
@@ -43,18 +45,41 @@ const ROLE_QUERY_CONFIGS = {
             WHERE user_id = ? 
             AND BI_Approval = 'approved' 
             AND CC_Approval <> 'declined' 
-            AND HR_Approval <> 'declined'`,
+            AND HR_Approval <> 'declined'
+            AND Payroll_Approval <> 'declined'`,
       params: [userId],
     }),
   },
 };
 
 //Generate SQL query configs for approver roles
-function getApproverQueryConfigs(approvalField, approverIdField, userId) {
+function getApproverQueryConfigs(role, approvalField, approverIdField, userId) {
+  // The dependency chain
+  // A role only sees a request when the previous person has approved it
+  let prerequisiteClause = "";
+
+  switch (role) {
+    case "hr":
+      prerequisiteClause = "AND Payroll_Approval = 'approved'";
+      break;
+    case "cc":
+      prerequisiteClause = "AND HR_Approval = 'approved'";
+      break;
+    case "bi":
+      prerequisiteClause = "AND CC_Approval = 'approved'";
+      break;
+    case "payroll":
+      prerequisiteClause = "";
+      break;
+    default:
+      prerequisiteClause = "";
+  }
+
   return {
     pending: {
       sql: `SELECT COUNT(*) as count FROM purchasesInfo 
-            WHERE ${approvalField} = 'pending'`,
+            WHERE ${approvalField} = 'pending' 
+            ${prerequisiteClause}`,
       params: [],
     },
     declined: {
@@ -102,6 +127,7 @@ export async function GET(request) {
     } else if (roleConfig.approvalField && roleConfig.approverIdField) {
       //Approvers use the generic approver query generator
       queryConfigs = getApproverQueryConfigs(
+        role,
         roleConfig.approvalField,
         roleConfig.approverIdField,
         userId,
