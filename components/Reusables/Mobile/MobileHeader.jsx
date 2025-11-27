@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  Menu,
   X,
   HomeIcon,
   ShoppingBagIcon,
@@ -10,6 +9,8 @@ import {
   Link2,
   ChevronsLeft,
   BookOpenCheck,
+  PanelLeft,
+  LifeBuoy,
 } from "lucide-react";
 import HotpointLogo from "../HotpointLogo";
 import { useState, useEffect } from "react";
@@ -80,8 +81,18 @@ export default function MobileHeader() {
         }`}
       >
         <div className="flex items-center justify-between px-4 py-3">
-          <HotpointLogo />
-          <div className="flex items-center space-x-10">
+          <div className="flex items-center justify-center space-x-4">
+            <HotpointLogo />
+            <button
+              onClick={() => setIsMobileMenuOpen(true)}
+              aria-label="Open menu"
+              title="Open menu"
+              className="mt-0.5 rounded-full p-2 text-gray-900 hover:bg-gray-100 md:mt-1 dark:text-white dark:hover:bg-gray-800"
+            >
+              <PanelLeft className="h-5 w-5" />
+            </button>
+          </div>
+          <div className="flex items-center space-x-4">
             <button
               onClick={() => router.back()}
               className="rounded-full p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
@@ -89,13 +100,16 @@ export default function MobileHeader() {
             >
               <ChevronsLeft className="h-6 w-6" />
             </button>
-            <button
-              onClick={() => setIsMobileMenuOpen(true)}
-              aria-label="Open menu"
+            <a
+              href="https://drive.google.com/drive/folders/1GdDpICwn6nA-51uKcubAa3YiNDrxqcAi?usp=drive_link"
+              target="_blank"
+              title="Check manual"
+              aria-label="Check manual"
+              rel="noopener noreferrer"
               className="rounded-full p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
             >
-              <Menu className="h-6 w-6" />
-            </button>
+              <LifeBuoy className="h-6 w-6" />
+            </a>
           </div>
         </div>
       </div>
@@ -112,8 +126,8 @@ export default function MobileHeader() {
 
       {/* Sidebar Content */}
       <div
-        className={`custom:hidden fixed top-0 right-0 bottom-0 z-70 flex w-64 transform flex-col bg-white p-4 shadow-lg transition-transform duration-300 ease-in-out dark:border-l dark:border-gray-700 dark:bg-gray-950 ${
-          isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+        className={`custom:hidden fixed top-0 bottom-0 left-0 z-70 flex w-64 transform flex-col bg-white p-4 shadow-lg transition-transform duration-300 ease-in-out dark:border-r dark:border-gray-700 dark:bg-gray-950 ${
+          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         {/* Sidebar Header */}
