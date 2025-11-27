@@ -20,7 +20,7 @@ const LandingLogo = () => {
     currentTheme === "dark" ? assets.hotpoint_white_logo : assets.hotpoint_logo;
 
   return (
-    <div className="relative flex justify-center overflow-hidden">
+    <div className="relative flex justify-start overflow-hidden">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentTheme} // Key triggers animation on theme change
