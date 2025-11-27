@@ -218,7 +218,7 @@ const UserManual = () => {
             © {new Date().getFullYear()} Hotpoint Appliances Ltd. Built by
           </span>
           <a
-            href="https://github.com/Geoffrey-Owuor"
+            href="https://jeff-portfolio-web.vercel.app"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1 text-gray-500 hover:text-gray-600 hover:underline dark:hover:text-gray-400"
