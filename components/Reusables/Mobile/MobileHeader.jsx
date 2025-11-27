@@ -9,8 +9,8 @@ import {
   Link2,
   ChevronsLeft,
   BookOpenCheck,
-  PanelLeft,
   LifeBuoy,
+  Menu,
 } from "lucide-react";
 import HotpointLogo from "../HotpointLogo";
 import { useState, useEffect } from "react";
@@ -81,18 +81,18 @@ export default function MobileHeader() {
         }`}
       >
         <div className="flex items-center justify-between px-4 py-3">
-          <div className="flex items-center justify-center space-x-4">
-            <HotpointLogo />
+          <div className="flex items-center justify-center space-x-3">
             <button
               onClick={() => setIsMobileMenuOpen(true)}
               aria-label="Open menu"
               title="Open menu"
-              className="mt-0.5 rounded-full p-2 text-gray-900 hover:bg-gray-100 md:mt-1 dark:text-white dark:hover:bg-gray-800"
+              className="rounded-full p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
             >
-              <PanelLeft className="h-5 w-5" />
+              <Menu className="h-6 w-6" />
             </button>
+            <HotpointLogo />
           </div>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3">
             <button
               onClick={() => router.back()}
               className="rounded-full p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
