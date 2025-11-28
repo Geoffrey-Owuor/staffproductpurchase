@@ -48,7 +48,11 @@ const PaymentDetails = ({ formData, handleChange, userRole, periods }) => {
               <option value="NYALI">Nyali Showroom</option>
               <option value="LIKONI">Likoni Showroom</option>
               <option value="CBD">CBD Showroom</option>
+              <option value="YAYA">Yaya Showroom</option>
               <option value="VILLAGE">Village Market Showroom</option>
+              <option value="OTHER">
+                Other(Indicate in other details section)
+              </option>
             </select>
           </div>
 
