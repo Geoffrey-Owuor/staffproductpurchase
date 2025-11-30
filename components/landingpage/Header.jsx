@@ -39,7 +39,7 @@ export default function Header() {
 
           {/* Navigation */}
           <nav
-            className={`hidden space-x-8 px-6 py-1.5 md:flex ${
+            className={`navigation:flex hidden space-x-8 px-6 py-1.5 ${
               scrolled
                 ? "dark:text-gray-200"
                 : "rounded-full bg-white/50 shadow backdrop-blur dark:bg-gray-800/50"

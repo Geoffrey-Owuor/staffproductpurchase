@@ -3,7 +3,7 @@
 
 import { useEffect } from "react";
 
-export function useFinishLoading(isLoading, setIsLoading, delay = 400) {
+export function useFinishLoading(isLoading, setIsLoading, delay = 300) {
   useEffect(() => {
     if (!isLoading) return;
 

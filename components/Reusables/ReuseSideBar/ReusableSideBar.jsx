@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 
 import { useState, useEffect } from "react";
+import { AnimatePresence } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
 import HotpointLogo from "../HotpointLogo";
 import UserMenu from "../UserMenu";
@@ -256,7 +257,7 @@ export default function ReusableSidebar({ isOpen, toggleSidebar }) {
           </div>
         </div>
       </div>
-      <LoadingLine isLoading={isLoading} />
+      <AnimatePresence>{isLoading && <LoadingLine />}</AnimatePresence>
     </>
   );
 }

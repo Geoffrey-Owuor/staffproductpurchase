@@ -82,10 +82,10 @@ export default function Footer() {
               Have questions? Our team is here to help.
             </p>
             <a
-              href="mailto:info@hotpoint.co.ke"
+              href="mailto:helpdesk@hotpoint.co.ke"
               className="text-red-600 transition hover:text-red-500 dark:text-red-400 dark:hover:text-red-300"
             >
-              info@hotpoint.co.ke
+              helpdesk@hotpoint.co.ke
             </a>
           </div>
         </div>

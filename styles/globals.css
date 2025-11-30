@@ -4,6 +4,7 @@
 
 @theme {
   --breakpoint-custom: 1200px;
+  --breakpoint-navigation: 1000px;
 }
 
 :root {
@@ -145,11 +146,33 @@
 
 html {
   scroll-behavior: smooth;
-  scrollbar-color: #9ca3af #00000000;
+  scrollbar-color: #9ca3af transparent;
 }
 
 html[data-theme="dark"] {
-  scrollbar-color: #4b5563 #00000000;
+  scrollbar-color: #4b5563 transparent;
+}
+
+/* FOR WEBKIT BROWSERS */
+/* Width of scrollbar */
+html::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Scrollbar track (transparent) */
+html::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Scrollbar thumb */
+html::-webkit-scrollbar-thumb {
+  background-color: #9ca3af; /* light theme thumb */
+  border-radius: 4px;
+}
+
+/* Dark theme thumb */
+html[data-theme="dark"]::-webkit-scrollbar-thumb {
+  background-color: #4b5563;
 }
 
 .custom-blur {

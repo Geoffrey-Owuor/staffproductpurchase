@@ -27,7 +27,7 @@ export async function POST(request) {
 
     // Verify email was previously verified
     const [verified] = await conn.execute(
-      `SELECT * FROM verification_codes WHERE email = ? AND verified = 1 and expires_at > NOW()`,
+      `SELECT * FROM verification_codes WHERE email = ? AND verified = 1 AND expires_at > NOW()`,
       [email],
     );
 
@@ -35,7 +35,7 @@ export async function POST(request) {
       return Response.json(
         {
           success: false,
-          message: "Email not verified or verification pending",
+          message: "Code expired, please register again",
         },
         { status: 400 },
       );

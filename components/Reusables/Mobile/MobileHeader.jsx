@@ -13,6 +13,7 @@ import {
   Menu,
 } from "lucide-react";
 import HotpointLogo from "../HotpointLogo";
+import { AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import UserMenu from "../UserMenu";
@@ -25,6 +26,11 @@ import { useUser } from "@/context/UserContext";
 export default function MobileHeader() {
   // --- State for header scroll effect ---
   const [isScrolled, setIsScrolled] = useState(false);
+  // --- State and logic for Mobile Sidebar ---
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { role } = useUser();
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -40,11 +46,19 @@ export default function MobileHeader() {
     };
   }, []);
 
-  // --- State and logic for Mobile Sidebar ---
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { role } = useUser();
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  // UseEffect to disable scrolling when sidebar is open (for screens wider than 640px)
+  useEffect(() => {
+    if (isMobileMenuOpen && window.innerWidth >= 640) {
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      document.documentElement.style.overflow = "unset";
+    }
+
+    // Cleanup function to restore scrolling when component unmounts
+    return () => {
+      document.documentElement.style.overflow = "unset";
+    };
+  }, [isMobileMenuOpen]);
 
   const handleHomeRoute = UseHandleHomeRoute();
   const handleHistoryRoute = UseHandleHistoryRoute();
@@ -118,7 +132,7 @@ export default function MobileHeader() {
 
       {/* Sidebar Backdrop */}
       <div
-        className={`custom:hidden fixed inset-0 z-60 bg-white/50 transition-opacity duration-200 ease-in-out dark:bg-black/50 ${
+        className={`custom:hidden fixed inset-0 z-60 bg-black/50 transition-opacity duration-200 ease-in-out dark:bg-black/60 ${
           isMobileMenuOpen ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
         onClick={() => setIsMobileMenuOpen(false)}
@@ -220,7 +234,7 @@ export default function MobileHeader() {
           </div>
         </div>
       </div>
-      <LoadingLine isLoading={isLoading} />
+      <AnimatePresence>{isLoading && <LoadingLine />}</AnimatePresence>
     </>
   );
 }
