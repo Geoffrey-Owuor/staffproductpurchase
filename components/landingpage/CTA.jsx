@@ -16,13 +16,13 @@ export default function CTA() {
         <div className="flex flex-col justify-center space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
           <Link
             href="/register"
-            className="flex cursor-default items-center justify-center rounded-full bg-gray-900 px-8 py-3 font-medium text-white shadow-lg transition hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
+            className="flex cursor-default items-center justify-center rounded-xl bg-gray-900 px-8 py-3 font-medium text-white shadow-lg transition hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
           >
             Sign Up Now <ArrowRight className="ml-2 h-5 w-5" />
           </Link>
           <Link
             href="/login"
-            className="flex cursor-default items-center justify-center rounded-full border border-gray-300 px-8 py-3 font-medium text-gray-700 transition hover:bg-gray-50 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700"
+            className="flex cursor-default items-center justify-center rounded-xl border border-gray-300 px-8 py-3 font-medium text-gray-700 transition hover:bg-gray-50 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700"
           >
             Existing User? Log In
           </Link>

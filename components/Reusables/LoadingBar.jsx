@@ -4,7 +4,7 @@ export const LoadingBar = ({ isLoading }) => {
 
   return (
     // This main div provides the full-screen semi-transparent overlay
-    <div className="fixed inset-0 z-9999 flex h-screen items-center justify-center bg-white/50 dark:bg-gray-950/50">
+    <div className="fixed inset-0 z-9999 flex h-screen items-center justify-center bg-white/50 dark:bg-black/60">
       {/* Container to align the spinner and text horizontally */}
       <div className="flex items-center space-x-2">
         {/* The Lucide Loader spinner */}
@@ -27,7 +27,7 @@ export const LoadingBarWave = ({ isLoading }) => {
 
   return (
     // This main div provides the full-screen semi-transparent overlay
-    <div className="fixed inset-0 z-9999 flex h-screen items-center justify-center bg-white/50 dark:bg-gray-950/50">
+    <div className="fixed inset-0 z-9999 flex h-screen items-center justify-center bg-white/50 dark:bg-black/60">
       {/* Container to align the spinner and text horizontally */}
       <div className="flex items-center space-x-2">
         {/* The Lucide Loader spinner */}
@@ -69,7 +69,7 @@ export const LoggingOutOverlay = ({ isLoggingOut }) => {
 export const DeletingOverlay = () => {
   return (
     // This main div provides the full-screen semi-transparent overlay
-    <div className="fixed inset-0 z-9999 flex h-screen items-center justify-center bg-white/50 dark:bg-gray-950/50">
+    <div className="fixed inset-0 z-9999 flex h-screen items-center justify-center bg-white/50 dark:bg-black/60">
       {/* Container to align the spinner and text horizontally */}
       <div className="flex items-center space-x-2">
         {/* The Lucide Loader spinner */}

@@ -24,13 +24,13 @@ export default function Hero() {
             <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
               <Link
                 href="/register"
-                className="flex cursor-default items-center justify-center rounded-full bg-red-600 px-6 py-3 font-medium text-white shadow-md transition hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600"
+                className="flex cursor-default items-center justify-center rounded-xl bg-red-600 px-6 py-3 font-medium text-white shadow-md transition hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600"
               >
                 Get Started <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
               <a
                 href="#how-it-works"
-                className="flex cursor-default items-center justify-center rounded-full border border-gray-300 px-6 py-3 font-medium text-gray-700 transition hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+                className="flex cursor-default items-center justify-center rounded-xl border border-gray-300 px-6 py-3 font-medium text-gray-700 transition hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
               >
                 How It Works
               </a>

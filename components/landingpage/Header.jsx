@@ -39,10 +39,10 @@ export default function Header() {
 
           {/* Navigation */}
           <nav
-            className={`navigation:flex hidden space-x-8 px-6 py-1.5 ${
+            className={`navigation:flex hidden space-x-8 px-6 py-2 ${
               scrolled
                 ? "dark:text-gray-200"
-                : "rounded-full bg-white/50 shadow backdrop-blur dark:bg-gray-800/50"
+                : "rounded-full border border-gray-200 bg-white/50 shadow-lg backdrop-blur dark:border-gray-800 dark:bg-gray-800/50"
             }`}
           >
             <a
@@ -71,13 +71,13 @@ export default function Header() {
             <ThemeToggleCompact />
             <Link
               href="/login"
-              className="cursor-default rounded-full px-4 py-1.5 font-medium text-red-600 transition hover:bg-red-100 dark:text-red-400 dark:hover:bg-gray-800"
+              className="cursor-default rounded-xl px-4 py-1.5 font-medium text-red-600 transition hover:bg-red-100 dark:text-red-400 dark:hover:bg-gray-800"
             >
               Log In
             </Link>
             <Link
               href="/register"
-              className="cursor-default rounded-full bg-red-600 px-4 py-1.5 font-medium text-white shadow-sm transition hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600"
+              className="cursor-default rounded-xl bg-red-600 px-4 py-1.5 font-medium text-white shadow-sm transition hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600"
             >
               Sign Up
             </Link>

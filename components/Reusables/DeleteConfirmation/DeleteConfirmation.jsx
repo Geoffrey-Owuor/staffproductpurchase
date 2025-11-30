@@ -48,7 +48,7 @@ export default function DeleteConfirmation({ onConfirm, onCancel }) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-white/50 dark:bg-gray-950/50"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-white/50 dark:bg-black/60"
     >
       <motion.div
         initial={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -104,13 +104,13 @@ export default function DeleteConfirmation({ onConfirm, onCancel }) {
                 <button
                   onClick={onCancel}
                   type="button"
-                  className="rounded-3xl border border-gray-300 bg-white px-4 py-2 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+                  className="rounded-xl border border-gray-300 bg-white px-4 py-2 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="rounded-3xl bg-gray-900 px-4 py-2 text-white hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
+                  className="rounded-xl bg-gray-900 px-4 py-2 text-white hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
                 >
                   {loading ? (
                     <div className="flex items-center gap-2">
@@ -167,14 +167,14 @@ export default function DeleteConfirmation({ onConfirm, onCancel }) {
               <button
                 onClick={onCancel}
                 type="button"
-                className="rounded-3xl border border-gray-300 bg-white px-4 py-2 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+                className="rounded-xl border border-gray-300 bg-white px-4 py-2 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
               >
                 Cancel
               </button>
               <button
                 onClick={onConfirm}
                 disabled={confirmationText !== textMatch}
-                className="rounded-3xl bg-red-500 px-4 py-2 text-white hover:bg-red-600 disabled:opacity-50"
+                className="rounded-xl bg-red-500 px-4 py-2 text-white hover:bg-red-600 disabled:opacity-50"
               >
                 Delete
               </button>

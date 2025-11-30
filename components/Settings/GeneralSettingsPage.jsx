@@ -31,7 +31,7 @@ export default function GeneralSettingsPage() {
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               {field.label}
             </label>
-            <div className="mt-1 rounded-lg border border-gray-300 bg-white p-2 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
+            <div className="mt-1 rounded-xl border border-gray-300 bg-white p-2 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
               {field.value}
             </div>
           </div>

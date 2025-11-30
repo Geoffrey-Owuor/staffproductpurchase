@@ -20,7 +20,7 @@ export default function Pagination({
           <button
             key={i}
             onClick={() => handlePageChange(i)}
-            className={`mx-1 flex h-6 w-6 items-center justify-center rounded-full ${currentPage === i ? "bg-gray-900 text-white dark:bg-gray-200 dark:text-gray-900" : "bg-transparent text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"}`}
+            className={`mx-1 flex h-6 w-6 items-center justify-center rounded-lg ${currentPage === i ? "bg-gray-900 text-white dark:bg-gray-200 dark:text-gray-900" : "bg-transparent text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"}`}
           >
             {i}
           </button>,
@@ -32,7 +32,7 @@ export default function Pagination({
           <button
             key={i}
             onClick={() => handlePageChange(i)}
-            className={`mx-1 flex h-6 w-6 items-center justify-center rounded-full ${currentPage === i ? "bg-gray-900 text-white dark:bg-gray-200 dark:text-gray-900" : "bg-transparent text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"}`}
+            className={`mx-1 flex h-6 w-6 items-center justify-center rounded-lg ${currentPage === i ? "bg-gray-900 text-white dark:bg-gray-200 dark:text-gray-900" : "bg-transparent text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"}`}
           >
             {i}
           </button>,
@@ -42,7 +42,7 @@ export default function Pagination({
         <div key="dropdown" className="relative mx-1">
           <button
             onClick={() => setShowPageDropdown(!showPageDropdown)}
-            className={`flex h-8 w-8 items-center justify-center rounded-full bg-transparent text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800`}
+            className={`flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800`}
           >
             <MoreHorizontal className="h-4 w-4" />
           </button>
@@ -70,7 +70,7 @@ export default function Pagination({
         <button
           key={totalPages}
           onClick={() => handlePageChange(totalPages)}
-          className={`mx-1 flex h-6 w-6 items-center justify-center rounded-full ${currentPage === totalPages ? "bg-gray-900 text-white dark:bg-gray-200 dark:text-gray-900" : "bg-transparent text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"}`}
+          className={`mx-1 flex h-6 w-6 items-center justify-center rounded-lg ${currentPage === totalPages ? "bg-gray-900 text-white dark:bg-gray-200 dark:text-gray-900" : "bg-transparent text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"}`}
         >
           {totalPages}
         </button>,
@@ -105,7 +105,7 @@ export default function Pagination({
           <button
             onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
             disabled={currentPage === 1}
-            className="mx-1 flex h-8 w-8 items-center justify-center rounded-full bg-transparent text-gray-900 hover:bg-gray-100 disabled:opacity-50 dark:text-white dark:hover:bg-gray-800"
+            className="mx-1 flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-gray-900 hover:bg-gray-100 disabled:opacity-50 dark:text-white dark:hover:bg-gray-800"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
@@ -115,7 +115,7 @@ export default function Pagination({
               handlePageChange(Math.min(totalPages, currentPage + 1))
             }
             disabled={currentPage === totalPages}
-            className="mx-1 flex h-8 w-8 items-center justify-center rounded-full bg-transparent text-gray-900 hover:bg-gray-100 disabled:opacity-50 dark:text-white dark:hover:bg-gray-800"
+            className="mx-1 flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-gray-900 hover:bg-gray-100 disabled:opacity-50 dark:text-white dark:hover:bg-gray-800"
           >
             <ChevronRight className="h-4 w-4" />
           </button>
