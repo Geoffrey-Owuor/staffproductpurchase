@@ -113,13 +113,13 @@ const UserManual = () => {
             <ThemeToggleCompact />
             <Link
               href="/login"
-              className="cursor-default rounded-full px-4 py-1.5 font-medium text-red-600 transition hover:bg-red-100 dark:text-red-400 dark:hover:bg-gray-800"
+              className="cursor-default rounded-xl px-4 py-1.5 font-medium text-red-600 transition hover:bg-red-100 dark:text-red-400 dark:hover:bg-gray-800"
             >
               Log In
             </Link>
             <Link
               href="/register"
-              className="cursor-default rounded-full bg-red-600 px-4 py-1.5 font-medium text-white shadow-sm transition hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600"
+              className="cursor-default rounded-xl bg-red-600 px-4 py-1.5 font-medium text-white shadow-sm transition hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600"
             >
               Sign Up
             </Link>
