@@ -99,6 +99,7 @@ const PaymentDetails = ({ formData, handleChange, userRole, periods }) => {
                 value={formData.mpesa_code}
                 onChange={handleChange}
                 readOnly={isReadOnly}
+                maxLength={20}
                 placeholder="Enter Mpesa reference code"
                 required
                 className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${isReadOnly ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
