@@ -143,9 +143,8 @@ const ProductPricing = ({
     }));
   }, [formData.tdPrice, formData.discountRate]);
 
-  const staffReadOnly = userRole != "staff";
-  const editableRoles = ["bi", "staff"];
-  const isReadOnlyGeneral = !editableRoles.includes(userRole);
+  const staffReadOnly = userRole !== "staff";
+  const ccReadOnly = userRole !== "cc";
 
   return (
     <div className="relative mb-8 rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-950">
@@ -281,8 +280,8 @@ const ProductPricing = ({
               name="tdPrice"
               value={formData.tdPrice}
               onChange={handleChange}
-              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
-              readOnly={isReadOnlyGeneral}
+              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${ccReadOnly ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
+              readOnly={ccReadOnly}
               required
             />
           </div>
@@ -298,9 +297,9 @@ const ProductPricing = ({
               name="discountRate"
               value={formData.discountRate}
               onChange={handleChange}
-              readOnly={isReadOnlyGeneral}
+              readOnly={ccReadOnly}
               required
-              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${isReadOnlyGeneral ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
+              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${ccReadOnly ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
             />
           </div>
 

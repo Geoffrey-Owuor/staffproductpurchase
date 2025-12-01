@@ -6,7 +6,7 @@ export default function BIApprovalSection({
   handleChange,
   userRole,
 }) {
-  const isReadOnly = userRole != "bi";
+  const isReadOnly = userRole !== "bi";
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700">
       {/* Invoicing Details Section */}

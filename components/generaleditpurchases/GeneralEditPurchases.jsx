@@ -333,6 +333,15 @@ function PurchaseForm({
             <PackagePlus className="h-6 w-6" />
             <span className="text-xl">Product & Pricing Details</span>
           </div>
+          {userRole === "cc" && (
+            <p className="text-xs">
+              <span className="font-semibold text-red-500 dark:text-red-400">
+                Note:{" "}
+              </span>
+              Don't forget to check the "Other Details" field for items being
+              bought at offer prices
+            </p>
+          )}
 
           {/* Map over the products array to render a component for each */}
           {products.map((product, index) => (

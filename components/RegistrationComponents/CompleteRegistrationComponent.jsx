@@ -134,13 +134,13 @@ export default function CompleteRegistrationComponent({ email }) {
               <option value="Marketing">Marketing</option>
               <option value="B2B">B2B</option>
               <option value="IT & Projects">IT & Projects</option>
-              <option value="Imports & Exports">Imports & Exports</option>
-              <option value="Warehouse">Warehouse</option>
+              <option value="Operations">Operations</option>
               <option value="Modern Trade">Modern Trade</option>
               <option value="Retail">Retail</option>
-              <option value="Service Center">Service Center</option>
-              <option value="Audit & Security">Audit & Security</option>
               <option value="Engineering & HVAC">Engineering & HVAC</option>
+              <option value="Service Center">Service Center</option>
+              <option value="Internal Audit">Internal Audit</option>
+              <option value="Security">Security</option>
             </select>
             <label className="absolute -top-3 left-4 rounded-md bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-400 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300">
               Department

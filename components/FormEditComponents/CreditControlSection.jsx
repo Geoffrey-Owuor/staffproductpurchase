@@ -6,7 +6,7 @@ export default function CreditControlSection({
   handleChange,
   userRole,
 }) {
-  const isReadOnly = userRole != "cc";
+  const isReadOnly = userRole !== "cc";
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700">
       <div className="px-6 py-3">
@@ -14,6 +14,17 @@ export default function CreditControlSection({
           Credit Control Approval
         </h3>
       </div>
+      {userRole === "cc" && (
+        <div className="px-6">
+          <p className="text-xs">
+            <span className="font-semibold text-red-500 dark:text-red-400">
+              Note:{" "}
+            </span>
+            Don't forget to check the "Other Details" field for items being
+            bought at offer prices
+          </p>
+        </div>
+      )}
       <div className="grid grid-cols-1 gap-6 bg-white p-6 md:grid-cols-2 dark:bg-gray-950">
         {/* Full-width text fields */}
         <div className="md:col-span-2">

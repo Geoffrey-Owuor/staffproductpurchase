@@ -172,12 +172,12 @@ const PaymentDetails = ({ formData, handleChange, userRole, periods }) => {
               onChange={handleChange}
               rows="3" //Text Area Height
               className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${
-                isReadOnly
+                staffReadonly
                   ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800"
                   : "bg-white dark:bg-gray-950"
               }`}
               required
-              disabled={isReadOnly}
+              disabled={staffReadonly}
               placeholder="Enter other details applicable to this purchase request e.g., delivery/pickup details..."
             />
           </div>

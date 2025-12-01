@@ -229,6 +229,18 @@ export default function NewPurchase() {
             <PackagePlus className="h-6 w-6" />
             <span className="text-xl">Product & Pricing Details</span>
           </div>
+          {user.role === "staff" && (
+            <p className="mb-4 text-xs">
+              <span className="font-semibold text-red-500 dark:text-red-400">
+                Please note:
+              </span>{" "}
+              To maintain accurate pricing, product prices cannot be edited by
+              users. If you are buying an item at an offer price, kindly include
+              the item and its offer price along with other necessary details in
+              the “Other Details” section. The Credit Control Team will make the
+              necessary adjustment for you.
+            </p>
+          )}
 
           {/* Map over the products array to render a component for each */}
           {products.map((product, index) => (

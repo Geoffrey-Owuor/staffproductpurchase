@@ -160,7 +160,7 @@ export async function PUT(request, { params }) {
     }
 
     //UPDATE THE PRODUCTS TABLE (ONLY WHEN USER IS BI)
-    if (user.role === "bi" && Array.isArray(products) && products.length > 0) {
+    if (user.role === "cc" && Array.isArray(products) && products.length > 0) {
       //Delete the existing products for this purchase
       await connection.execute(
         "DELETE FROM purchase_products WHERE purchase_id = ?",
