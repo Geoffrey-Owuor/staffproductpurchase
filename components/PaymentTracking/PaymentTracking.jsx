@@ -281,6 +281,7 @@ export default function PaymentTracking() {
                 </option>
                 <option value="CASH">Cash</option>
                 <option value="CREDIT">Credit</option>
+                <option value="CASH AND CREDIT">Cash & Credit</option>
               </select>
             )}
 

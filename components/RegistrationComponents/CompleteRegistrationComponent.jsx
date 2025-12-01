@@ -130,6 +130,7 @@ export default function CompleteRegistrationComponent({ email }) {
               <option value="Commercial">Commercial</option>
               <option value="Finance">Finance</option>
               <option value="HR & Admin">HR & Admin</option>
+              <option value="Directorate">Directorate</option>
               <option value="Marketing">Marketing</option>
               <option value="B2B">B2B</option>
               <option value="IT & Projects">IT & Projects</option>
