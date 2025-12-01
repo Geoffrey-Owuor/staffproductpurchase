@@ -3,7 +3,7 @@ import {
   UserPlus,
   ShoppingCart,
   Bell,
-  GitPullRequest, // Represents workflows/approvals
+  GitPullRequest,
   LifeBuoy,
   CheckCircle2,
   CreditCard,
@@ -12,9 +12,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import ThemeToggle from "../Reusables/ThemeProviders/ThemeToggle";
-import { AuthPagesLogo } from "@/public/assets";
-import Link from "next/link";
-import ThemeToggleCompact from "../Reusables/ThemeProviders/ThemeToggleCompact";
+import Header from "../landingpage/Header";
 
 // --- STATIC DATA ---
 const manualSteps = [
@@ -104,28 +102,8 @@ const manualSteps = [
 const UserManual = () => {
   return (
     <>
-      <div className="custom-blur fixed top-0 right-0 left-0 z-50 w-full bg-white/70 transition-all duration-300 dark:bg-gray-950/70">
-        <div className="flex items-center justify-between px-4 py-3">
-          <AuthPagesLogo />
-
-          {/* Auth Buttons  */}
-          <div className="flex items-center space-x-4">
-            <ThemeToggleCompact />
-            <Link
-              href="/login"
-              className="cursor-default rounded-xl px-4 py-1.5 font-medium text-red-600 transition hover:bg-red-100 dark:text-red-400 dark:hover:bg-gray-800"
-            >
-              Log In
-            </Link>
-            <Link
-              href="/register"
-              className="cursor-default rounded-xl bg-red-600 px-4 py-1.5 font-medium text-white shadow-sm transition hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600"
-            >
-              Sign Up
-            </Link>
-          </div>
-        </div>
-      </div>
+      {/* Header */}
+      <Header />
 
       <section className="min-h-screen w-full bg-white px-4 py-20 md:px-8 dark:bg-gray-950">
         <div className="mx-auto max-w-4xl">

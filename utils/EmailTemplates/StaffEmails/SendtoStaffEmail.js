@@ -58,7 +58,7 @@ const generateUserPurchaseEmailHTML = ({ staffInfo, products }) => {
                             <tr>
                               <th style="padding: 8px; border-bottom: 2px solid #333; text-align: left;">Item Name</th>
                               <th style="padding: 8px; border-bottom: 2px solid #333; text-align: left;">Product Code</th>
-                              <th style="padding: 8px; border-bottom: 2px solid #333; text-align: left;">Final Price</th>
+                              <th style="padding: 8px; border-bottom: 2px solid #333; text-align: left;">Price</th>
                             </tr>
                           </thead>
                           <tbody>

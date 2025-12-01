@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ShoppingBag } from "lucide-react";
+import { ArrowUpRight, ChevronDown, ShoppingBag } from "lucide-react";
 import ThemeToggleCompact from "../Reusables/ThemeProviders/ThemeToggleCompact";
 import Link from "next/link";
 
@@ -25,63 +25,58 @@ export default function Header() {
           : "bg-white dark:bg-gray-950"
       }`}
     >
-      <div className="px-4 py-3">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <a href="#">
-            <div className="flex items-center gap-1 text-2xl font-bold">
-              <ShoppingBag className="h-6 w-6 text-gray-950 dark:text-white" />
-              <span className="text-gray-900 dark:text-gray-100">
-                Hot<span className="text-red-600 dark:text-red-500">p</span>oint
-              </span>
-            </div>
-          </a>
-
-          {/* Navigation */}
-          <nav
-            className={`navigation:flex hidden space-x-8 px-6 py-2 ${
-              scrolled
-                ? "dark:text-gray-200"
-                : "rounded-full border border-gray-200 bg-white/50 shadow-lg backdrop-blur dark:border-gray-800 dark:bg-gray-800/50"
-            }`}
-          >
-            <a
-              href="#features"
-              className="font-medium text-gray-600 transition hover:text-red-600 dark:text-gray-300 dark:hover:text-red-400"
-            >
-              Features
-            </a>
-            <a
-              href="#how-it-works"
-              className="font-medium text-gray-600 transition hover:text-red-600 dark:text-gray-300 dark:hover:text-red-400"
-            >
-              How It Works
-            </a>
-            <Link
-              href="/usermanual"
-              className="font-medium text-gray-600 transition hover:text-red-600 dark:text-gray-300 dark:hover:text-red-400"
-            >
-              User Manual
-            </Link>
-          </nav>
-
-          {/* Auth Buttons  */}
-          <div className="flex items-center space-x-4">
-            {/* Theme switcher */}
-            <ThemeToggleCompact />
-            <Link
-              href="/login"
-              className="cursor-default rounded-xl px-4 py-1.5 font-medium text-red-600 transition hover:bg-red-100 dark:text-red-400 dark:hover:bg-gray-800"
-            >
-              Log In
-            </Link>
-            <Link
-              href="/register"
-              className="cursor-default rounded-xl bg-red-600 px-4 py-1.5 font-medium text-white shadow-sm transition hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600"
-            >
-              Sign Up
-            </Link>
+      <div className="flex items-center justify-between px-4 py-3">
+        {/* Logo */}
+        <a href="/#">
+          <div className="flex items-center gap-1 text-2xl font-bold">
+            <ShoppingBag className="h-6 w-6 text-gray-950 dark:text-white" />
+            <span className="text-gray-900 dark:text-gray-100">
+              Hot<span className="text-red-600 dark:text-red-500">p</span>oint
+            </span>
           </div>
+        </a>
+
+        {/* Navigation */}
+        <nav className="navigation:flex hidden space-x-8 px-6">
+          <a
+            href="/#features"
+            className="flex items-center gap-2 font-semibold text-gray-600 transition hover:text-red-600 dark:text-gray-300 dark:hover:text-red-400"
+          >
+            Features
+            <ChevronDown className="mt-0.5 h-4 w-4" />
+          </a>
+          <a
+            href="/#how-it-works"
+            className="flex items-center gap-2 font-semibold text-gray-600 transition hover:text-red-600 dark:text-gray-300 dark:hover:text-red-400"
+          >
+            How It Works
+            <ChevronDown className="mt-0.5 h-4 w-4" />
+          </a>
+          <Link
+            href="/usermanual"
+            className="flex items-center gap-2 font-semibold text-gray-600 transition hover:text-red-600 dark:text-gray-300 dark:hover:text-red-400"
+          >
+            User Manual
+            <ArrowUpRight className="h-4 w-4" />
+          </Link>
+        </nav>
+
+        {/* Auth Buttons  */}
+        <div className="flex items-center space-x-4">
+          {/* Theme switcher */}
+          <ThemeToggleCompact />
+          <Link
+            href="/login"
+            className="cursor-default rounded-xl px-3 py-1.5 font-semibold text-red-600 transition hover:bg-red-100 dark:text-red-400 dark:hover:bg-gray-800"
+          >
+            Log In
+          </Link>
+          <Link
+            href="/register"
+            className="cursor-default rounded-xl bg-red-600 px-3 py-1.5 font-semibold text-white shadow-sm transition hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600"
+          >
+            Sign Up
+          </Link>
         </div>
       </div>
     </header>

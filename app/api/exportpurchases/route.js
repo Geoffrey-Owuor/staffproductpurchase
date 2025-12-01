@@ -9,17 +9,20 @@ export async function GET(request) {
   const fromDate = searchParams.get("fromDate");
   const toDate = searchParams.get("toDate");
 
-  //the base select clause for both scenarios
   const baseSelect = `
-    SELECT
-      p.id AS purchaseId, p.createdAt, p.reference_number, p.staffName,
-      p.payrollNo, p.department, p.employee_payment_terms,
-      p.mpesa_code, p.user_credit_period, p.invoicing_location, p.delivery_details,
-      p.credit_period, p.pending_invoices, p.invoice_number, p.invoice_amount,
-      p.payment_reference, p.request_closure, pp.itemName, pp.itemStatus, pp.productPolicy, pp.productCode, pp.tdPrice,
-      pp.discountRate, pp.discountedValue
-    FROM purchasesinfo AS p
-    INNER JOIN purchase_products AS pp ON p.id = pp.purchase_id
+  SELECT
+    p.id, p.createdAt, p.reference_number, p.staffName, p.payrollNo, p.department,
+    p.employee_payment_terms, p.user_credit_period, p.mpesa_code, p.invoicing_location,
+    p.delivery_details, pp.itemName, pp.itemStatus, pp.productPolicy, pp.productCode, 
+    pp.tdPrice AS initialPrice, pp.discountRate, pp.discountedValue, p.Payroll_Approval, p.HR_Approval,
+    p.CC_Approval, p.BI_Approval, p.one_third_rule, p.payroll_approver_name,
+    p.payroll_approval_date, p.is_employed, p.on_probation, p.hr_comments,
+    p.hr_approver_name, p.hr_approval_date, p.credit_period, p.purchase_history_comments,
+    p.pending_invoices, p.cc_approver_name, p.cc_approval_date, p.invoice_date,
+    p.invoice_number, p.invoice_amount, p.payment_reference, p.bi_approver_name,
+    p.bi_approval_date, p.request_closure
+FROM purchasesinfo AS p
+INNER JOIN purchase_products AS pp ON p.id = pp.purchase_id
   `;
 
   let query = baseSelect;

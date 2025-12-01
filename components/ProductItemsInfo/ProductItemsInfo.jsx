@@ -18,7 +18,7 @@ export default function ProductItemsInfo({ products }) {
                 "Status",
                 "Policy",
                 "Code",
-                "TD Price",
+                "Initial Price",
                 "Discount",
                 "Discounted Value",
               ].map((header) => (
