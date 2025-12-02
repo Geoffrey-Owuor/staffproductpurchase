@@ -68,8 +68,8 @@ const ProductPricing = ({
 
   //useEffect for automatic policy and rate selection
   useEffect(() => {
-    // Guard clause to make sure this useEffect only runs when the user is a staff
-    if (userRole !== "staff") {
+    // Guard clause to make sure this useEffect only runs when the user is staff or credit control
+    if (!["staff", "cc"].includes(userRole)) {
       return;
     }
 
@@ -143,8 +143,10 @@ const ProductPricing = ({
     }));
   }, [formData.tdPrice, formData.discountRate]);
 
+  const editableRoles = ["staff", "cc"];
   const staffReadOnly = userRole !== "staff";
   const ccReadOnly = userRole !== "cc";
+  const isReadonlyGeneral = !editableRoles.includes(userRole);
 
   return (
     <div className="relative mb-8 rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-950">
@@ -201,11 +203,11 @@ const ProductPricing = ({
                 name="productCode"
                 value={formData.productCode}
                 onChange={handleChange}
-                className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${staffReadOnly ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
+                className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${isReadonlyGeneral ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
                 required
-                readOnly={staffReadOnly}
+                readOnly={isReadonlyGeneral}
               />
-              {userRole === "staff" && (
+              {(userRole === "staff" || userRole === "cc") && (
                 <button
                   type="button"
                   onClick={fetchDetails}
@@ -227,9 +229,9 @@ const ProductPricing = ({
               name="itemName"
               value={formData.itemName}
               onChange={handleChange}
-              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${staffReadOnly ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
+              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${isReadonlyGeneral ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
               required
-              readOnly={staffReadOnly}
+              readOnly={isReadonlyGeneral}
               title={formData.itemName}
             />
           </div>

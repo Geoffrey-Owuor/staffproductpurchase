@@ -80,7 +80,6 @@ export async function PUT(request, { params }) {
         "payment_reference",
         "invoicing_location",
         "mpesa_code",
-        "delivery_details",
         "BI_Approval",
       ],
     };
