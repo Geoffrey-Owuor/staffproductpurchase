@@ -140,6 +140,28 @@ export default function NewPurchase() {
     }
   };
 
+  // Handle submission confirmation
+  const handleConfirmSubmit = (e) => {
+    e.preventDefault();
+    // Check if one of the products is missing a price (an implicit return)
+    const missingPriceProducts = products.filter(
+      (product) =>
+        product.tdPrice === "" ||
+        product.tdPrice === null ||
+        product.tdPrice === undefined,
+    );
+
+    if (missingPriceProducts.length > 0) {
+      setShowAlert(true);
+      setAlertType("error");
+      setAlertMessage(
+        "Price is missing, click the search icon in product code field to insert the price",
+      );
+    } else {
+      setShowConfirmDialog(true);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e?.preventDefault();
     setIsSubmitting(true);
@@ -202,10 +224,7 @@ export default function NewPurchase() {
 
         <form
           id="staffInformation"
-          onSubmit={(e) => {
-            e.preventDefault();
-            setShowConfirmDialog(true);
-          }}
+          onSubmit={handleConfirmSubmit}
           autoComplete="off"
         >
           {isSubmitting && <LoadingBarWave isLoading={true} />}

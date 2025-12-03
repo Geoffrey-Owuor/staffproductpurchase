@@ -24,6 +24,25 @@ export async function POST(request) {
     connection = await pool.getConnection();
     ({ staffInfo, products, paymentInfo } = await request.json());
 
+    // Validate that all products have a tdPrice before beginning a transaction (An implicit return)
+    const missingPriceProducts = products.filter(
+      (product) =>
+        product.tdPrice === "" ||
+        product.tdPrice === null ||
+        product.tdPrice === undefined,
+    );
+
+    if (missingPriceProducts.length > 0) {
+      return Response.json(
+        {
+          success: false,
+          message:
+            "Price is missing, click the search icon in product code field to insert the price",
+        },
+        { status: 400 },
+      );
+    }
+
     //Start a transaction
     await connection.beginTransaction();
 
