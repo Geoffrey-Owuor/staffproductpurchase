@@ -72,7 +72,7 @@ export default function UserMenu({ isSidebarOpen, hideMobileMenu }) {
           className="flex cursor-default items-center justify-between gap-2 rounded-xl p-2 text-sm text-gray-700 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-white"
         >
           <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gray-900 text-sm text-white dark:bg-gray-100 dark:text-gray-950">
-            <span className="mb-0 sm:mb-0.5">
+            <span className="mb-0 sm:mb-0.5 2xl:mb-0">
               {user.name.charAt(0).toUpperCase()}
             </span>
           </div>

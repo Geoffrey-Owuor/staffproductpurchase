@@ -25,7 +25,7 @@ export default function Header() {
           : "bg-white dark:bg-gray-950"
       }`}
     >
-      <div className="flex items-center justify-between px-4 py-3">
+      <div className="containerizing flex items-center justify-between px-4 py-3">
         {/* Logo */}
         <a href="/#">
           <div className="flex items-center gap-1 text-2xl font-bold">
