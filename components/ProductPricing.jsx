@@ -149,7 +149,7 @@ const ProductPricing = ({
   const isReadonlyGeneral = !editableRoles.includes(userRole);
 
   return (
-    <div className="relative mb-8 rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-950">
+    <div className="bg-gradient-classes relative mb-8 rounded-xl border border-gray-200 dark:border-gray-700">
       <div className="rounded-t-xl px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white">
         Product {productNumber}
       </div>
@@ -160,10 +160,10 @@ const ProductPricing = ({
           className="absolute top-1.5 left-4 z-10 w-80 cursor-pointer rounded-lg border border-gray-300 bg-white p-2 shadow-lg md:left-43 dark:border-gray-700 dark:bg-gray-900"
           onClick={handleSelectFetched}
         >
-          <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
+          <p className="truncate text-sm font-semibold text-gray-900 dark:text-white">
             {fetchedDetails.itemName}
           </p>
-          <p className="text-xs font-medium text-gray-500 dark:text-gray-400">
+          <p className="text-xs font-semibold text-gray-500 dark:text-gray-400">
             TD Price: {fetchedDetails.tdPrice}
           </p>
           <p className="text-xs text-gray-400 italic">(Click to select)</p>
@@ -190,7 +190,7 @@ const ProductPricing = ({
         <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
           {/* Product Code */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400">
+            <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-400">
               Product Code (SKU) <FormAsterisk />
               {/* Small loading spinner */}
               {loading && (
@@ -221,7 +221,7 @@ const ProductPricing = ({
           </div>
           {/* Item Name*/}
           <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400">
+            <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-400">
               Item Name <FormAsterisk />
             </label>
             <input
@@ -237,7 +237,7 @@ const ProductPricing = ({
           </div>
           {/* Item Status */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400">
+            <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-400">
               Status (New / RHD2) <FormAsterisk />
             </label>
             <select
@@ -258,7 +258,7 @@ const ProductPricing = ({
 
           {/* Product Policy Type */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400">
+            <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-400">
               Item Policy Type
             </label>
             <input
@@ -273,7 +273,7 @@ const ProductPricing = ({
 
           {/* TD Price */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400">
+            <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-400">
               Initial Price <FormAsterisk />
             </label>
             <input
@@ -290,7 +290,7 @@ const ProductPricing = ({
 
           {/* Discount Rate */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400">
+            <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-400">
               Discount Rate <FormAsterisk />
             </label>
             <input
@@ -307,7 +307,7 @@ const ProductPricing = ({
 
           {/* Discounted Value */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400">
+            <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-400">
               Discounted Value
             </label>
             <input

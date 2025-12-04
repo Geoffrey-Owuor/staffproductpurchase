@@ -120,6 +120,12 @@
   .bg-base-classes {
     @apply bg-white dark:bg-gray-950;
   }
+  .bg-home-classes {
+    @apply bg-linear-to-br from-red-100/50 via-red-50/50 to-white dark:from-gray-900 dark:via-blue-950/20 dark:to-gray-950;
+  }
+  .bg-gradient-classes {
+    @apply bg-linear-to-br from-slate-100 via-slate-50/50 to-white dark:from-gray-900 dark:via-gray-950 dark:to-black;
+  }
   .containerizing {
     width: 100%;
     margin-left: auto;

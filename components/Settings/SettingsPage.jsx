@@ -37,7 +37,7 @@ export default function SettingsPage({ onClose }) {
             <nav className="flex flex-row items-center justify-center space-x-2 overflow-x-auto pb-2 md:flex-col md:space-y-2 md:space-x-0 md:overflow-x-visible md:pb-0">
               <button
                 onClick={() => setActiveTab("general")}
-                className={`flex shrink-0 items-center space-x-2 rounded-xl p-2 text-left text-sm font-medium whitespace-nowrap transition-colors md:w-full ${
+                className={`flex shrink-0 items-center space-x-2 rounded-xl p-2 text-left text-sm font-semibold whitespace-nowrap transition-colors md:w-full ${
                   activeTab === "general"
                     ? "bg-gray-200 text-black dark:bg-gray-800 dark:text-white"
                     : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
@@ -48,7 +48,7 @@ export default function SettingsPage({ onClose }) {
               </button>
               <button
                 onClick={() => setActiveTab("security")}
-                className={`flex shrink-0 items-center space-x-2 rounded-xl p-2 text-left text-sm font-medium whitespace-nowrap transition-colors md:w-full ${
+                className={`flex shrink-0 items-center space-x-2 rounded-xl p-2 text-left text-sm font-semibold whitespace-nowrap transition-colors md:w-full ${
                   activeTab === "security"
                     ? "bg-gray-200 text-black dark:bg-gray-800 dark:text-white"
                     : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"

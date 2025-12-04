@@ -8,7 +8,7 @@ export default function TrackingApprovalCards() {
   const { loading, counts } = useTrackingApprovalCards();
 
   return (
-    <div className="mx-2 mt-4 mb-8 rounded-xl border border-gray-200 px-2 pt-2 pb-3 dark:border-gray-700 dark:bg-gray-950">
+    <div className="bg-gradient-classes mx-2 mt-4 mb-8 rounded-xl border border-gray-200 px-2 pt-2 pb-3 dark:border-gray-700">
       {/* Render Heading Dynamically */}
       <div className="mt-3 mb-2 px-1 pb-3">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white">

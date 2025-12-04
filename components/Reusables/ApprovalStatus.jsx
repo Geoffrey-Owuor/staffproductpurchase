@@ -20,7 +20,7 @@ export default function ApprovalStatus({ label, status }) {
 
   return (
     <div>
-      <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+      <p className="text-sm font-semibold text-gray-500 dark:text-gray-400">
         {label}
       </p>
       {/* This is the new UI for the status indicator */}

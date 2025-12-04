@@ -17,6 +17,7 @@ export function ApprovalCountsProvider({ children }) {
     pending: 0,
     declined: 0,
     approved: 0,
+    total: 0,
   });
   const [loading, setLoading] = useState(true);
 
@@ -33,6 +34,7 @@ export function ApprovalCountsProvider({ children }) {
         pending: data.pending || 0,
         declined: data.declined || 0,
         approved: data.approved || 0,
+        total: data.total || 0,
       });
     } catch (error) {
       console.error("Error fetching approval counts:", error);

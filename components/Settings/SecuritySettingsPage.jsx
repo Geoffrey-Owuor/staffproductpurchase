@@ -110,7 +110,7 @@ export default function SecuritySettingsPage() {
 
         {/* Email Section */}
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
             Email Address
           </label>
           <div className="flex items-center gap-2">
@@ -129,7 +129,7 @@ export default function SecuritySettingsPage() {
 
         {/* Change Password Section */}
         <div className="space-y-4">
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
             Change Password
           </h3>
           <form
@@ -141,7 +141,7 @@ export default function SecuritySettingsPage() {
           >
             {/* Current Password */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                 Current Password <FormAsterisk />
               </label>
               <div className="relative mt-1">
@@ -164,7 +164,7 @@ export default function SecuritySettingsPage() {
 
             {/* New Password */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                 New Password <FormAsterisk />
               </label>
               <div className="relative mt-1">
@@ -187,7 +187,7 @@ export default function SecuritySettingsPage() {
 
             {/* Confirm New Password */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                 Confirm New Password <FormAsterisk />
               </label>
               <div className="relative mt-1">
@@ -223,7 +223,7 @@ export default function SecuritySettingsPage() {
                   !currentPassword ||
                   !confirmPassword
                 }
-                className="inline-flex items-center gap-1 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-red-500 dark:hover:bg-red-600"
+                className="inline-flex items-center gap-1 rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-red-500 dark:hover:bg-red-600"
               >
                 {updating ? (
                   <>

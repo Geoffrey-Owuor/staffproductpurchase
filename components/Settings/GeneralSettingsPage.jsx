@@ -28,7 +28,7 @@ export default function GeneralSettingsPage() {
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         {fields.map((field, index) => (
           <div key={index}>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
               {field.label}
             </label>
             <div className="mt-1 rounded-xl border border-gray-300 bg-white p-2 dark:border-gray-700 dark:bg-gray-800 dark:text-white">

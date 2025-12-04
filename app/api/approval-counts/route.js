@@ -2,6 +2,9 @@
 import pool from "@/lib/db";
 import { getCurrentUser } from "@/app/lib/auth";
 
+// Total requests query
+const totalQuery = `SELECT COUNT(*) as count FROM purchasesInfo`;
+
 const ROLE_QUERY_CONFIGS = {
   bi: {
     approvalField: "BI_Approval",
@@ -95,7 +98,7 @@ function getApproverQueryConfigs(role, approvalField, approverIdField, userId) {
   };
 }
 
-export async function GET(request) {
+export async function GET(_req) {
   let connection;
   try {
     const { role, id: userId } = await getCurrentUser();
@@ -156,16 +159,23 @@ export async function GET(request) {
       queryConfigs.approved.sql,
       queryConfigs.approved.params,
     );
+    const totalPromise = connection.execute(totalQuery);
 
     // Execute all three queries in parallel
-    const [[pendingResult], [declinedResult], [approvedResult]] =
-      await Promise.all([pendingPromise, declinedPromise, approvedPromise]);
+    const [[pendingResult], [declinedResult], [approvedResult], [totalResult]] =
+      await Promise.all([
+        pendingPromise,
+        declinedPromise,
+        approvedPromise,
+        totalPromise,
+      ]);
 
     //Return the combined result
     return Response.json({
       pending: pendingResult[0].count,
       declined: declinedResult[0].count,
       approved: approvedResult[0].count,
+      total: totalResult[0].count,
     });
   } catch (error) {
     console.error("Database Error: ", error);

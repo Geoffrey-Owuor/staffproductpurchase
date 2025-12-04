@@ -147,7 +147,7 @@ export default function ResetPasswordClient({ token }) {
             <button
               type="submit"
               disabled={isLoading || passwordError}
-              className="w-full rounded-xl bg-gray-900 p-3 font-medium text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:bg-gray-400 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
+              className="w-full rounded-xl bg-gray-900 p-3 font-semibold text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:bg-gray-400 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
             >
               {isLoading ? (
                 <span className="flex items-center justify-center gap-2">

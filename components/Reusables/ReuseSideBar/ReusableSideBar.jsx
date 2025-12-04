@@ -99,7 +99,7 @@ export default function ReusableSidebar({ isOpen, toggleSidebar }) {
   return (
     <>
       <div
-        className={`custom:flex fixed top-0 bottom-0 left-0 z-50 hidden flex-col border-r border-gray-200 bg-white transition-all duration-200 dark:border-gray-700 dark:bg-gray-950 ${
+        className={`custom:flex fixed top-0 bottom-0 left-0 z-50 hidden flex-col border-r border-gray-200 shadow-xl transition-all duration-200 dark:border-gray-700 ${
           isOpen ? "w-56" : "w-14"
         }`}
       >
@@ -109,7 +109,7 @@ export default function ReusableSidebar({ isOpen, toggleSidebar }) {
             className={`absolute top-60 transition-all duration-200 ${isOpen ? "left-52" : "left-10"}`}
           >
             <button
-              className="rounded-full bg-gray-800 p-2 text-white hover:bg-gray-700 dark:border dark:border-gray-500 dark:bg-gray-950 dark:hover:bg-gray-900"
+              className="rounded-full bg-gray-800 p-2 text-white hover:bg-gray-700 dark:bg-slate-50 dark:text-black dark:hover:bg-slate-200"
               onClick={toggleSidebar}
             >
               <Menu className="h-4 w-4" />
@@ -137,7 +137,7 @@ export default function ReusableSidebar({ isOpen, toggleSidebar }) {
               <li>
                 <div
                   onClick={handleHomeClick}
-                  className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition-colors ${
+                  className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
                     activeTab === "home"
                       ? "bg-gray-200 text-black dark:bg-gray-800 dark:text-white"
                       : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
@@ -160,7 +160,7 @@ export default function ReusableSidebar({ isOpen, toggleSidebar }) {
                       setIsLoading(true);
                       router.push("/staffdashboard/new-purchase");
                     }}
-                    className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition-colors ${
+                    className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
                       activeTab === "newpurchase"
                         ? "bg-gray-200 text-black dark:bg-gray-800 dark:text-white"
                         : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
@@ -180,7 +180,7 @@ export default function ReusableSidebar({ isOpen, toggleSidebar }) {
               <li>
                 <div
                   onClick={handleHistoryClick}
-                  className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition-colors ${
+                  className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
                     activeTab === "history"
                       ? "bg-gray-200 text-black dark:bg-gray-800 dark:text-white"
                       : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
@@ -203,7 +203,7 @@ export default function ReusableSidebar({ isOpen, toggleSidebar }) {
                       setIsLoading(true);
                       router.push("/ccdashboard/payment-tracking");
                     }}
-                    className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition-colors ${
+                    className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
                       activeTab === "paymentTracking"
                         ? "bg-gray-200 text-black dark:bg-gray-800 dark:text-white"
                         : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"

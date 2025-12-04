@@ -8,7 +8,7 @@ export default function CreditControlSection({
 }) {
   const isReadOnly = userRole !== "cc";
   return (
-    <div className="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700">
+    <div className="bg-gradient-classes overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700">
       <div className="px-6 py-3">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
           Credit Control Approval
@@ -25,12 +25,12 @@ export default function CreditControlSection({
           </p>
         </div>
       )}
-      <div className="grid grid-cols-1 gap-6 bg-white p-6 md:grid-cols-2 dark:bg-gray-950">
+      <div className="grid grid-cols-1 gap-6 p-6 md:grid-cols-2">
         {/* Full-width text fields */}
         <div className="md:col-span-2">
           <label
             htmlFor="credit_period"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-400"
           >
             Credit Period Given & Mode of Payments <FormAsterisk />
           </label>
@@ -50,7 +50,7 @@ export default function CreditControlSection({
         <div className="md:col-span-2">
           <label
             htmlFor="purchase_history_comments"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-400"
           >
             Purchase History Comments <FormAsterisk />
           </label>
@@ -71,7 +71,7 @@ export default function CreditControlSection({
         <div>
           <label
             htmlFor="pending_invoices"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-400"
           >
             Pending Invoices/Outstanding Amounts <FormAsterisk />
           </label>
@@ -91,7 +91,7 @@ export default function CreditControlSection({
         <div>
           <label
             htmlFor="CC_Approval"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-400"
           >
             Approval Status <FormAsterisk />
           </label>
@@ -113,7 +113,7 @@ export default function CreditControlSection({
         <div>
           <label
             htmlFor="cc_signature"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-400"
           >
             Checked By <FormAsterisk />
           </label>
@@ -133,7 +133,7 @@ export default function CreditControlSection({
         <div>
           <label
             htmlFor="cc_approval_date"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-400"
           >
             Credit Approval Date
           </label>

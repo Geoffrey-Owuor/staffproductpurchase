@@ -131,7 +131,7 @@ export default function GeneralViewPurchases({ id }) {
 
   return (
     <>
-      <div className="mx-auto p-2 dark:bg-gray-950">
+      <div className="mx-auto p-2">
         {isEditing && <LoadingBar isLoading={true} />}
         {/* Header with back button */}
         <div className="mb-6 flex items-center justify-between">
@@ -163,7 +163,7 @@ export default function GeneralViewPurchases({ id }) {
                 <button
                   onClick={() => gotoPurchaseEdit(id)}
                   disabled={isEditing}
-                  className="flex items-center justify-center gap-1 rounded-xl bg-gray-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
+                  className="flex items-center justify-center gap-1 rounded-xl bg-gray-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
                 >
                   <Edit className="h-4 w-4" />
                   Edit
@@ -188,7 +188,7 @@ export default function GeneralViewPurchases({ id }) {
         </div>
 
         {/* Details Card */}
-        <div className="rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-950">
+        <div className="rounded-xl border border-gray-200 dark:border-gray-700">
           {/* Staff Information Section */}
           <div className="border-b border-gray-200 p-6 dark:border-gray-700">
             <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
@@ -461,7 +461,7 @@ export default function GeneralViewPurchases({ id }) {
               <button
                 onClick={() => gotoPurchaseEdit(id)}
                 disabled={isEditing}
-                className="inline-flex items-center justify-center gap-1 rounded-xl bg-gray-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
+                className="inline-flex items-center justify-center gap-1 rounded-xl bg-gray-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
               >
                 <Edit className="h-4 w-4" />
                 Edit
@@ -470,7 +470,7 @@ export default function GeneralViewPurchases({ id }) {
           <button
             onClick={handleCloseClick}
             disabled={isClosing}
-            className="inline-flex items-center justify-center gap-1 rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-950 dark:text-gray-400 dark:hover:bg-gray-800"
+            className="inline-flex items-center justify-center gap-1 rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-950 dark:text-gray-400 dark:hover:bg-gray-800"
           >
             <X className="h-4 w-4" />
             Close
@@ -479,7 +479,7 @@ export default function GeneralViewPurchases({ id }) {
             <button
               disabled={updating}
               onClick={handleConfirmClose}
-              className="inline-flex items-center justify-center gap-1 rounded-xl bg-gray-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
+              className="inline-flex items-center justify-center gap-1 rounded-xl bg-gray-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
             >
               <GitPullRequestClosed className="mr-1 h-4 w-4" />
               Mark as closed

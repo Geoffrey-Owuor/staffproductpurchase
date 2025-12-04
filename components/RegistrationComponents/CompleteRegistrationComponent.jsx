@@ -196,7 +196,7 @@ export default function CompleteRegistrationComponent({ email }) {
               (formData.confirmPassword &&
                 formData.password !== formData.confirmPassword)
             }
-            className={`w-full rounded-xl px-4 py-2 font-medium transition duration-200 ${
+            className={`w-full rounded-xl px-4 py-2 font-semibold transition duration-200 ${
               loading ||
               (formData.confirmPassword &&
                 formData.password !== formData.confirmPassword)

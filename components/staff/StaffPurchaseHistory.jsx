@@ -74,7 +74,7 @@ export default function StaffPurchaseHistory() {
   );
 
   return (
-    <div className="m-2 rounded-xl border border-gray-200 px-2 pt-2 pb-4 dark:border-gray-700 dark:bg-gray-950">
+    <div className="bg-gradient-classes m-2 rounded-xl border border-gray-200 px-2 pt-2 pb-4 dark:border-gray-700">
       {navigatingTo && <LoadingBar isLoading={true} />}
       {/* Purchases history heading or recent purchases heading*/}
 

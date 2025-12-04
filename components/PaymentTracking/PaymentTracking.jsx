@@ -167,7 +167,7 @@ export default function PaymentTracking() {
           onClose={() => setAlertInfo({ show: false, message: "", type: "" })}
         />
       )}
-      <div className="m-2 rounded-xl border border-gray-200 px-2 pt-2 pb-4 dark:border-gray-700 dark:bg-gray-950">
+      <div className="bg-gradient-classes m-2 rounded-xl border border-gray-200 px-2 pt-2 pb-4 dark:border-gray-700">
         {/* Table Heading and column toggle*/}
         <div className="flex flex-col items-center space-y-6 md:flex-row md:justify-between md:space-y-0">
           <div className="mt-3 mb-2 px-1 pb-3">

@@ -8,7 +8,7 @@ export default function BIApprovalSection({
 }) {
   const isReadOnly = userRole !== "bi";
   return (
-    <div className="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700">
+    <div className="bg-gradient-classes overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700">
       {/* Invoicing Details Section */}
 
       <div className="px-6 py-3">
@@ -16,11 +16,11 @@ export default function BIApprovalSection({
           Invoicing Details
         </h3>
       </div>
-      <div className="grid grid-cols-1 gap-6 bg-white p-6 md:grid-cols-2 lg:grid-cols-3 dark:bg-gray-950">
+      <div className="grid grid-cols-1 gap-6 p-6 md:grid-cols-2 lg:grid-cols-3">
         <div>
           <label
             htmlFor="invoice_date"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-400"
           >
             Date of Invoice <FormAsterisk />
           </label>
@@ -43,7 +43,7 @@ export default function BIApprovalSection({
         <div>
           <label
             htmlFor="invoice_number"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-400"
           >
             Invoice No <FormAsterisk />
           </label>
@@ -67,7 +67,7 @@ export default function BIApprovalSection({
         <div>
           <label
             htmlFor="invoice_amount"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-400"
           >
             Invoice Amount (Ksh) <FormAsterisk />
           </label>
@@ -93,7 +93,7 @@ export default function BIApprovalSection({
         <div>
           <label
             htmlFor="BI_Approval"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-400"
           >
             Invoicing Approval <FormAsterisk />
           </label>
@@ -118,7 +118,7 @@ export default function BIApprovalSection({
         <div>
           <label
             htmlFor="bi_approver_name"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-400"
           >
             Invoiced By <FormAsterisk />
           </label>
@@ -141,7 +141,7 @@ export default function BIApprovalSection({
         <div>
           <label
             htmlFor="bi_approval_date"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-400"
           >
             Invoicing Approval Date
           </label>
@@ -159,7 +159,7 @@ export default function BIApprovalSection({
         <div className="md:col-span-3">
           <label
             htmlFor="payment_reference"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-400"
           >
             Reference Details <FormAsterisk />
           </label>

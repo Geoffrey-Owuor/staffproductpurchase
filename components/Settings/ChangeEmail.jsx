@@ -251,7 +251,7 @@ export default function ChangeEmail({ onClose }) {
                 <div>
                   <label
                     htmlFor="new-email"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                    className="block text-sm font-semibold text-gray-700 dark:text-gray-300"
                   >
                     New Email Address
                   </label>
@@ -275,7 +275,7 @@ export default function ChangeEmail({ onClose }) {
                 <div>
                   <label
                     htmlFor="confirm-email"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                    className="block text-sm font-semibold text-gray-700 dark:text-gray-300"
                   >
                     Confirm New Email
                   </label>
@@ -312,7 +312,7 @@ export default function ChangeEmail({ onClose }) {
                   <button
                     type="submit"
                     disabled={error || !newEmail || !confirmEmail || sending}
-                    className="inline-flex items-center gap-1 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-red-500 dark:hover:bg-red-600"
+                    className="inline-flex items-center gap-1 rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-red-500 dark:hover:bg-red-600"
                   >
                     {sending ? (
                       <>
@@ -385,7 +385,7 @@ export default function ChangeEmail({ onClose }) {
                 <button
                   type="submit"
                   disabled={!isCodeFull || updating}
-                  className={`w-full rounded-xl px-4 py-3 font-medium text-white transition duration-200 dark:text-gray-900 ${
+                  className={`w-full rounded-xl px-4 py-3 font-semibold text-white transition duration-200 dark:text-gray-900 ${
                     !isCodeFull || updating
                       ? "cursor-not-allowed disabled:bg-gray-400"
                       : "bg-gray-900 hover:bg-gray-700 dark:bg-white dark:hover:bg-gray-200"
@@ -405,7 +405,7 @@ export default function ChangeEmail({ onClose }) {
                   <button
                     type="button"
                     onClick={handleResendCode}
-                    className={`${coolDown > 0 ? "cursor-default" : "cursor-pointer hover:underline"} font-medium text-gray-700 dark:text-gray-300 dark:hover:text-white`}
+                    className={`${coolDown > 0 ? "cursor-default" : "cursor-pointer hover:underline"} font-semibold text-gray-700 dark:text-gray-300 dark:hover:text-white`}
                   >
                     {coolDown > 0
                       ? `Resend code in ${coolDown}s`

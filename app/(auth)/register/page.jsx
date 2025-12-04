@@ -90,7 +90,7 @@ export default function Step1Page() {
           <button
             type="submit"
             disabled={loading}
-            className="mt-6 w-full rounded-xl bg-gray-900 px-4 py-3 font-medium text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:bg-gray-400 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
+            className="mt-6 w-full rounded-xl bg-gray-900 px-4 py-3 font-semibold text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:bg-gray-400 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
           >
             {loading ? (
               <div className="flex items-center justify-center gap-2">
@@ -106,7 +106,7 @@ export default function Step1Page() {
           Already have an account?{" "}
           <Link
             href="/login"
-            className="font-medium text-gray-700 hover:underline dark:text-gray-300 dark:hover:text-white"
+            className="font-semibold text-gray-700 hover:underline dark:text-gray-300 dark:hover:text-white"
           >
             Login
           </Link>

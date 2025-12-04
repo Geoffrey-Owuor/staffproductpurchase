@@ -47,7 +47,7 @@ export default function UnauthorizedEdit({ role }) {
           <div className="mt-6">
             <button
               onClick={handleRedirect}
-              className="inline-flex items-center rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+              className="inline-flex items-center rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-100 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Dashboard

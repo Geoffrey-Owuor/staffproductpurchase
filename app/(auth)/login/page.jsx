@@ -136,7 +136,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={redirect}
-            className={`w-full rounded-xl px-4 py-3 font-medium text-white transition duration-200 ${
+            className={`w-full rounded-xl px-4 py-3 font-semibold text-white transition duration-200 ${
               redirect
                 ? "cursor-not-allowed bg-gray-400 dark:bg-gray-600"
                 : "bg-gray-900 hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
@@ -170,7 +170,7 @@ export default function LoginPage() {
           Don&apos;t have an account?{" "}
           <Link
             href="/register"
-            className="font-medium text-gray-900 hover:underline dark:text-white"
+            className="font-semibold text-gray-900 hover:underline dark:text-white"
           >
             Sign up
           </Link>

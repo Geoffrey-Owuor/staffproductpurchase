@@ -162,7 +162,7 @@ export default function MobileHeader() {
             <li>
               <div
                 onClick={handleHomeClick}
-                className="flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
+                className="flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-base font-semibold text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
               >
                 <HomeIcon className="h-5 w-5 shrink-0" />
                 <span>Home</span>
@@ -173,7 +173,7 @@ export default function MobileHeader() {
               <li>
                 <div
                   onClick={() => handleNavClick("/staffdashboard/new-purchase")}
-                  className="flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
+                  className="flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-base font-semibold text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
                 >
                   <ShoppingBagIcon className="h-5 w-5 shrink-0" />
                   <span>New Purchase</span>
@@ -184,7 +184,7 @@ export default function MobileHeader() {
             <li>
               <div
                 onClick={handleHistoryClick}
-                className="flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
+                className="flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-base font-semibold text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
               >
                 <History className="h-5 w-5 shrink-0" />
                 <span>Purchases History</span>
@@ -197,7 +197,7 @@ export default function MobileHeader() {
                   onClick={() =>
                     handleNavClick("/ccdashboard/payment-tracking")
                   }
-                  className="flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
+                  className="flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-base font-semibold text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
                 >
                   <BookOpenCheck className="h-5 w-5 shrink-0" />
                   <span>Track Payments</span>

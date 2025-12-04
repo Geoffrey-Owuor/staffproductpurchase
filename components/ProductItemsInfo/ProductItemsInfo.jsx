@@ -25,7 +25,7 @@ export default function ProductItemsInfo({ products }) {
                 <th
                   key={header}
                   scope="col"
-                  className="px-6 py-3 text-left text-sm font-medium whitespace-nowrap"
+                  className="px-6 py-3 text-left text-sm font-semibold whitespace-nowrap"
                 >
                   {header}
                 </th>

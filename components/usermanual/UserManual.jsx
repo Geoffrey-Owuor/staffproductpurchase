@@ -182,7 +182,7 @@ const UserManual = () => {
 
           {/* Footer Note */}
           <div className="mt-12 rounded-xl bg-blue-50 p-6 text-center dark:bg-blue-900/20">
-            <p className="text-sm font-medium text-blue-800 dark:text-blue-200">
+            <p className="text-sm font-semibold text-blue-800 dark:text-blue-200">
               Note: This manual serves as a guide for the Staff Purchase Portal.
               Workflows are subject to system updates.
             </p>

@@ -4,8 +4,8 @@ import { CachedConditions } from "@/utils/Cache/CachedConditions";
 const TermsConditions = async () => {
   const terms = await CachedConditions();
   return (
-    <div className="mx-2 mt-8 mb-2 rounded-2xl border border-gray-200 bg-white p-6 text-sm dark:border-gray-700 dark:bg-gray-950">
-      <div className="mb-4 ml-0.5 flex items-center gap-2">
+    <div className="bg-gradient-classes mx-2 mt-8 mb-2 rounded-2xl border border-gray-200 p-6 text-sm dark:border-gray-700">
+      <div className="mb-4 ml-0.5 flex items-center gap-2 font-semibold">
         <FileSignature className="h-5 w-5 text-gray-600 dark:text-gray-400" />
         <h3 className="text-xl text-gray-800 dark:text-gray-200">
           Terms & Conditions
@@ -19,7 +19,7 @@ const TermsConditions = async () => {
         ) : (
           terms.map((term, index) => (
             <div key={term.condition_id || index} className="flex items-start">
-              <span className="mr-3 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-red-50 text-xs font-bold text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+              <span className="mr-3 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-slate-200 text-xs font-bold text-gray-600 dark:bg-gray-800 dark:text-gray-300">
                 {index + 1}
               </span>
               <p className="leading-relaxed text-gray-700 dark:text-gray-400">

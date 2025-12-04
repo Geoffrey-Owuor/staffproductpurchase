@@ -7,7 +7,7 @@ const PaymentDetails = ({ formData, handleChange, userRole, periods }) => {
   const staffReadonly = userRole !== "staff";
   const isReadOnly = !editableRoles.includes(userRole);
   return (
-    <div className="relative mb-8 rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-950">
+    <div className="bg-gradient-classes relative mb-8 rounded-xl border border-gray-200 dark:border-gray-700">
       <div className="rounded-t-xl px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white">
         Payment & Invoicing Details
       </div>
@@ -17,7 +17,7 @@ const PaymentDetails = ({ formData, handleChange, userRole, periods }) => {
           <div>
             <label
               htmlFor="invoicing_location"
-              className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
+              className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-400"
             >
               Invoicing Location <FormAsterisk />
             </label>
@@ -60,7 +60,7 @@ const PaymentDetails = ({ formData, handleChange, userRole, periods }) => {
           <div>
             <label
               htmlFor="employee_payment_terms"
-              className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
+              className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-400"
             >
               Payment Terms/Options <FormAsterisk />
             </label>
@@ -88,7 +88,7 @@ const PaymentDetails = ({ formData, handleChange, userRole, periods }) => {
             <div>
               <label
                 htmlFor="mpesa_code"
-                className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
+                className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-400"
               >
                 Mpesa code <FormAsterisk />
               </label>
@@ -113,7 +113,7 @@ const PaymentDetails = ({ formData, handleChange, userRole, periods }) => {
             <div>
               <label
                 htmlFor="user_credit_period"
-                className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
+                className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-400"
               >
                 Credit Period <FormAsterisk />
               </label>
@@ -142,7 +142,7 @@ const PaymentDetails = ({ formData, handleChange, userRole, periods }) => {
           <div>
             <label
               htmlFor="createdAt"
-              className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
+              className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-400"
             >
               Date Submitted
             </label>
@@ -162,7 +162,7 @@ const PaymentDetails = ({ formData, handleChange, userRole, periods }) => {
           <div>
             <label
               htmlFor="delivery_details"
-              className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
+              className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-400"
             >
               Other Details <FormAsterisk />
             </label>

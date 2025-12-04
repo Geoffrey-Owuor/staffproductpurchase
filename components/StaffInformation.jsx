@@ -3,7 +3,7 @@ import FormAsterisk from "./Reusables/FormAsterisk/FormAsterisk";
 const StaffInformation = ({ formData, handleChange, userRole }) => {
   const isReadOnly = userRole !== "staff";
   return (
-    <div className="mb-8 rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-950">
+    <div className="bg-gradient-classes mb-8 rounded-xl border border-gray-200 dark:border-gray-700">
       <div className="rounded-t-xl px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white">
         Staff Information
       </div>
@@ -12,7 +12,7 @@ const StaffInformation = ({ formData, handleChange, userRole }) => {
           <div>
             <label
               htmlFor="staffName"
-              className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
+              className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-400"
             >
               Staff Name <FormAsterisk />
             </label>
@@ -31,7 +31,7 @@ const StaffInformation = ({ formData, handleChange, userRole }) => {
           <div>
             <label
               htmlFor="payrollNo"
-              className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
+              className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-400"
             >
               Payroll No <FormAsterisk />
             </label>
@@ -50,7 +50,7 @@ const StaffInformation = ({ formData, handleChange, userRole }) => {
           <div>
             <label
               htmlFor="department"
-              className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
+              className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-400"
             >
               Department <FormAsterisk />
             </label>

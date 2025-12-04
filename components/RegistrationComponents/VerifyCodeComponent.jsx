@@ -180,7 +180,7 @@ export default function VerifyCodeComponent({ email }) {
           <button
             type="submit"
             disabled={!isCodeFull || loading}
-            className={`w-full rounded-xl px-4 py-3 font-medium text-white transition duration-200 dark:text-gray-900 ${
+            className={`w-full rounded-xl px-4 py-3 font-semibold text-white transition duration-200 dark:text-gray-900 ${
               !isCodeFull || loading
                 ? "cursor-not-allowed disabled:bg-gray-400"
                 : "bg-gray-900 hover:bg-gray-700 dark:bg-white dark:hover:bg-gray-200"
@@ -200,7 +200,7 @@ export default function VerifyCodeComponent({ email }) {
             <button
               type="button"
               onClick={resendCode}
-              className={`${coolDown > 0 ? "cursor-default" : "cursor-pointer hover:underline"} font-medium text-gray-700 dark:text-gray-300 dark:hover:text-white`}
+              className={`${coolDown > 0 ? "cursor-default" : "cursor-pointer hover:underline"} font-semibold text-gray-700 dark:text-gray-300 dark:hover:text-white`}
             >
               {coolDown > 0 ? `Resend code in ${coolDown}s` : "Resend code"}
             </button>

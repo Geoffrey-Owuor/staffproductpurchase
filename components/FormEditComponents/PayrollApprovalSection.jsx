@@ -8,18 +8,18 @@ export default function PayrollApprovalSection({
 }) {
   const isReadOnly = userRole !== "payroll";
   return (
-    <div className="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700">
+    <div className="bg-gradient-classes overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700">
       <div className="px-6 py-3">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
           Payroll Approval
         </h3>
       </div>
-      <div className="grid grid-cols-1 gap-6 bg-white p-6 md:grid-cols-2 dark:bg-gray-950">
+      <div className="grid grid-cols-1 gap-6 p-6 md:grid-cols-2">
         {/* Third Rule Assessment */}
         <div className="md:col-span-2">
           <label
             htmlFor="one_third_rule"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-400"
           >
             1/3 Rule Assessment <FormAsterisk />
           </label>
@@ -40,7 +40,7 @@ export default function PayrollApprovalSection({
         <div>
           <label
             htmlFor="payroll_approver_name"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-400"
           >
             Payroll Approver Name <FormAsterisk />
           </label>
@@ -65,7 +65,7 @@ export default function PayrollApprovalSection({
         <div>
           <label
             htmlFor="Payroll_Approval"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-400"
           >
             Approval Status <FormAsterisk />
           </label>
@@ -92,7 +92,7 @@ export default function PayrollApprovalSection({
         <div>
           <label
             htmlFor="payroll_approval_date"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-400"
           >
             Payroll Approval Date
           </label>
