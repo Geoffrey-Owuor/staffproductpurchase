@@ -3,7 +3,11 @@ import pool from "@/lib/db";
 import { getCurrentUser } from "@/app/lib/auth";
 
 // Total requests query
-const totalQuery = `SELECT COUNT(*) as count FROM purchasesInfo`;
+const totalQuery = `SELECT COUNT(*) as count FROM purchasesinfo`;
+const totalApprovedQuery = `SELECT COUNT(*) as count FROM purchasesinfo WHERE BI_Approval = 'approved'`;
+const totalDeclinedQuery = `SELECT COUNT(*) as count FROM purchasesinfo
+                            WHERE Payroll_Approval = 'declined' OR HR_Approval = 'declined' OR
+                            CC_Approval = 'declined' OR BI_Approval = 'declined'`;
 
 const ROLE_QUERY_CONFIGS = {
   bi: {
@@ -26,7 +30,7 @@ const ROLE_QUERY_CONFIGS = {
   // Staff functions - they see the approval status of their submitted requests
   staff: {
     getPendingQuery: (userId) => ({
-      sql: `SELECT COUNT(*) as count FROM purchasesInfo 
+      sql: `SELECT COUNT(*) as count FROM purchasesinfo 
             WHERE user_id = ? 
             AND BI_Approval = 'pending' 
             AND CC_Approval <> 'declined' 
@@ -35,7 +39,7 @@ const ROLE_QUERY_CONFIGS = {
       params: [userId],
     }),
     getDeclinedQuery: (userId) => ({
-      sql: `SELECT COUNT(*) as count FROM purchasesInfo 
+      sql: `SELECT COUNT(*) as count FROM purchasesinfo 
             WHERE user_id = ? AND (
             BI_Approval = 'declined' OR 
             HR_Approval = 'declined' OR 
@@ -44,7 +48,7 @@ const ROLE_QUERY_CONFIGS = {
       params: [userId],
     }),
     getApprovedQuery: (userId) => ({
-      sql: `SELECT COUNT(*) as count FROM purchasesInfo 
+      sql: `SELECT COUNT(*) as count FROM purchasesinfo 
             WHERE user_id = ? 
             AND BI_Approval = 'approved' 
             AND CC_Approval <> 'declined' 
@@ -80,18 +84,18 @@ function getApproverQueryConfigs(role, approvalField, approverIdField, userId) {
 
   return {
     pending: {
-      sql: `SELECT COUNT(*) as count FROM purchasesInfo 
+      sql: `SELECT COUNT(*) as count FROM purchasesinfo 
             WHERE ${approvalField} = 'pending' 
             ${prerequisiteClause}`,
       params: [],
     },
     declined: {
-      sql: `SELECT COUNT(*) as count FROM purchasesInfo 
+      sql: `SELECT COUNT(*) as count FROM purchasesinfo 
             WHERE ${approvalField} = 'declined' AND ${approverIdField} = ?`,
       params: [userId],
     },
     approved: {
-      sql: `SELECT COUNT(*) as count FROM purchasesInfo 
+      sql: `SELECT COUNT(*) as count FROM purchasesinfo 
             WHERE ${approvalField} = 'approved' AND ${approverIdField} = ?`,
       params: [userId],
     },
@@ -146,7 +150,7 @@ export async function GET(_req) {
     //Execute queries
     connection = await pool.getConnection();
 
-    // Prepare all three concurrent query promises
+    // Prepare all six concurrent query promises
     const pendingPromise = connection.execute(
       queryConfigs.pending.sql,
       queryConfigs.pending.params,
@@ -160,15 +164,25 @@ export async function GET(_req) {
       queryConfigs.approved.params,
     );
     const totalPromise = connection.execute(totalQuery);
+    const totalApprovedPromise = connection.execute(totalApprovedQuery);
+    const totalDeclinedPromise = connection.execute(totalDeclinedQuery);
 
     // Execute all three queries in parallel
-    const [[pendingResult], [declinedResult], [approvedResult], [totalResult]] =
-      await Promise.all([
-        pendingPromise,
-        declinedPromise,
-        approvedPromise,
-        totalPromise,
-      ]);
+    const [
+      [pendingResult],
+      [declinedResult],
+      [approvedResult],
+      [totalResult],
+      [totalApprovedResult],
+      [totalDeclinedResult],
+    ] = await Promise.all([
+      pendingPromise,
+      declinedPromise,
+      approvedPromise,
+      totalPromise,
+      totalApprovedPromise,
+      totalDeclinedPromise,
+    ]);
 
     //Return the combined result
     return Response.json({
@@ -176,6 +190,8 @@ export async function GET(_req) {
       declined: declinedResult[0].count,
       approved: approvedResult[0].count,
       total: totalResult[0].count,
+      totalApproved: totalApprovedResult[0].count,
+      totalDeclined: totalDeclinedResult[0].count,
     });
   } catch (error) {
     console.error("Database Error: ", error);

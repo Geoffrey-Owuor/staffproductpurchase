@@ -9,7 +9,7 @@ export async function GET(_req, { params }) {
 
     //Create main purchasesinfo promise
     const purchasePromise = connection.execute(
-      `SELECT * FROM purchasesInfo WHERE id= ?`,
+      `SELECT * FROM purchasesinfo WHERE id= ?`,
       [id],
     );
 

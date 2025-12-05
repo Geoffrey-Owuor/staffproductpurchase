@@ -25,7 +25,7 @@ export async function PUT(request, { params }) {
 
     //1. Get current state of the purchase before any updates
     const [currentPurchaseRows] = await connection.execute(
-      `SELECT * FROM purchasesInfo WHERE id = ? FOR UPDATE`, //Locking the row for update
+      `SELECT * FROM purchasesinfo WHERE id = ? FOR UPDATE`, //Locking the row for update
       [id],
     );
     if (currentPurchaseRows.length === 0) {
@@ -153,7 +153,7 @@ export async function PUT(request, { params }) {
 
     //Run the update query after building the clause and params
     if (setClauses.length > 0) {
-      const updateQuery = `UPDATE purchasesInfo SET ${setClauses.join(", ")} WHERE id = ?`;
+      const updateQuery = `UPDATE purchasesinfo SET ${setClauses.join(", ")} WHERE id = ?`;
       queryParams.push(id);
       await connection.execute(updateQuery, queryParams);
     }

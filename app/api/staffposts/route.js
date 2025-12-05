@@ -48,7 +48,7 @@ export async function POST(request) {
 
     // Destructure directly in the parameter list to avoid extra lines
     const [result] = await connection.execute(
-      `INSERT INTO purchasesInfo 
+      `INSERT INTO purchasesinfo 
        (staffName, user_id, user_email, payrollNo, department, employee_payment_terms, mpesa_code, user_credit_period, invoicing_location, delivery_details, signature, Payroll_Approval, HR_Approval, 
         CC_Approval, BI_Approval, request_closure) 
        VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', 'pending', 'pending', 'pending', 'open')`,
@@ -81,7 +81,7 @@ export async function POST(request) {
 
     //Get the purchase (id) from purchasesinfo table
     const [rows] = await connection.execute(
-      `SELECT id from purchasesInfo
+      `SELECT id from purchasesinfo
        WHERE reference_number = ?`,
       [referenceNumber],
     );
@@ -129,15 +129,7 @@ export async function POST(request) {
         payroll_signature = 'auto approval',
         payroll_approval_date = CURRENT_TIMESTAMP,
         Payroll_Approval = 'approved',
-        one_third_rule = 'not applicable, cash payment',
-        hr_approver_name = 'auto approval',
-        hr_approver_email = 'auto approval',
-        hr_signature = 'auto approval',
-        hr_approval_date = CURRENT_TIMESTAMP,
-        is_employed = 'cash approval',
-        on_probation = 'cash approval',
-        HR_Approval = 'approved',
-        hr_comments = 'approved cash payment'
+        one_third_rule = 'not applicable, cash payment'
         WHERE increment_id = ?
         `,
         [insertedId],

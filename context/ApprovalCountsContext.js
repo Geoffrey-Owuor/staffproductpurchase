@@ -18,6 +18,8 @@ export function ApprovalCountsProvider({ children }) {
     declined: 0,
     approved: 0,
     total: 0,
+    totalDeclined: 0,
+    totalAppproved: 0,
   });
   const [loading, setLoading] = useState(true);
 
@@ -35,6 +37,8 @@ export function ApprovalCountsProvider({ children }) {
         declined: data.declined || 0,
         approved: data.approved || 0,
         total: data.total || 0,
+        totalDeclined: data.totalDeclined || 0,
+        totalApproved: data.totalApproved || 0,
       });
     } catch (error) {
       console.error("Error fetching approval counts:", error);

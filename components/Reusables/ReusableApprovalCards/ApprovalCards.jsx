@@ -1,5 +1,12 @@
 "use client";
-import { Clock, XCircle, CheckCircle2, TrendingUp } from "lucide-react";
+import {
+  Clock,
+  XCircle,
+  CheckCircle2,
+  TrendingUp,
+  MessageCircleX,
+  CheckCheck,
+} from "lucide-react";
 import ApprovalCardsSkeleton from "@/components/skeletons/ApprovalCardsSkeleton";
 import { StatCard } from "../StatCard";
 import CardHeadings from "../Headings/CardHeadings";
@@ -31,18 +38,34 @@ export default function ApprovalCards() {
         {loading ? (
           <>
             {userRole !== "staff" && (
-              <SkeletonBox className="mr-2 hidden h-12 w-25 md:flex" />
+              <div className="hidden items-center space-x-2 lg:flex">
+                {[...Array(3)].map((_, i) => (
+                  <SkeletonBox key={i} className="mr-2 h-12 w-25 md:flex" />
+                ))}
+              </div>
             )}
           </>
         ) : (
           <>
             {userRole !== "staff" && (
-              <div className="mr-2 hidden rounded-xl bg-slate-200 p-3 md:flex dark:bg-gray-800">
-                <div className="flex items-center gap-2">
+              <div className="mr-2 hidden items-center space-x-2 lg:flex">
+                <div className="flex items-center gap-2 rounded-xl bg-slate-200 p-3 dark:bg-slate-900">
                   <span className="font-mono text-xl font-semibold">
                     {counts.total}
                   </span>{" "}
                   <TrendingUp />
+                </div>
+                <div className="flex items-center gap-2 rounded-xl bg-red-50 p-3 dark:bg-slate-700">
+                  <span className="font-mono text-xl font-semibold">
+                    {counts.totalDeclined}
+                  </span>{" "}
+                  <MessageCircleX />
+                </div>
+                <div className="flex items-center gap-2 rounded-xl bg-blue-50 p-3 dark:bg-slate-800">
+                  <span className="font-mono text-xl font-semibold">
+                    {counts.totalApproved}
+                  </span>{" "}
+                  <CheckCheck />
                 </div>
               </div>
             )}

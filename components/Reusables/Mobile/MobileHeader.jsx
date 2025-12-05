@@ -200,7 +200,7 @@ export default function MobileHeader() {
                   className="flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-base font-semibold text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
                 >
                   <BookOpenCheck className="h-5 w-5 shrink-0" />
-                  <span>Track Payments</span>
+                  <span>Fully Approved</span>
                 </div>
               </li>
             )}
