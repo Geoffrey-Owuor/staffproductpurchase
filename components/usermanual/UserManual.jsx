@@ -68,12 +68,12 @@ const manualSteps = [
         subtitle: "Cash Purchases",
         subIcon: Banknote,
         details: [
-          "Approvals: 2 Stages (Credit Control → Invoicing).",
+          "Approvals: 3 Stages (HR → Credit Control → Invoicing).",
           "Action Required: You must enter the M-PESA payment code.",
         ],
       },
       {
-        subtitle: "Credit Purchases",
+        subtitle: "Credit/(Cash + Credit) Purchases",
         subIcon: CreditCard,
         details: [
           "Approvals: 4 Stages (Payroll → HR → Credit Control → Invoicing).",
