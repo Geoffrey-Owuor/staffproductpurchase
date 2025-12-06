@@ -6,6 +6,7 @@ import {
   TrendingUp,
   MessageCircleX,
   CheckCheck,
+  RotateCcw,
 } from "lucide-react";
 import ApprovalCardsSkeleton from "@/components/skeletons/ApprovalCardsSkeleton";
 import { StatCard } from "../StatCard";
@@ -16,24 +17,33 @@ import { useApprovalCounts } from "@/context/ApprovalCountsContext";
 
 export default function ApprovalCards() {
   const { role: userRole } = useUser();
-  const { counts, loading } = useApprovalCounts();
+  const { counts, loading, refetchCounts } = useApprovalCounts();
 
   return (
     <div className="bg-gradient-classes mx-2 mt-4 mb-8 rounded-xl border border-gray-200 px-2 pt-2 pb-3 dark:border-gray-700">
       {/* Render Heading Dynamically */}
       <div className="flex items-center justify-between">
-        {userRole === "staff" ? (
-          <div className="mt-3 mb-2 px-1 pb-3">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-              Approval status
-            </h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              Summary of all approval requests sent to billing & invoicing
-            </p>
-          </div>
-        ) : (
-          <CardHeadings />
-        )}
+        <div className="flex items-center space-x-5">
+          {userRole === "staff" ? (
+            <div className="mt-3 mb-2 px-1 pb-3">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                Approval status
+              </h2>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                Summary of all approval requests sent to billing & invoicing
+              </p>
+            </div>
+          ) : (
+            <CardHeadings />
+          )}
+          <button
+            className="hidden rounded-full bg-slate-200/50 p-2 transition-colors duration-200 hover:bg-slate-200 md:flex dark:bg-gray-800 dark:hover:bg-gray-700"
+            onClick={refetchCounts}
+            title="refresh"
+          >
+            <RotateCcw />
+          </button>
+        </div>
 
         {loading ? (
           <>
