@@ -13,12 +13,10 @@ import {
   Menu,
 } from "lucide-react";
 import HotpointLogo from "../HotpointLogo";
-import { AnimatePresence } from "framer-motion";
+import { useLoadingLine } from "@/context/LoadingLineContext";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import UserMenu from "../UserMenu";
-import LoadingLine from "../LoadingLine";
-import { useFinishLoading } from "@/hooks/useFinishLoading";
 import { UseHandleHomeRoute } from "@/utils/HandleActionClicks/useHandleHomeRoute";
 import { UseHandleHistoryRoute } from "@/utils/HandleActionClicks/useHandleHistoryRoute";
 import { useUser } from "@/context/UserContext";
@@ -30,7 +28,7 @@ export default function MobileHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { role } = useUser();
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const { startLoading } = useLoadingLine();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -64,29 +62,27 @@ export default function MobileHeader() {
   const handleHistoryRoute = UseHandleHistoryRoute();
 
   const handleHomeClick = () => {
-    setIsLoading(true);
+    startLoading();
     handleHomeRoute();
     setIsMobileMenuOpen(false); // Close menu on click
   };
 
   const handleHistoryClick = () => {
-    setIsLoading(true);
+    startLoading();
     handleHistoryRoute();
     setIsMobileMenuOpen(false); // Close menu on click
   };
 
   // Generic handler for other links
   const handleNavClick = (path) => {
-    setIsLoading(true);
+    startLoading();
     router.push(path);
     setIsMobileMenuOpen(false); // Close menu on click
   };
 
-  useFinishLoading(isLoading, setIsLoading);
-
   return (
     <>
-      {/* --- Mobile Header Bar --- */}
+      {/* Mobile Header Bar */}
       <div
         className={`custom:hidden fixed right-0 left-0 z-50 transition-all duration-200 ease-in-out ${
           isScrolled
@@ -234,7 +230,6 @@ export default function MobileHeader() {
           </div>
         </div>
       </div>
-      <AnimatePresence>{isLoading && <LoadingLine />}</AnimatePresence>
     </>
   );
 }

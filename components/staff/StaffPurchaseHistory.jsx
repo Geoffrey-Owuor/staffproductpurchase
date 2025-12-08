@@ -1,6 +1,7 @@
 "use client";
 import { Eye, MoreVertical, Search, SearchX } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useLoadingLine } from "@/context/LoadingLineContext";
 import { useEffect, useState } from "react";
 import TableSkeleton from "../skeletons/TableSkeleton";
 import { LoadingBar } from "../Reusables/LoadingBar";
@@ -12,6 +13,7 @@ import { formatDateLong } from "@/public/assets";
 import { useStaffPurchases } from "@/context/StaffPurchaseContext";
 
 export default function StaffPurchaseHistory() {
+  const { stopLoading, isLoading } = useLoadingLine();
   const {
     purchases,
     loading,
@@ -62,6 +64,12 @@ export default function StaffPurchaseHistory() {
     setToDate("");
     setApprovalStatus("");
   };
+
+  //Stop Loading line when the page has fully rendered
+  useEffect(() => {
+    if (!isLoading) return;
+    stopLoading();
+  }, [isLoading, stopLoading]);
 
   // Recalculate total pages when purchases or rowsPerPage changes
   useEffect(() => {

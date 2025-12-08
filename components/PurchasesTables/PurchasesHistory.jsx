@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useLoadingLine } from "@/context/LoadingLineContext";
 import TableSkeleton from "../skeletons/TableSkeleton";
 import { LoadingBar } from "../Reusables/LoadingBar";
 import PurchasesHistoryHeading from "../Reusables/Headings/PurchasesHistoryHeading";
@@ -18,6 +19,7 @@ import { useApproversPurchases } from "@/context/ApproversPurchaseContext";
 import { Search, SearchX } from "lucide-react";
 
 export default function PurchasesHistory() {
+  const { isLoading, stopLoading } = useLoadingLine();
   const [goingTo, setGoingTo] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -121,6 +123,12 @@ export default function PurchasesHistory() {
   useEffect(() => {
     setTotalPages(Math.ceil(purchases.length / rowsPerPage));
   }, [rowsPerPage, purchases]);
+
+  //Stop Loading line when the page has fully rendered
+  useEffect(() => {
+    if (!isLoading) return;
+    stopLoading();
+  }, [isLoading, stopLoading]);
 
   const currentPurchases = purchases.slice(
     (currentPage - 1) * rowsPerPage,

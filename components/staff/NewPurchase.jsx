@@ -18,6 +18,7 @@ import PaymentDetails from "../PaymentDetails";
 import TopBarButtons from "../Reusables/TopBarButtons/TopBarButtons";
 import { FetchPeriodsPolicies } from "@/app/lib/FetchPeriodsPolicies";
 import { useUser } from "@/context/UserContext";
+import { useLoadingLine } from "@/context/LoadingLineContext";
 import { useApprovalCounts } from "@/context/ApprovalCountsContext";
 
 // The initial state for a single product
@@ -34,6 +35,7 @@ const initialProductState = {
 export default function NewPurchase() {
   const user = useUser();
   const router = useRouter();
+  const { isLoading, stopLoading } = useLoadingLine();
 
   const { refetchCounts } = useApprovalCounts();
 
@@ -86,6 +88,12 @@ export default function NewPurchase() {
     };
     fetchData();
   }, []);
+
+  //Stop Loading line when the page has fully rendered
+  useEffect(() => {
+    if (!isLoading) return;
+    stopLoading();
+  }, [isLoading, stopLoading]);
 
   //Handler for staff change
   const handleStaffChange = (e) => {
