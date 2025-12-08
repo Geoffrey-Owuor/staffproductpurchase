@@ -16,9 +16,10 @@ import HotpointLogo from "../HotpointLogo";
 import { useLoadingLine } from "@/context/LoadingLineContext";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import UserMenu from "../UserMenu";
-import { UseHandleHomeRoute } from "@/utils/HandleActionClicks/useHandleHomeRoute";
-import { UseHandleHistoryRoute } from "@/utils/HandleActionClicks/useHandleHistoryRoute";
+import { UseHandleHomeRoute } from "@/utils/HandleActionClicks/UseHandleHomeRoute";
+import { UseHandleHistoryRoute } from "@/utils/HandleActionClicks/UseHandleHistoryRoute";
 import { useUser } from "@/context/UserContext";
 
 export default function MobileHeader() {
@@ -28,6 +29,7 @@ export default function MobileHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { role } = useUser();
   const router = useRouter();
+  const pathname = usePathname();
   const { startLoading } = useLoadingLine();
 
   useEffect(() => {
@@ -58,25 +60,34 @@ export default function MobileHeader() {
     };
   }, [isMobileMenuOpen]);
 
-  const handleHomeRoute = UseHandleHomeRoute();
-  const handleHistoryRoute = UseHandleHistoryRoute();
+  const { handleHomeRoute, homePath } = UseHandleHomeRoute();
+  const { handleHistoryRoute, historyPath } = UseHandleHistoryRoute();
 
   const handleHomeClick = () => {
-    startLoading();
-    handleHomeRoute();
+    const isSameRoute = homePath === pathname;
+    if (!isSameRoute) {
+      startLoading();
+      handleHomeRoute();
+    }
     setIsMobileMenuOpen(false); // Close menu on click
   };
 
   const handleHistoryClick = () => {
-    startLoading();
-    handleHistoryRoute();
+    const isSameRoute = historyPath === pathname;
+    if (!isSameRoute) {
+      startLoading();
+      handleHistoryRoute();
+    }
     setIsMobileMenuOpen(false); // Close menu on click
   };
 
   // Generic handler for other links
   const handleNavClick = (path) => {
-    startLoading();
-    router.push(path);
+    const isSameRoute = path === pathname;
+    if (!isSameRoute) {
+      startLoading();
+      router.push(path);
+    }
     setIsMobileMenuOpen(false); // Close menu on click
   };
 

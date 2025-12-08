@@ -5,31 +5,32 @@ import { useUser } from "@/context/UserContext";
 export function UseHandleHomeRoute() {
   const { role: userRole } = useUser();
   const router = useRouter();
+  let homePath;
 
-  return function handleHomeRoute() {
-    let dashboardPath;
+  switch (userRole) {
+    case "payroll":
+      homePath = `/payrolldashboard`;
+      break;
+    case "hr":
+      homePath = `/hrdashboard`;
+      break;
+    case "cc":
+      homePath = `/ccdashboard`;
+      break;
+    case "bi":
+      homePath = `/bidashboard`;
+      break;
+    case "staff":
+      homePath = `/staffdashboard`;
+      break;
+    default:
+      homePath = "/login";
+      break;
+  }
 
-    switch (userRole) {
-      case "payroll":
-        dashboardPath = `/payrolldashboard`;
-        break;
-      case "hr":
-        dashboardPath = `/hrdashboard`;
-        break;
-      case "cc":
-        dashboardPath = `/ccdashboard`;
-        break;
-      case "bi":
-        dashboardPath = `/bidashboard`;
-        break;
-      case "staff":
-        dashboardPath = `/staffdashboard`;
-        break;
-      default:
-        dashboardPath = "/login";
-        break;
-    }
+  function handleHomeRoute() {
+    router.push(homePath);
+  }
 
-    router.push(dashboardPath);
-  };
+  return { handleHomeRoute, homePath };
 }

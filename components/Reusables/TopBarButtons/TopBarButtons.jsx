@@ -1,14 +1,14 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { UseHandleHomeRoute } from "@/utils/HandleActionClicks/useHandleHomeRoute";
-import { UseHandleHistoryRoute } from "@/utils/HandleActionClicks/useHandleHistoryRoute";
+import { UseHandleHomeRoute } from "@/utils/HandleActionClicks/UseHandleHomeRoute";
+import { UseHandleHistoryRoute } from "@/utils/HandleActionClicks/UseHandleHistoryRoute";
 import { Undo2, ArrowLeft, History } from "lucide-react";
 import { useLoadingLine } from "@/context/LoadingLineContext";
 
 export default function TopBarButtons() {
   const { startLoading } = useLoadingLine();
-  const handleHomeRoute = UseHandleHomeRoute();
-  const handleHistoryRoute = UseHandleHistoryRoute();
+  const { handleHomeRoute } = UseHandleHomeRoute();
+  const { handleHistoryRoute } = UseHandleHistoryRoute();
   const router = useRouter();
 
   const gotoHomeClick = () => {

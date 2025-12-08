@@ -6,30 +6,32 @@ export function UseHandleHistoryRoute() {
   const { role: userRole } = useUser();
   const router = useRouter();
 
-  return function handleHistoryRoute() {
-    let dashboardPath;
+  let historyPath;
 
-    switch (userRole) {
-      case "payroll":
-        dashboardPath = `/payrolldashboard/purchases-history`;
-        break;
-      case "hr":
-        dashboardPath = `/hrdashboard/requests-history`;
-        break;
-      case "cc":
-        dashboardPath = `/ccdashboard/purchases-history`;
-        break;
-      case "bi":
-        dashboardPath = `/bidashboard/purchases-history`;
-        break;
-      case "staff":
-        dashboardPath = `/staffdashboard/purchase-history`;
-        break;
-      default:
-        dashboardPath = "/login";
-        break;
-    }
+  switch (userRole) {
+    case "payroll":
+      historyPath = `/payrolldashboard/purchases-history`;
+      break;
+    case "hr":
+      historyPath = `/hrdashboard/requests-history`;
+      break;
+    case "cc":
+      historyPath = `/ccdashboard/purchases-history`;
+      break;
+    case "bi":
+      historyPath = `/bidashboard/purchases-history`;
+      break;
+    case "staff":
+      historyPath = `/staffdashboard/purchase-history`;
+      break;
+    default:
+      historyPath = "/login";
+      break;
+  }
 
-    router.push(dashboardPath);
-  };
+  function handleHistoryRoute() {
+    router.push(historyPath);
+  }
+
+  return { handleHistoryRoute, historyPath };
 }

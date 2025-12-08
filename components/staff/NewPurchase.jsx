@@ -6,6 +6,7 @@ import StaffInformation from "../StaffInformation";
 import ProductPricing from "../ProductPricing";
 import Alert from "../Alert";
 import { LoadingBarWave } from "../Reusables/LoadingBar";
+import { useLoadingLine } from "@/context/LoadingLineContext";
 import {
   ClipboardList,
   PackagePlus,
@@ -18,7 +19,6 @@ import PaymentDetails from "../PaymentDetails";
 import TopBarButtons from "../Reusables/TopBarButtons/TopBarButtons";
 import { FetchPeriodsPolicies } from "@/app/lib/FetchPeriodsPolicies";
 import { useUser } from "@/context/UserContext";
-import { useLoadingLine } from "@/context/LoadingLineContext";
 import { useApprovalCounts } from "@/context/ApprovalCountsContext";
 
 // The initial state for a single product
@@ -33,9 +33,9 @@ const initialProductState = {
 };
 
 export default function NewPurchase() {
+  const { stopLoading } = useLoadingLine();
   const user = useUser();
   const router = useRouter();
-  const { isLoading, stopLoading } = useLoadingLine();
 
   const { refetchCounts } = useApprovalCounts();
 
@@ -89,11 +89,10 @@ export default function NewPurchase() {
     fetchData();
   }, []);
 
-  //Stop Loading line when the page has fully rendered
+  // Set showing loading line to false
   useEffect(() => {
-    if (!isLoading) return;
     stopLoading();
-  }, [isLoading, stopLoading]);
+  }, [stopLoading]);
 
   //Handler for staff change
   const handleStaffChange = (e) => {

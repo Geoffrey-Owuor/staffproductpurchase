@@ -16,8 +16,8 @@ import { useLoadingLine } from "@/context/LoadingLineContext";
 import { usePathname, useRouter } from "next/navigation";
 import HotpointLogo from "../HotpointLogo";
 import UserMenu from "../UserMenu";
-import { UseHandleHomeRoute } from "@/utils/HandleActionClicks/useHandleHomeRoute";
-import { UseHandleHistoryRoute } from "@/utils/HandleActionClicks/useHandleHistoryRoute";
+import { UseHandleHomeRoute } from "@/utils/HandleActionClicks/UseHandleHomeRoute";
+import { UseHandleHistoryRoute } from "@/utils/HandleActionClicks/UseHandleHistoryRoute";
 import { useUser } from "@/context/UserContext";
 
 export default function ReusableSidebar({ isOpen, toggleSidebar }) {
@@ -25,8 +25,8 @@ export default function ReusableSidebar({ isOpen, toggleSidebar }) {
   const router = useRouter();
   const { startLoading } = useLoadingLine();
 
-  const handleHomeRoute = UseHandleHomeRoute();
-  const handleHistoryRoute = UseHandleHistoryRoute();
+  const { homePath, handleHomeRoute } = UseHandleHomeRoute();
+  const { historyPath, handleHistoryRoute } = UseHandleHistoryRoute();
 
   //Determining active tabs
   const pathname = usePathname();
@@ -58,16 +58,19 @@ export default function ReusableSidebar({ isOpen, toggleSidebar }) {
   }
 
   const handleHomeClick = () => {
+    if (pathname === homePath) return; //Do not start loading
     startLoading();
     handleHomeRoute();
   };
 
   const handleHistoryClick = () => {
+    if (pathname === historyPath) return;
     startLoading();
     handleHistoryRoute();
   };
 
   const handleNavClick = (path) => {
+    if (pathname === path) return;
     startLoading();
     router.push(path);
   };

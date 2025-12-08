@@ -14,7 +14,7 @@ import BIApprovalSection from "../FormEditComponents/BIApprovalSection";
 import ConfirmationDialog from "../Reusables/ConfirmationDialog";
 import UnauthorizedEdit from "../Reusables/UnauthorizedEdit";
 import { LoadingBarWave } from "../Reusables/LoadingBar";
-import { useHandleHrefLink } from "@/utils/HandleActionClicks/UseHandleHrefLink";
+import { UseHandleViewClick } from "@/utils/HandleActionClicks/UseHandleViewClick";
 import EditPurchaseHeading from "../EditPurchaseComponents/EditPurchaseHeading";
 import SaveCloseComponent from "../EditPurchaseComponents/SaveCloseComponent";
 import { usePurchase } from "@/context/PurchaseDetailsContext";
@@ -455,7 +455,7 @@ export default function GeneralEditPurchases({ id }) {
   const { role: userRole, name } = useUser();
   const { purchase, loading, error } = usePurchase();
   const { refetchCounts } = useApprovalCounts();
-  const handleHrefLink = useHandleHrefLink();
+  const handleViewClick = UseHandleViewClick();
 
   // 1. Context Loading State
   if (loading) {
@@ -503,7 +503,7 @@ export default function GeneralEditPurchases({ id }) {
       userRole={userRole}
       name={name}
       refetchCounts={refetchCounts}
-      handleHrefLink={handleHrefLink}
+      handleHrefLink={handleViewClick}
       id={id}
     />
   );
