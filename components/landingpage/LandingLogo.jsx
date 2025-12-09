@@ -20,7 +20,7 @@ const LandingLogo = () => {
     currentTheme === "dark" ? assets.hotpoint_white_logo : assets.hotpoint_logo;
 
   return (
-    <div className="relative flex justify-start overflow-hidden">
+    <div className="relative flex justify-center overflow-hidden lg:justify-start">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentTheme} // Key triggers animation on theme change
@@ -29,7 +29,12 @@ const LandingLogo = () => {
           exit={{ opacity: 0, y: -20, filter: "blur(10px)" }}
           transition={{ duration: 0.5, ease: "easeOut" }}
         >
-          <Image src={logoSrc} alt="hotpoint logo" className="w-120" priority />
+          <Image
+            src={logoSrc}
+            alt="hotpoint logo"
+            className="w-150 lg:w-120"
+            priority
+          />
         </motion.div>
       </AnimatePresence>
     </div>
