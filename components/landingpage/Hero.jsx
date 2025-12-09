@@ -1,5 +1,5 @@
 // app/components/Hero.js
-import { ShoppingBag, ArrowRight, Check } from "lucide-react";
+import { ShoppingBag, ArrowRight, Check, BookMarked } from "lucide-react";
 import Link from "next/link";
 import LandingLogo from "./LandingLogo";
 
@@ -35,7 +35,7 @@ export default function Hero() {
                 href="#how-it-works"
                 className="flex items-center justify-center rounded-xl border border-gray-300 px-6 py-3 font-semibold text-gray-700 transition hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
               >
-                How It Works
+                How It Works <BookMarked className="ml-2 h-5 w-5" />
               </a>
             </div>
           </div>
