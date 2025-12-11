@@ -167,7 +167,7 @@ export default function StaffPurchaseHistory() {
         <>
           <div className="overflow-x-auto rounded-xl">
             <table className="mb-6 min-w-full">
-              <thead className="bg-gray-700 text-white dark:bg-gray-800">
+              <thead className="bg-gray-700 text-white">
                 <tr>
                   <th
                     className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
@@ -240,7 +240,7 @@ export default function StaffPurchaseHistory() {
                   currentPurchases.map((purchase) => (
                     <tr
                       key={purchase.id}
-                      className="odd:bg-white even:bg-gray-50 dark:odd:bg-gray-950 dark:even:bg-gray-900"
+                      className="odd:bg-white even:bg-gray-50 hover:bg-gray-100 dark:odd:bg-gray-950 dark:even:bg-gray-900 dark:hover:bg-gray-800"
                     >
                       <td className="max-w-[200px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900 dark:text-white">
                         {formatDateLong(purchase.createdAt)}
@@ -290,7 +290,7 @@ export default function StaffPurchaseHistory() {
                         <div className="group ml-1.5 flex">
                           <button
                             onClick={() => handleViewClick(purchase.id)}
-                            className="rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-50"
+                            className="rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-200 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-50"
                             title="View"
                             disabled={navigatingTo === purchase.id}
                           >
