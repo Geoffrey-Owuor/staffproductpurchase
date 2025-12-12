@@ -1,13 +1,14 @@
-import CCApprovalCards from "@/components/cc/CCApprovalCards";
+import ApprovalCards from "@/components/Reusables/ReusableApprovalCards/ApprovalCards";
 import TermsConditions from "@/components/TermsConditions";
-import RecentPurchases from "@/components/PurchasesTables/RecentPurchases";
+import PurchasesHistory from "@/components/PurchasesTables/PurchasesHistory";
+import { ApproversPurchaseProvider } from "@/context/ApproversPurchaseContext";
 
 export default function CCHomePage() {
   return (
-    <>
-      <CCApprovalCards />
-      <RecentPurchases />
+    <ApproversPurchaseProvider fetchAllData={false}>
+      <ApprovalCards />
+      <PurchasesHistory />
       <TermsConditions />
-    </>
+    </ApproversPurchaseProvider>
   );
 }

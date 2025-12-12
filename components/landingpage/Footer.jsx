@@ -2,12 +2,13 @@
 import { ShoppingBag } from "lucide-react";
 import ThemeToggle from "../Reusables/ThemeProviders/ThemeToggle";
 import { BrainCog } from "lucide-react";
+import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="bg-white py-12 text-gray-700 dark:bg-gray-950 dark:text-white">
+    <footer className="py-12 text-gray-700 dark:text-white">
       <div className="px-6">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
+        <div className="footerBottom:grid-cols-4 grid grid-cols-1 gap-8">
           {/* Brand */}
           <div>
             <div className="mb-4 flex items-center space-x-2">
@@ -27,18 +28,24 @@ export default function Footer() {
               Quick Links
             </h3>
             <ul className="space-y-2">
-              {["Features", "How It Works", "Testimonials", "FAQs"].map(
-                (item, idx) => (
-                  <li key={idx}>
-                    <a
-                      href={`#${item.toLowerCase().replace(/\s+/g, "-")}`}
-                      className="text-gray-600 transition hover:text-red-600 dark:text-gray-400 dark:hover:text-white"
-                    >
-                      {item}
-                    </a>
-                  </li>
-                ),
-              )}
+              {["Features", "How It Works"].map((item, idx) => (
+                <li key={idx}>
+                  <a
+                    href={`#${item.toLowerCase().replace(/\s+/g, "-")}`}
+                    className="text-gray-600 transition hover:text-red-600 dark:text-gray-400 dark:hover:text-white"
+                  >
+                    {item}
+                  </a>
+                </li>
+              ))}
+              <li>
+                <Link
+                  href="/usermanual"
+                  className="text-gray-600 transition hover:text-red-600 dark:text-gray-400 dark:hover:text-white"
+                >
+                  User Manual
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -75,28 +82,33 @@ export default function Footer() {
               Have questions? Our team is here to help.
             </p>
             <a
-              href="mailto:info@hotpoint.co.ke"
+              href="mailto:helpdesk@hotpoint.co.ke"
               className="text-red-600 transition hover:text-red-500 dark:text-red-400 dark:hover:text-red-300"
             >
-              info@hotpoint.co.ke
+              helpdesk@hotpoint.co.ke
             </a>
           </div>
         </div>
 
-        {/* The bottom part */}
         <div className="relative mt-12 border-t border-gray-200 pt-8 dark:border-gray-800">
           {/* Centered Part */}
-          <div className="flex items-center justify-center space-x-1 text-sm text-gray-500 dark:text-gray-400">
-            <span>
+          <div className="flex items-center justify-center space-x-1 text-sm">
+            <span className="text-gray-500 dark:text-gray-400">
               © {new Date().getFullYear()} Hotpoint Appliances Ltd. Built by
             </span>
-            <span className="font-semibold">Jeff</span>
-
-            <BrainCog className="h-3.5 w-3.5" />
+            <a
+              href="https://jeff-portfolio-web.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 text-gray-500 hover:text-gray-600 hover:underline dark:hover:text-gray-400"
+            >
+              <span className="font-semibold">Jeff</span>
+              <BrainCog className="h-3.5 w-3.5" />
+            </a>
           </div>
 
           {/* ThemeToggle pinned right */}
-          <div className="absolute top-11.5 right-0 -translate-y-1/2">
+          <div className="absolute top-14.5 right-0 md:top-11.5 md:-translate-y-1/2">
             <ThemeToggle />
           </div>
         </div>

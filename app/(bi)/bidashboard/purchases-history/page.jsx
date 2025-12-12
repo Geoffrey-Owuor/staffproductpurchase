@@ -1,11 +1,12 @@
-import BIApprovalCards from "@/components/bi/BIApprovalCards";
+import ApprovalCards from "@/components/Reusables/ReusableApprovalCards/ApprovalCards";
 import PurchasesHistory from "@/components/PurchasesTables/PurchasesHistory";
+import { ApproversPurchaseProvider } from "@/context/ApproversPurchaseContext";
 
 export default function BiPurchasesHistory() {
   return (
-    <>
-      <BIApprovalCards />
+    <ApproversPurchaseProvider fetchAllData={true}>
+      <ApprovalCards />
       <PurchasesHistory />
-    </>
+    </ApproversPurchaseProvider>
   );
 }

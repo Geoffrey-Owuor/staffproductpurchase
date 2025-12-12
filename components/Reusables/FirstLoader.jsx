@@ -12,10 +12,10 @@ export const FirstLoader = () => {
       setLogoVisible(true);
     }, 100);
 
-    // Hide entire loader after 2 seconds
+    // Hide entire loader after 1 second
     const hideTimer = setTimeout(() => {
       setVisible(false);
-    }, 2000);
+    }, 1000);
 
     return () => {
       clearTimeout(fadeTimer);
@@ -23,7 +23,7 @@ export const FirstLoader = () => {
     };
   }, []);
 
-  // Don't render anything after 2 seconds
+  // Don't render anything after 1 second (If not visible do not return anything)
   if (!visible) return null;
 
   return (
@@ -31,7 +31,7 @@ export const FirstLoader = () => {
       {/* Empty space at the top (optional padding) */}
       <div className="flex flex-1 items-center justify-center">
         <div
-          className={`transition-opacity duration-[1500ms] ${
+          className={`transition-opacity duration-1500 ${
             logoVisible ? "opacity-100" : "opacity-0"
           }`}
         >
@@ -40,13 +40,19 @@ export const FirstLoader = () => {
       </div>
 
       {/* Footer at the bottom */}
-      <div className="flex items-center justify-center space-x-1 p-5 text-sm text-gray-500 dark:text-gray-400">
-        <span>
+      <div className="flex items-center justify-center space-x-1 p-5 text-sm">
+        <span className="text-gray-500 dark:text-gray-400">
           © {new Date().getFullYear()} Hotpoint Appliances Ltd. Built by
         </span>
-        <span className="font-semibold">Jeff</span>
-
-        <BrainCog className="h-3.5 w-3.5" />
+        <a
+          href="https://jeff-portfolio-web.vercel.app"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-1 text-gray-500 hover:text-gray-600 hover:underline dark:hover:text-gray-400"
+        >
+          <span className="font-semibold">Jeff</span>
+          <BrainCog className="h-3.5 w-3.5" />
+        </a>
       </div>
     </div>
   );

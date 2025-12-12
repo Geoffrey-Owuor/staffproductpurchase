@@ -1,27 +1,25 @@
 import { verifyPassword, createSession } from "@/app/lib/auth";
-import { pool } from "@/lib/db";
+import pool from "@/lib/db";
 
 export async function POST(request) {
-  let client;
   try {
     const { email, password } = await request.json();
-    client = await pool.connect();
 
-    // Find user by email
-    const { rows } = await client.query(
-      "SELECT id, password, name, payrollno, department, role FROM users WHERE email = $1 LIMIT 1",
+    //Find user by email
+    const [users] = await pool.execute(
+      "SELECT id, password, name, payrollNo, department, role FROM users WHERE email = ? LIMIT 1",
       [email],
     );
 
-    if (!rows.length) {
+    if (!users.length) {
       return Response.json(
         { success: false, message: "Wrong username or password" },
         { status: 401 },
       );
     }
-    const user = rows[0];
+    const user = users[0];
 
-    // Verify Password
+    //Verify Password
     const isValid = await verifyPassword(password, user.password);
     if (!isValid) {
       return Response.json(
@@ -30,13 +28,14 @@ export async function POST(request) {
       );
     }
 
-    // Create Session
+    //Create Session
+
     await createSession(
       user.id,
       user.role,
       user.name,
       email,
-      user.payrollno,
+      user.payrollNo,
       user.department,
     );
 
@@ -47,7 +46,5 @@ export async function POST(request) {
       { success: false, message: "Server error. Please try again" },
       { status: 500 },
     );
-  } finally {
-    if (client) client.release();
   }
 }

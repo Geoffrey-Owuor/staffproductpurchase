@@ -4,10 +4,15 @@ export default function PurchaseDetailSkeleton() {
   return (
     <div className="mx-auto p-2 dark:bg-gray-950">
       {/* Header Skeleton */}
-      <div className="mb-6 flex items-center justify-between px-4">
-        <SkeletonBox className="h-5 w-24" />
-        <SkeletonBox className="h-8 w-20" />
-        <SkeletonBox className="h-5 w-32" />
+      <div className="mb-6 flex items-center justify-between">
+        <SkeletonBox className="h-6 w-40" />
+        <div className="hidden items-center justify-end gap-4 md:flex">
+          <SkeletonBox className="h-9 w-20" />
+          <SkeletonBox className="h-7 w-7" />
+          <SkeletonBox className="h-9 w-33" />
+          <SkeletonBox className="h-9 w-33" />
+          <SkeletonBox className="h-9 w-33" />
+        </div>
       </div>
 
       {/* Card Skeleton */}

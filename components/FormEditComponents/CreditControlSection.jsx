@@ -6,20 +6,31 @@ export default function CreditControlSection({
   handleChange,
   userRole,
 }) {
-  const isReadOnly = userRole != "cc";
+  const isReadOnly = userRole !== "cc";
   return (
-    <div className="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700">
+    <div className="bg-gradient-classes overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700">
       <div className="px-6 py-3">
-        <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-          Credit Control Verification and Approval
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+          Credit Control Approval
         </h3>
       </div>
-      <div className="grid grid-cols-1 gap-6 bg-white p-6 md:grid-cols-2 dark:bg-gray-950">
+      {userRole === "cc" && (
+        <div className="px-6">
+          <p className="text-xs">
+            <span className="font-semibold text-red-500 dark:text-red-400">
+              Note:{" "}
+            </span>
+            Don't forget to check the "Other Details" field for items being
+            bought at offer prices
+          </p>
+        </div>
+      )}
+      <div className="grid grid-cols-1 gap-6 p-6 md:grid-cols-2">
         {/* Full-width text fields */}
         <div className="md:col-span-2">
           <label
             htmlFor="credit_period"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-400"
           >
             Credit Period Given & Mode of Payments <FormAsterisk />
           </label>
@@ -38,28 +49,8 @@ export default function CreditControlSection({
 
         <div className="md:col-span-2">
           <label
-            htmlFor="one_third_rule"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
-          >
-            1/3 Rule Assessment <FormAsterisk />
-          </label>
-          <textarea
-            id="one_third_rule"
-            name="one_third_rule"
-            rows={3}
-            value={formData.one_third_rule}
-            onChange={handleChange}
-            readOnly={isReadOnly}
-            className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${isReadOnly ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
-            placeholder="Enter 1/3 rule compliance assessment"
-            required
-          />
-        </div>
-
-        <div className="md:col-span-2">
-          <label
             htmlFor="purchase_history_comments"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-400"
           >
             Purchase History Comments <FormAsterisk />
           </label>
@@ -80,7 +71,7 @@ export default function CreditControlSection({
         <div>
           <label
             htmlFor="pending_invoices"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-400"
           >
             Pending Invoices/Outstanding Amounts <FormAsterisk />
           </label>
@@ -99,23 +90,21 @@ export default function CreditControlSection({
 
         <div>
           <label
-            htmlFor="cc_approval"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            htmlFor="CC_Approval"
+            className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-400"
           >
             Approval Status <FormAsterisk />
           </label>
           <select
-            id="cc_approval"
-            name="cc_approval"
-            value={formData.cc_approval}
+            id="CC_Approval"
+            name="CC_Approval"
+            value={formData.CC_Approval}
             onChange={handleChange}
             disabled={isReadOnly}
             className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${isReadOnly ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
             required
           >
-            <option value="pending" disabled>
-              Pending
-            </option>
+            <option value="pending">Pending</option>
             <option value="approved">Approved</option>
             <option value="declined">Declined</option>
           </select>
@@ -124,7 +113,7 @@ export default function CreditControlSection({
         <div>
           <label
             htmlFor="cc_signature"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-400"
           >
             Checked By <FormAsterisk />
           </label>
@@ -144,9 +133,9 @@ export default function CreditControlSection({
         <div>
           <label
             htmlFor="cc_approval_date"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-400"
           >
-            CC Approval Date
+            Credit Approval Date
           </label>
           <input
             type="text"

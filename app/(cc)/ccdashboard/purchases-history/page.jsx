@@ -1,11 +1,12 @@
-import CCApprovalCards from "@/components/cc/CCApprovalCards";
+import ApprovalCards from "@/components/Reusables/ReusableApprovalCards/ApprovalCards";
 import PurchasesHistory from "@/components/PurchasesTables/PurchasesHistory";
+import { ApproversPurchaseProvider } from "@/context/ApproversPurchaseContext";
 
 export default function CCPurchasesHistory() {
   return (
-    <>
-      <CCApprovalCards />
+    <ApproversPurchaseProvider fetchAllData={true}>
+      <ApprovalCards />
       <PurchasesHistory />
-    </>
+    </ApproversPurchaseProvider>
   );
 }

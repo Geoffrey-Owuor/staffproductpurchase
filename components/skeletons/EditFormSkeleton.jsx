@@ -4,10 +4,13 @@ export default function EditFormSkeleton() {
   return (
     <div className="mx-auto p-2 dark:bg-gray-950">
       {/* Header Skeleton */}
-      <div className="mb-6 flex items-center justify-between px-4">
-        <SkeletonBox className="h-6 w-24" />
-        <SkeletonBox className="h-8 w-48" />
-        <div className="h-6 w-24"></div>
+      <div className="mb-6 flex items-center justify-between">
+        <SkeletonBox className="h-6 w-48" />
+        <div className="hidden items-center justify-end gap-4 md:flex">
+          <SkeletonBox className="h-9 w-28" />
+          <SkeletonBox className="h-9 w-28" />
+          <SkeletonBox className="h-9 w-28" />
+        </div>
       </div>
 
       {/* Form Sections Skeleton */}

@@ -1,107 +1,123 @@
-import { pool } from "@/lib/db";
+import pool from "@/lib/db";
 import { hashPassword, verifyPassword } from "@/app/lib/auth";
 
-//Changing a forgotten password
 export async function POST(request) {
-  let client;
-  try {
-    const { token, newPassword } = await request.json();
-    client = await pool.connect();
+  const { token, newPassword } = await request.json();
+  let conn;
 
-    // Verify token
-    const { rows: users } = await client.query(
-      "SELECT id FROM users WHERE reset_token = $1 AND reset_token_expiry > NOW()  LIMIT 1",
+  try {
+    conn = await pool.getConnection();
+    //Verify token
+    const [users] = await conn.execute(
+      "SELECT id, password from users WHERE reset_token = ? AND reset_token_expiry > NOW()",
       [token],
     );
 
     if (users.length === 0) {
       return Response.json(
-        { message: "Invalid or expired token" }, // Fixed typo in "message"
+        { message: " Invalid or expired token" },
         { status: 400 },
       );
     }
 
-    // Hash new password
-    const hashedPassword = await hashPassword(newPassword);
+    const userId = users[0].id;
+    const currentHashedPassword = users[0].password;
 
-    // Update password and clear the token
-    const { rowCount } = await client.query(
-      "UPDATE users SET password = $1, reset_token = NULL, reset_token_expiry = NULL WHERE id = $2",
-      [hashedPassword, users[0].id],
+    // Optional Security Check: Prevent reuse of the *current* password
+    const isSameAsCurrent = await verifyPassword(
+      newPassword,
+      currentHashedPassword,
     );
-
-    if (rowCount === 0) {
+    if (isSameAsCurrent) {
       return Response.json(
-        { message: "Failed to update password" },
-        { status: 500 },
+        {
+          message:
+            "The new password cannot be the same as your current password.",
+        },
+        { status: 400 },
       );
     }
 
-    return Response.json(
-      { message: "Password updated successfully" }, // Consistent casing
-      { status: 200 },
+    //Hash New Password
+    const hashedPassword = await hashPassword(newPassword);
+
+    //Update password and clear the token
+    await conn.execute(
+      "UPDATE users SET password = ?, reset_token = NULL, reset_token_expiry = NULL WHERE id = ?",
+      [hashedPassword, userId],
     );
+
+    return Response.json({
+      message: "Your password has been updated successfully",
+    });
   } catch (error) {
-    console.error("Password reset error:", error);
+    console.error("Password Reset Error:", error);
     return Response.json(
-      {
-        message: "Failed to reset password",
-        details:
-          process.env.NODE_ENV === "development" ? error.message : undefined,
-      },
+      { message: "Failed to reset password" },
       { status: 500 },
     );
   } finally {
-    if (client) client.release();
+    if (conn) conn.release();
   }
 }
 
-//Changing known password
 export async function PUT(request) {
-  let client;
   const { email, currentPassword, newPassword } = await request.json();
+  let conn;
 
   try {
-    client = await pool.connect();
-
-    //Verify user
-    const { rows: verifyUser } = await client.query(
-      "SELECT id, password from users WHERE email = $1 LIMIT 1",
+    conn = await pool.getConnection();
+    //verify user
+    const [verifyUser] = await conn.execute(
+      "SELECT id, password from users WHERE email = ?",
       [email],
     );
 
-    if (!verifyUser.length) {
-      return Response.json({ message: "User does not exist" }, { status: 400 });
+    if (verifyUser.length === 0) {
+      return Response.json({ message: "Invalid credentials" }, { status: 401 });
     }
+
+    const userId = verifyUser[0].id;
+    const currentHashedPassword = verifyUser[0].password;
 
     //verify password
     const isValid = await verifyPassword(
       currentPassword,
-      verifyUser[0].password,
+      currentHashedPassword,
     );
     if (!isValid) {
       return Response.json(
-        { message: "Current Password Incorrect" },
+        { message: "You current password is incorrect" },
         { status: 401 },
       );
     }
 
-    const hashedNewPassword = await hashPassword(newPassword);
-
-    const { rowCount } = await client.query(
-      "UPDATE users SET password = $1 WHERE id = $2",
-      [hashedNewPassword, verifyUser[0].id],
+    // 3. Prevent reuse of the current password (Security Enhancement)
+    const isSameAsCurrent = await verifyPassword(
+      newPassword,
+      currentHashedPassword,
     );
-
-    if (rowCount === 0) {
+    if (isSameAsCurrent) {
       return Response.json(
-        { message: "Failed to update password" },
-        { status: 500 },
+        {
+          message:
+            "The new password cannot be the same as your current password.",
+        },
+        { status: 400 },
       );
     }
 
+    //Hashing new password
+    const hashedNewPassword = await hashPassword(newPassword);
+
+    //Update the previous password
+    await conn.execute("UPDATE users SET password = ? WHERE id = ?", [
+      hashedNewPassword,
+      userId,
+    ]);
+
     return Response.json(
-      { message: "Password Updated Successfully" },
+      { message: "Your password has been updated successfully" },
       { status: 200 },
     );
   } catch (error) {
@@ -111,6 +127,6 @@ export async function PUT(request) {
       { status: 500 },
     );
   } finally {
-    if (client) client.release();
+    if (conn) conn.release();
   }
 }

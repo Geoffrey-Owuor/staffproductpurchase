@@ -1,47 +1,44 @@
 "use client";
-import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { useLoadingLine } from "@/context/LoadingLineContext";
 
-export default function LoadingLine({ isLoading }) {
-  const [progress, setProgress] = useState(0);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    let timer;
-    if (isLoading) {
-      setVisible(true);
-      setProgress(0);
-
-      // Simulate loading progress up to 95%
-      timer = setInterval(() => {
-        setProgress((old) => {
-          if (old < 95) return old + 5;
-          return old;
-        });
-      }, 50);
-    } else {
-      // Finish progress to 100%
-      setProgress(100);
-
-      // Then hide after animation completes
-      const timeout = setTimeout(() => {
-        setVisible(false);
-        setProgress(0); // reset internally, but invisible
-      }, 50);
-
-      return () => clearTimeout(timeout);
-    }
-
-    return () => clearInterval(timer);
-  }, [isLoading]);
-
-  if (!visible) return null;
-
+const LoadingLine = () => {
+  const { isLoading } = useLoadingLine();
   return (
-    <div className="fixed top-0 left-0 z-50 h-[3px] w-full">
-      <div
-        className="h-full bg-gradient-to-r from-gray-600 via-gray-700 to-gray-700 transition-all duration-100 dark:from-blue-800 dark:via-blue-600 dark:to-blue-400"
-        style={{ width: `${progress}%` }}
-      ></div>
-    </div>
+    <>
+      {isLoading && (
+        <motion.div
+          className="fixed top-0 right-0 left-0 z-9999 h-[3px] bg-linear-to-r from-sky-500 via-blue-500 to-indigo-500 dark:from-sky-400 dark:via-blue-400 dark:to-indigo-400"
+          initial={{ scaleX: 0, transformOrigin: "left" }}
+          animate={{
+            scaleX: [0, 0.3, 0.6, 0.8, 0.95],
+            transition: {
+              duration: 2,
+              times: [0, 0.3, 0.6, 0.8, 1],
+              ease: "easeOut",
+            },
+          }}
+          exit={{
+            scaleX: 1,
+            transition: { duration: 0.2 },
+          }}
+        >
+          {/* Glowing effect */}
+          <motion.div
+            className="absolute inset-0 bg-linear-to-r from-sky-500 via-blue-500 to-indigo-500 dark:from-sky-400 dark:via-blue-400 dark:to-indigo-400"
+            animate={{
+              opacity: [0.5, 1, 0.5],
+            }}
+            transition={{
+              duration: 1,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+        </motion.div>
+      )}
+    </>
   );
-}
+};
+
+export default LoadingLine;

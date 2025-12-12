@@ -9,19 +9,19 @@ export default function HRApprovalSection({
   const isReadOnly = userRole !== "hr";
 
   return (
-    <div className="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700">
+    <div className="bg-gradient-classes overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700">
       <div className="px-6 py-3">
-        <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-          HR/Payroll Approval
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+          HR Approval
         </h3>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 bg-white p-6 md:grid-cols-2 dark:bg-gray-950">
+      <div className="grid grid-cols-1 gap-6 p-6 md:grid-cols-2">
         {/* Employment Status */}
         <div>
           <label
             htmlFor="is_employed"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-400"
           >
             Employment Status <FormAsterisk />
           </label>
@@ -43,6 +43,9 @@ export default function HRApprovalSection({
             </option>
             <option value="contract">Contract</option>
             <option value="permanent">Permanent</option>
+            <option value="cash approval" disabled>
+              Cash Approval
+            </option>
           </select>
         </div>
 
@@ -50,7 +53,7 @@ export default function HRApprovalSection({
         <div>
           <label
             htmlFor="on_probation"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-400"
           >
             Probation? <FormAsterisk />
           </label>
@@ -72,21 +75,24 @@ export default function HRApprovalSection({
             </option>
             <option value="yes">Yes</option>
             <option value="no">No</option>
+            <option value="cash approval" disabled>
+              Cash Approval
+            </option>
           </select>
         </div>
 
         {/* Approval Status */}
         <div>
           <label
-            htmlFor="hr_approval"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            htmlFor="HR_Approval"
+            className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-400"
           >
             Approval Status <FormAsterisk />
           </label>
           <select
-            id="hr_approval"
-            name="hr_approval"
-            value={formData.hr_approval}
+            id="HR_Approval"
+            name="HR_Approval"
+            value={formData.HR_Approval}
             onChange={handleChange}
             disabled={isReadOnly}
             required
@@ -96,9 +102,7 @@ export default function HRApprovalSection({
                 : "bg-white dark:bg-gray-950"
             }`}
           >
-            <option value="pending" disabled>
-              Pending
-            </option>
+            <option value="pending">Pending</option>
             <option value="approved">Approved</option>
             <option value="declined">Declined</option>
           </select>
@@ -108,7 +112,7 @@ export default function HRApprovalSection({
         <div>
           <label
             htmlFor="hr_approver_name"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-400"
           >
             HR Approver Name <FormAsterisk />
           </label>
@@ -133,7 +137,7 @@ export default function HRApprovalSection({
         <div>
           <label
             htmlFor="hr_approval_date"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-400"
           >
             HR Approval Date
           </label>
@@ -152,9 +156,9 @@ export default function HRApprovalSection({
         <div className="md:col-span-2">
           <label
             htmlFor="hr_comments"
-            className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-400"
+            className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-400"
           >
-            HR Comments
+            HR Comments <FormAsterisk />
           </label>
           <textarea
             id="hr_comments"
@@ -163,6 +167,7 @@ export default function HRApprovalSection({
             value={formData.hr_comments}
             onChange={handleChange}
             readOnly={isReadOnly}
+            required
             className={`w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${
               isReadOnly
                 ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800"

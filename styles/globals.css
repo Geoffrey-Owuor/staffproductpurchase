@@ -3,19 +3,9 @@
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @theme {
-  --background-image-blue-gradient: linear-gradient(
-    135deg,
-    #1d4ed8,
-    #2563eb,
-    #3b82f6
-  );
-
-  --background-image-gray-gradient: linear-gradient(
-    135deg,
-    #1f2937,
-    #374151,
-    #4b5563
-  );
+  --breakpoint-custom: 1200px;
+  --breakpoint-navigation: 1000px;
+  --breakpoint-footerBottom: 900px;
 }
 
 :root {
@@ -45,69 +35,6 @@
 }
 
 @layer utilities {
-  /* Optional subtle gradient movement */
-  @keyframes gradient-shift {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
-
-  @keyframes pulse-brightness {
-    0%,
-    100% {
-      filter: brightness(0.75);
-    }
-    50% {
-      filter: brightness(1.5);
-    }
-  }
-
-  /* Bounce animation */
-  @keyframes custom-bounce {
-    0%,
-    80%,
-    100% {
-      transform: translateY(0);
-    }
-    40% {
-      transform: translateY(-20px);
-    }
-  }
-
-  .dot {
-    width: 16px;
-    height: 16px;
-    border-radius: 9999px;
-    display: inline-block;
-  }
-  .gradient-dot {
-    background-size: 200% 200%;
-    animation: gradient-shift 3s ease infinite;
-  }
-
-  .animate-custom-bounce {
-    animation:
-      custom-bounce 1.2s infinite ease-in-out,
-      pulse-brightness 1.2s infinite ease-in-out;
-  }
-
-  /* Animation delays for staggered bounce */
-  .animation-delay-0 {
-    animation-delay: 0s;
-  }
-  .animation-delay-150 {
-    animation-delay: 0.15s;
-  }
-  .animation-delay-300 {
-    animation-delay: 0.3s;
-  }
-
   @keyframes slideDown {
     from {
       transform: translateY(-100%);
@@ -194,30 +121,65 @@
   .bg-base-classes {
     @apply bg-white dark:bg-gray-950;
   }
+  .bg-home-classes {
+    @apply bg-linear-to-br from-red-100/50 via-red-50/50 to-white dark:from-gray-900 dark:via-blue-950/20 dark:to-gray-950;
+  }
+  .bg-gradient-classes {
+    @apply bg-linear-to-br from-slate-100 via-slate-50/50 to-white dark:from-gray-900 dark:via-gray-950 dark:to-black;
+  }
   .containerizing {
     width: 100%;
     margin-left: auto;
     margin-right: auto;
     @media (width >= 40rem /* 640px */) {
-      max-width: 40rem /* 640px */;
+      max-width: 65rem /* 640px */;
     }
-    @media (width >= 48rem /* 768px */) {
-      max-width: 48rem /* 768px */;
-    }
+
     @media (width >= 64rem /* 1024px */) {
-      max-width: 64rem /* 1024px */;
+      max-width: 90rem /* 1280px */;
     }
+
     @media (width >= 78rem /* 1250px */) {
-      max-width: 80rem /* 1280px */;
+      max-width: 90rem /* 1280px */;
     }
-    @media (width >= 96rem /* 1536px */) {
-      max-width: 96rem /* 1536px */;
+    @media (width >= 100rem) {
+      max-width: 100rem;
+    }
+    @media (width >= 120rem /* 1536px */) {
+      max-width: 125rem /* 1536px */;
     }
   }
 }
 
 html {
   scroll-behavior: smooth;
+  scrollbar-color: #9ca3af transparent;
+}
+
+html[data-theme="dark"] {
+  scrollbar-color: #4b5563 transparent;
+}
+
+/* FOR WEBKIT BROWSERS */
+/* Width of scrollbar */
+html::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Scrollbar track (transparent) */
+html::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Scrollbar thumb */
+html::-webkit-scrollbar-thumb {
+  background-color: #9ca3af; /* light theme thumb */
+  border-radius: 4px;
+}
+
+/* Dark theme thumb */
+html[data-theme="dark"]::-webkit-scrollbar-thumb {
+  background-color: #4b5563;
 }
 
 .custom-blur {

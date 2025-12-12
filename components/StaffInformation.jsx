@@ -1,8 +1,9 @@
 import FormAsterisk from "./Reusables/FormAsterisk/FormAsterisk";
 
-const StaffInformation = ({ formData, handleChange }) => {
+const StaffInformation = ({ formData, handleChange, userRole }) => {
+  const isReadOnly = userRole !== "staff";
   return (
-    <div className="mb-8 rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-950">
+    <div className="bg-gradient-classes mb-8 rounded-xl border border-gray-200 dark:border-gray-700">
       <div className="rounded-t-xl px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white">
         Staff Information
       </div>
@@ -10,44 +11,46 @@ const StaffInformation = ({ formData, handleChange }) => {
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           <div>
             <label
-              htmlFor="staffname"
-              className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
+              htmlFor="staffName"
+              className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-400"
             >
               Staff Name <FormAsterisk />
             </label>
             <input
               type="text"
-              id="staffname"
-              name="staffname"
-              value={formData.staffname}
+              id="staffName"
+              name="staffName"
+              value={formData.staffName}
               onChange={handleChange}
-              className="w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${isReadOnly ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
               required
+              readOnly={isReadOnly}
             />
           </div>
 
           <div>
             <label
-              htmlFor="payrollno"
-              className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
+              htmlFor="payrollNo"
+              className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-400"
             >
               Payroll No <FormAsterisk />
             </label>
             <input
               type="text"
-              id="payrollno"
-              name="payrollno"
-              value={formData.payrollno}
+              id="payrollNo"
+              name="payrollNo"
+              value={formData.payrollNo}
               onChange={handleChange}
-              className="w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${isReadOnly ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
               required
+              readOnly={isReadOnly}
             />
           </div>
 
           <div>
             <label
               htmlFor="department"
-              className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
+              className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-400"
             >
               Department <FormAsterisk />
             </label>
@@ -57,8 +60,9 @@ const StaffInformation = ({ formData, handleChange }) => {
               name="department"
               value={formData.department}
               onChange={handleChange}
-              className="w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${isReadOnly ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
               required
+              readOnly={isReadOnly}
             />
           </div>
         </div>

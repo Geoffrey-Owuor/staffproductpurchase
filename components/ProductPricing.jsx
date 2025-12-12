@@ -1,216 +1,252 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import FormAsterisk from "./Reusables/FormAsterisk/FormAsterisk";
-import useDebounce from "./Reusables/Debouncing/useDebounce";
-import { X } from "lucide-react";
+import { X, Search } from "lucide-react";
 
-const ProductPricing = ({ formData, handleChange, setFormData }) => {
+const ProductPricing = ({
+  formData,
+  handleChange,
+  setFormData,
+  discountPolicies,
+  userRole,
+  paymentTerms,
+  productNumber,
+}) => {
   const [fetchedDetails, setFetchedDetails] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [discountPolicies, setDiscountPolicies] = useState([]);
 
-  //Using debounced productcode
-  const debouncedCode = useDebounce(formData.productcode, 1000);
+  const fetchDetails = async () => {
+    const code = formData.productCode?.trim();
 
-  //useEffect for fetching the discount policies
-  useEffect(() => {
-    const fetchPolicies = async () => {
-      try {
-        const response = await fetch("/api/getdiscountpolicies");
-        const json = await response.json();
-        if (response.ok) {
-          setDiscountPolicies(json.data);
-        } else {
-          console.error("Failed to fetch discount policies.");
-        }
-      } catch (error) {
-        console.error("Error fetching discount policies: ", error);
-      }
-    };
-
-    fetchPolicies();
-  }, []);
-
-  useEffect(() => {
-    const code = debouncedCode?.trim();
-
-    if (!code || code === "") {
-      setFetchedDetails(null); // reset if input is empty
+    if (!code) {
+      setFetchedDetails({ message: "Please enter a product code." }); // reset if input is empty
       return;
     }
+    setLoading(true);
+    setFetchedDetails(null); // Clear previous results
 
-    const fetchDetails = async () => {
-      setLoading(true);
+    try {
+      const response = await fetch("/api/getpurchasedetails", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productCode: code }),
+      });
 
-      try {
-        const response = await fetch("/api/getpurchasedetails", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ productcode: code }),
-        });
+      const data = await response.json();
 
-        const data = await response.json();
-
-        if (!response.ok) {
-          // API responded but with error/fallback
-          setFetchedDetails({
-            message: data.message || "No product found for this code",
-          });
-        } else {
-          // API success response
-          setFetchedDetails({
-            itemname: data.itemname,
-            tdprice: data.tdprice,
-          });
-        }
-      } catch (err) {
-        console.error("Error fetching details", err);
+      if (!response.ok) {
+        // API responded but with error/fallback
         setFetchedDetails({
-          message: "Network or server error. Please try again.",
+          message: data.message || "No product found for this code",
         });
-      } finally {
-        setLoading(false);
+      } else {
+        // API success response
+        setFetchedDetails({
+          itemName: data.itemName,
+          tdPrice: data.tdPrice,
+        });
       }
-    };
-
-    fetchDetails();
-  }, [debouncedCode]);
+    } catch (err) {
+      console.error("Error fetching details", err);
+      setFetchedDetails({
+        message: "Network or server error. Please try again.",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSelectFetched = () => {
     if (fetchedDetails) {
       setFormData((prev) => ({
         ...prev,
-        itemname: fetchedDetails.itemname,
-        tdprice: fetchedDetails.tdprice,
+        itemName: fetchedDetails.itemName,
+        tdPrice: fetchedDetails.tdPrice,
       }));
       setFetchedDetails(null);
     }
   };
 
-  //Matching discount policy to discount rate
+  //useEffect for automatic policy and rate selection
   useEffect(() => {
-    const { itemstatus, productpolicy } = formData;
-    if (itemstatus && productpolicy) {
-      const matchedPolicy = discountPolicies.find(
-        (policy) =>
-          policy.policy_name === productpolicy &&
-          policy.category === itemstatus,
-      );
-
-      if (matchedPolicy) {
-        setFormData((prev) => ({
-          ...prev,
-          discountrate: matchedPolicy.rate,
-        }));
-      }
+    // Guard clause to make sure this useEffect only runs when the user is staff or credit control
+    if (!["staff", "cc"].includes(userRole)) {
+      return;
     }
-  }, [formData.itemstatus, formData.productpolicy]);
 
-  useEffect(() => {
-    const tdprice = parseFloat(formData.tdprice);
-    const discountrate = parseFloat(formData.discountrate);
+    const { itemName, itemStatus } = formData;
 
-    if (!isNaN(tdprice) && !isNaN(discountrate)) {
-      const discountedvalue = tdprice * (1 - discountrate / 100);
+    // Guard clause: Don't run if we don't have all the needed info
+    if (!paymentTerms || !itemName || !itemStatus || !discountPolicies) {
+      return;
+    }
+
+    // Determine policy based on payment terms
+    let policyPaymentType = ""; //Default
+    if (paymentTerms === "CASH") {
+      policyPaymentType = "on Cash Payment";
+    } else if (
+      paymentTerms === "CREDIT" ||
+      paymentTerms === "CASH AND CREDIT"
+    ) {
+      policyPaymentType = "on Account";
+    }
+
+    // Determine policy based on brand name
+    let policyBrand = "Non Von Hotpoint"; // Default
+    const itemNameLower = itemName.toLowerCase();
+    if (itemNameLower.startsWith("von")) {
+      policyBrand = "Von Hotpoint";
+    } else if (itemNameLower.startsWith("samsung")) {
+      policyBrand = "Samsung Brand";
+    }
+
+    // Construct the full policy name to search for
+    const fullPolicyName = `${policyBrand} ${policyPaymentType}`;
+
+    // Find the matching policy from the list
+    const matchedPolicy = discountPolicies.find(
+      (policy) =>
+        policy.policy_name === fullPolicyName && policy.category === itemStatus,
+    );
+
+    if (matchedPolicy) {
+      // If a match is found, update the form data with the policy and rate
       setFormData((prev) => ({
         ...prev,
-        discountedvalue: discountedvalue.toFixed(2),
+        productPolicy: matchedPolicy.policy_name,
+        discountRate: matchedPolicy.rate,
       }));
     } else {
+      // If no policy matches, reset the policy and rate
       setFormData((prev) => ({
         ...prev,
-        discountedvalue: "",
+        productPolicy: "",
+        discountRate: 0,
       }));
     }
-  }, [formData.tdprice, formData.discountrate]);
+  }, [
+    formData.itemName,
+    formData.itemStatus,
+    paymentTerms,
+    discountPolicies,
+    userRole,
+  ]);
+
+  useEffect(() => {
+    const tdPrice = parseFloat(formData.tdPrice) || 0;
+    const discountRate = parseFloat(formData.discountRate) || 0;
+
+    const discountedValue = tdPrice * (1 - discountRate / 100);
+    setFormData((prev) => ({
+      ...prev,
+      discountedValue: discountedValue.toFixed(2),
+    }));
+  }, [formData.tdPrice, formData.discountRate]);
+
+  const editableRoles = ["staff", "cc"];
+  const staffReadOnly = userRole !== "staff";
+  const ccReadOnly = userRole !== "cc";
+  const isReadonlyGeneral = !editableRoles.includes(userRole);
 
   return (
-    <div className="relative mb-8 rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-950">
+    <div className="bg-gradient-classes relative mb-8 rounded-xl border border-gray-200 dark:border-gray-700">
       <div className="rounded-t-xl px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white">
-        Product & Pricing Details
+        Product {productNumber}
       </div>
 
       {/* Checking the inputed product code from ORION api and returning product name and TD price */}
-      {formData.productcode?.trim() !== "" && fetchedDetails?.itemname && (
+      {formData.productCode?.trim() !== "" && fetchedDetails?.itemName && (
         <div
-          className="absolute left-35 z-10 w-87 cursor-pointer rounded-lg border border-gray-300 bg-white p-2 shadow-lg dark:border-gray-700 dark:bg-gray-900"
+          className="absolute top-1.5 left-4 z-10 w-80 cursor-pointer rounded-lg border border-gray-300 bg-white p-2 shadow-lg md:left-43 dark:border-gray-700 dark:bg-gray-900"
           onClick={handleSelectFetched}
         >
-          <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
-            {fetchedDetails.itemname}
+          <p className="truncate text-sm font-semibold text-gray-900 dark:text-white">
+            {fetchedDetails.itemName}
           </p>
-          <p className="text-xs font-medium text-gray-500 dark:text-gray-400">
-            TD Price: {fetchedDetails.tdprice}
+          <p className="text-xs font-semibold text-gray-500 dark:text-gray-400">
+            TD Price: {fetchedDetails.tdPrice}
           </p>
           <p className="text-xs text-gray-400 italic">(Click to select)</p>
         </div>
       )}
 
       {/* Returning a fallback message when product is not found */}
-      {formData.productcode?.trim() !== "" && fetchedDetails?.message && (
-        <div className="absolute left-35 z-10 mt-1 w-80 cursor-pointer rounded-lg border border-gray-300 bg-white p-2 shadow-lg dark:border-gray-700 dark:bg-gray-900">
+      {formData.productCode?.trim() !== "" && fetchedDetails?.message && (
+        <div className="absolute top-2 left-4 z-10 w-80 cursor-pointer rounded-lg border border-gray-300 bg-white p-2 shadow-lg md:left-43 dark:border-gray-700 dark:bg-gray-900">
           <p className="text-sm text-gray-900 dark:text-white">
             {fetchedDetails.message}
           </p>
           {/* Close Icon */}
           <div
             className="absolute top-1.5 left-73 z-20 cursor-pointer p-1 text-gray-500 hover:text-gray-400"
-            onClick={(e) => {
-              e.stopPropagation(); // Prevent triggering parent onClick
-              setFetchedDetails(null);
-            }}
+            onClick={() => setFetchedDetails(null)}
           >
             <X className="h-4 w-4" />
           </div>
         </div>
       )}
-
-      <div className="mt-8 space-y-6 overflow-x-auto px-6 py-4">
+      <div className="space-y-6 overflow-x-auto px-6 py-4">
         {/* Grouped Inputs - 2 columns on md+ */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
           {/* Product Code */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400">
-              Product Code <FormAsterisk />
+            <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-400">
+              Product Code (SKU) <FormAsterisk />
               {/* Small loading spinner */}
               {loading && (
                 <div className="ml-2 inline-block h-3 w-3 animate-spin rounded-full border-2 border-gray-500 border-t-transparent dark:border-gray-400 dark:border-t-transparent"></div>
               )}
             </label>
-            <input
-              type="text"
-              name="productcode"
-              value={formData.productcode}
-              onChange={handleChange}
-              className="w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
-              required
-            />
+            <div className="relative flex items-center">
+              <input
+                type="text"
+                name="productCode"
+                value={formData.productCode}
+                onChange={handleChange}
+                className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${isReadonlyGeneral ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
+                required
+                readOnly={isReadonlyGeneral}
+              />
+              {(userRole === "staff" || userRole === "cc") && (
+                <button
+                  type="button"
+                  onClick={fetchDetails}
+                  disabled={loading} // Disable button while loading
+                  className="absolute right-3 rounded-full p-1 text-gray-500 hover:bg-gray-100 hover:text-gray-700 disabled:cursor-not-allowed dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+                >
+                  <Search className="h-5 w-5" />
+                </button>
+              )}
+            </div>
           </div>
-
-          {/* Item Name - Full Width */}
+          {/* Item Name*/}
           <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400">
+            <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-400">
               Item Name <FormAsterisk />
             </label>
             <input
               type="text"
-              name="itemname"
-              value={formData.itemname}
+              name="itemName"
+              value={formData.itemName}
               onChange={handleChange}
-              className="w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${isReadonlyGeneral ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
               required
+              readOnly={isReadonlyGeneral}
+              title={formData.itemName}
             />
           </div>
           {/* Item Status */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400">
+            <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-400">
               Status (New / RHD2) <FormAsterisk />
             </label>
             <select
-              name="itemstatus"
-              value={formData.itemstatus}
+              name="itemStatus"
+              value={formData.itemStatus}
               onChange={handleChange}
-              className="w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${staffReadOnly ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
               required
+              disabled={staffReadOnly}
             >
               <option value="" disabled>
                 Select
@@ -220,133 +256,69 @@ const ProductPricing = ({ formData, handleChange, setFormData }) => {
             </select>
           </div>
 
-          {/* Product Policy */}
+          {/* Product Policy Type */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400">
-              Item Policy Type <FormAsterisk />
+            <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-400">
+              Item Policy Type
             </label>
-            <select
-              name="productpolicy"
-              value={formData.productpolicy || ""}
+            <input
+              type="text"
+              value={formData.productPolicy}
               onChange={handleChange}
-              className="w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
-              required
-            >
-              <option value="" disabled>
-                Select Policy
-              </option>
-              {[...new Set(discountPolicies.map((p) => p.policy_name))].map(
-                (policy) => (
-                  <option key={policy} value={policy}>
-                    {policy}
-                  </option>
-                ),
-              )}
-            </select>
+              className="w-full rounded-xl border border-gray-200 bg-gray-100 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white"
+              readOnly
+              title={formData.productPolicy}
+            />
           </div>
 
           {/* TD Price */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400">
-              TD Price
+            <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-400">
+              Initial Price <FormAsterisk />
             </label>
             <input
               type="number"
               step="0.01"
-              name="tdprice"
-              value={formData.tdprice}
+              name="tdPrice"
+              value={formData.tdPrice}
               onChange={handleChange}
-              className="w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${ccReadOnly ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
+              readOnly={ccReadOnly}
+              required
             />
           </div>
 
           {/* Discount Rate */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400">
-              Discount Rate
+            <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-400">
+              Discount Rate <FormAsterisk />
             </label>
             <input
               type="number"
               step="0.01"
-              name="discountrate"
-              value={formData.discountrate}
-              readOnly
-              className="w-full rounded-xl border border-gray-200 bg-gray-100 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white"
+              name="discountRate"
+              value={formData.discountRate}
+              onChange={handleChange}
+              readOnly={ccReadOnly}
+              required
+              className={`w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:text-white ${ccReadOnly ? "cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "bg-white dark:bg-gray-950"}`}
             />
           </div>
 
           {/* Discounted Value */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400">
+            <label className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-400">
               Discounted Value
             </label>
             <input
               type="number"
               step="0.01"
-              name="discountedvalue"
-              value={formData.discountedvalue}
+              name="discountedValue"
+              value={formData.discountedValue}
               readOnly
               className="w-full rounded-xl border border-gray-200 bg-gray-100 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white"
             />
           </div>
-          {/* Payment Terms */}
-          <div>
-            <label
-              htmlFor="employee_payment_terms"
-              className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
-            >
-              Payment Terms/Options <FormAsterisk />
-            </label>
-            <select
-              id="employee_payment_terms"
-              name="employee_payment_terms"
-              value={formData.employee_payment_terms}
-              onChange={handleChange}
-              className="w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
-              required
-            >
-              <option value="" disabled>
-                Select a payment option
-              </option>
-              <option value="CREDIT">Credit</option>
-              <option value="CASH">Cash</option>
-              <option value="BANK">Bank</option>
-              <option value="MPESA">Mpesa</option>
-            </select>
-          </div>
-        </div>
-
-        {/* Payment Terms */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          {/* Conditional Credit Period */}
-          {formData.employee_payment_terms === "CREDIT" && (
-            <div>
-              <label
-                htmlFor="user_credit_period"
-                className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
-              >
-                Credit Period <FormAsterisk />
-              </label>
-              <select
-                id="user_credit_period"
-                name="user_credit_period"
-                value={formData.user_credit_period || ""}
-                onChange={handleChange}
-                className="w-full rounded-xl border border-gray-200 p-2 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
-                required
-              >
-                <option value="" disabled>
-                  Select period
-                </option>
-                <option value="1">1 Month</option>
-                <option value="2">2 Months</option>
-                <option value="3">3 Months</option>
-                <option value="4">4 Months</option>
-                <option value="5">5 Months</option>
-                <option value="6">6 Months</option>
-              </select>
-            </div>
-          )}
         </div>
       </div>
     </div>

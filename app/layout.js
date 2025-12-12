@@ -1,5 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "../styles/globals.css";
+import LoadingLine from "@/components/Reusables/LoadingLine";
+import { LoadingLineProvider } from "@/context/LoadingLineContext";
 import { ThemeProvider } from "next-themes";
 
 const geistSans = Geist({
@@ -25,14 +27,17 @@ export default function RootLayout({ children }) {
         <meta name="apple-mobile-web-app-title" content="Hotpoint" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} containerizing bg-base-classes antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} bg-base-classes antialiased`}
       >
         <ThemeProvider
           enableSystem={true}
           defaultTheme="system"
           disableTransitionOnChange={true}
         >
-          {children}
+          <LoadingLineProvider>
+            <LoadingLine />
+            <main>{children}</main>
+          </LoadingLineProvider>
         </ThemeProvider>
       </body>
     </html>

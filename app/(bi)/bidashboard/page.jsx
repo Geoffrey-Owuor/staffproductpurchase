@@ -1,13 +1,14 @@
-import BIApprovalCards from "@/components/bi/BIApprovalCards";
+import ApprovalCards from "@/components/Reusables/ReusableApprovalCards/ApprovalCards";
 import TermsConditions from "@/components/TermsConditions";
-import RecentPurchases from "@/components/PurchasesTables/RecentPurchases";
+import PurchasesHistory from "@/components/PurchasesTables/PurchasesHistory";
+import { ApproversPurchaseProvider } from "@/context/ApproversPurchaseContext";
 
 export default function BIHomePage() {
   return (
-    <>
-      <BIApprovalCards />
-      <RecentPurchases />
+    <ApproversPurchaseProvider fetchAllData={false}>
+      <ApprovalCards />
+      <PurchasesHistory />
       <TermsConditions />
-    </>
+    </ApproversPurchaseProvider>
   );
 }

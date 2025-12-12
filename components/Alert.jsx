@@ -1,6 +1,6 @@
 "use client";
 
-import { XIcon, BadgeAlert, BadgeCheck } from "lucide-react";
+import { XIcon, AlertCircle, CheckCircle } from "lucide-react";
 import { useState, useEffect } from "react";
 
 const Alert = ({ message, type, onClose }) => {
@@ -21,7 +21,7 @@ const Alert = ({ message, type, onClose }) => {
   }, []);
 
   // Determine which icon to display based on type
-  const IconComponent = type === "success" ? BadgeCheck : BadgeAlert;
+  const IconComponent = type === "success" ? CheckCircle : AlertCircle;
 
   // Determine icon color
   const iconColorClass =
@@ -31,16 +31,16 @@ const Alert = ({ message, type, onClose }) => {
 
   return (
     <div
-      className={`fixed top-0 right-0 left-0 z-9999 flex justify-center ${
+      className={`fixed top-0 right-2 left-2 z-9999 md:left-auto ${
         isClosing ? "animate-slideUp" : "animate-slideDown"
       }`}
     >
       <div
-        className={`mt-4 flex max-w-md min-w-[300px] items-center justify-between rounded-xl border border-gray-200 bg-black/70 p-3 text-white shadow-md dark:border-gray-800 dark:bg-white/70 dark:text-black`}
+        className={`mt-4 flex w-auto items-center justify-between rounded-xl bg-black px-3 py-4.5 text-white shadow-md dark:bg-white dark:text-black`}
       >
         <div className="flex items-center gap-2">
           {/* Render the appropriate icon */}
-          <IconComponent className={`h-5 w-5 ${iconColorClass}`} />
+          <IconComponent className={`h-5 w-5 shrink-0 ${iconColorClass}`} />
           <p className="text-sm">{message}</p>
         </div>
         <button
@@ -48,7 +48,7 @@ const Alert = ({ message, type, onClose }) => {
           className="ml-4 cursor-pointer text-gray-200 hover:text-gray-300 dark:text-gray-600 dark:hover:text-gray-700"
           aria-label="Close alert"
         >
-          <XIcon className="h-5 w-5" />
+          <XIcon className="h-5 w-5 shrink-0" />
         </button>
       </div>
     </div>

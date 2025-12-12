@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Eye, EyeClosed } from "lucide-react";
-import ThemeToggle from "@/components/Reusables/ThemeProviders/ThemeToggle";
-import { AuthPagesLogo } from "@/public/assets";
+import AuthBackground from "@/components/Reusables/Images/AuthBackground";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -40,7 +41,9 @@ export default function LoginPage() {
         const data = await response.json();
         // Determine dashboard path based on role
         let dashboardPath;
-        if (data.role === "hr") {
+        if (data.role === "payroll") {
+          dashboardPath = "/payrolldashboard";
+        } else if (data.role === "hr") {
           dashboardPath = "/hrdashboard";
         } else if (data.role === "cc") {
           dashboardPath = "/ccdashboard";
@@ -53,7 +56,7 @@ export default function LoginPage() {
         }
 
         // Redirect with page reload
-        window.location.href = dashboardPath;
+        router.push(dashboardPath);
       } else {
         const data = await response.json();
         setLoginError(data.message || "Login Failed");
@@ -66,15 +69,11 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center bg-white text-gray-900 dark:bg-gray-950 dark:text-white">
-      {/* Company Logo */}
-      <div className="fixed top-3.5 left-4 z-50">
-        <AuthPagesLogo />
-      </div>
-
+    <AuthBackground>
       {/* Login Card */}
-      <div className="w-full max-w-[400px] px-8">
-        <h1 className="mb-10 text-center text-3xl font-semibold">
+
+      <div className="rounded-xl border border-gray-300 bg-white p-8 shadow-lg dark:border-gray-700 dark:bg-gray-950">
+        <h1 className="mb-10 text-center text-2xl font-semibold">
           Welcome Back
         </h1>
 
@@ -95,11 +94,11 @@ export default function LoginPage() {
               onChange={handleChange}
               required
               placeholder=" "
-              className="peer w-full rounded-full border border-gray-300 bg-transparent px-4 py-3 text-gray-900 placeholder-transparent focus:outline-none dark:border-gray-700 dark:text-white"
+              className="peer w-full rounded-xl border border-gray-300 bg-transparent px-4 py-3 text-gray-900 placeholder-transparent focus:outline-none dark:border-gray-700 dark:text-white"
             />
             <label
               htmlFor="email"
-              className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300"
+              className="absolute -top-3 left-4 rounded-md bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300"
             >
               Email Address
             </label>
@@ -115,11 +114,11 @@ export default function LoginPage() {
               onChange={handleChange}
               required
               placeholder=" "
-              className="peer w-full rounded-full border border-gray-300 bg-transparent px-4 py-3 text-gray-900 placeholder-transparent focus:outline-none dark:border-gray-700 dark:text-white"
+              className="peer w-full rounded-xl border border-gray-300 bg-transparent px-4 py-3 text-gray-900 placeholder-transparent focus:outline-none dark:border-gray-700 dark:text-white"
             />
             <label
               htmlFor="password"
-              className="absolute -top-3 left-4 bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-sm peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300"
+              className="absolute -top-3 left-4 rounded-md bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300"
             >
               Password
             </label>
@@ -137,7 +136,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={redirect}
-            className={`w-full rounded-full px-4 py-3 font-medium text-white transition duration-200 ${
+            className={`w-full rounded-xl px-4 py-3 font-semibold text-white transition duration-200 ${
               redirect
                 ? "cursor-not-allowed bg-gray-400 dark:bg-gray-600"
                 : "bg-gray-900 hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
@@ -171,7 +170,7 @@ export default function LoginPage() {
           Don&apos;t have an account?{" "}
           <Link
             href="/register"
-            className="font-medium text-gray-900 hover:underline dark:text-white"
+            className="font-semibold text-gray-900 hover:underline dark:text-white"
           >
             Sign up
           </Link>
@@ -182,10 +181,6 @@ export default function LoginPage() {
           Secure company login • Do not share your credentials
         </p>
       </div>
-      {/* Theme Toggle - Bottom Right */}
-      <div className="fixed right-4 bottom-4 z-50">
-        <ThemeToggle />
-      </div>
-    </div>
+    </AuthBackground>
   );
 }

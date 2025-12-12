@@ -1,8 +1,14 @@
 import hotpoint_logo from "./hotpoint_logo.webp";
 import hotpoint_white_logo from "./hotpoint_white_logo.webp";
+import dark_mode_bg from "./dark_mode_bg.svg";
+import light_mode_bg from "./light_mode_bg.svg";
+import Link from "next/link";
+
 import { ShoppingBag } from "lucide-react";
 
 export const assets = {
+  dark_mode_bg,
+  light_mode_bg,
   hotpoint_logo,
   hotpoint_white_logo,
 };
@@ -18,25 +24,20 @@ export const formatDateLong = (dateString) => {
   });
 };
 
-export const clearFormData = (setFormData) => {
-  setFormData((prev) => {
-    const cleared = {};
-    Object.keys(prev).forEach((key) => {
-      cleared[key] = ""; // Reset each field to empty string
-    });
-    return cleared;
-  });
+export const formatCreditPeriod = (period) => {
+  if (!period) return "N/A";
+  return `${period} month${Number(period) != 1 ? "s" : ""}`;
 };
 
 export const AuthPagesLogo = () => {
   return (
-    <a href="/">
-      <div className="flex items-center space-x-2 text-3xl font-bold">
-        <ShoppingBag className="h-8 w-8 text-gray-950 dark:text-white" />
+    <Link href="/">
+      <div className="flex items-center gap-1 text-2xl font-bold">
+        <ShoppingBag className="h-6 w-6 text-gray-950 dark:text-white" />
         <span className="text-gray-900 dark:text-gray-100">
           Hot<span className="text-red-600 dark:text-red-500">p</span>oint
         </span>
       </div>
-    </a>
+    </Link>
   );
 };

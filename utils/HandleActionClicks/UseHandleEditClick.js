@@ -10,6 +10,9 @@ export function UseHandleEditClick() {
     let dashboardPath;
 
     switch (userRole) {
+      case "payroll":
+        dashboardPath = `/payrolldashboard/purchases-history/purchases/${id}/edit`;
+        break;
       case "hr":
         dashboardPath = `/hrdashboard/requests-history/requests/${id}/edit`;
         break;

@@ -18,7 +18,7 @@ export default function InvalidTokenUi() {
         </p>
         <Link
           href="/forgot-password"
-          className="block w-full rounded-full bg-gray-900 p-3 text-center font-medium text-white transition-colors hover:bg-gray-700 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
+          className="block w-full rounded-full bg-gray-900 p-3 text-center font-semibold text-white transition-colors hover:bg-gray-700 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
         >
           Request new reset link
         </Link>

@@ -1,0 +1,169 @@
+ALTER TABLE purchasesinfo ADD COLUMN Payroll_Approval VARCHAR(20) NULL AFTER createdAt;
+
+ALTER TABLE purchasesinfo ADD COLUMN request_closure VARCHAR(20) NULL;
+
+
+ALTER TABLE purchasesinfo ADD COLUMN payroll_approver_id INT NULL AFTER BI_Approval;
+ALTER TABLE purchasesinfo ADD COLUMN payroll_approver_name VARCHAR(255) NULL AFTER payroll_approver_id;
+ALTER TABLE purchasesinfo ADD COLUMN payroll_approver_email VARCHAR(255) NULL AFTER payroll_approver_name;
+
+
+
+//New Columns Added
+ALTER TABLE purchasesinfo ADD COLUMN payroll_approval_date TIMESTAMP NULL AFTER payroll_approver_email;
+ALTER TABLE purchasesinfo ADD COLUMN payroll_signature VARCHAR(255) NULL AFTER payroll_approver_email;
+
+//TABLE AND INSERT STATEMENTS FOR TERMS & CONDITIONS (26/10/2025)
+
+CREATE TABLE terms_conditions (
+  condition_id INT PRIMARY KEY auto_increment,
+  condition_description VARCHAR(1000) NULL
+);
+
+//INSERT STATEMENT
+INSERT INTO terms_conditions (condition_description)
+VALUES
+('1/3 rule must be observed. This includes monthly average commissions for the sales staff.'),
+('Maximum repayment period is 4 months.'),
+('Item purchased on a staff discount benefit for the purpose of reselling is prohibited.'),
+('The company shall deduct any outstanding balances from the employee''s final dues in case of separation.'),
+('The employee should not be on probation.'),
+('Limited to only one item of similar category within a year for both new and RHD2.'),
+('The employee will not have an outstanding amount from a previous purchase.'),
+('For new products, normal warranty terms and conditions shall apply, while for RHD2 items, a 3-month warranty period will be applicable.'),
+('Items purchased on discount cannot be returned, exchanged, or refunded unless the item is faulty and covered under warranty.');
+
+
+//TABLE AND INSERT STATEMENTS FOR credit_periods (27/10/2025)
+
+create table credit_periods (
+  period_value INT NULL,
+  period_description VARCHAR(255) NULL
+);
+
+//INSERT STATEMENT
+INSERT INTO credit_periods(period_value, period_description)
+VALUES
+  (1, '1 month'),
+  (2, '2 months'),
+  (3, '3 months'),
+  (4, '4 months');
+
+
+Edit the PDF tomorrow - The one that is being downloaded as PDF
+
+check payroll approval filter (fetch purchases api)
+
+//MYSQL CONNECTION DIAGNOSTICS
+SHOW VARIABLES LIKE 'max_connections';  -- Showing maximum connection limit (deafult is 151)
+
+SHOW STATUS LIKE 'Threads_connected';  -- Current number of threads connected (active and idle)
+SHOW STATUS LIKE 'Max_used_connections'; -- Peak connection usage since last restart
+SHOW STATUS LIKE 'Threads_running'; -- Current active threads
+  
+SHOW STATUS LIKE 'Threads_created'; -- Threads created
+
+SHOW VARIABLES LIKE 'wait_timeout'; -- Default wait timeout
+SHOW VARIABLES LIKE 'interactive_timeout'; -- Default interactive timeout
+
+-- Seeing the actual connections
+SELECT ID, USER, HOST, DB, COMMAND, TIME, STATE 
+FROM information_schema.PROCESSLIST;
+
+
+//AFTER MEETING MAJOR AREAS TO LOOK AT
+
+Reference Area (Cash, Cash & Credit) - For anything involving cash - MPESA REFERENCE CODE
+hrteam - email  - send to group emails instead of an individual email.
+
+
+-- Newly created table today (3rd November 2025)
+CREATE TABLE approver_emails(
+  approver_email VARCHAR(100) NULL,
+  approver_role VARCHAR(100) NULL,
+  approver_description VARCHAR(255) NULL
+);
+
+-- Values to insert into the approver emails table (3rd November 2025)
+INSERT INTO approver_emails (approver_email, approver_role, approver_description)
+VALUES
+('lapspotify2@gmail.com', 'payroll', 'Geoffrey Owuor'),
+('lapspotify2@gmail.com', 'hr', 'Cerah Imani'),
+('lapspotify2@gmail.com', 'cc', 'Credit Control'),
+('lapspotify2@gmail.com', 'bi', 'Billing Invoice');
+
+
+//ADDING PRIMARY KEYS
+ALTER TABLE credit_periods ADD PRIMARY KEY(period_value);
+ALTER TABLE approver_emails ADD COLUMN id INT auto_increment PRIMARY KEY FIRST;
+
+
+4th November 2025 **PENDING** -- For the database at home
+Long carrying words should have a varchar of about 2000 characters (As default) - Prevent MySQL from throwing an error
+
+
+DELETING UNWANTED COLUMNS
+
+SHOW COLUMNS FROM purchasesinfo;
+
+ALTER TABLE purchasesinfo
+DROP COLUMN payment_method,
+DROP COLUMN payment_date,
+DROP COLUMN amount,
+DROP COLUMN payment_balance,
+DROP COLUMN payment_completion,
+DROP COLUMN invoice_recorded_date;
+
+
+
+ALTER TABLE
+  `purchasesinfo`
+MODIFY
+  `delivery_details` TEXT NULL;
+
+ALTER TABLE
+  `purchasesinfo`
+MODIFY
+  `hr_approver_name` varchar(255) NULL;
+
+ALTER TABLE
+  `purchasesinfo`
+MODIFY
+  `payroll_approver_email` varchar(55) NULL;
+
+ALTER TABLE
+  `purchasesinfo`
+MODIFY
+  `payrollNo` varchar(55) NOT NULL;
+
+ALTER TABLE
+  `purchasesinfo`
+MODIFY
+  `department` varchar(55) NOT NULL;
+
+ALTER TABLE
+  `purchasesinfo`
+MODIFY
+  `HR_Approval` varchar(20) NULL;
+
+ALTER TABLE
+  `purchasesinfo`
+MODIFY
+  `CC_Approval` varchar(20) NULL;
+
+ALTER TABLE
+  `purchasesinfo`
+MODIFY
+  `BI_Approval` varchar(20) NULL;
+
+ALTER TABLE
+  `purchasesinfo`
+MODIFY
+  `credit_period` TEXT NULL;
+
+ALTER TABLE
+  `purchasesinfo`
+MODIFY
+  `cc_signature` varchar(255) NULL;
+
+

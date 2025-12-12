@@ -1,11 +1,12 @@
-import HRApprovalCards from "@/components/hr/HRApprovalCards";
+import ApprovalCards from "@/components/Reusables/ReusableApprovalCards/ApprovalCards";
 import PurchasesHistory from "@/components/PurchasesTables/PurchasesHistory";
+import { ApproversPurchaseProvider } from "@/context/ApproversPurchaseContext";
 
 export default function page() {
   return (
-    <>
-      <HRApprovalCards />
+    <ApproversPurchaseProvider fetchAllData={true}>
+      <ApprovalCards />
       <PurchasesHistory />
-    </>
+    </ApproversPurchaseProvider>
   );
 }

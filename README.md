@@ -1,3 +1,5 @@
+## 🛒 Staff Product Purchase Portal
+
 A Next.js web application designed to streamline product purchases for staff members.
 Built with modern React architecture, optimized fonts, and seamless deployment support.
 

@@ -1,3 +1,5 @@
+//app/lib/auth.js
+"use server";
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import { SignJWT, jwtVerify } from "jose";
@@ -19,16 +21,16 @@ export const createSession = async (
   role,
   name,
   email,
-  payrollno,
+  payrollNo,
   department,
 ) => {
-  const expiresAt = Math.floor(Date.now() / 1000) + 2 * 60 * 60;
+  const expiresAt = Math.floor(Date.now() / 1000) + 72 * 60 * 60; //72hrs until expiration
   const token = await new SignJWT({
     userId,
     role,
     name,
     email,
-    payrollno,
+    payrollNo,
     department,
   })
     .setProtectedHeader({ alg: "HS256" })
@@ -39,18 +41,18 @@ export const createSession = async (
   const cookieStore = await cookies();
   cookieStore.set("session_token", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: false,
     sameSite: "lax",
     path: "/",
-    maxAge: 2 * 60 * 60, //2 Hours
+    maxAge: 72 * 60 * 60, //Used to set the max age of the cookie (72hrs before expiry) for persistence after browser is closed
   });
 };
 
-//Verify JWT (returns user info or null)
+//Verify JWT (returns user info or an empty object)
 export const getCurrentUser = async () => {
   const cookieStore = await cookies();
   const token = cookieStore.get("session_token")?.value;
-  if (!token) return null;
+  if (!token) return {}; //Returning an empty object if token is null
 
   try {
     const { payload } = await jwtVerify(token, SECRET);
@@ -60,7 +62,7 @@ export const getCurrentUser = async () => {
       role: payload.role,
       name: payload.name,
       email: payload.email,
-      payrollno: payload.payrollno,
+      payrollNo: payload.payrollNo,
       department: payload.department,
       expiresAt: payload.exp * 1000, // Convert to ms for JS
     };

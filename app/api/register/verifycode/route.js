@@ -1,24 +1,21 @@
-// app/api/register/verifycode/route.js
-import { pool } from "@/lib/db";
+// app/api/register/verifycode/route.js - Code Verification
+import pool from "@/lib/db";
 
 export async function POST(request) {
-  let client;
+  let conn;
   try {
     const { email, code } = await request.json();
 
-    client = await pool.connect();
+    conn = await pool.getConnection();
 
     // Verify the code
-    const { rows } = await client.query(
+    const [results] = await conn.execute(
       `SELECT * FROM verification_codes 
-       WHERE email = $1 
-         AND code = $2 
-         AND expires_at > NOW() 
-         AND verified = 0`,
+       WHERE email = ? AND code = ? AND expires_at > NOW() AND verified = 0`,
       [email, code],
     );
 
-    if (rows.length === 0) {
+    if (results.length === 0) {
       return Response.json(
         { success: false, message: "Invalid or expired verification code" },
         { status: 400 },
@@ -26,15 +23,15 @@ export async function POST(request) {
     }
 
     // ✅ Mark as verified
-    await client.query(
+    await conn.execute(
       `UPDATE verification_codes 
        SET verified = 1 
-       WHERE email = $1`,
+       WHERE email = ?`,
       [email],
     );
 
     return Response.json(
-      { success: true, message: "Code verified successfully" },
+      { success: true, message: "Your code has been verified successfully" },
       { status: 200 },
     );
   } catch (error) {
@@ -44,21 +41,22 @@ export async function POST(request) {
       { status: 500 },
     );
   } finally {
-    if (client) client.release();
+    if (conn) conn.release();
   }
 }
 
 export async function PUT(request) {
-  let client;
+  let conn;
+
   try {
     const { code, newemail, oldemail } = await request.json();
 
-    client = await pool.connect();
+    conn = await pool.getConnection();
 
     //Verify the code
-    const { rows: result } = await client.query(
-      `SELECT id from verification_codes
-      WHERE code = $1 AND email = $2 AND expires_at > NOW() AND verified = 0`,
+    const [result] = await conn.execute(
+      `SELECT id FROM verification_codes
+       WHERE code = ? AND email = ? AND expires_at > NOW() AND verified = 0`,
       [code, newemail],
     );
 
@@ -69,28 +67,39 @@ export async function PUT(request) {
       );
     }
 
-    const { rowCount } = await client.query(
-      `UPDATE users SET email = $1 WHERE email = $2`,
+    // --- Start Transaction for Modification Steps ---
+    await conn.beginTransaction();
+
+    const [emailUpdate] = await conn.execute(
+      `UPDATE users SET email = ? WHERE email = ?`,
       [newemail, oldemail],
     );
 
-    if (rowCount === 0) {
-      return Response.json({ message: "Email Not Updated" }, { status: 400 });
+    if (emailUpdate.affectedRows === 0) {
+      await conn.rollback();
+      return Response.json(
+        { message: "Email not updated or old email not found" },
+        { status: 400 },
+      );
     }
 
-    //Cleanup the verification code
-    await client.query(`DELETE FROM verification_codes WHERE email = $1`, [
+    // Clean up verification code
+    await conn.execute(`DELETE FROM verification_codes WHERE email = ?`, [
       newemail,
     ]);
 
+    // 4. Commit all changes
+    await conn.commit();
+
     return Response.json(
-      { message: "Email Updated Successfully, you'll be logged out shortly" },
+      { message: "Email updated successfully, you'll be logged out shortly" },
       { status: 200 },
     );
   } catch (error) {
+    if (conn) await conn.rollback(); // Rollback in case of failure during transaction
     console.error("Code verification error:", error);
     return Response.json({ message: "Verification failed" }, { status: 500 });
   } finally {
-    if (client) client.release();
+    if (conn) conn.release();
   }
 }

@@ -1,6 +1,6 @@
-// app/api/register/completeregistration/route.js
+// app/api/register/completeregistration/route.js - Complete Registration
 import { hashPassword, createSession } from "@/app/lib/auth";
-import { pool } from "@/lib/db";
+import pool from "@/lib/db";
 import { cookies } from "next/headers";
 
 const getRoleFromEmail = (email) => {
@@ -8,59 +8,62 @@ const getRoleFromEmail = (email) => {
   const normalizedEmail = email.toLowerCase();
 
   const emailRoleMappings = {
-    "cerah@gmail.com": "hr",
-    "ho@hotpoint.com": "cc",
-    "bi@hotpoint.co.ke": "bi",
+    "bmulwa@hotpoint.co.ke": "payroll",
+    "hrassist@hotpoint.co.ke": "hr",
+    "cc@hotpoint.co.ke": "cc",
+    "sales@hotpoint.co.ke": "bi",
   };
 
   return emailRoleMappings[normalizedEmail] || "staff";
 };
+
 export async function POST(request) {
-  let client;
+  let conn;
   try {
-    const { name, email, password, payrollno, department } =
+    const { name, email, password, payrollNo, department } =
       await request.json();
 
-    client = await pool.connect();
+    conn = await pool.getConnection();
 
     // Verify email was previously verified
-    const { rows: verified } = await client.query(
-      `SELECT * FROM verification_codes 
-       WHERE email = $1 AND verified = 1`,
+    const [verified] = await conn.execute(
+      `SELECT * FROM verification_codes WHERE email = ? AND verified = 1 AND expires_at > NOW()`,
       [email],
     );
 
     if (verified.length === 0) {
       return Response.json(
-        { success: false, message: "Email not verified" },
+        {
+          success: false,
+          message: "Code expired, please register again",
+        },
         { status: 400 },
       );
     }
+
+    // --- START TRANSACTION: Ensure atomicity for DB writes ---
+    await conn.beginTransaction();
 
     const role = getRoleFromEmail(email);
     const hashedPassword = await hashPassword(password);
 
     // Create user
-    const { rows: userResult } = await client.query(
-      `INSERT INTO users (name, email, password, payrollno, department, role) 
-       VALUES ($1, $2, $3, $4, $5, $6) 
-       RETURNING id`,
-      [name, email, hashedPassword, payrollno, department, role],
+    const [userResult] = await conn.execute(
+      `INSERT INTO users (name, email, password, payrollNo, department, role) VALUES(?,?,?,?,?,?)`,
+      [name, email, hashedPassword, payrollNo, department, role],
     );
 
+    const userId = userResult.insertId;
+
     // Clean up verification code
-    await client.query(`DELETE FROM verification_codes WHERE email = $1`, [
+    await conn.execute(`DELETE FROM verification_codes WHERE email = ?`, [
       email,
     ]);
 
-    await createSession(
-      userResult[0].id,
-      role,
-      name,
-      email,
-      payrollno,
-      department,
-    );
+    // --- COMMIT: Save all changes permanently to the DB ---
+    await conn.commit();
+
+    await createSession(userId, role, name, email, payrollNo, department);
 
     // Delete the verify_email cookie now that it's no longer needed
     const cookieStore = await cookies();
@@ -74,18 +77,24 @@ export async function POST(request) {
     return Response.json(
       {
         success: true,
-        userId: userResult[0].id,
+        userId,
         role,
       },
       { status: 201 },
     );
   } catch (error) {
+    // Attempt rollback if error occurred during transaction phase
+    if (conn) await conn.rollback();
     console.error("Complete registration error:", error);
+
     return Response.json(
-      { success: false, message: "Registration failed" },
+      {
+        success: false,
+        message: "Registration failed. This may be due to an existing account.",
+      },
       { status: 500 },
     );
   } finally {
-    if (client) client.release();
+    if (conn) conn.release();
   }
 }

@@ -1,8 +1,10 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/app/lib/auth";
 import UnauthorizedPage from "@/components/Reusables/UnauthorizedPage";
-import BILayoutShell from "@/components/bi/BILayoutShell";
+import ReusableLayoutShell from "@/components/Reusables/ReuseLayoutShell/ReusableLayoutShell";
 import { FirstLoader } from "@/components/Reusables/FirstLoader";
+import { ApprovalCountsProvider } from "@/context/ApprovalCountsContext";
+import { TrackingApprovalCardsProvider } from "@/context/TrackingApprovalCardsContext";
 
 export const metadata = {
   title: "HAL - Billing & Invoice Dashboard",
@@ -13,7 +15,7 @@ export default async function layout({ children }) {
   const user = await getCurrentUser();
 
   if (!user?.valid) {
-    redirect("/login");
+    return redirect("/login");
   }
 
   if (user.role !== "bi") {
@@ -23,7 +25,11 @@ export default async function layout({ children }) {
   return (
     <>
       <FirstLoader />
-      <BILayoutShell user={user}>{children}</BILayoutShell>
+      <ReusableLayoutShell user={user}>
+        <TrackingApprovalCardsProvider>
+          <ApprovalCountsProvider>{children}</ApprovalCountsProvider>
+        </TrackingApprovalCardsProvider>
+      </ReusableLayoutShell>
     </>
   );
 }

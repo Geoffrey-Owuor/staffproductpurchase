@@ -20,11 +20,11 @@ export default function ApprovalStatus({ label, status }) {
 
   return (
     <div>
-      <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+      <p className="text-sm font-semibold text-gray-500 dark:text-gray-400">
         {label}
       </p>
       {/* This is the new UI for the status indicator */}
-      <div className="mt-1 inline-flex items-center gap-x-2 rounded-md border border-gray-300 p-1 dark:border-gray-600">
+      <div className="mt-1 inline-flex items-center gap-x-2 rounded-lg border border-gray-300 p-1 dark:border-gray-600">
         <span className={`h-2 w-2 rounded-full ${dotClass}`} />
         <span className="text-sm text-gray-800 dark:text-gray-200">
           {formattedStatus}

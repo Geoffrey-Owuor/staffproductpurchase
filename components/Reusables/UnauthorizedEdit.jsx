@@ -41,13 +41,13 @@ export default function UnauthorizedEdit({ role }) {
             Edit Unauthorized
           </h2>
           <p className="mt-2 text-gray-600 dark:text-gray-300">
-            This purchase request has been approved by Billing &amp; Invoice and
-            can no longer be modified.
+            Purchase request is either already approved by this role or has been
+            declined by a previous approver
           </p>
           <div className="mt-6">
             <button
               onClick={handleRedirect}
-              className="inline-flex items-center rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+              className="inline-flex items-center rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-100 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Dashboard
