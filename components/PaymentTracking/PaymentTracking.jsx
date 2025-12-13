@@ -299,20 +299,22 @@ export default function PaymentTracking() {
               </select>
             )}
 
-            <button
-              onClick={applyFilters}
-              className="mt-2 flex items-center space-x-1 rounded-md bg-gray-900 px-3 py-1 text-sm text-white hover:bg-gray-700 sm:mt-0 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-300"
-            >
-              <Search className="h-3.5 w-3.5" />
-              <span>Search</span>
-            </button>
-            <button
-              onClick={fetchDefaultPurchases}
-              className="mt-2 flex items-center space-x-1 rounded-md bg-gray-700 px-3 py-1 text-sm text-white hover:bg-gray-800 sm:mt-0 dark:bg-gray-300 dark:text-gray-900 dark:hover:bg-white"
-            >
-              <SearchX className="h-3.5 w-3.5" />
-              <span>Clear</span>
-            </button>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={applyFilters}
+                className="mt-2 flex items-center space-x-1 rounded-md bg-gray-900 px-3 py-1 text-sm text-white hover:bg-gray-700 sm:mt-0 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-300"
+              >
+                <Search className="h-3.5 w-3.5" />
+                <span>Search</span>
+              </button>
+              <button
+                onClick={fetchDefaultPurchases}
+                className="mt-2 flex items-center space-x-1 rounded-md bg-gray-700 px-3 py-1 text-sm text-white hover:bg-gray-800 sm:mt-0 dark:bg-gray-300 dark:text-gray-900 dark:hover:bg-white"
+              >
+                <SearchX className="h-3.5 w-3.5" />
+                <span>Clear</span>
+              </button>
+            </div>
           </div>
         </div>
         {loading ? (

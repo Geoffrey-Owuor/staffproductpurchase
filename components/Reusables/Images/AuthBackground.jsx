@@ -58,7 +58,7 @@ export default function AuthBackground({ children }) {
       </div>
 
       {/* Theme Toggle - Bottom Right */}
-      <div className="absolute right-4 bottom-2 z-50">
+      <div className="absolute right-4 bottom-2 z-50 hidden sm:block">
         <ThemeToggle />
       </div>
     </div>
