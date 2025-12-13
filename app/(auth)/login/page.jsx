@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Eye, EyeClosed } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import AuthBackground from "@/components/Reusables/Images/AuthBackground";
 
 export default function LoginPage() {
@@ -72,114 +72,113 @@ export default function LoginPage() {
     <AuthBackground>
       {/* Login Card */}
 
-      <div className="rounded-xl border border-gray-300 bg-white p-8 shadow-lg dark:border-gray-700 dark:bg-gray-950">
-        <h1 className="mb-10 text-center text-2xl font-semibold">
-          Welcome Back
-        </h1>
-
-        {loginError && (
-          <div className="mb-4 text-center text-sm text-red-600 dark:text-red-400">
-            {loginError}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
-          {/* Email */}
-          <div className="relative">
-            <input
-              type="email"
-              name="email"
-              id="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              placeholder=" "
-              className="peer w-full rounded-xl border border-gray-300 bg-transparent px-4 py-3 text-gray-900 placeholder-transparent focus:outline-none dark:border-gray-700 dark:text-white"
-            />
-            <label
-              htmlFor="email"
-              className="absolute -top-3 left-4 rounded-md bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300"
-            >
-              Email Address
-            </label>
+      <div className="flex items-center justify-center rounded-xl border border-gray-200 bg-gray-50 p-6 shadow-lg dark:border-gray-700 dark:bg-gray-950">
+        <div className="w-full max-w-sm space-y-6">
+          <div className="space-y-2 text-center">
+            <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+              Welcome back
+            </h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              Enter your email to sign in to your account
+            </p>
           </div>
 
-          {/* Password */}
-          <div className="relative">
-            <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              id="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              placeholder=" "
-              className="peer w-full rounded-xl border border-gray-300 bg-transparent px-4 py-3 text-gray-900 placeholder-transparent focus:outline-none dark:border-gray-700 dark:text-white"
-            />
-            <label
-              htmlFor="password"
-              className="absolute -top-3 left-4 rounded-md bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300"
-            >
-              Password
-            </label>
-
-            {/* Eye Icon */}
-            <div
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-            >
-              {showPassword ? <EyeClosed size={20} /> : <Eye size={20} />}
+          {loginError && (
+            <div className="rounded-md bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">
+              {loginError}
             </div>
-          </div>
+          )}
 
-          {/* Submit Button */}
-          <button
-            type="submit"
-            disabled={redirect}
-            className={`w-full rounded-xl px-4 py-3 font-semibold text-white transition duration-200 ${
-              redirect
-                ? "cursor-not-allowed bg-gray-400 dark:bg-gray-600"
-                : "bg-gray-900 hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
-            }`}
+          <form
+            onSubmit={handleSubmit}
+            autoComplete="off"
+            className="space-y-4"
           >
-            {redirect ? (
-              <div className="flex items-center justify-center gap-2">
-                Logging in...
-                <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-              </div>
-            ) : (
-              <>Login</>
-            )}
-          </button>
-
-          {/* Forgot Password */}
-          <div className="flex items-center justify-center">
-            <div className="text-sm">
-              <Link
-                href="/forgot-password"
-                className="text-gray-900 hover:underline dark:text-gray-200"
+            <div className="space-y-2">
+              <label
+                htmlFor="email"
+                className="text-sm font-medium text-gray-900 dark:text-gray-100"
               >
-                Forgot password?
-              </Link>
+                Email
+              </label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                placeholder="name@example.com"
+                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white dark:placeholder:text-gray-500 dark:focus:border-gray-600 dark:focus:ring-gray-600"
+              />
             </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <label
+                  htmlFor="password"
+                  className="text-sm font-medium text-gray-900 dark:text-gray-100"
+                >
+                  Password
+                </label>
+                <Link
+                  href="/forgot-password"
+                  className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
+                >
+                  Forgot password?
+                </Link>
+              </div>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  id="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                  placeholder="••••••••"
+                  className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 pr-10 text-sm text-gray-900 placeholder:text-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white dark:placeholder:text-gray-500 dark:focus:border-gray-600 dark:focus:ring-gray-600"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={redirect}
+              className="w-full rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100 dark:focus:ring-gray-600"
+            >
+              {redirect ? (
+                <span className="flex items-center justify-center gap-2">
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent dark:border-gray-900 dark:border-t-transparent"></div>
+                  Signing in...
+                </span>
+              ) : (
+                "Sign in"
+              )}
+            </button>
+          </form>
+
+          <div className="text-center text-sm text-gray-600 dark:text-gray-400">
+            Don't have an account?{" "}
+            <Link
+              href="/register"
+              className="font-medium text-gray-900 hover:underline dark:text-white"
+            >
+              Sign up
+            </Link>
           </div>
-        </form>
 
-        {/* Sign Up */}
-        <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
-          Don&apos;t have an account?{" "}
-          <Link
-            href="/register"
-            className="font-semibold text-gray-900 hover:underline dark:text-white"
-          >
-            Sign up
-          </Link>
+          <p className="text-center text-xs text-gray-500 dark:text-gray-500">
+            By continuing, you agree to our Terms of Service and Privacy Policy.
+          </p>
         </div>
-
-        {/* Security note */}
-        <p className="mt-4 text-center text-xs text-gray-400 dark:text-gray-500">
-          Secure company login • Do not share your credentials
-        </p>
       </div>
     </AuthBackground>
   );
