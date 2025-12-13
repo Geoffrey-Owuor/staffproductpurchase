@@ -101,101 +101,117 @@ export default function ForgotPassword() {
         />
       )}
       <AuthBackground>
-        <div className="rounded-xl border border-gray-300 bg-white p-8 shadow-lg dark:border-gray-700 dark:bg-gray-950">
-          <div className="mb-7 text-center">
-            <h1 className="text-2xl font-semibold">
-              {step === 1 ? "Forgot Password" : "Reset Link Sent"}
-            </h1>
-            <p className="mt-8 text-sm text-gray-600 dark:text-gray-400">
-              {step === 1 ? (
-                "Enter your email to receive a password reset link."
-              ) : (
-                <>
-                  Check your inbox at{" "}
-                  <span className="font-semibold text-gray-900 dark:text-white">
-                    {email}
-                  </span>{" "}
-                  for the reset link.
-                </>
-              )}
-            </p>
-          </div>
-
-          {/* Step 1: Email Form */}
-          {step === 1 && (
-            <form
-              onSubmit={handleSubmit}
-              className="space-y-2"
-              autoComplete="off"
-            >
-              <div className="relative">
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  placeholder=" "
-                  className="peer w-full rounded-xl border border-gray-300 bg-transparent px-4 py-3 text-gray-900 placeholder-transparent focus:outline-none dark:border-gray-700 dark:text-white"
-                />
-                <label
-                  htmlFor="email"
-                  className="absolute -top-3 left-4 rounded-md bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300"
-                >
-                  Email Address
-                </label>
-              </div>
-              {/* Error Message */}
-              {emailError && (
-                <p className="ml-2 text-sm text-red-600 dark:text-red-500">
-                  {emailError}
-                </p>
-              )}
-
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="mt-6 w-full rounded-xl bg-gray-900 px-4 py-3 font-semibold text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:bg-gray-400 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
-              >
-                {isLoading ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent dark:border-gray-900 dark:border-t-transparent"></div>
-                    Sending...
-                  </span>
+        <div className="flex items-center justify-center rounded-xl border border-gray-200 bg-gray-50 p-6 shadow-lg dark:border-gray-700 dark:bg-gray-950">
+          <div className="w-full max-w-sm space-y-6">
+            {/* Title and Subtitle Section */}
+            <div className="space-y-2 text-center">
+              <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                {step === 1 ? "Forgot Password" : "Reset Link Sent"}
+              </h1>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                {step === 1 ? (
+                  "Enter your email to receive a password reset link."
                 ) : (
-                  "Send Reset Link"
+                  <>
+                    Check your inbox at{" "}
+                    <span className="font-medium text-gray-900 dark:text-white">
+                      {email}
+                    </span>{" "}
+                    for the reset link.
+                  </>
                 )}
-              </button>
-            </form>
-          )}
-
-          {/* Step 2: Message + Resend */}
-          {step === 2 && (
-            <div className="mt-6 space-y-3 text-center">
-              <button
-                type="button"
-                onClick={handleResendLink}
-                disabled={isLoading || coolDown > 0}
-                className={`${
-                  coolDown > 0
-                    ? "cursor-default text-gray-400"
-                    : "cursor-pointer text-gray-600 hover:underline dark:text-gray-400 dark:hover:text-white"
-                } text-sm`}
-              >
-                {coolDown > 0 ? `Resend code in ${coolDown}s` : "Resend code?"}
-              </button>
+              </p>
             </div>
-          )}
 
-          {/* Back to Login always visible */}
-          <div className="mt-6 text-center">
-            <Link
-              href="/login"
-              className="text-sm text-gray-700 hover:underline dark:text-gray-300 dark:hover:text-white"
-            >
-              Back to Login
-            </Link>
+            {/* Field Error Message */}
+            {emailError && (
+              <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">
+                {emailError}
+              </div>
+            )}
+
+            {/* Step 1: Email Form */}
+            {step === 1 && (
+              <form
+                onSubmit={handleSubmit}
+                className="space-y-4"
+                autoComplete="off"
+              >
+                {/* Email Input Field Group */}
+                <div className="space-y-2">
+                  <label
+                    htmlFor="email"
+                    className="text-sm font-medium text-gray-900 dark:text-gray-100"
+                  >
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    placeholder="name@example.com"
+                    // Standard Input Style
+                    className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white dark:placeholder:text-gray-500 dark:focus:border-gray-600 dark:focus:ring-gray-600"
+                  />
+                </div>
+
+                {/* Submit Button (Standard Button Style) */}
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100 dark:focus:ring-gray-600"
+                >
+                  {isLoading ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent dark:border-gray-900 dark:border-t-transparent"></div>
+                      Sending...
+                    </span>
+                  ) : (
+                    "Send Reset Link"
+                  )}
+                </button>
+              </form>
+            )}
+
+            {/* Step 2: Message + Resend */}
+            {step === 2 && (
+              <div className="text-center text-sm text-gray-600 dark:text-gray-400">
+                <button
+                  type="button"
+                  onClick={handleResendLink}
+                  disabled={isLoading || coolDown > 0}
+                  // Updated style to match link/button style consistency
+                  className={`${
+                    coolDown > 0
+                      ? "cursor-default text-gray-500 dark:text-gray-500"
+                      : "cursor-pointer font-medium text-gray-900 hover:underline dark:text-white"
+                  }`}
+                >
+                  {coolDown > 0
+                    ? `Resend link in ${coolDown}s`
+                    : "Resend link?"}
+                </button>
+              </div>
+            )}
+
+            {/* Back to Login always visible (Standard Link Style) */}
+            <div className="text-center text-sm text-gray-600 dark:text-gray-400">
+              <Link
+                href="/login"
+                className="font-medium text-gray-900 hover:underline dark:text-white"
+              >
+                Back to Login
+              </Link>
+            </div>
+
+            {/* Security Note (Standard Small Print Style) */}
+            <p className="text-center text-xs text-gray-500 dark:text-gray-500">
+              By continuing, you agree to our Terms of Service and Privacy
+              Policy.
+            </p>
           </div>
         </div>
       </AuthBackground>

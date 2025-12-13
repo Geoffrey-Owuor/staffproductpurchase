@@ -300,7 +300,7 @@ export default function PurchasesHistory() {
           <>
             <div className="overflow-x-auto rounded-xl">
               <table className="mb-6 min-w-full">
-                <thead className="bg-gray-700 text-white">
+                <thead className="bg-gray-800 text-white">
                   <tr>
                     {visibleColumns.submissionDate && (
                       <th
@@ -386,7 +386,7 @@ export default function PurchasesHistory() {
                     currentPurchases.map((purchase) => (
                       <tr
                         key={purchase.id}
-                        className="odd:bg-white even:bg-gray-50 hover:bg-gray-100 dark:odd:bg-gray-950 dark:even:bg-gray-900 dark:hover:bg-gray-800"
+                        className="odd:bg-white even:bg-gray-50 hover:bg-gray-100 dark:odd:bg-gray-950 dark:even:bg-gray-900 dark:hover:bg-gray-800/50"
                       >
                         {visibleColumns.submissionDate && (
                           <td className="max-w-[200px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900 dark:text-white">

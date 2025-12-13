@@ -49,72 +49,91 @@ export default function Step1Page() {
 
   return (
     <AuthBackground>
-      <div className="rounded-xl border border-gray-300 bg-white p-8 shadow-lg dark:border-gray-700 dark:bg-gray-950">
-        <h1 className="mb-8 text-center text-2xl font-semibold">
-          Verify Your Email
-        </h1>
-        {/* Small note */}
-        <p className="mb-6 text-center text-sm text-gray-600 dark:text-gray-400">
-          Enter your email to receive a verification code
-        </p>
-        {error && (
-          <div className="mb-4 text-center text-sm text-red-700">{error}</div>
-        )}
-        <form
-          onSubmit={handleEmailSubmit}
-          className="space-y-2"
-          autoComplete="off"
-        >
-          <div className="relative">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              placeholder=" "
-              className="peer w-full rounded-xl border border-gray-300 bg-transparent px-4 py-3 text-gray-900 placeholder-transparent focus:outline-none dark:border-gray-700 dark:text-white"
-            />
-            <label
-              htmlFor="email"
-              className="absolute -top-3 left-4 rounded-md bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300"
-            >
-              Email Address
-            </label>
-          </div>
-          {/* Error Message */}
-          {emailError && (
-            <p className="ml-2 text-sm text-red-600 dark:text-red-500">
-              {emailError}
+      <div className="flex items-center justify-center rounded-xl border border-gray-200 bg-gray-50 p-6 shadow-lg dark:border-gray-700 dark:bg-gray-950">
+        <div className="w-full max-w-sm space-y-6">
+          {/* Title and Subtitle Section */}
+          <div className="space-y-2 text-center">
+            <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+              Verify Your Email
+            </h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              Enter your email to receive a verification code
             </p>
+          </div>
+
+          {/* Global Error Message */}
+          {error && (
+            <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">
+              {error}
+            </div>
           )}
-          <button
-            type="submit"
-            disabled={loading}
-            className="mt-6 w-full rounded-xl bg-gray-900 px-4 py-3 font-semibold text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:bg-gray-400 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
+
+          {/* Form Section */}
+          <form
+            onSubmit={handleEmailSubmit}
+            className="space-y-4"
+            autoComplete="off"
           >
-            {loading ? (
-              <div className="flex items-center justify-center gap-2">
-                Sending...
-                <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent dark:border-gray-900 dark:border-t-transparent"></div>
-              </div>
-            ) : (
-              <>Send Verification Code</>
+            <div className="space-y-2">
+              {/* Email Label (Explicit Label Style) */}
+              <label
+                htmlFor="email"
+                className="text-sm font-medium text-gray-900 dark:text-gray-100"
+              >
+                Email Address
+              </label>
+              {/* Email Input (Standard Input Style) */}
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                placeholder="name@example.com"
+                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white dark:placeholder:text-gray-500 dark:focus:border-gray-600 dark:focus:ring-gray-600"
+              />
+            </div>
+
+            {/* Field-Specific Error Message */}
+            {emailError && (
+              <p className="text-sm text-red-600 dark:text-red-500">
+                {emailError}
+              </p>
             )}
-          </button>
-        </form>
-        <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
-          Already have an account?{" "}
-          <Link
-            href="/login"
-            className="font-semibold text-gray-700 hover:underline dark:text-gray-300 dark:hover:text-white"
-          >
-            Login
-          </Link>
+
+            {/* Submit Button (Standard Button Style) */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100 dark:focus:ring-gray-600"
+            >
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent dark:border-gray-900 dark:border-t-transparent"></div>
+                  Sending...
+                </span>
+              ) : (
+                "Send Verification Code"
+              )}
+            </button>
+          </form>
+
+          {/* Login Link */}
+          <div className="text-center text-sm text-gray-600 dark:text-gray-400">
+            Already have an account?{" "}
+            <Link
+              href="/login"
+              className="font-medium text-gray-900 hover:underline dark:text-white"
+            >
+              Login
+            </Link>
+          </div>
+
+          {/* Security Note (Same as Login's placeholder note) */}
+          <p className="text-center text-xs text-gray-500 dark:text-gray-500">
+            By continuing, you agree to our Terms of Service and Privacy Policy.
+          </p>
         </div>
-        {/* Security note (same as login) */}
-        <p className="mt-4 text-center text-xs text-gray-400">
-          Secure company login • Do not share your credentials
-        </p>
       </div>
     </AuthBackground>
   );

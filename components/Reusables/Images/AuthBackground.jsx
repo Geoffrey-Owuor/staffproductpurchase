@@ -40,7 +40,7 @@ export default function AuthBackground({ children }) {
       <div className="w-[350px] pb-8 md:w-[400px]">{children}</div>
 
       {/* Footer text */}
-      <div className="absolute bottom-6">
+      <div className="absolute bottom-2">
         <div className="flex items-center justify-center space-x-1 text-sm">
           <span className="text-gray-700 dark:text-gray-400">
             © {new Date().getFullYear()} Hotpoint Appliances Ltd. Built by
@@ -58,7 +58,7 @@ export default function AuthBackground({ children }) {
       </div>
 
       {/* Theme Toggle - Bottom Right */}
-      <div className="absolute right-4 bottom-4 z-50">
+      <div className="absolute right-4 bottom-2 z-50">
         <ThemeToggle />
       </div>
     </div>
