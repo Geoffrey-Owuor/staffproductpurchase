@@ -12,10 +12,29 @@ const themeOptions = [
 ];
 
 export default function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
+
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      // Ignore if user is typing in an input, textarea, or contenteditable element
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement ||
+        e.target.isContentEditable
+      ) {
+        return;
+      }
+      if (e.key === "d" || e.key === "D") {
+        setTheme(resolvedTheme === "dark" ? "light" : "dark");
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+    return () => window.removeEventListener("keydown", handleKeyPress);
+  }, [setTheme, resolvedTheme]);
 
   if (!mounted) {
     // Avoid rendering theme-dependent UI until the client has mounted

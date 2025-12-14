@@ -118,7 +118,7 @@ export default function ReusableSidebar({ isOpen, toggleSidebar }) {
           </button>
         </div>
 
-        <div className="relative mt-2 flex px-4.5">
+        <div className="relative mt-2 flex px-4.5 pb-[11.5px]">
           {/* Hotpoint Logo */}
           <HotpointLogo isOpen={isOpen} />
 
@@ -133,7 +133,7 @@ export default function ReusableSidebar({ isOpen, toggleSidebar }) {
 
         {/* Navigation Buttons */}
         <nav
-          className={`${isOpen ? "mt-6" : "mt-12"} grow px-2 transition-all duration-200`}
+          className={`${isOpen ? "mt-4" : "mt-10"} grow px-2 transition-all duration-200`}
         >
           <ul className="space-y-1">
             <li>
