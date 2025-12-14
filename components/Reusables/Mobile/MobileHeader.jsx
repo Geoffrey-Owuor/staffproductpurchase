@@ -101,7 +101,7 @@ export default function MobileHeader() {
             : "bg-white dark:bg-gray-950"
         }`}
       >
-        <div className="flex items-center justify-between px-4 py-3">
+        <div className="flex items-center justify-between border-gray-800 p-3">
           <div className="flex items-center justify-center space-x-3">
             <button
               onClick={() => setIsMobileMenuOpen(true)}
@@ -109,17 +109,17 @@ export default function MobileHeader() {
               title="Open menu"
               className="rounded-full p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
             >
-              <Menu className="h-6 w-6" />
+              <Menu className="h-5 w-5" />
             </button>
             <HotpointLogo />
           </div>
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center gap-3">
             <button
               onClick={() => router.back()}
               className="rounded-full p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
               aria-label="Go back"
             >
-              <ChevronsLeft className="h-6 w-6" />
+              <ChevronsLeft className="h-5 w-5" />
             </button>
             <a
               href="https://drive.google.com/drive/folders/1GdDpICwn6nA-51uKcubAa3YiNDrxqcAi?usp=drive_link"
@@ -129,7 +129,7 @@ export default function MobileHeader() {
               rel="noopener noreferrer"
               className="rounded-full p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
             >
-              <LifeBuoy className="h-6 w-6" />
+              <LifeBuoy className="h-5 w-5" />
             </a>
           </div>
         </div>

@@ -125,7 +125,7 @@
     @apply bg-linear-to-br from-red-100/50 via-red-50/50 to-white dark:from-gray-900 dark:via-blue-950/20 dark:to-gray-950;
   }
   .bg-gradient-classes {
-    @apply bg-linear-to-br from-slate-50 via-slate-50/50 to-white dark:from-gray-950 dark:via-gray-950 dark:to-gray-950;
+    @apply bg-linear-to-br from-white via-slate-50/50 to-white dark:from-gray-950 dark:via-gray-950 dark:to-gray-950;
   }
   .bg-conditions {
     @apply bg-linear-to-br from-slate-100 via-slate-50/50 to-white dark:from-gray-900 dark:via-gray-950 dark:to-black;
@@ -157,32 +157,11 @@
 html {
   scroll-behavior: smooth;
   scrollbar-color: #9ca3af transparent;
+  scrollbar-gutter: stable;
 }
 
 html[data-theme="dark"] {
   scrollbar-color: #4b5563 transparent;
-}
-
-/* FOR WEBKIT BROWSERS */
-/* Width of scrollbar */
-html::-webkit-scrollbar {
-  width: 8px;
-}
-
-/* Scrollbar track (transparent) */
-html::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-/* Scrollbar thumb */
-html::-webkit-scrollbar-thumb {
-  background-color: #9ca3af; /* light theme thumb */
-  border-radius: 4px;
-}
-
-/* Dark theme thumb */
-html[data-theme="dark"]::-webkit-scrollbar-thumb {
-  background-color: #4b5563;
 }
 
 .custom-blur {

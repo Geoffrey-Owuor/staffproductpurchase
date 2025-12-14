@@ -171,7 +171,7 @@ export default function PaymentTracking() {
         {/* Table Heading and column toggle*/}
         <div className="flex flex-col items-center space-y-6 md:flex-row md:justify-between md:space-y-0">
           <div className="mt-3 mb-2 px-1 pb-3">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-lg text-gray-900 dark:text-white">
               Fully Approved Requests
             </h2>
             <p className="text-sm text-gray-500 dark:text-gray-400">
