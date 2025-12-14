@@ -97,7 +97,7 @@ export default function MobileHeader() {
       <div
         className={`custom:hidden fixed right-0 left-0 z-50 transition-all duration-200 ease-in-out ${
           isScrolled
-            ? "custom-blur bg-white/50 shadow-xs dark:bg-gray-950/50"
+            ? "custom-blur bg-white/70 shadow-xs dark:bg-gray-950/70"
             : "bg-white dark:bg-gray-950"
         }`}
       >

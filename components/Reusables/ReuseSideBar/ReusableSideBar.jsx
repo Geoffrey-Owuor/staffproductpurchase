@@ -1,26 +1,19 @@
 "use client";
-
-import {
-  HomeIcon,
-  ShoppingBagIcon,
-  MessageCircleQuestion,
-  History,
-  Menu,
-  Link2,
-  BookOpenCheck,
-  ChevronsLeft,
-} from "lucide-react";
-
 import { useEffect } from "react";
 import { useLoadingLine } from "@/context/LoadingLineContext";
 import { usePathname, useRouter } from "next/navigation";
-import HotpointLogo from "../HotpointLogo";
-import UserMenu from "../UserMenu";
 import { UseHandleHomeRoute } from "@/utils/HandleActionClicks/UseHandleHomeRoute";
 import { UseHandleHistoryRoute } from "@/utils/HandleActionClicks/UseHandleHistoryRoute";
 import { useUser } from "@/context/UserContext";
+import LeftSidebar from "./LeftSidebar";
+import TopSidebar from "./TopSidebar";
 
-export default function ReusableSidebar({ isOpen, toggleSidebar }) {
+export default function ReusableSidebar({
+  isOpen,
+  toggleSidebar,
+  showTopbar,
+  toggleTopbarView,
+}) {
   const { role } = useUser();
   const router = useRouter();
   const { startLoading } = useLoadingLine();
@@ -100,160 +93,31 @@ export default function ReusableSidebar({ isOpen, toggleSidebar }) {
   }, [role, router]); //dependencies
 
   return (
-    <div
-      className={`custom:flex fixed top-0 bottom-0 left-0 z-50 hidden flex-col border-r border-gray-200 bg-white transition-all duration-200 dark:border-gray-700 dark:bg-gray-950 ${
-        isOpen ? "w-56" : "w-14"
-      }`}
-    >
-      <div className="relative flex grow flex-col">
-        {/* Toggling the sidebar */}
-        <div
-          className={`absolute top-60 transition-all duration-200 ${isOpen ? "left-52" : "left-10"}`}
-        >
-          <button
-            className="rounded-full bg-gray-800 p-2 text-white hover:bg-gray-700 dark:bg-slate-50 dark:text-black dark:hover:bg-slate-200"
-            onClick={toggleSidebar}
-          >
-            <Menu className="h-4 w-4" />
-          </button>
-        </div>
-
-        <div className="relative mt-2 flex px-4.5 pb-[11.5px]">
-          {/* Hotpoint Logo */}
-          <HotpointLogo isOpen={isOpen} />
-
-          <button
-            onClick={() => router.back()}
-            className={`absolute ${isOpen ? "top-0.5 left-45" : "top-11 left-[13px]"} rounded-full p-1.5 text-gray-600 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-500 dark:hover:bg-gray-800/50 dark:hover:text-white`}
-            title="Go back"
-          >
-            <ChevronsLeft className="h-4.5 w-4.5" />
-          </button>
-        </div>
-
-        {/* Navigation Buttons */}
-        <nav
-          className={`${isOpen ? "mt-4" : "mt-10"} grow px-2 transition-all duration-200`}
-        >
-          <ul className="space-y-1">
-            <li>
-              <div
-                onClick={handleHomeClick}
-                className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
-                  activeTab === "home"
-                    ? "bg-gray-200 text-black dark:bg-gray-800 dark:text-white"
-                    : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
-                }`}
-              >
-                <HomeIcon className="h-4 w-4 shrink-0" />
-                <span
-                  className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
-                    isOpen ? "w-40" : "w-0"
-                  }`}
-                >
-                  Home
-                </span>
-              </div>
-            </li>
-            {role === "staff" && (
-              <li>
-                <div
-                  onClick={() => handleNavClick("/staffdashboard/new-purchase")}
-                  className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
-                    activeTab === "newpurchase"
-                      ? "bg-gray-200 text-black dark:bg-gray-800 dark:text-white"
-                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
-                  }`}
-                >
-                  <ShoppingBagIcon className="h-4 w-4 shrink-0" />
-                  <span
-                    className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
-                      isOpen ? "w-40" : "w-0"
-                    }`}
-                  >
-                    New Purchase
-                  </span>
-                </div>
-              </li>
-            )}
-            <li>
-              <div
-                onClick={handleHistoryClick}
-                className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
-                  activeTab === "history"
-                    ? "bg-gray-200 text-black dark:bg-gray-800 dark:text-white"
-                    : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
-                }`}
-              >
-                <History className="h-4 w-4 shrink-0" />
-                <span
-                  className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
-                    isOpen ? "w-40" : "w-0"
-                  }`}
-                >
-                  Purchases History
-                </span>
-              </div>
-            </li>
-            {role === "cc" && (
-              <li>
-                <div
-                  onClick={() =>
-                    handleNavClick("/ccdashboard/payment-tracking")
-                  }
-                  className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
-                    activeTab === "paymentTracking"
-                      ? "bg-gray-200 text-black dark:bg-gray-800 dark:text-white"
-                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
-                  }`}
-                >
-                  <BookOpenCheck className="h-4 w-4 shrink-0" />
-                  <span
-                    className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
-                      isOpen ? "w-40" : "w-0"
-                    }`}
-                  >
-                    Fully Approved
-                  </span>
-                </div>
-              </li>
-            )}
-          </ul>
-        </nav>
-        {/* Help & Support Hotpoint Website & User Menu */}
-        <div className="space-y-4 px-2 py-3">
-          <a
-            href="https://hotpoint.co.ke"
-            className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Link2 className="h-4 w-4 shrink-0" />
-            <span
-              className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
-                isOpen ? "w-40" : "w-0"
-              }`}
-            >
-              Hotpoint Website
-            </span>
-          </a>
-          <a
-            href="mailto:helpdesk@hotpoint.co.ke"
-            className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-blue-600 transition-colors hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-gray-800"
-          >
-            <MessageCircleQuestion className="h-4 w-4 shrink-0" />
-            <span
-              className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
-                isOpen ? "w-40" : "w-0"
-              }`}
-            >
-              Help & Support
-            </span>
-          </a>
-
-          <UserMenu isSidebarOpen={isOpen} />
-        </div>
-      </div>
-    </div>
+    <>
+      {showTopbar ? (
+        <TopSidebar
+          role={role}
+          router={router}
+          handleHistoryClick={handleHistoryClick}
+          handleHomeClick={handleHomeClick}
+          handleNavClick={handleNavClick}
+          showTopbar={showTopbar}
+          activeTab={activeTab}
+          toggleTopbarView={toggleTopbarView}
+        />
+      ) : (
+        <LeftSidebar
+          isOpen={isOpen}
+          router={router}
+          activeTab={activeTab}
+          role={role}
+          toggleSidebar={toggleSidebar}
+          handleHomeClick={handleHomeClick}
+          handleHistoryClick={handleHistoryClick}
+          handleNavClick={handleNavClick}
+          toggleTopbarView={toggleTopbarView}
+        />
+      )}
+    </>
   );
 }

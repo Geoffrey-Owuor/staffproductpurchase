@@ -3,14 +3,12 @@ import ReusableSidebar from "../ReuseSideBar/ReusableSideBar";
 import DashboardFooter from "../DashboardFooter";
 import { useState } from "react";
 import MobileHeader from "../Mobile/MobileHeader";
-// import { useSessionExpiry } from "@/app/hooks/useSessionExpiry";
 import { useInactivityTimer } from "@/hooks/useInactivityTimer";
-// import ExpiredSessionOverlay from "../ExpiredSessionOverlay";
 import UserContext from "@/context/UserContext";
 
 export default function ReusableLayoutShell({ user, children }) {
   const [sidebarOpen, setSideBarOpen] = useState(true);
-  // const expired = useSessionExpiry(user?.expiresAt);
+  const [showTopbar, setShowTopbar] = useState(false);
 
   //Hook used to track user inactivity so as to automatically logout
   useInactivityTimer(20 * 60 * 1000, user); //20 minutes in milliseconds for security reasons
@@ -18,20 +16,40 @@ export default function ReusableLayoutShell({ user, children }) {
   const toggleSidebar = () => {
     setSideBarOpen((prev) => !prev);
   };
+
+  const toggleTopbarView = () => {
+    setShowTopbar((prev) => !prev);
+  };
+
+  const mainMarginClass = showTopbar
+    ? ""
+    : sidebarOpen
+      ? "custom:ml-58"
+      : "custom:ml-16";
   return (
     <UserContext.Provider value={user}>
-      {/* {expired && <ExpiredSessionOverlay />} */}
       <div className="containerizing flex min-h-screen flex-col">
         <MobileHeader />
-        <ReusableSidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+        <ReusableSidebar
+          isOpen={sidebarOpen}
+          showTopbar={showTopbar}
+          toggleTopbarView={toggleTopbarView}
+          toggleSidebar={toggleSidebar}
+        />
         <div className="flex flex-1 pb-4">
           <main
-            className={`min-w-0 flex-1 px-2 transition-all duration-200 ${sidebarOpen ? "custom:ml-58" : "custom:ml-16"}`}
+            className={`min-w-0 flex-1 px-2 transition-all duration-200 ${mainMarginClass}`}
           >
-            <div className="custom:mt-2 mt-16">{children}</div>
+            <div
+              className={`${showTopbar ? "custom:mt-16" : "custom:mt-2"} mt-16`}
+            >
+              {children}
+            </div>
           </main>
         </div>
-        <DashboardFooter isSidebarOpen={sidebarOpen} />
+        <div className={`${mainMarginClass} transition-all duration-200`}>
+          <DashboardFooter />
+        </div>
       </div>
     </UserContext.Provider>
   );
