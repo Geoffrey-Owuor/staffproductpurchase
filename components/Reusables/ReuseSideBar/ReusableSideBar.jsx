@@ -101,7 +101,7 @@ export default function ReusableSidebar({ isOpen, toggleSidebar }) {
 
   return (
     <div
-      className={`custom:flex fixed top-0 bottom-0 left-0 z-50 hidden flex-col border-r border-gray-200 shadow-xl transition-all duration-200 dark:border-gray-700 ${
+      className={`custom:flex fixed top-0 bottom-0 left-0 z-50 hidden flex-col border-r border-gray-200 transition-all duration-200 dark:border-gray-700 ${
         isOpen ? "w-56" : "w-14"
       }`}
     >

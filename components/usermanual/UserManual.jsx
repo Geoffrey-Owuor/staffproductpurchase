@@ -207,7 +207,7 @@ const UserManual = () => {
         </div>
 
         {/* ThemeToggle pinned right */}
-        <div className="absolute top-18.5 right-4 md:top-18 md:-translate-y-1/2">
+        <div className="absolute top-18 right-4 hidden -translate-y-1/2 sm:block">
           <ThemeToggle />
         </div>
       </div>
