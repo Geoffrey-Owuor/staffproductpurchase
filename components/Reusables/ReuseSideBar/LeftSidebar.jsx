@@ -7,7 +7,7 @@ import {
   Link2,
   BookOpenCheck,
   ChevronsLeft,
-  ToggleRight,
+  ArrowUpWideNarrow,
 } from "lucide-react";
 import HotpointLogo from "../HotpointLogo";
 import UserMenu from "../UserMenu";
@@ -150,7 +150,7 @@ const LeftSidebar = ({
             onClick={toggleTopbarView}
             className="flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-sm text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
           >
-            <ToggleRight className="h-4 w-4 shrink-0" />
+            <ArrowUpWideNarrow className="h-4 w-4 shrink-0" />
             <span
               className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
                 isOpen ? "w-40" : "w-0"

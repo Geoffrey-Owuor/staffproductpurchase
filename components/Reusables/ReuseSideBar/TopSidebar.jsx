@@ -149,7 +149,7 @@ const TopSidebar = ({
           {/* Website Link */}
           <a
             href="https://hotpoint.co.ke"
-            className="hidden items-center gap-2 rounded-xl px-3 py-2 text-sm text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 sm:flex dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
+            className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -160,7 +160,7 @@ const TopSidebar = ({
           {/* Help Link */}
           <a
             href="mailto:helpdesk@hotpoint.co.ke"
-            className="hidden items-center gap-2 rounded-xl px-3 py-2 text-sm text-blue-600 transition-colors hover:bg-blue-50 sm:flex dark:text-blue-400 dark:hover:bg-gray-800"
+            className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-blue-600 transition-colors hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-gray-800"
           >
             <MessageCircleQuestion className="h-4 w-4 shrink-0" />
             <span className="hidden xl:inline">Help</span>

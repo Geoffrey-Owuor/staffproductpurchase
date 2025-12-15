@@ -157,7 +157,6 @@
 html {
   scroll-behavior: smooth;
   scrollbar-color: #9ca3af transparent;
-  scrollbar-gutter: stable;
 }
 
 html[data-theme="dark"] {

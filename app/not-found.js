@@ -21,10 +21,10 @@ export default function NotFound() {
         strokeWidth={1.5}
       />
       <h1 className="mb-2 text-3xl font-semibold text-gray-900 dark:text-gray-50">
-        404 – Page Not Found
+        404 - Page Not Found
       </h1>
       <p className="mb-6 max-w-md text-gray-600 dark:text-gray-400">
-        It looks like the page you are looking for doesn’t exist or may have
+        It looks like the page you are looking for doesn't exist or may have
         been moved.
       </p>
 

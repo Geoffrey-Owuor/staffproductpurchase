@@ -1,0 +1,16 @@
+-- A table for tracking the changelogs made to the application
+CREATE TABLE changelogs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    category VARCHAR(50) NOT NULL,
+    description TEXT NOT NULL,
+    is_active BOOLEAN DEFAULT TRUE, -- Global switch to hide/show specific logs
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- The key field for our comparison logic
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+
+-- A table to alter users table to include a date for last view changelog
+
+ALTER TABLE users
+ADD COLUMN last_changelog_viewed_at TIMESTAMP NULL DEFAULT NULL;

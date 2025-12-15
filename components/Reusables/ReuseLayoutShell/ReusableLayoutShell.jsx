@@ -5,6 +5,7 @@ import { useState } from "react";
 import MobileHeader from "../Mobile/MobileHeader";
 import { useInactivityTimer } from "@/hooks/useInactivityTimer";
 import UserContext from "@/context/UserContext";
+import ChangeLogAlert from "@/components/ChangeLog/ChangeLogAlert";
 
 export default function ReusableLayoutShell({ user, children }) {
   const [sidebarOpen, setSideBarOpen] = useState(true);
@@ -28,6 +29,7 @@ export default function ReusableLayoutShell({ user, children }) {
       : "custom:ml-16";
   return (
     <UserContext.Provider value={user}>
+      <ChangeLogAlert />
       <div className="containerizing flex min-h-screen flex-col">
         <MobileHeader />
         <ReusableSidebar
