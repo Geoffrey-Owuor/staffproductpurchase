@@ -16,7 +16,7 @@ export default function TrackingApprovalCards() {
   const { loading, counts, refetchCounts } = useTrackingApprovalCards();
 
   return (
-    <div className="bg-gradient-classes mx-2 mt-4 mb-8 rounded-xl border border-gray-200 px-2 pt-2 pb-3 dark:border-gray-700">
+    <div className="bg-gradient-classes mx-2 mb-8 rounded-xl border border-gray-200 px-2 pt-2 pb-3 dark:border-gray-700">
       {/* Render Heading Dynamically */}
       <div className="flex items-center space-x-5">
         <div className="mt-3 mb-2 px-1 pb-3">

@@ -3,11 +3,12 @@ import {
   ShoppingBagIcon,
   MessageCircleQuestion,
   History,
-  Menu,
   Link2,
   BookOpenCheck,
   ChevronsLeft,
   ArrowUpWideNarrow,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from "lucide-react";
 import HotpointLogo from "../HotpointLogo";
 import UserMenu from "../UserMenu";
@@ -26,38 +27,39 @@ const LeftSidebar = ({
   return (
     <div
       className={`custom:flex fixed top-0 bottom-0 left-0 z-50 hidden flex-col border-r border-gray-200 bg-white transition-all duration-200 dark:border-gray-700 dark:bg-gray-950 ${
-        isOpen ? "w-56" : "w-14"
+        isOpen ? "w-58" : "w-14"
       }`}
     >
       <div className="relative flex grow flex-col">
-        {/* Toggling the sidebar */}
-        <div
-          className={`absolute top-60 transition-all duration-200 ${isOpen ? "left-52" : "left-10"}`}
-        >
-          <button
-            className="rounded-full bg-gray-800 p-2 text-white hover:bg-gray-700 dark:bg-slate-50 dark:text-black dark:hover:bg-slate-200"
-            onClick={toggleSidebar}
-          >
-            <Menu className="h-4 w-4" />
-          </button>
-        </div>
-
         <div className="relative mt-2 flex px-4.5 pb-[11.5px]">
           {/* Hotpoint Logo */}
           <HotpointLogo isOpen={isOpen} />
 
           <button
             onClick={() => router.back()}
-            className={`absolute ${isOpen ? "top-0.5 left-45" : "top-11 left-[13px]"} rounded-full p-1.5 text-gray-600 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-500 dark:hover:bg-gray-800/50 dark:hover:text-white`}
+            className={`absolute ${isOpen ? "top-[1.5px] left-39" : "top-11 left-[13px]"} rounded-full bg-gray-100 p-1.5 text-gray-900 transition-all duration-200 hover:bg-gray-200 dark:bg-gray-800/50 dark:text-white dark:hover:bg-gray-800`}
             title="Go back"
           >
             <ChevronsLeft className="h-4.5 w-4.5" />
+          </button>
+
+          {/* Toggling the sidebar */}
+
+          <button
+            className={`absolute ${isOpen ? "top-[1.5px] left-48" : "top-20 left-[13px]"} rounded-lg bg-gray-100 p-1.5 text-gray-900 transition-all duration-200 hover:bg-gray-200 dark:bg-gray-800/50 dark:text-white dark:hover:bg-gray-800`}
+            onClick={toggleSidebar}
+          >
+            {isOpen ? (
+              <PanelLeftClose className="h-4.5 w-4.5" />
+            ) : (
+              <PanelLeftOpen className="h-4.5 w-4.5" />
+            )}
           </button>
         </div>
 
         {/* Navigation Buttons */}
         <nav
-          className={`${isOpen ? "mt-4" : "mt-10"} grow px-2 transition-all duration-200`}
+          className={`${isOpen ? "mt-4" : "mt-20"} grow px-2 transition-all duration-200`}
         >
           <ul className="space-y-1">
             <li>

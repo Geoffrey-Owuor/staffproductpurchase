@@ -63,8 +63,10 @@ export default function Header() {
 
         {/* Auth Buttons  */}
         <div className="flex items-center space-x-4">
-          {/* Theme switcher */}
-          <ThemeToggleCompact />
+          {/* Theme switcher in a fixed space div */}
+          <div className="w-8">
+            <ThemeToggleCompact />
+          </div>
           <Link
             href="/login"
             className="cursor-default rounded-xl px-3 py-1.5 font-semibold text-red-600 transition hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-600/20"
