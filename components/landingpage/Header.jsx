@@ -28,7 +28,7 @@ export default function Header() {
       <div className="containerizing flex items-center justify-between px-4 py-3">
         {/* Logo */}
         <a href="/#">
-          <div className="flex items-center gap-1 text-2xl font-bold">
+          <div className="flex items-center gap-1 text-2xl font-semibold">
             <ShoppingBag className="h-6 w-6 text-gray-950 dark:text-white" />
             <span className="text-gray-900 dark:text-gray-100">
               Hot<span className="text-red-600 dark:text-red-500">p</span>oint
@@ -40,21 +40,21 @@ export default function Header() {
         <nav className="navigation:flex hidden space-x-8 px-6">
           <a
             href="/#features"
-            className="flex items-center gap-2 font-semibold text-gray-600 transition hover:text-red-600 dark:text-gray-300 dark:hover:text-red-400"
+            className="flex items-center gap-2 text-gray-600 transition hover:text-red-600 dark:text-gray-300 dark:hover:text-red-400"
           >
             Features
             <ChevronDown className="mt-0.5 h-4 w-4" />
           </a>
           <a
             href="/#how-it-works"
-            className="flex items-center gap-2 font-semibold text-gray-600 transition hover:text-red-600 dark:text-gray-300 dark:hover:text-red-400"
+            className="flex items-center gap-2 text-gray-600 transition hover:text-red-600 dark:text-gray-300 dark:hover:text-red-400"
           >
             How It Works
             <ChevronDown className="mt-0.5 h-4 w-4" />
           </a>
           <Link
             href="/usermanual"
-            className="flex items-center gap-2 font-semibold text-gray-600 transition hover:text-red-600 dark:text-gray-300 dark:hover:text-red-400"
+            className="flex items-center gap-2 text-gray-600 transition hover:text-red-600 dark:text-gray-300 dark:hover:text-red-400"
           >
             User Manual
             <ArrowUpRight className="h-4 w-4" />
@@ -67,7 +67,7 @@ export default function Header() {
           <ThemeToggleCompact />
           <Link
             href="/login"
-            className="cursor-default rounded-xl px-3 py-1.5 font-semibold text-red-600 transition hover:bg-red-100 dark:text-red-400 dark:hover:bg-gray-800"
+            className="cursor-default rounded-xl px-3 py-1.5 font-semibold text-red-600 transition hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-600/20"
           >
             Log In
           </Link>

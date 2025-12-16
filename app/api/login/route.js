@@ -13,7 +13,7 @@ export async function POST(request) {
 
     if (!users.length) {
       return Response.json(
-        { success: false, message: "Wrong username or password" },
+        { success: false, message: "Wrong email or password" },
         { status: 401 },
       );
     }
@@ -23,7 +23,7 @@ export async function POST(request) {
     const isValid = await verifyPassword(password, user.password);
     if (!isValid) {
       return Response.json(
-        { success: false, message: "Wrong username or password" },
+        { success: false, message: "Wrong email or password" },
         { status: 401 },
       );
     }

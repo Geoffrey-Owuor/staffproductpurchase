@@ -34,6 +34,9 @@ export async function POST(request) {
       [token, userId],
     );
 
+    //Commit transaction
+    await conn.commit();
+
     const resetLink = `${process.env.NEXT_PUBLIC_BASE_URL}/reset-password?token=${token}`;
     await sendResetEmail(email, resetLink);
 

@@ -141,75 +141,95 @@ export default function VerifyCodeComponent({ email }) {
         show={showAlert}
       />
       {/* Card */}
-      <div className="rounded-xl border border-gray-300 bg-white p-8 shadow-lg dark:border-gray-700 dark:bg-gray-950">
-        <h1 className="mb-8 text-center text-2xl font-semibold">
-          Verification Code
-        </h1>
-        <p className="mb-7 text-center text-sm text-gray-600 dark:text-gray-400">
-          If the email exists, a 6-digit verification code has been sent to{" "}
-          <span className="font-semibold">{email}</span>
-        </p>
-        {error && (
-          <div className="mb-4 text-center text-sm text-red-700">{error}</div>
-        )}
-        <form
-          onSubmit={handleFormSubmit}
-          className="space-y-6"
-          autoComplete="off"
-        >
-          {/* 6 box input layout */}
-          <div className="flex justify-center space-x-2" onPaste={handlePaste}>
-            {otp.map((digit, index) => (
-              <input
-                key={index}
-                type="text"
-                inputMode="numeric"
-                pattern="\d{1}"
-                maxLength={1}
-                value={digit}
-                onChange={(e) => handleChange(e, index)}
-                onKeyDown={(e) => handleKeyDown(e, index)}
-                ref={(el) => (inputRefs.current[index] = el)}
-                required
-                disabled={loading}
-                className="h-14 w-10 rounded-xl border border-gray-300 bg-transparent text-center text-2xl font-semibold tracking-widest focus:border-gray-900 focus:ring-2 focus:ring-gray-900 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:w-12 dark:border-gray-700 dark:text-white dark:focus:border-white dark:focus:ring-white"
-              />
-            ))}
+      <div className="flex items-center justify-center rounded-xl border border-gray-200 bg-gray-50 p-6 shadow-lg dark:border-gray-700 dark:bg-gray-950">
+        <div className="w-full max-w-sm space-y-6">
+          {/* Title and Subtitle Section */}
+          <div className="space-y-2 text-center">
+            <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+              Verification Code
+            </h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              If the email exists, a 6-digit verification code has been sent to{" "}
+              <span className="font-medium text-gray-900 dark:text-white">
+                {email}
+              </span>
+            </p>
           </div>
 
-          <button
-            type="submit"
-            disabled={!isCodeFull || loading}
-            className={`w-full rounded-xl px-4 py-3 font-semibold text-white transition duration-200 dark:text-gray-900 ${
-              !isCodeFull || loading
-                ? "cursor-not-allowed disabled:bg-gray-400"
-                : "bg-gray-900 hover:bg-gray-700 dark:bg-white dark:hover:bg-gray-200"
-            }`}
+          {/* Global Error Message */}
+          {error && (
+            <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">
+              {error}
+            </div>
+          )}
+
+          {/* Form Section */}
+          <form
+            onSubmit={handleFormSubmit}
+            className="space-y-6"
+            autoComplete="off"
           >
-            {loading ? (
-              <div className="flex items-center justify-center gap-2">
-                Verifying...
-                <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent dark:border-gray-900 dark:border-t-transparent"></div>
-              </div>
-            ) : (
-              <>Verify</>
-            )}
-          </button>
-          <div className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
+            {/* 6 box input layout */}
+            <div
+              className="flex justify-center space-x-3"
+              onPaste={handlePaste}
+            >
+              {otp.map((digit, index) => (
+                <input
+                  key={index}
+                  type="text"
+                  inputMode="numeric"
+                  pattern="\d{1}"
+                  maxLength={1}
+                  value={digit}
+                  onChange={(e) => handleChange(e, index)}
+                  onKeyDown={(e) => handleKeyDown(e, index)}
+                  ref={(el) => (inputRefs.current[index] = el)}
+                  required
+                  disabled={loading}
+                  // Styling updated to match input fields and use focus rings
+                  className="h-12 w-10 rounded-lg border border-gray-300 bg-white text-center text-lg font-semibold text-gray-900 placeholder:text-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:w-12 dark:border-gray-700 dark:bg-gray-950 dark:text-white dark:placeholder:text-gray-500 dark:focus:border-gray-600 dark:focus:ring-gray-600"
+                />
+              ))}
+            </div>
+
+            {/* Submit Button (Standard Button Style) */}
+            <button
+              type="submit"
+              disabled={!isCodeFull || loading}
+              // Updated button classes to match login button style
+              className="w-full rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100 dark:focus:ring-gray-600"
+            >
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent dark:border-gray-900 dark:border-t-transparent"></div>
+                  Verifying...
+                </span>
+              ) : (
+                "Verify"
+              )}
+            </button>
+          </form>
+
+          {/* Resend Code Link */}
+          <div className="text-center text-sm text-gray-600 dark:text-gray-400">
             Didn't receive a code?{" "}
             <button
               type="button"
               onClick={resendCode}
-              className={`${coolDown > 0 ? "cursor-default" : "cursor-pointer hover:underline"} font-semibold text-gray-700 dark:text-gray-300 dark:hover:text-white`}
+              // Updated resend button styling for consistency
+              className={`${coolDown > 0 ? "cursor-default" : "cursor-pointer hover:underline"} font-medium text-gray-900 dark:text-white`}
+              disabled={coolDown > 0}
             >
               {coolDown > 0 ? `Resend code in ${coolDown}s` : "Resend code"}
             </button>
           </div>
-        </form>
-        {/* Security note */}
-        <p className="mt-4 text-center text-xs text-gray-400">
-          Secure company login • Do not share your credentials
-        </p>
+
+          {/* Security note (Matches the small print at the bottom of the login form) */}
+          <p className="text-center text-xs text-gray-500 dark:text-gray-500">
+            By continuing, you agree to our Terms of Service and Privacy Policy.
+          </p>
+        </div>
       </div>
     </AuthBackground>
   );

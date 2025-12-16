@@ -90,82 +90,117 @@ export default function ResetPasswordClient({ token }) {
         />
       )}
       <AuthBackground>
-        <div className="rounded-xl border border-gray-300 bg-white p-8 shadow-lg dark:border-gray-700 dark:bg-gray-950">
-          <h1 className="mb-10 text-center text-2xl font-semibold">
-            Reset Your Password
-          </h1>
+        <div className="flex items-center justify-center rounded-xl border border-gray-200 bg-gray-50 p-6 shadow-lg dark:border-gray-700 dark:bg-gray-950">
+          <div className="w-full max-w-sm space-y-6">
+            {/* Title Section */}
+            <div className="space-y-2 text-center">
+              <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                Reset Your Password
+              </h1>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                Enter and confirm your new password below.
+              </p>
+            </div>
 
-          <form
-            onSubmit={handleSubmit}
-            className="space-y-6"
-            autoComplete="off"
-          >
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                id="password"
-                value={password}
-                onChange={handlePasswordChange}
-                required
-                placeholder=" "
-                minLength="8"
-                className="peer w-full rounded-xl border border-gray-300 bg-transparent px-4 py-3 placeholder-transparent focus:outline-none dark:border-gray-700 dark:text-white"
-              />
-              <label
-                htmlFor="password"
-                className="absolute -top-3 left-4 rounded-md bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300"
-              >
-                Password
-              </label>
-              {/* Eye Icon */}
-              <div
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer text-gray-500 hover:text-gray-700"
-              >
-                {showPassword ? <EyeClosed size={20} /> : <Eye size={20} />}
+            {/* Error Message (Using Block Style for consistency) */}
+            {passwordError && (
+              <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">
+                {passwordError}
               </div>
-            </div>
-            {/* Confirm Password */}
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                name="confirmPassword"
-                value={confirmPassword}
-                onChange={handleConfirmPasswordChange}
-                required
-                placeholder=" "
-                className="peer w-full rounded-xl border border-gray-300 bg-transparent px-4 py-3 placeholder-transparent focus:outline-none dark:border-gray-700 dark:text-white"
-              />
-              {passwordError && (
-                <p className="ml-2 text-sm text-red-600">{passwordError}</p>
-              )}
-              <label className="absolute -top-3 left-4 rounded-md bg-white px-1 text-sm text-gray-600 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-gray-600 dark:bg-gray-950 dark:text-gray-400 peer-focus:dark:text-gray-300">
-                Confirm Password
-              </label>
-            </div>
-            <button
-              type="submit"
-              disabled={isLoading || passwordError}
-              className="w-full rounded-xl bg-gray-900 p-3 font-semibold text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:bg-gray-400 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
+            )}
+
+            {/* Form Section */}
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-4"
+              autoComplete="off"
             >
-              {isLoading ? (
-                <span className="flex items-center justify-center gap-2">
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent dark:border-gray-900 dark:border-t-transparent"></div>
-                  Resetting...
-                </span>
-              ) : (
-                "Reset Password"
-              )}
-            </button>
-          </form>
-          <div className="mt-4 text-center">
-            <Link
-              href="/login"
-              className="text-gray-700 hover:underline dark:text-gray-300 dark:hover:text-white"
-            >
-              Back to Login
-            </Link>
+              {/* Password Field */}
+              <div className="space-y-2">
+                <label
+                  htmlFor="password"
+                  className="text-sm font-medium text-gray-900 dark:text-gray-100"
+                >
+                  New Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    id="password"
+                    value={password}
+                    onChange={handlePasswordChange}
+                    required
+                    placeholder="••••••••"
+                    minLength="8"
+                    // Standard Input Style
+                    className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 pr-10 text-sm text-gray-900 placeholder:text-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white dark:placeholder:text-gray-500 dark:focus:border-gray-600 dark:focus:ring-gray-600"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                  >
+                    {showPassword ? <EyeClosed size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Confirm Password Field */}
+              <div className="space-y-2">
+                <label
+                  htmlFor="confirmPassword"
+                  className="text-sm font-medium text-gray-900 dark:text-gray-100"
+                >
+                  Confirm Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="confirmPassword"
+                    id="confirmPassword"
+                    value={confirmPassword}
+                    onChange={handleConfirmPasswordChange}
+                    required
+                    placeholder="••••••••"
+                    // Standard Input Style
+                    className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white dark:placeholder:text-gray-500 dark:focus:border-gray-600 dark:focus:ring-gray-600"
+                  />
+                </div>
+              </div>
+
+              {/* Submit Button (Standard Button Style) */}
+              <button
+                type="submit"
+                disabled={isLoading || passwordError}
+                className="w-full rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100 dark:focus:ring-gray-600"
+              >
+                {isLoading ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent dark:border-gray-900 dark:border-t-transparent"></div>
+                    Resetting...
+                  </span>
+                ) : (
+                  "Reset Password"
+                )}
+              </button>
+            </form>
+
+            {/* Back to Login Link (Standard Link Style) */}
+            <div className="text-center text-sm text-gray-600 dark:text-gray-400">
+              <Link
+                href="/login"
+                className="font-medium text-gray-900 hover:underline dark:text-white"
+              >
+                Back to Login
+              </Link>
+            </div>
+
+            {/* Security Note */}
+            <p className="text-center text-xs text-gray-500 dark:text-gray-500">
+              By continuing, you agree to our Terms of Service and Privacy
+              Policy.
+            </p>
           </div>
         </div>
       </AuthBackground>

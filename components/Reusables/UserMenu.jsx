@@ -10,7 +10,11 @@ import { useUser } from "@/context/UserContext";
 import ThemeToggle from "./ThemeProviders/ThemeToggle";
 import { LoggingOutOverlay } from "./LoadingBar";
 
-export default function UserMenu({ isSidebarOpen, hideMobileMenu }) {
+export default function UserMenu({
+  isSidebarOpen,
+  hideMobileMenu,
+  showTopbar,
+}) {
   const user = useUser();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
@@ -78,7 +82,7 @@ export default function UserMenu({ isSidebarOpen, hideMobileMenu }) {
           </div>
           <div
             className={`flex flex-col whitespace-nowrap transition-all duration-200 ${
-              isSidebarOpen ? "w-40" : "w-0"
+              isSidebarOpen && !showTopbar ? "w-40" : "w-0"
             }`}
           >
             <span className="max-w-[100px] truncate text-sm font-semibold">
@@ -92,15 +96,15 @@ export default function UserMenu({ isSidebarOpen, hideMobileMenu }) {
         <AnimatePresence>
           {isOpen && user && (
             <motion.div
-              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              initial={{ scale: 0.95, opacity: 0, y: showTopbar ? -20 : 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              exit={{ scale: 0.95, opacity: 0, y: showTopbar ? -20 : 20 }}
               transition={{
                 type: "spring",
                 stiffness: 300,
                 damping: 30,
               }}
-              className="absolute bottom-full -left-0.5 z-50 mt-2 mb-2 w-52.5 rounded-2xl border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-900"
+              className={`absolute ${showTopbar ? "top-full right-0" : "bottom-full -left-0.5"} z-50 mt-2 mb-2 w-52.5 rounded-2xl border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-900`}
             >
               <div className="border-b border-gray-100 px-4 py-3 dark:border-gray-800">
                 <p className="max-w-40 truncate text-sm font-semibold text-gray-900 dark:text-white">

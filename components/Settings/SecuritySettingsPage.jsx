@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useUser } from "@/context/UserContext";
 import { AnimatePresence } from "framer-motion";
-import { Eye, EyeClosed, Loader2 } from "lucide-react"; // Import icons
+import { Eye, EyeOff, Loader2 } from "lucide-react"; // Import icons
 import Alert from "../Alert";
 import FormAsterisk from "../Reusables/FormAsterisk/FormAsterisk";
 import ConfirmationDialog from "../Reusables/ConfirmationDialog";
@@ -157,7 +157,7 @@ export default function SecuritySettingsPage() {
                   onClick={() => setShowCurrent(!showCurrent)}
                   className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                 >
-                  {showCurrent ? <EyeClosed size={20} /> : <Eye size={20} />}
+                  {showCurrent ? <EyeOff size={20} /> : <Eye size={20} />}
                 </div>
               </div>
             </div>
@@ -180,7 +180,7 @@ export default function SecuritySettingsPage() {
                   onClick={() => setShowNew(!showNew)}
                   className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                 >
-                  {showNew ? <EyeClosed size={20} /> : <Eye size={20} />}
+                  {showNew ? <EyeOff size={20} /> : <Eye size={20} />}
                 </div>
               </div>
             </div>
@@ -203,7 +203,7 @@ export default function SecuritySettingsPage() {
                   onClick={() => setShowConfirm(!showConfirm)}
                   className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                 >
-                  {showConfirm ? <EyeClosed size={20} /> : <Eye size={20} />}
+                  {showConfirm ? <EyeOff size={20} /> : <Eye size={20} />}
                 </div>
               </div>
               {passwordError && (

@@ -2,11 +2,9 @@
 import ThemeToggle from "./ThemeProviders/ThemeToggle";
 import { BrainCog } from "lucide-react";
 
-export default function DashboardFooter({ isSidebarOpen }) {
+export default function DashboardFooter() {
   return (
-    <footer
-      className={`relative transition-all duration-200 ${isSidebarOpen ? "custom:ml-58" : "custom:ml-16"}`}
-    >
+    <footer className="relative">
       <div className="mx-auto max-w-4xl py-5 text-center">
         <div className="flex items-center justify-center space-x-1 text-sm">
           <span className="text-gray-500 dark:text-gray-400">

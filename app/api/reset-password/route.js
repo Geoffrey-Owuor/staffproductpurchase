@@ -31,8 +31,7 @@ export async function POST(request) {
     if (isSameAsCurrent) {
       return Response.json(
         {
-          message:
-            "The new password cannot be the same as your current password.",
+          message: "New password cannot be the same as your current password.",
         },
         { status: 400 },
       );

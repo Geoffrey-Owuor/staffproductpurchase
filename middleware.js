@@ -15,12 +15,12 @@ async function verifyEdgeJWT(token) {
 }
 
 // ✅ Define paths to redirect if already logged in
-const redirectIfLoggedInPaths = ["/", "/login", "/register"];
+const redirectIfLoggedInPaths = ["/login", "/register", "/forgot-password"];
 
 export default async function middleware(request) {
   const { pathname } = request.nextUrl;
 
-  // ✅ Redirect authenticated users away from login/register/home
+  // ✅ Redirect authenticated users away from login/register/forgot-password
   if (redirectIfLoggedInPaths.includes(pathname)) {
     const cookieStore = await cookies();
     const sessionToken = cookieStore.get("session_token")?.value;

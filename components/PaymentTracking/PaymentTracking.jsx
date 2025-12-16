@@ -171,7 +171,7 @@ export default function PaymentTracking() {
         {/* Table Heading and column toggle*/}
         <div className="flex flex-col items-center space-y-6 md:flex-row md:justify-between md:space-y-0">
           <div className="mt-3 mb-2 px-1 pb-3">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-lg text-gray-900 dark:text-white">
               Fully Approved Requests
             </h2>
             <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -299,20 +299,22 @@ export default function PaymentTracking() {
               </select>
             )}
 
-            <button
-              onClick={applyFilters}
-              className="mt-2 flex items-center space-x-1 rounded-md bg-gray-900 px-3 py-1 text-sm text-white hover:bg-gray-700 sm:mt-0 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-300"
-            >
-              <Search className="h-3.5 w-3.5" />
-              <span>Search</span>
-            </button>
-            <button
-              onClick={fetchDefaultPurchases}
-              className="mt-2 flex items-center space-x-1 rounded-md bg-gray-700 px-3 py-1 text-sm text-white hover:bg-gray-800 sm:mt-0 dark:bg-gray-300 dark:text-gray-900 dark:hover:bg-white"
-            >
-              <SearchX className="h-3.5 w-3.5" />
-              <span>Clear</span>
-            </button>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={applyFilters}
+                className="mt-2 flex items-center space-x-1 rounded-md bg-gray-900 px-3 py-1 text-sm text-white hover:bg-gray-700 sm:mt-0 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-300"
+              >
+                <Search className="h-3.5 w-3.5" />
+                <span>Search</span>
+              </button>
+              <button
+                onClick={fetchDefaultPurchases}
+                className="mt-2 flex items-center space-x-1 rounded-md bg-gray-700 px-3 py-1 text-sm text-white hover:bg-gray-800 sm:mt-0 dark:bg-gray-300 dark:text-gray-900 dark:hover:bg-white"
+              >
+                <SearchX className="h-3.5 w-3.5" />
+                <span>Clear</span>
+              </button>
+            </div>
           </div>
         </div>
         {loading ? (
@@ -321,7 +323,7 @@ export default function PaymentTracking() {
           <>
             <div className="overflow-x-auto rounded-xl">
               <table className="mb-6 min-w-full">
-                <thead className="bg-gray-700 text-white">
+                <thead className="bg-gray-800 text-white">
                   <tr>
                     {visibleColumns.submissionDate && (
                       <th
@@ -399,7 +401,7 @@ export default function PaymentTracking() {
                     currentPurchases.map((purchase) => (
                       <tr
                         key={purchase.id}
-                        className="odd:bg-white even:bg-gray-50 hover:bg-gray-100 dark:odd:bg-gray-950 dark:even:bg-gray-900 dark:hover:bg-gray-800"
+                        className="odd:bg-white even:bg-gray-50 hover:bg-gray-100 dark:odd:bg-gray-950 dark:even:bg-gray-900 dark:hover:bg-gray-800/50"
                       >
                         {visibleColumns.submissionDate && (
                           <td className="max-w-[200px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900 dark:text-white">
