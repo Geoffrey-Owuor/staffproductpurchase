@@ -15,7 +15,7 @@ export default function Hero() {
               <LandingLogo />
             </div>
 
-            <h1 className="mb-6 text-center text-4xl font-bold text-gray-900 md:text-5xl lg:text-start dark:text-gray-100">
+            <h1 className="mb-6 text-center text-3xl font-bold text-gray-900 sm:text-5xl lg:text-start dark:text-gray-100">
               <span className="text-red-600 dark:text-red-500">
                 Staff Purchase Portal
               </span>
@@ -24,7 +24,7 @@ export default function Hero() {
               Easily make your product purchase requisition through our Hotpoint
               Staff Purchase Portal
             </p>
-            <div className="navigation:flex-row navigation:justify-center mt-8 flex flex-col items-center gap-4 lg:justify-start">
+            <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center lg:justify-start">
               <Link
                 href="/register"
                 className="flex w-full items-center justify-center rounded-xl bg-red-600 px-6 py-3 font-semibold text-white shadow-md transition hover:bg-red-700 sm:w-auto dark:bg-red-500 dark:hover:bg-red-600"

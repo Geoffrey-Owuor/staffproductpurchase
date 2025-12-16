@@ -32,7 +32,7 @@ const LandingLogo = () => {
           <Image
             src={logoSrc}
             alt="hotpoint logo"
-            className="w-150 lg:w-120"
+            className="w-140 lg:w-120"
             priority
           />
         </motion.div>

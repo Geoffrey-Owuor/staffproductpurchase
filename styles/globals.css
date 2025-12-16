@@ -4,7 +4,7 @@
 
 @theme {
   --breakpoint-custom: 1200px;
-  --breakpoint-navigation: 1000px;
+  --breakpoint-navigation: 900px;
   --breakpoint-footerBottom: 900px;
 }
 

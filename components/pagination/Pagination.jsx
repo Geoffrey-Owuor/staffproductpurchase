@@ -1,6 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+  MoreHorizontal,
+} from "lucide-react";
 
 export default function Pagination({
   totalPages,
@@ -126,47 +132,71 @@ export default function Pagination({
   };
 
   return (
-    <div className="mt-4 mb-1 flex items-center justify-center space-x-2">
-      {/* Rows Per Page Drop Down */}
-      <div className="flex items-center">
-        <span className="mr-2 hidden text-sm text-gray-700 md:flex dark:text-gray-400">
-          Rows:
-        </span>
-        <select
-          value={rowsPerPage}
-          onChange={(e) => {
-            onRowsPerPageChange(Number(e.target.value));
-          }}
-          className="rounded-[7px] border border-gray-300 bg-white p-1 text-sm text-gray-700 focus:border-gray-500 focus:ring-1 focus:ring-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-gray-400"
+    <div className="mt-4 mb-1">
+      {/* Mobile Pagination */}
+      <div className="flex items-center justify-between px-1 sm:hidden">
+        <button
+          onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+          disabled={currentPage === 1}
+          className="flex items-center gap-1 rounded-lg bg-gray-200 px-3 py-2 ring-1 ring-gray-300 disabled:opacity-50 dark:bg-gray-800 dark:ring-gray-700"
         >
-          {[10, 20, 50, 100].map((size) => (
-            <option key={size} value={size}>
-              {size}
-            </option>
-          ))}
-        </select>
+          <ArrowLeft className="h-4 w-4" />
+          Previous
+        </button>
+        <button
+          onClick={() =>
+            handlePageChange(Math.min(totalPages, currentPage + 1))
+          }
+          disabled={currentPage === totalPages}
+          className="flex items-center gap-1 rounded-lg bg-gray-200 px-6 py-2 ring-1 ring-gray-300 disabled:opacity-50 dark:bg-gray-800 dark:ring-gray-700"
+        >
+          Next
+          <ArrowRight className="h-4 w-4" />
+        </button>
       </div>
-      {totalPages > 1 && (
-        <div className="flex items-center">
-          <button
-            onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
-            disabled={currentPage === 1}
-            className="mx-1 flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-gray-900 hover:bg-gray-100 disabled:opacity-50 dark:text-white dark:hover:bg-gray-800"
+      {/* Desktop Pagination */}
+      <div className="hidden items-center justify-center space-x-2 sm:flex">
+        {/* Rows Per Page Drop Down */}
+        <div className="items-center">
+          <span className="mr-2 text-sm text-gray-700 dark:text-gray-400">
+            Rows:
+          </span>
+          <select
+            value={rowsPerPage}
+            onChange={(e) => {
+              onRowsPerPageChange(Number(e.target.value));
+            }}
+            className="rounded-[7px] border border-gray-300 bg-white p-1 text-sm text-gray-700 focus:border-gray-500 focus:ring-1 focus:ring-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-gray-400"
           >
-            <ChevronLeft className="h-4 w-4" />
-          </button>
-          {renderPageNumbers()}
-          <button
-            onClick={() =>
-              handlePageChange(Math.min(totalPages, currentPage + 1))
-            }
-            disabled={currentPage === totalPages}
-            className="mx-1 flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-gray-900 hover:bg-gray-100 disabled:opacity-50 dark:text-white dark:hover:bg-gray-800"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </button>
+            {[10, 20, 50, 100].map((size) => (
+              <option key={size} value={size}>
+                {size}
+              </option>
+            ))}
+          </select>
         </div>
-      )}
+        {totalPages > 1 && (
+          <div className="flex items-center">
+            <button
+              onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+              disabled={currentPage === 1}
+              className="mx-1 flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-gray-900 hover:bg-gray-100 disabled:opacity-50 dark:text-white dark:hover:bg-gray-800"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            {renderPageNumbers()}
+            <button
+              onClick={() =>
+                handlePageChange(Math.min(totalPages, currentPage + 1))
+              }
+              disabled={currentPage === totalPages}
+              className="mx-1 flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-gray-900 hover:bg-gray-100 disabled:opacity-50 dark:text-white dark:hover:bg-gray-800"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
