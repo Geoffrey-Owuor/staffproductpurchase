@@ -26,7 +26,7 @@ export default function ReusableLayoutShell({ user, children }) {
     ? ""
     : sidebarOpen
       ? "custom:ml-58"
-      : "custom:ml-16";
+      : "custom:ml-14";
   return (
     <UserContext.Provider value={user}>
       <ChangeLogAlert />
