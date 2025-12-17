@@ -1,48 +1,50 @@
-## 🛒 Staff Product Purchase Portal
+# 🛒 Staff Product Purchase Portal
 
-A Next.js web application designed to streamline product purchases for staff members.
-Built with modern React architecture, optimized fonts, and seamless deployment support.
+### Internal Workflow Automation & Request Management System
 
-## 🚀 Features
+The **Staff Product Purchase Portal** is a specialized web application designed to digitize and automate the internal purchasing process for employees. By moving away from manual paperwork/emails to a centralized digital workflow, this system increases transparency, reduces processing time, and ensures accurate record-keeping for staff transactions.
 
-✅ User-friendly interface – Simple and intuitive shopping experience for staff
+## 🎯 Project Overview
 
-⚛️ Next.js App Router – Modern React architecture for scalability and performance
+This application serves as a self-service bridge between staff members and the HR/finance departments. It is built to handle the specific lifecycle of a staff product purchase:
 
-🔠 Font optimization with Geist – Clean and professional typography
+- **Request Initiation:** Staff members can browse approved items and initiate purchase requests.
+- **Workflow Automation:** Requests are automatically routed through the set approval workflow (e.g., Payroll - Hr - Invoicing, etc.).
+- **Status Tracking:** Real-time visibility into the status of a purchase (Pending, Approved, Declined, Closed).
+- **Historical Auditing:** A permanent, accessible record of all past transactions for both the user and administration - which
+  can be exported into an excel file.
 
-☁️ Deployment-ready on Vercel – One-click hosting and CI/CD support
+## 🚀 Key Features
 
-## 🧑‍💻 Getting Started
+### ⚡ Workflow & Automation
 
-Run the development server:
+- **Self-Service Dashboard:** Personalized views for different roles (Staff, Hr, Payroll, Credit Control) to manage their specific actions.
+- **Route-Based Logic:** Intelligent routing ensures users only see data relevant to their role (e.g., `/hrdashboard` vs `/ccdashboard`).
+- **Digital History:** Automated logging (Data is saved to a MySQL database) of all requests creates a seamless audit trail,
+  replacing manual spreadsheets.
+- **Real-time Feedback:** Immediate visual feedback through automated email notifications on request states
+  (Pending, Approved, Declined) to reduce user uncertainty.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 🎨 User Experience
 
-Then open [http://localhost:3000](http://localhost:3000) in your browser.
+- **Modern Interface:** A clean, responsive UI built for efficiency.
+- **Theme Support:** Fully accessible Dark and Light modes to suit user preference.
+- **Optimized Performance:** Fast page loads and transitions using the Next.js App Router.
 
-Start editing by modifying `app/page.js`. The page updates automatically as you make changes.
+## 🛠️ Technology Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Core Framework:** [Next.js 15+](https://nextjs.org/) (App Router)
+- **UI Library:** React
+- **Styling:** Tailwind CSS (Inferred)
+- **Icons:** Lucide React
+- **Typography:** Geist Font Family
+- **Deployment:** Vercel
 
-## 📚 Learn More
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - Explore features and APIS.
-- [Learn Next.js](https://nextjs.org/learn) - Interactive tutorial for beginners.
-- [the Next.js GitHub repository](https://github.com/vercel/next.js) - Contribute or browse the source.
+### Basic Folder Structure
 
-## 🌐 Deployment
-
-Easily deploy the app using [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-For more details, refer to [Next.js deployment guide](https://nextjs.org/docs/app/building-your-application/deploying)
-
-✨ Built with love using Next.js + React
+- `/app`: Contains the App Router pages and layouts.
+- `/components`: Reusable UI components (Sidebar, LoadingLine, etc.).
+- `/utils`: Helper functions and hooks e.g., Email Templates.
+- `/public`: Static assets.
