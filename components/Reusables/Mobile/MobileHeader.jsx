@@ -9,8 +9,8 @@ import {
   Link2,
   ChevronsLeft,
   BookOpenCheck,
-  LifeBuoy,
   Menu,
+  NotebookText,
 } from "lucide-react";
 import HotpointLogo from "../HotpointLogo";
 import { useLoadingLine } from "@/context/LoadingLineContext";
@@ -129,7 +129,7 @@ export default function MobileHeader() {
               rel="noopener noreferrer"
               className="rounded-full p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
             >
-              <LifeBuoy className="h-5 w-5" />
+              <NotebookText className="h-5 w-5" />
             </a>
           </div>
         </div>

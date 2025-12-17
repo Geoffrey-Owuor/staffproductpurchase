@@ -14,3 +14,30 @@ CREATE TABLE changelogs (
 
 ALTER TABLE users
 ADD COLUMN last_changelog_viewed_at TIMESTAMP NULL DEFAULT NULL;
+
+
+
+-- Old Containerizing
+
+  .containerizing {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    @media (width >= 40rem /* 640px */) {
+      max-width: 65rem /* 640px */;
+    }
+
+    @media (width >= 64rem /* 1024px */) {
+      max-width: 80rem /* 1280px */;
+    }
+
+    @media (width >= 78rem /* 1250px */) {
+      max-width: 90rem /* 1280px */;
+    }
+    @media (width >= 100rem) {
+      max-width: 90rem;
+    }
+    @media (width >= 120rem /* 1536px */) {
+      max-width: 125rem /* 1536px */;
+    }
+  }

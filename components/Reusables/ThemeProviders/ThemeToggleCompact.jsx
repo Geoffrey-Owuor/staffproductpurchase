@@ -55,7 +55,7 @@ export default function ThemeToggleCompact() {
   ];
 
   return (
-    <div className="relative hidden md:block" ref={dropdownRef}>
+    <div className="relative hidden sm:block" ref={dropdownRef}>
       {/* Button to trigger the dropdown */}
       <button
         onClick={() => setIsOpen(!isOpen)}

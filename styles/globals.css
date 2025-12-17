@@ -4,7 +4,7 @@
 
 @theme {
   --breakpoint-custom: 1200px;
-  --breakpoint-navigation: 1000px;
+  --breakpoint-navigation: 900px;
   --breakpoint-footerBottom: 900px;
 }
 
@@ -130,26 +130,20 @@
   .bg-conditions {
     @apply bg-linear-to-br from-slate-100 via-slate-50/50 to-white dark:from-gray-900 dark:via-gray-950 dark:to-black;
   }
+
+  /* Maintaining a certain length in different screens - Tailwind css configuration */
   .containerizing {
     width: 100%;
     margin-left: auto;
     margin-right: auto;
     @media (width >= 40rem /* 640px */) {
-      max-width: 65rem /* 640px */;
+      max-width: 65rem /* 1040px */;
     }
-
     @media (width >= 64rem /* 1024px */) {
       max-width: 90rem /* 1280px */;
     }
-
-    @media (width >= 78rem /* 1250px */) {
-      max-width: 90rem /* 1280px */;
-    }
-    @media (width >= 100rem) {
-      max-width: 100rem;
-    }
-    @media (width >= 120rem /* 1536px */) {
-      max-width: 125rem /* 1536px */;
+    @media (width >= 96rem /* 1536px */) {
+      max-width: 100rem /* 1536px */;
     }
   }
 }
