@@ -8,13 +8,15 @@ import PagesFooter from "@/components/Reusables/PagesFooter/PagesFooter";
 
 const page = () => {
   return (
-    <>
+    <div className="flex min-h-screen flex-col">
       <Header />
       <Suspense fallback={<ChangelogSkeleton />}>
-        <ChangeLogRoute />
+        <main className="flex-1">
+          <ChangeLogRoute />
+        </main>
       </Suspense>
       <PagesFooter />
-    </>
+    </div>
   );
 };
 

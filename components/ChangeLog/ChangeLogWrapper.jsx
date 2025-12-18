@@ -1,5 +1,5 @@
 "use client";
-import { FolderClock, Calendar } from "lucide-react";
+import { FolderClock, Calendar, RefreshCcw } from "lucide-react";
 import { revalidateChangelogs } from "@/app/lib/fetchChangelogs";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -53,10 +53,11 @@ const ChangeLogWrapper = ({ changelogs }) => {
             </div>
           </div>
           <button
-            className="cursor-pointer rounded-xl bg-gray-950 px-3 py-2 text-white transition-colors hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200"
+            className="hidden cursor-pointer items-center gap-2 rounded-xl bg-gray-950 px-3 py-2 text-white transition-colors hover:bg-gray-800 sm:flex dark:bg-white dark:text-black dark:hover:bg-gray-200"
             onClick={handleRefreshLogs}
           >
-            Refresh logs
+            <RefreshCcw className="h-5 w-5" />
+            Refresh
           </button>
         </div>
         {/* Changelogs area */}

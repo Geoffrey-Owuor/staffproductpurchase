@@ -100,11 +100,11 @@ const manualSteps = [
 
 const UserManual = () => {
   return (
-    <>
+    <div className="flex min-h-screen flex-col">
       {/* Header */}
       <Header />
 
-      <section className="min-h-screen w-full bg-white px-4 py-20 md:px-8 dark:bg-gray-950">
+      <section className="w-full flex-1 bg-white px-4 py-20 md:px-8 dark:bg-gray-950">
         <div className="mx-auto max-w-4xl">
           {/* Header */}
           <div className="mb-16 text-center">
@@ -190,7 +190,7 @@ const UserManual = () => {
       </section>
       {/* Footer */}
       <PagesFooter />
-    </>
+    </div>
   );
 };
 
