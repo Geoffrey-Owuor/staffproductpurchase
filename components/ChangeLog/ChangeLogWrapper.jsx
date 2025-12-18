@@ -36,7 +36,7 @@ const ChangeLogWrapper = ({ changelogs }) => {
   return (
     <>
       <LoadingBar isLoading={refreshing} />
-      <div className="containerizing mt-16 mb-12 max-w-5xl">
+      <div className="containerizing mt-20 mb-12 max-w-5xl">
         {/* Header */}
         <div className="flex items-center justify-between px-4">
           <div className="mb-6 flex items-center justify-center gap-3">
