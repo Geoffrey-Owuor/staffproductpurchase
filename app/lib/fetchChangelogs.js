@@ -22,5 +22,5 @@ export const fetchChangelogs = async () => {
 
 // Server action to manually revalidate the changelogs path
 export async function revalidateChangelogs() {
-  revalidatePath("/changelogs");
+  revalidatePath("/changelog");
 }
