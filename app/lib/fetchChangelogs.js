@@ -1,9 +1,10 @@
 "use server";
 import pool from "@/lib/db";
-import { revalidatePath } from "next/cache";
+import { revalidateTag } from "next/cache";
+import { unstable_cache } from "next/cache";
 
 // Function to fetch changelogs from the database
-export const fetchChangelogs = async () => {
+const fetchChangelogs = async () => {
   try {
     const changeLogQuery = `
             SELECT id, title, category, description, created_at
@@ -20,7 +21,14 @@ export const fetchChangelogs = async () => {
   }
 };
 
+export const cachedChangelogs = unstable_cache(
+  fetchChangelogs,
+  ["changelogs"],
+  { tags: ["changelogs"] },
+);
+
 // Server action to manually revalidate the changelogs path
 export async function revalidateChangelogs() {
-  revalidatePath("/changelog");
+  // invalidate cached database data
+  revalidateTag("changelogs");
 }

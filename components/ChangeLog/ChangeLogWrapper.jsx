@@ -1,8 +1,7 @@
 "use client";
 import { FolderClock, Calendar, RefreshCcw } from "lucide-react";
 import { revalidateChangelogs } from "@/app/lib/fetchChangelogs";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useTransition } from "react";
 import { LoadingBar } from "../Reusables/LoadingBar";
 
 // Date formatting helper function to format dates for the ui
@@ -24,18 +23,13 @@ const categoryColors = {
 };
 
 const ChangeLogWrapper = ({ changelogs }) => {
-  const router = useRouter();
-  const [refreshing, setRefreshing] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
-  const handleRefreshLogs = async () => {
-    setRefreshing(true);
-    await revalidateChangelogs();
-    router.refresh();
-    setRefreshing(false);
-  };
+  const handleRefreshLogs = () =>
+    startTransition(async () => await revalidateChangelogs());
   return (
     <>
-      <LoadingBar isLoading={refreshing} />
+      <LoadingBar isLoading={isPending} />
       <div className="containerizing mt-20 mb-12 max-w-5xl">
         {/* Header */}
         <div className="flex items-center justify-between px-4">

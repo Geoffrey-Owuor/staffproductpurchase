@@ -1,8 +1,8 @@
-import { fetchChangelogs } from "@/app/lib/fetchChangelogs";
+import { cachedChangelogs } from "@/app/lib/fetchChangelogs";
 import ChangeLogWrapper from "./ChangeLogWrapper";
 
 const ChangeLogRoute = async () => {
-  const changelogs = await fetchChangelogs();
+  const changelogs = await cachedChangelogs();
 
   return <ChangeLogWrapper changelogs={changelogs} />;
 };
