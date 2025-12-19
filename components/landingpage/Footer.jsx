@@ -46,6 +46,14 @@ export default function Footer() {
                   User Manual
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/changelog"
+                  className="text-gray-600 transition hover:text-red-600 dark:text-gray-400 dark:hover:text-white"
+                >
+                  Changelog
+                </Link>
+              </li>
             </ul>
           </div>
 
