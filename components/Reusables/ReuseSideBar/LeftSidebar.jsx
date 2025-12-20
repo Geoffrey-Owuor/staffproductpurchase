@@ -26,7 +26,7 @@ const LeftSidebar = ({
 }) => {
   return (
     <div
-      className={`custom:flex fixed top-0 bottom-0 left-0 z-50 hidden flex-col border-r border-gray-200 bg-white transition-all duration-200 dark:border-gray-700 dark:bg-gray-950 ${
+      className={`custom:flex fixed top-0 bottom-0 left-0 z-50 hidden flex-col bg-white transition-all duration-200 dark:bg-gray-950 ${
         isOpen ? "w-58" : "w-14"
       }`}
     >

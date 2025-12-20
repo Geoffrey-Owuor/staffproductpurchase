@@ -307,10 +307,10 @@ function PurchaseForm({
 
   return (
     <>
-      <div className="mx-auto p-2">
+      <div className="mx-auto pb-6">
         <EditPurchaseHeading />
 
-        <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
+        <form onSubmit={handleSubmit} className="space-y-4" autoComplete="off">
           {submitting && <LoadingBarWave isLoading={true} />}
 
           {/* Staff Info Component */}
@@ -329,12 +329,12 @@ function PurchaseForm({
           />
 
           {/* Main Product Pricing title */}
-          <div className="mt-8 mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
+          <div className="mt-8 mb-4 flex items-center gap-2 px-2 text-gray-900 dark:text-white">
             <PackagePlus className="h-6 w-6" />
             <span className="text-xl">Product & Pricing Details</span>
           </div>
           {userRole === "cc" && (
-            <p className="text-xs">
+            <p className="px-2 text-xs">
               <span className="font-semibold text-red-500 dark:text-red-400">
                 Note:{" "}
               </span>
@@ -356,7 +356,7 @@ function PurchaseForm({
                 paymentTerms={paymentInfo.employee_payment_terms}
               />
               {/* Removing a product - Only when role is bi */}
-              {products.length > 1 && userRole === "bi" && (
+              {products.length > 1 && userRole === "cc" && (
                 <button
                   type="button"
                   onClick={() => removeProduct(index)}
@@ -369,15 +369,15 @@ function PurchaseForm({
             </div>
           ))}
 
-          <div className="my-12 flex items-center justify-between">
+          <div className="my-8 flex items-center justify-between px-2">
             {purchaseTotal > 0 && (
-              <span className="text-lg">
+              <span className="text-lg italic">
                 Total Purchase Value:{" "}
                 <span className="font-bold">{`Ksh ${purchaseTotal.toFixed(2)}`}</span>
               </span>
             )}
             {/* Adding a product - Only when role is bi */}
-            {userRole === "bi" && (
+            {userRole === "cc" && (
               <button
                 type="button"
                 onClick={addProduct}

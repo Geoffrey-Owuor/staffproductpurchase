@@ -5,7 +5,7 @@ export default function ProductItemsInfo({ products }) {
     .toFixed(2);
 
   return (
-    <div className="border-b border-gray-200 p-6 dark:border-gray-700">
+    <div className="border-b border-gray-200 px-2 py-6 dark:border-gray-700">
       <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
         Product & Pricing Details
       </h2>

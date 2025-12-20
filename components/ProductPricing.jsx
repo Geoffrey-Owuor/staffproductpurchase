@@ -149,8 +149,8 @@ const ProductPricing = ({
   const isReadonlyGeneral = !editableRoles.includes(userRole);
 
   return (
-    <div className="bg-gradient-classes relative mb-8 rounded-xl border border-gray-200 dark:border-gray-700">
-      <div className="rounded-t-xl px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white">
+    <div className="bg-gradient-classes relative rounded-xl">
+      <div className="rounded-t-xl px-2 py-3 text-lg font-semibold text-gray-900 dark:text-white">
         Product {productNumber}
       </div>
 
@@ -185,7 +185,7 @@ const ProductPricing = ({
           </div>
         </div>
       )}
-      <div className="space-y-6 overflow-x-auto px-6 py-4">
+      <div className="space-y-6 overflow-x-auto px-2 py-4">
         {/* Grouped Inputs - 2 columns on md+ */}
         <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
           {/* Product Code */}

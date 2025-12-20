@@ -7,11 +7,11 @@ const PaymentDetails = ({ formData, handleChange, userRole, periods }) => {
   const staffReadonly = userRole !== "staff";
   const isReadOnly = !editableRoles.includes(userRole);
   return (
-    <div className="bg-gradient-classes relative mb-8 rounded-xl border border-gray-200 dark:border-gray-700">
-      <div className="rounded-t-xl px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white">
+    <div className="bg-gradient-classes relative rounded-xl">
+      <div className="rounded-t-xl px-2 py-3 text-lg font-semibold text-gray-900 dark:text-white">
         Payment & Invoicing Details
       </div>
-      <div className="space-y-6 px-6 py-4">
+      <div className="space-y-6 px-2 py-4">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {/* Invoicing Location */}
           <div>
