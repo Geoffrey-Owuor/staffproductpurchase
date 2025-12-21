@@ -83,7 +83,7 @@ export default function StaffPurchaseHistory() {
       {/* Search Bar */}
       {fetchAllData && (
         <div className="mx-auto mb-6 max-w-md">
-          <div className="mt-3 flex flex-col items-center justify-center space-y-4 md:flex-row md:space-y-0 md:space-x-4">
+          <div className="mt-3 flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}

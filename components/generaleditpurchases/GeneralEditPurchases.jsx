@@ -384,7 +384,7 @@ function PurchaseForm({
                 className="flex items-center gap-2 rounded-xl bg-gray-950 px-4 py-2 text-sm text-white transition-colors hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
               >
                 <PlusCircle className="h-5 w-5" />
-                Add Product
+                Add <span className="hidden sm:block">Product</span>
               </button>
             )}
           </div>

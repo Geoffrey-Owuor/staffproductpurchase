@@ -169,7 +169,7 @@ export default function PaymentTracking() {
       )}
       <div className="bg-gradient-classes rounded-xl px-2 pb-4">
         {/* Table Heading and column toggle*/}
-        <div className="flex flex-col items-center space-y-6 md:flex-row md:justify-between md:space-y-0">
+        <div className="flex flex-col space-y-6 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
           <div className="mt-3 mb-2 px-1 pb-3">
             <h2 className="text-lg text-gray-900 dark:text-white">
               Fully Approved Requests
@@ -190,7 +190,7 @@ export default function PaymentTracking() {
 
         {/* Search Bar */}
         <div className="mx-auto mb-6 max-w-md">
-          <div className="mt-3 flex flex-col items-center justify-center space-y-4 md:flex-row md:space-y-0 md:space-x-4">
+          <div className="mt-3 flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
