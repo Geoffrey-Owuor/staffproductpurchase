@@ -167,7 +167,7 @@ export default function PaymentTracking() {
           onClose={() => setAlertInfo({ show: false, message: "", type: "" })}
         />
       )}
-      <div className="bg-gradient-classes rounded-xl px-2 pb-4">
+      <div className="rounded-xl px-2 pb-4">
         {/* Table Heading and column toggle*/}
         <div className="flex flex-col space-y-6 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
           <div className="mt-3 mb-2 px-1 pb-3">
@@ -401,7 +401,7 @@ export default function PaymentTracking() {
                     currentPurchases.map((purchase) => (
                       <tr
                         key={purchase.id}
-                        className="odd:bg-white even:bg-gray-50 hover:bg-gray-100 dark:odd:bg-gray-950 dark:even:bg-gray-900 dark:hover:bg-gray-800/50"
+                        className="odd:bg-white even:bg-gray-50 dark:odd:bg-gray-950 dark:even:bg-gray-900"
                       >
                         {visibleColumns.submissionDate && (
                           <td className="max-w-[200px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900 dark:text-white">

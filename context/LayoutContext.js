@@ -8,18 +8,11 @@ export const LayoutProvider = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [showTopbar, setShowTopbar] = useState(false);
 
-  const leftMargin = showTopbar
-    ? "left-0"
-    : sidebarOpen
-      ? "left-58"
-      : "left-14";
-
   const values = {
     sidebarOpen,
     setSidebarOpen,
     showTopbar,
     setShowTopbar,
-    leftMargin,
   };
   return (
     <LayoutContext.Provider value={values}>{children}</LayoutContext.Provider>

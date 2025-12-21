@@ -48,9 +48,7 @@ const TopSidebar = ({
   return (
     <header
       className={`custom:flex fixed top-0 right-0 left-0 z-50 hidden h-16 transition-all duration-200 ${
-        isScrolled
-          ? "custom-blur bg-white/70 shadow-xs dark:bg-gray-950/70"
-          : "bg-white dark:bg-gray-950"
+        isScrolled ? "custom-blur shadow-xs" : ""
       }`}
     >
       <div className="containerizing flex w-full items-center justify-between px-4">

@@ -9,7 +9,7 @@ export default function HRApprovalSection({
   const isReadOnly = userRole !== "hr";
 
   return (
-    <div className="bg-gradient-classes overflow-hidden rounded-xl">
+    <div className="overflow-hidden rounded-xl">
       <div className="px-2 py-3">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
           HR Approval

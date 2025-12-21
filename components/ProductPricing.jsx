@@ -149,7 +149,7 @@ const ProductPricing = ({
   const isReadonlyGeneral = !editableRoles.includes(userRole);
 
   return (
-    <div className="bg-gradient-classes relative rounded-xl">
+    <div className="relative rounded-xl">
       <div className="rounded-t-xl px-2 py-3 text-lg font-semibold text-gray-900 dark:text-white">
         Product {productNumber}
       </div>

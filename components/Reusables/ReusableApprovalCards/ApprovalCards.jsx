@@ -28,7 +28,7 @@ export default function ApprovalCards() {
   const { counts, loading, refetchCounts } = useApprovalCounts();
 
   return (
-    <div className="bg-gradient-classes mb-8 rounded-xl px-2">
+    <div className="mb-8 rounded-xl px-2">
       {/* Render Heading Dynamically */}
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-5">

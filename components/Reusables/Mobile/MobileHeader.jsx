@@ -96,9 +96,7 @@ export default function MobileHeader() {
       {/* Mobile Header Bar */}
       <div
         className={`custom:hidden fixed right-0 left-0 z-50 transition-all duration-200 ease-in-out ${
-          isScrolled
-            ? "custom-blur bg-white/70 shadow-xs dark:bg-gray-950/70"
-            : "bg-white dark:bg-gray-950"
+          isScrolled ? "custom-blur shadow-xs" : ""
         }`}
       >
         <div className="flex items-center justify-between border-gray-800 p-3">

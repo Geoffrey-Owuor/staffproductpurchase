@@ -8,7 +8,7 @@ export default function BIApprovalSection({
 }) {
   const isReadOnly = userRole !== "bi";
   return (
-    <div className="bg-gradient-classes overflow-hidden rounded-xl">
+    <div className="overflow-hidden rounded-xl">
       {/* Invoicing Details Section */}
 
       <div className="px-2 py-3">

@@ -1,15 +1,13 @@
 "use client";
 import { Loader } from "lucide-react";
-import { useLayout } from "@/context/LayoutContext";
+import { createPortal } from "react-dom";
 
 export const LoadingBar = ({ isLoading }) => {
-  const { leftMargin } = useLayout();
   if (!isLoading) return null;
 
-  return (
-    // This main div provides the full-screen semi-transparent overlay
+  const content = (
     <div
-      className={`fixed inset-0 z-9999 ${leftMargin} flex h-screen items-center justify-center bg-white/50 transition-all duration-200 dark:bg-black/60`}
+      className={`fixed inset-0 z-9999 flex h-screen items-center justify-center bg-black/50 transition-all duration-200 dark:bg-black/60`}
     >
       {/* Container to align the spinner and text horizontally */}
       <div className="flex items-center space-x-2">
@@ -26,16 +24,15 @@ export const LoadingBar = ({ isLoading }) => {
       </div>
     </div>
   );
+  return createPortal(content, document.body);
 };
 
 export const LoadingBarWave = ({ isLoading }) => {
-  const { leftMargin } = useLayout();
   if (!isLoading) return null;
 
-  return (
-    // This main div provides the full-screen semi-transparent overlay
+  const content = (
     <div
-      className={`fixed inset-0 ${leftMargin} z-9999 flex h-screen items-center justify-center bg-white/50 transition-all duration-200 dark:bg-black/60`}
+      className={`fixed inset-0 z-9999 flex h-screen items-center justify-center bg-black/50 transition-all duration-200 dark:bg-black/60`}
     >
       {/* Container to align the spinner and text horizontally */}
       <div className="flex items-center space-x-2">
@@ -50,6 +47,8 @@ export const LoadingBarWave = ({ isLoading }) => {
       </div>
     </div>
   );
+
+  return createPortal(content, document.body);
 };
 
 export const LoggingOutOverlay = ({ isLoggingOut }) => {
@@ -76,11 +75,9 @@ export const LoggingOutOverlay = ({ isLoggingOut }) => {
 };
 
 export const DeletingOverlay = () => {
-  const { leftMargin } = useLayout();
-  return (
-    // This main div provides the full-screen semi-transparent overlay
+  const content = (
     <div
-      className={`fixed inset-0 z-9999 ${leftMargin} flex h-screen items-center justify-center bg-white/50 transition-all duration-200 dark:bg-black/60`}
+      className={`fixed inset-0 z-9999 flex h-screen items-center justify-center bg-black/50 transition-all duration-200 dark:bg-black/60`}
     >
       {/* Container to align the spinner and text horizontally */}
       <div className="flex items-center space-x-2">
@@ -97,4 +94,5 @@ export const DeletingOverlay = () => {
       </div>
     </div>
   );
+  return createPortal(content, document.body);
 };

@@ -2,13 +2,12 @@
 import { Loader2, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { useUser } from "@/context/UserContext";
-import { useLayout } from "@/context/LayoutContext";
+import { createPortal } from "react-dom";
 import { useState } from "react";
 import FormAsterisk from "../FormAsterisk/FormAsterisk";
 
 export default function DeleteConfirmation({ onConfirm, onCancel }) {
   const { email } = useUser();
-  const { leftMargin } = useLayout();
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -45,13 +44,14 @@ export default function DeleteConfirmation({ onConfirm, onCancel }) {
       setLoading(false);
     }
   };
-  return (
+
+  const content = (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
-      className={`fixed inset-0 z-50 ${leftMargin} flex items-center justify-center bg-white/50 transition-[left] duration-200 dark:bg-black/60`}
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-black/50 duration-200 dark:bg-black/60`}
     >
       <motion.div
         initial={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -187,4 +187,5 @@ export default function DeleteConfirmation({ onConfirm, onCancel }) {
       </motion.div>
     </motion.div>
   );
+  return createPortal(content, document.body);
 }

@@ -124,14 +124,11 @@
   .bg-home-classes {
     @apply bg-linear-to-br from-red-100 via-red-50 to-white dark:from-gray-900 dark:via-blue-950/20 dark:to-gray-950;
   }
-  .bg-gradient-classes {
-    @apply bg-linear-to-br from-white via-slate-50 to-white dark:from-gray-950 dark:via-gray-950 dark:to-gray-950;
-  }
   .bg-conditions {
     @apply bg-linear-to-br from-slate-100 via-slate-50 to-white dark:from-gray-900 dark:via-gray-950 dark:to-black;
   }
   .bg-user-menu {
-    @apply bg-linear-to-br from-white via-white to-white dark:from-gray-900 dark:via-gray-950 dark:to-black;
+    @apply bg-linear-to-br from-white via-white to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-900;
   }
 
   /* Maintaining a certain length in different screens - Tailwind css configuration */

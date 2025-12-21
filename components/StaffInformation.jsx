@@ -3,7 +3,7 @@ import FormAsterisk from "./Reusables/FormAsterisk/FormAsterisk";
 const StaffInformation = ({ formData, handleChange, userRole }) => {
   const isReadOnly = userRole !== "staff";
   return (
-    <div className="bg-gradient-classes rounded-xl">
+    <div className="rounded-xl">
       <div className="rounded-t-xl px-2 py-3 text-lg font-semibold text-gray-900 dark:text-white">
         Staff Information
       </div>
