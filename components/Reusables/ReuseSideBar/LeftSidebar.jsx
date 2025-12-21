@@ -12,32 +12,31 @@ import {
 } from "lucide-react";
 import HotpointLogo from "../HotpointLogo";
 import UserMenu from "../UserMenu";
+import { useLayout } from "@/context/LayoutContext";
 
 const LeftSidebar = ({
-  isOpen,
-  toggleSidebar,
   router,
   handleHomeClick,
   handleHistoryClick,
   handleNavClick,
   activeTab,
   role,
-  toggleTopbarView,
 }) => {
+  const { sidebarOpen, setSidebarOpen, setShowTopbar } = useLayout();
   return (
     <div
       className={`custom:flex fixed top-0 bottom-0 left-0 z-50 hidden flex-col bg-white transition-all duration-200 dark:bg-gray-950 ${
-        isOpen ? "w-58" : "w-14"
+        sidebarOpen ? "w-58" : "w-14"
       }`}
     >
       <div className="relative flex grow flex-col">
         <div className="relative mt-2 flex px-4.5 pb-[11.5px]">
           {/* Hotpoint Logo */}
-          <HotpointLogo isOpen={isOpen} />
+          <HotpointLogo isOpen={sidebarOpen} />
 
           <button
             onClick={() => router.back()}
-            className={`absolute ${isOpen ? "top-[1.5px] left-39" : "top-11 left-[13px]"} rounded-full bg-gray-100 p-1.5 text-gray-900 transition-all duration-200 hover:bg-gray-200 dark:bg-gray-800/50 dark:text-white dark:hover:bg-gray-800`}
+            className={`absolute ${sidebarOpen ? "top-[1.5px] left-39" : "top-11 left-[13px]"} rounded-full bg-gray-100 p-1.5 text-gray-900 transition-all duration-200 hover:bg-gray-200 dark:bg-gray-800/50 dark:text-white dark:hover:bg-gray-800`}
             title="Go back"
           >
             <ChevronsLeft className="h-4.5 w-4.5" />
@@ -46,10 +45,10 @@ const LeftSidebar = ({
           {/* Toggling the sidebar */}
 
           <button
-            className={`absolute ${isOpen ? "top-[1.5px] left-48" : "top-20 left-[13px]"} rounded-lg bg-gray-100 p-1.5 text-gray-900 transition-all duration-200 hover:bg-gray-200 dark:bg-gray-800/50 dark:text-white dark:hover:bg-gray-800`}
-            onClick={toggleSidebar}
+            className={`absolute ${sidebarOpen ? "top-[1.5px] left-48" : "top-20 left-[13px]"} rounded-lg bg-gray-100 p-1.5 text-gray-900 transition-all duration-200 hover:bg-gray-200 dark:bg-gray-800/50 dark:text-white dark:hover:bg-gray-800`}
+            onClick={() => setSidebarOpen((prev) => !prev)}
           >
-            {isOpen ? (
+            {sidebarOpen ? (
               <PanelLeftClose className="h-4.5 w-4.5" />
             ) : (
               <PanelLeftOpen className="h-4.5 w-4.5" />
@@ -59,7 +58,7 @@ const LeftSidebar = ({
 
         {/* Navigation Buttons */}
         <nav
-          className={`${isOpen ? "mt-4" : "mt-20"} grow px-2 transition-all duration-200`}
+          className={`${sidebarOpen ? "mt-4" : "mt-20"} grow px-2 transition-all duration-200`}
         >
           <ul className="space-y-1">
             <li>
@@ -74,7 +73,7 @@ const LeftSidebar = ({
                 <HomeIcon className="h-4 w-4 shrink-0" />
                 <span
                   className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
-                    isOpen ? "w-40" : "w-0"
+                    sidebarOpen ? "w-40" : "w-0"
                   }`}
                 >
                   Home
@@ -94,7 +93,7 @@ const LeftSidebar = ({
                   <ShoppingBagIcon className="h-4 w-4 shrink-0" />
                   <span
                     className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
-                      isOpen ? "w-40" : "w-0"
+                      sidebarOpen ? "w-40" : "w-0"
                     }`}
                   >
                     New Purchase
@@ -114,7 +113,7 @@ const LeftSidebar = ({
                 <History className="h-4 w-4 shrink-0" />
                 <span
                   className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
-                    isOpen ? "w-40" : "w-0"
+                    sidebarOpen ? "w-40" : "w-0"
                   }`}
                 >
                   Purchases History
@@ -136,7 +135,7 @@ const LeftSidebar = ({
                   <BookOpenCheck className="h-4 w-4 shrink-0" />
                   <span
                     className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
-                      isOpen ? "w-40" : "w-0"
+                      sidebarOpen ? "w-40" : "w-0"
                     }`}
                   >
                     Fully Approved
@@ -149,13 +148,13 @@ const LeftSidebar = ({
         {/* Help & Support Hotpoint Website & User Menu */}
         <div className="space-y-4 px-2 py-3">
           <div
-            onClick={toggleTopbarView}
+            onClick={() => setShowTopbar((prev) => !prev)}
             className="flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-sm text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
           >
             <ArrowUpWideNarrow className="h-4 w-4 shrink-0" />
             <span
               className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
-                isOpen ? "w-40" : "w-0"
+                sidebarOpen ? "w-40" : "w-0"
               }`}
             >
               Topbar View
@@ -170,7 +169,7 @@ const LeftSidebar = ({
             <Link2 className="h-4 w-4 shrink-0" />
             <span
               className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
-                isOpen ? "w-40" : "w-0"
+                sidebarOpen ? "w-40" : "w-0"
               }`}
             >
               Hotpoint Website
@@ -183,14 +182,14 @@ const LeftSidebar = ({
             <MessageCircleQuestion className="h-4 w-4 shrink-0" />
             <span
               className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
-                isOpen ? "w-40" : "w-0"
+                sidebarOpen ? "w-40" : "w-0"
               }`}
             >
               Help & Support
             </span>
           </a>
 
-          <UserMenu isSidebarOpen={isOpen} />
+          <UserMenu />
         </div>
       </div>
     </div>

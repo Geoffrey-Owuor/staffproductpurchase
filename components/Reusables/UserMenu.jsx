@@ -9,12 +9,11 @@ import SettingsPage from "../Settings/SettingsPage";
 import { useUser } from "@/context/UserContext";
 import ThemeToggle from "./ThemeProviders/ThemeToggle";
 import { LoggingOutOverlay } from "./LoadingBar";
+import { useLayout } from "@/context/LayoutContext";
 
-export default function UserMenu({
-  isSidebarOpen,
-  hideMobileMenu,
-  showTopbar,
-}) {
+export default function UserMenu({ hideMobileMenu }) {
+  const { showTopbar, sidebarOpen } = useLayout();
+
   const user = useUser();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
@@ -82,7 +81,7 @@ export default function UserMenu({
           </div>
           <div
             className={`flex flex-col whitespace-nowrap transition-all duration-200 ${
-              isSidebarOpen && !showTopbar ? "w-40" : "w-0"
+              sidebarOpen && !showTopbar ? "w-40" : "w-0"
             }`}
           >
             <span className="max-w-[100px] truncate text-sm font-semibold">

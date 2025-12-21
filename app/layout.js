@@ -3,6 +3,7 @@ import "../styles/globals.css";
 import LoadingLine from "@/components/Reusables/LoadingLine";
 import { LoadingLineProvider } from "@/context/LoadingLineContext";
 import { ThemeProvider } from "next-themes";
+import { LayoutProvider } from "@/context/LayoutContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,8 +36,10 @@ export default function RootLayout({ children }) {
           disableTransitionOnChange={true}
         >
           <LoadingLineProvider>
-            <LoadingLine />
-            <main>{children}</main>
+            <LayoutProvider>
+              <LoadingLine />
+              <main>{children}</main>
+            </LayoutProvider>
           </LoadingLineProvider>
         </ThemeProvider>
       </body>
