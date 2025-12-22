@@ -7,7 +7,7 @@ export default function HotpointLogo({ isOpen }) {
       <Image
         src={assets.hat}
         alt="christmas hat"
-        className={`absolute bottom-2.5 left-5.5 w-6 transition-all duration-200 ${isOpen ? "custom:w-6" : "custom:w-0"}`}
+        className={`absolute bottom-1 left-5.5 w-6 transition-all duration-200 ${isOpen ? "custom:w-6" : "custom:w-0"}`}
       />
       <ShoppingBagIcon className="h-5 w-5 text-gray-900 dark:text-white" />
       <span
