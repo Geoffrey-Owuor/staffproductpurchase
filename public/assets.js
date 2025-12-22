@@ -39,10 +39,10 @@ export const AuthPagesLogo = () => {
         <Image
           src={assets.hat}
           alt="christmas hat"
-          className="absolute bottom-1 left-6.5 w-7"
+          className="absolute bottom-1.5 left-6.5 w-7 sm:bottom-1"
         />
         <ShoppingBag className="h-6 w-6 text-gray-950 dark:text-white" />
-        <span className="text-gray-900 dark:text-gray-100">
+        <span className="mt-1 text-gray-900 sm:mt-0 dark:text-gray-100">
           Hot<span className="text-red-600 dark:text-red-500">p</span>oint
         </span>
       </div>
@@ -57,10 +57,10 @@ export const LandingPageLogo = () => {
         <Image
           src={assets.hat}
           alt="christmas hat"
-          className="absolute bottom-1 left-6.5 w-7"
+          className="absolute bottom-1.5 left-6.5 w-7 sm:bottom-1"
         />
         <ShoppingBag className="h-6 w-6 text-gray-950 dark:text-white" />
-        <span className="text-gray-900 dark:text-gray-100">
+        <span className="mt-1 text-gray-900 sm:mt-0 dark:text-gray-100">
           Hot<span className="text-red-600 dark:text-red-500">p</span>oint
         </span>
       </div>
