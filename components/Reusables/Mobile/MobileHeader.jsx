@@ -233,8 +233,8 @@ export default function MobileHeader() {
 
           <div className="ml-1">
             <UserMenu
-              isSidebarOpen={true}
               hideMobileMenu={() => setIsMobileMenuOpen(false)}
+              menuOpen={true}
             />
           </div>
         </div>

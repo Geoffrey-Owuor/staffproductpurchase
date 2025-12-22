@@ -22,7 +22,7 @@ export default function ReusableLayoutShell({ user, children }) {
   return (
     <UserContext.Provider value={user}>
       <ChangeLogAlert />
-      <div className="flex min-h-screen flex-col">
+      <div className="layout-shell flex min-h-screen flex-col">
         <MobileHeader />
         <ReusableSidebar />
         <main

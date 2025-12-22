@@ -44,12 +44,12 @@ ADD COLUMN last_changelog_viewed_at TIMESTAMP NULL DEFAULT NULL;
 
 
   //Background Image code reference
-  layoutShell {
-    background-image: url(../public/bg_light.png);
+  auth-background {
+    background-image: url(../public/light_mode_bg.png);
     background-attachment: fixed; /* Keeps bg still while scrolling */
     background-repeat: repeat; /* Use 'no-repeat' and 'background-size: cover' if it's a single big image */
     background-position: center;
   }
-  [data-theme="dark"] layoutShell {
-    background-image: url(../public/bg_dark.png);
+  [data-theme="dark"] auth-background {
+    background-image: url(../public/dark_mode_bg.png);
   }

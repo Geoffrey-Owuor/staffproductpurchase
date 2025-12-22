@@ -41,3 +41,16 @@ export const AuthPagesLogo = () => {
     </Link>
   );
 };
+
+export const LandingPageLogo = () => {
+  return (
+    <a href="/#">
+      <div className="flex items-center gap-1 text-2xl font-semibold">
+        <ShoppingBag className="h-6 w-6 text-gray-950 dark:text-white" />
+        <span className="text-gray-900 dark:text-gray-100">
+          Hot<span className="text-red-600 dark:text-red-500">p</span>oint
+        </span>
+      </div>
+    </a>
+  );
+};

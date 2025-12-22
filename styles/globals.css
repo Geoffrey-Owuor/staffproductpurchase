@@ -130,12 +130,13 @@
 
   /* Background for layoutshell page */
   .layout-shell {
-    background-image: url(../public/light_mode_bg.svg);
+    background-image: url(../public/layout_light_bg.png);
     background-repeat: repeat; /* Use 'no-repeat' and 'background-size: cover' if it's a single big image */
     background-position: center;
+    background-size: 500px;
   }
   [data-theme="dark"] .layout-shell {
-    background-image: url(../public/dark_mode_bg.svg);
+    background-image: url(../public/layout_dark_bg.png);
   }
   .bg-base-classes {
     @apply bg-white dark:bg-gray-950;
