@@ -12,6 +12,7 @@ import {
 import HotpointLogo from "../HotpointLogo";
 import UserMenu from "../UserMenu";
 import { useState, useEffect } from "react";
+import { useLayout } from "@/context/LayoutContext";
 
 const TopSidebar = ({
   router,
@@ -19,12 +20,15 @@ const TopSidebar = ({
   handleHistoryClick,
   handleNavClick,
   activeTab,
-  showTopbar,
   role,
-  toggleTopbarView,
 }) => {
   // --- State for header scroll effect ---
   const [isScrolled, setIsScrolled] = useState(false);
+  const { setShowTopbar } = useLayout();
+
+  const toggleTopbarView = () => {
+    setShowTopbar(false);
+  };
 
   //   UseEffect to detect page scroll
   useEffect(() => {
@@ -44,9 +48,7 @@ const TopSidebar = ({
   return (
     <header
       className={`custom:flex fixed top-0 right-0 left-0 z-50 hidden h-16 transition-all duration-200 ${
-        isScrolled
-          ? "custom-blur bg-white/70 shadow-xs dark:bg-gray-950/70"
-          : "bg-white dark:bg-gray-950"
+        isScrolled ? "custom-blur shadow-xs" : ""
       }`}
     >
       <div className="containerizing flex w-full items-center justify-between px-4">
@@ -169,7 +171,7 @@ const TopSidebar = ({
           {/* User Menu */}
           <div className="pl-2">
             {/* isSidebarOpen={true} ensures full user details are shown */}
-            <UserMenu isSidebarOpen={true} showTopbar={showTopbar} />
+            <UserMenu />
           </div>
         </div>
       </div>

@@ -9,12 +9,11 @@ import SettingsPage from "../Settings/SettingsPage";
 import { useUser } from "@/context/UserContext";
 import ThemeToggle from "./ThemeProviders/ThemeToggle";
 import { LoggingOutOverlay } from "./LoadingBar";
+import { useLayout } from "@/context/LayoutContext";
 
-export default function UserMenu({
-  isSidebarOpen,
-  hideMobileMenu,
-  showTopbar,
-}) {
+export default function UserMenu({ hideMobileMenu }) {
+  const { showTopbar, sidebarOpen } = useLayout();
+
   const user = useUser();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
@@ -82,7 +81,7 @@ export default function UserMenu({
           </div>
           <div
             className={`flex flex-col whitespace-nowrap transition-all duration-200 ${
-              isSidebarOpen && !showTopbar ? "w-40" : "w-0"
+              sidebarOpen && !showTopbar ? "w-40" : "w-0"
             }`}
           >
             <span className="max-w-[100px] truncate text-sm font-semibold">
@@ -104,9 +103,9 @@ export default function UserMenu({
                 stiffness: 300,
                 damping: 30,
               }}
-              className={`absolute ${showTopbar ? "top-full right-0" : "bottom-full -left-0.5"} z-50 mt-2 mb-2 w-52.5 rounded-2xl border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-900`}
+              className={`absolute ${showTopbar ? "top-full right-0" : "bottom-full left-1"} bg-user-menu z-50 mt-2 mb-2 w-52.5 rounded-2xl border border-gray-200 shadow-lg dark:border-gray-700`}
             >
-              <div className="border-b border-gray-100 px-4 py-3 dark:border-gray-800">
+              <div className="border-b border-gray-200 px-4 py-3 dark:border-gray-800">
                 <p className="max-w-40 truncate text-sm font-semibold text-gray-900 dark:text-white">
                   {user.name}
                 </p>

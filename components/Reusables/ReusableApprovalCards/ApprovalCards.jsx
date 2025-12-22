@@ -28,13 +28,13 @@ export default function ApprovalCards() {
   const { counts, loading, refetchCounts } = useApprovalCounts();
 
   return (
-    <div className="bg-gradient-classes mx-2 mb-8 rounded-xl border border-gray-200 px-2 pt-2 pb-3 dark:border-gray-700">
+    <div className="mb-8 rounded-xl px-2">
       {/* Render Heading Dynamically */}
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-5">
           {userRole === "staff" ? (
             <div className="mt-3 mb-2 px-1 pb-3">
-              <h2 className="text-lg text-gray-900 dark:text-white">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                 Approval status
               </h2>
               <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -66,7 +66,7 @@ export default function ApprovalCards() {
         ) : (
           <>
             {userRole !== "staff" && (
-              <div className="mr-2 hidden items-center space-x-2 lg:flex">
+              <div className="hidden items-center space-x-2 lg:flex">
                 <div className="flex items-center gap-2 rounded-xl bg-slate-200 p-3 dark:bg-slate-900">
                   <span className="font-mono text-xl font-semibold">
                     {counts.total}
@@ -96,7 +96,7 @@ export default function ApprovalCards() {
       {loading ? (
         <ApprovalCardsSkeleton />
       ) : (
-        <div className="grid grid-cols-1 gap-4 p-2 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {/* Pending Card */}
           <StatCard
             title="Pending"

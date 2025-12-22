@@ -68,7 +68,7 @@ export default function SaveCloseComponent({
           onClose={() => setShowAlert(false)}
         />
       )}
-      <div className="flex justify-center space-x-4">
+      <div className="flex justify-center space-x-4 py-6">
         <button
           type="button"
           onClick={() => router.back()}

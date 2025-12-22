@@ -1,16 +1,18 @@
 "use client";
 
 import { X } from "lucide-react";
+import { createPortal } from "react-dom";
+
 import { motion } from "framer-motion";
 
 const ConfirmationDialog = ({ message, onConfirm, onCancel, title }) => {
-  return (
+  const content = (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-white/50 dark:bg-black/60"
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-black/50 duration-200 dark:bg-black/60`}
     >
       <motion.div
         initial={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -57,6 +59,7 @@ const ConfirmationDialog = ({ message, onConfirm, onCancel, title }) => {
       </motion.div>
     </motion.div>
   );
+  return createPortal(content, document.body);
 };
 
 export default ConfirmationDialog;

@@ -16,11 +16,11 @@ export default function TrackingApprovalCards() {
   const { loading, counts, refetchCounts } = useTrackingApprovalCards();
 
   return (
-    <div className="bg-gradient-classes mx-2 mb-8 rounded-xl border border-gray-200 px-2 pt-2 pb-3 dark:border-gray-700">
+    <div className="mb-8 rounded-xl px-2">
       {/* Render Heading Dynamically */}
       <div className="flex items-center space-x-5">
         <div className="mt-3 mb-2 px-1 pb-3">
-          <h2 className="text-lg text-gray-900 dark:text-white">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             Closed & Open Requests
           </h2>
           <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -41,7 +41,7 @@ export default function TrackingApprovalCards() {
       {loading ? (
         <ApprovalCardsSkeleton />
       ) : (
-        <div className="grid grid-cols-1 gap-4 p-2 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {/* Open Card */}
           <StatCard
             title="Open"

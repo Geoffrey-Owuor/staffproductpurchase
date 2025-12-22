@@ -4,7 +4,7 @@ import { CachedConditions } from "@/utils/Cache/CachedConditions";
 const TermsConditions = async () => {
   const terms = await CachedConditions();
   return (
-    <div className="bg-conditions mx-2 mt-8 mb-2 rounded-2xl border border-gray-200 p-6 text-sm dark:border-gray-700">
+    <div className="bg-conditions mx-2 mt-8 mb-8 rounded-2xl p-6 text-sm">
       <div className="mb-4 ml-0.5 flex items-center gap-2">
         <FileSignature className="h-5 w-5 text-gray-600 dark:text-gray-400" />
         <h3 className="text-xl text-gray-800 dark:text-gray-200">

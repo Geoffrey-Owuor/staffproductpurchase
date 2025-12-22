@@ -1,10 +1,14 @@
+"use client";
 import { Loader } from "lucide-react";
+import { createPortal } from "react-dom";
+
 export const LoadingBar = ({ isLoading }) => {
   if (!isLoading) return null;
 
-  return (
-    // This main div provides the full-screen semi-transparent overlay
-    <div className="fixed inset-0 z-9999 flex h-screen items-center justify-center bg-white/50 dark:bg-black/60">
+  const content = (
+    <div
+      className={`fixed inset-0 z-9999 flex h-screen items-center justify-center bg-black/50 transition-all duration-200 dark:bg-black/60`}
+    >
       {/* Container to align the spinner and text horizontally */}
       <div className="flex items-center space-x-2">
         {/* The Lucide Loader spinner */}
@@ -20,14 +24,16 @@ export const LoadingBar = ({ isLoading }) => {
       </div>
     </div>
   );
+  return createPortal(content, document.body);
 };
 
 export const LoadingBarWave = ({ isLoading }) => {
   if (!isLoading) return null;
 
-  return (
-    // This main div provides the full-screen semi-transparent overlay
-    <div className="fixed inset-0 z-9999 flex h-screen items-center justify-center bg-white/50 dark:bg-black/60">
+  const content = (
+    <div
+      className={`fixed inset-0 z-9999 flex h-screen items-center justify-center bg-black/50 transition-all duration-200 dark:bg-black/60`}
+    >
       {/* Container to align the spinner and text horizontally */}
       <div className="flex items-center space-x-2">
         {/* The Lucide Loader spinner */}
@@ -41,6 +47,8 @@ export const LoadingBarWave = ({ isLoading }) => {
       </div>
     </div>
   );
+
+  return createPortal(content, document.body);
 };
 
 export const LoggingOutOverlay = ({ isLoggingOut }) => {
@@ -67,9 +75,10 @@ export const LoggingOutOverlay = ({ isLoggingOut }) => {
 };
 
 export const DeletingOverlay = () => {
-  return (
-    // This main div provides the full-screen semi-transparent overlay
-    <div className="fixed inset-0 z-9999 flex h-screen items-center justify-center bg-white/50 dark:bg-black/60">
+  const content = (
+    <div
+      className={`fixed inset-0 z-9999 flex h-screen items-center justify-center bg-black/50 transition-all duration-200 dark:bg-black/60`}
+    >
       {/* Container to align the spinner and text horizontally */}
       <div className="flex items-center space-x-2">
         {/* The Lucide Loader spinner */}
@@ -85,4 +94,5 @@ export const DeletingOverlay = () => {
       </div>
     </div>
   );
+  return createPortal(content, document.body);
 };

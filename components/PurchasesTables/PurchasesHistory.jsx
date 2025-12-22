@@ -163,9 +163,9 @@ export default function PurchasesHistory() {
           onClose={() => setAlertInfo({ show: false, message: "", type: "" })}
         />
       )}
-      <div className="bg-gradient-classes m-2 rounded-xl border border-gray-200 px-2 pt-2 pb-4 dark:border-gray-700">
+      <div className="rounded-xl px-2 pb-4">
         {/* Purchase History Heading or Recent Purchases Heading & toggling columns */}
-        <div className="flex flex-col items-center space-y-6 md:flex-row md:justify-between md:space-y-0">
+        <div className="flex flex-col space-y-6 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
           {fetchAllData ? (
             <PurchasesHistoryHeading />
           ) : (
@@ -186,7 +186,7 @@ export default function PurchasesHistory() {
 
         {/* Search Bar (Selecting filter types) */}
         <div className="mx-auto mb-6 max-w-md">
-          <div className="mt-3 flex flex-col items-center justify-center space-y-4 md:flex-row md:space-y-0 md:space-x-4">
+          <div className="mt-3 flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
@@ -388,7 +388,7 @@ export default function PurchasesHistory() {
                     currentPurchases.map((purchase) => (
                       <tr
                         key={purchase.id}
-                        className="odd:bg-white even:bg-gray-50 hover:bg-gray-100 dark:odd:bg-gray-950 dark:even:bg-gray-900 dark:hover:bg-gray-800/50"
+                        className="odd:bg-white even:bg-gray-50 dark:odd:bg-gray-950 dark:even:bg-gray-900"
                       >
                         {visibleColumns.submissionDate && (
                           <td className="max-w-[200px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900 dark:text-white">

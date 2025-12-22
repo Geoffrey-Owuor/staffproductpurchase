@@ -7,13 +7,10 @@ import { UseHandleHistoryRoute } from "@/utils/HandleActionClicks/UseHandleHisto
 import { useUser } from "@/context/UserContext";
 import LeftSidebar from "./LeftSidebar";
 import TopSidebar from "./TopSidebar";
+import { useLayout } from "@/context/LayoutContext";
 
-export default function ReusableSidebar({
-  isOpen,
-  toggleSidebar,
-  showTopbar,
-  toggleTopbarView,
-}) {
+export default function ReusableSidebar() {
+  const { showTopbar } = useLayout();
   const { role } = useUser();
   const router = useRouter();
   const { startLoading } = useLoadingLine();
@@ -101,21 +98,16 @@ export default function ReusableSidebar({
           handleHistoryClick={handleHistoryClick}
           handleHomeClick={handleHomeClick}
           handleNavClick={handleNavClick}
-          showTopbar={showTopbar}
           activeTab={activeTab}
-          toggleTopbarView={toggleTopbarView}
         />
       ) : (
         <LeftSidebar
-          isOpen={isOpen}
           router={router}
           activeTab={activeTab}
           role={role}
-          toggleSidebar={toggleSidebar}
           handleHomeClick={handleHomeClick}
           handleHistoryClick={handleHistoryClick}
           handleNavClick={handleNavClick}
-          toggleTopbarView={toggleTopbarView}
         />
       )}
     </>

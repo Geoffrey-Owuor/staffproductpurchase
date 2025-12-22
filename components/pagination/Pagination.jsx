@@ -168,7 +168,7 @@ export default function Pagination({
             }}
             className="rounded-[7px] border border-gray-300 bg-white p-1 text-sm text-gray-700 focus:border-gray-500 focus:ring-1 focus:ring-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-gray-400"
           >
-            {[10, 20, 50, 100].map((size) => (
+            {[5, 10, 20, 50, 100].map((size) => (
               <option key={size} value={size}>
                 {size}
               </option>

@@ -8,13 +8,13 @@ export default function PayrollApprovalSection({
 }) {
   const isReadOnly = userRole !== "payroll";
   return (
-    <div className="bg-gradient-classes overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700">
-      <div className="px-6 py-3">
+    <div className="overflow-hidden rounded-xl">
+      <div className="px-2 py-3">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
           Payroll Approval
         </h3>
       </div>
-      <div className="grid grid-cols-1 gap-6 p-6 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 px-2 py-4 md:grid-cols-2">
         {/* Third Rule Assessment */}
         <div className="md:col-span-2">
           <label

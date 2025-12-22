@@ -131,13 +131,15 @@ export default function GeneralViewPurchases({ id }) {
 
   return (
     <>
-      <div className="mx-auto p-2">
-        {isEditing && <LoadingBar isLoading={true} />}
+      {isEditing && <LoadingBar isLoading={true} />}
+
+      {/* Details Card */}
+      <div className="mx-auto rounded-xl pb-6">
         {/* Header with back button */}
-        <div className="mb-6 flex items-center justify-between">
+        <div className="flex items-center justify-between px-2 pt-2 pb-4">
           <div className="flex items-center gap-2">
-            <View className="h-6 w-6" />
             <span className="text-xl font-semibold">View Request</span>
+            <View className="h-6 w-6" />
           </div>
           <div className="flex items-center justify-end gap-4">
             {/* Middle Edit Button */}
@@ -186,259 +188,255 @@ export default function GeneralViewPurchases({ id }) {
             <TopBarButtons />
           </div>
         </div>
-
-        {/* Details Card */}
-        <div className="rounded-xl border border-gray-200 dark:border-gray-700">
-          {/* Staff Information Section */}
-          <div className="border-b border-gray-200 p-6 dark:border-gray-700">
-            <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
-              Staff Information
-            </h2>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-              <DetailField label="Staff Name" value={purchase.staffName} />
-              <DetailField label="Payroll No" value={purchase.payrollNo} />
-              <DetailField label="Department" value={purchase.department} />
-            </div>
+        {/* Staff Information Section */}
+        <div className="border-b border-gray-200 px-2 py-6 dark:border-gray-700">
+          <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+            Staff Information
+          </h2>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            <DetailField label="Staff Name" value={purchase.staffName} />
+            <DetailField label="Payroll No" value={purchase.payrollNo} />
+            <DetailField label="Department" value={purchase.department} />
           </div>
+        </div>
 
-          {/* Products and Pricing Section */}
-          <ProductItemsInfo products={purchase?.products} />
+        {/* Products and Pricing Section */}
+        <ProductItemsInfo products={purchase?.products} />
 
-          {/* Approval & Metadata Section */}
-          <div className="grid grid-cols-1 gap-6 p-6 md:grid-cols-3">
-            <div>
-              <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
-                Approval Statuses
-              </h2>
-              <div className="space-y-4">
-                <ApprovalStatus
-                  label="Payroll Approval"
-                  status={purchase.Payroll_Approval}
-                />
-                <ApprovalStatus
-                  label="HR Approval"
-                  status={purchase.HR_Approval}
-                />
-                <ApprovalStatus
-                  label="Credit Approval"
-                  status={purchase.CC_Approval}
-                />
-                <ApprovalStatus
-                  label="Invoicing Approval"
-                  status={purchase.BI_Approval}
-                />
-              </div>
-            </div>
-            <div>
-              <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
-                Delivery & Invoicing Details
-              </h2>
-              <div className="space-y-4">
-                <DetailField
-                  label="Invoicing Location"
-                  value={purchase.invoicing_location}
-                />
-                <DetailField
-                  label="Delivery/Pickup Details"
-                  value={purchase.delivery_details}
-                />
-                <DetailField
-                  label="Reference Number"
-                  value={purchase.reference_number}
-                />
-              </div>
-            </div>
-            <div>
-              <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
-                Metadata
-              </h2>
-              <div className="space-y-4">
-                <DetailField
-                  label="Date Created"
-                  value={formatDateLong(purchase.createdAt)}
-                />
-
-                <DetailField
-                  label="Payment Terms/Options"
-                  value={purchase.employee_payment_terms}
-                />
-
-                {(purchase.employee_payment_terms === "CREDIT" ||
-                  purchase.employee_payment_terms === "CASH AND CREDIT") && (
-                  <DetailField
-                    label="Credit Period"
-                    value={formatCreditPeriod(purchase.user_credit_period)}
-                  />
-                )}
-                {(purchase.employee_payment_terms === "CASH" ||
-                  purchase.employee_payment_terms === "CASH AND CREDIT") && (
-                  <DetailField label="Mpesa Code" value={purchase.mpesa_code} />
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Payroll Approval Section - Just the same 1/3 rule in credit control */}
-          <div className="border-t border-gray-200 p-6 dark:border-gray-700">
+        {/* Approval & Metadata Section */}
+        <div className="grid grid-cols-1 gap-6 px-2 py-6 md:grid-cols-3">
+          <div>
             <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
-              Payroll Approval
+              Approval Statuses
             </h2>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <div className="md:col-span-2">
-                <DetailField
-                  label="1/3 Rule Assessment"
-                  value={purchase.one_third_rule || "n/a"}
-                />
-              </div>
-
-              <DetailField
-                label="Payroll Approver"
-                value={purchase.payroll_approver_name}
-              />
-              <DetailField
-                label="Payroll Approval Date"
-                value={formatDateLong(purchase.payroll_approval_date)}
+            <div className="space-y-4">
+              <ApprovalStatus
+                label="Payroll Approval"
+                status={purchase.Payroll_Approval}
               />
               <ApprovalStatus
-                label="Payroll Approval Status"
-                status={purchase.Payroll_Approval || "n/a"}
+                label="HR Approval"
+                status={purchase.HR_Approval}
+              />
+              <ApprovalStatus
+                label="Credit Approval"
+                status={purchase.CC_Approval}
+              />
+              <ApprovalStatus
+                label="Invoicing Approval"
+                status={purchase.BI_Approval}
               />
             </div>
           </div>
-
-          {/* HR Approval Section */}
-          <div className="border-t border-gray-200 p-6 dark:border-gray-700">
+          <div>
             <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
-              HR Approval
+              Delivery & Invoicing Details
             </h2>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              <ApprovalStatus
-                label="Employment Status"
-                status={purchase.is_employed || "n/a"}
-              />
-              <ApprovalStatus
-                label="Probation Status"
-                status={purchase.on_probation || "n/a"}
-              />
-              <ApprovalStatus
-                label="HR Approval Status"
-                status={purchase.HR_Approval || "n/a"}
+            <div className="space-y-4">
+              <DetailField
+                label="Invoicing Location"
+                value={purchase.invoicing_location}
               />
               <DetailField
-                label="HR Approver"
-                value={purchase.hr_approver_name || "N/A"}
+                label="Delivery/Pickup Details"
+                value={purchase.delivery_details}
               />
               <DetailField
-                label="HR Approval Date"
-                value={formatDateLong(purchase.hr_approval_date)}
+                label="Reference Number"
+                value={purchase.reference_number}
               />
-
-              <div className="col-span-full">
-                <DetailField
-                  label="HR Comments"
-                  value={purchase.hr_comments || "No comments provided"}
-                />
-              </div>
             </div>
           </div>
-
-          {/* Credit Control Verification Section */}
-          <div className="border-t border-gray-200 p-6 dark:border-gray-700">
+          <div>
             <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
-              Credit Control Verification and Approval
+              Metadata
             </h2>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              {/* Full-width text fields */}
-              <div className="md:col-span-2">
-                <DetailField
-                  label="Credit Period & Payment Modes"
-                  value={purchase.credit_period || "n/a"}
-                />
-              </div>
+            <div className="space-y-4">
+              <DetailField
+                label="Date Created"
+                value={formatDateLong(purchase.createdAt)}
+              />
 
-              <div className="md:col-span-2">
-                <DetailField
-                  label="Purchase History Comments"
-                  value={purchase.purchase_history_comments || "n/a"}
-                />
-              </div>
+              <DetailField
+                label="Payment Terms/Options"
+                value={purchase.employee_payment_terms}
+              />
 
-              {/* Two-column fields */}
-              <div>
+              {(purchase.employee_payment_terms === "CREDIT" ||
+                purchase.employee_payment_terms === "CASH AND CREDIT") && (
                 <DetailField
-                  label="Pending Invoices/Outstanding"
-                  value={purchase.pending_invoices || "n/a"}
+                  label="Credit Period"
+                  value={formatCreditPeriod(purchase.user_credit_period)}
                 />
-              </div>
-
-              <div>
-                <ApprovalStatus
-                  label="Credit Approval Status"
-                  status={purchase.CC_Approval || "n/a"}
-                />
-              </div>
-
-              <div>
-                <DetailField
-                  label="Checked By"
-                  value={purchase.cc_approver_name || "n/a"}
-                />
-              </div>
-
-              <div>
-                <DetailField
-                  label="Credit Approval Date"
-                  value={formatDateLong(purchase.cc_approval_date)}
-                />
-              </div>
+              )}
+              {(purchase.employee_payment_terms === "CASH" ||
+                purchase.employee_payment_terms === "CASH AND CREDIT") && (
+                <DetailField label="Mpesa Code" value={purchase.mpesa_code} />
+              )}
             </div>
           </div>
+        </div>
 
-          {/* Invoicing Details Section */}
-          <div className="border-t border-gray-200 p-6 dark:border-gray-700">
-            <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
-              Invoicing Details
-            </h2>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {/* Payroll Approval Section - Just the same 1/3 rule in credit control */}
+        <div className="border-t border-gray-200 px-2 py-6 dark:border-gray-700">
+          <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+            Payroll Approval
+          </h2>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div className="md:col-span-2">
               <DetailField
-                label="Date of Invoice"
-                value={formatDateLong(purchase.invoice_date)}
+                label="1/3 Rule Assessment"
+                value={purchase.one_third_rule || "n/a"}
               />
-              <DetailField
-                label="Invoice No"
-                value={purchase.invoice_number || "n/a"}
-              />
-              <DetailField
-                label="Invoice Amount"
-                value={
-                  purchase.invoice_amount
-                    ? `Ksh ${Number(purchase.invoice_amount).toFixed(2)}`
-                    : "n/a"
-                }
-              />
-              <DetailField
-                label="Reference Details"
-                value={purchase.payment_reference || "n/a"}
-              />
-              <ApprovalStatus
-                label="Invoicing Approval Status"
-                status={purchase.BI_Approval || "n/a"}
-              />
+            </div>
 
+            <DetailField
+              label="Payroll Approver"
+              value={purchase.payroll_approver_name}
+            />
+            <DetailField
+              label="Payroll Approval Date"
+              value={formatDateLong(purchase.payroll_approval_date)}
+            />
+            <ApprovalStatus
+              label="Payroll Approval Status"
+              status={purchase.Payroll_Approval || "n/a"}
+            />
+          </div>
+        </div>
+
+        {/* HR Approval Section */}
+        <div className="border-t border-gray-200 px-2 py-6 dark:border-gray-700">
+          <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+            HR Approval
+          </h2>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <ApprovalStatus
+              label="Employment Status"
+              status={purchase.is_employed || "n/a"}
+            />
+            <ApprovalStatus
+              label="Probation Status"
+              status={purchase.on_probation || "n/a"}
+            />
+            <ApprovalStatus
+              label="HR Approval Status"
+              status={purchase.HR_Approval || "n/a"}
+            />
+            <DetailField
+              label="HR Approver"
+              value={purchase.hr_approver_name || "N/A"}
+            />
+            <DetailField
+              label="HR Approval Date"
+              value={formatDateLong(purchase.hr_approval_date)}
+            />
+
+            <div className="col-span-full">
               <DetailField
-                label="Invoiced By"
-                value={purchase.bi_approver_name || "n/a"}
-              />
-              <DetailField
-                label="Invoicing Approval Date"
-                value={formatDateLong(purchase.bi_approval_date)}
+                label="HR Comments"
+                value={purchase.hr_comments || "No comments provided"}
               />
             </div>
           </div>
         </div>
 
+        {/* Credit Control Verification Section */}
+        <div className="border-t border-gray-200 px-2 py-6 dark:border-gray-700">
+          <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+            Credit Control Verification and Approval
+          </h2>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {/* Full-width text fields */}
+            <div className="md:col-span-2">
+              <DetailField
+                label="Credit Period & Payment Modes"
+                value={purchase.credit_period || "n/a"}
+              />
+            </div>
+
+            <div className="md:col-span-2">
+              <DetailField
+                label="Purchase History Comments"
+                value={purchase.purchase_history_comments || "n/a"}
+              />
+            </div>
+
+            {/* Two-column fields */}
+            <div>
+              <DetailField
+                label="Pending Invoices/Outstanding"
+                value={purchase.pending_invoices || "n/a"}
+              />
+            </div>
+
+            <div>
+              <ApprovalStatus
+                label="Credit Approval Status"
+                status={purchase.CC_Approval || "n/a"}
+              />
+            </div>
+
+            <div>
+              <DetailField
+                label="Checked By"
+                value={purchase.cc_approver_name || "n/a"}
+              />
+            </div>
+
+            <div>
+              <DetailField
+                label="Credit Approval Date"
+                value={formatDateLong(purchase.cc_approval_date)}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Invoicing Details Section */}
+        <div className="border-t border-gray-200 px-2 py-6 dark:border-gray-700">
+          <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+            Invoicing Details
+          </h2>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <DetailField
+              label="Date of Invoice"
+              value={formatDateLong(purchase.invoice_date)}
+            />
+            <DetailField
+              label="Invoice No"
+              value={purchase.invoice_number || "n/a"}
+            />
+            <DetailField
+              label="Invoice Amount"
+              value={
+                purchase.invoice_amount
+                  ? `Ksh ${Number(purchase.invoice_amount).toFixed(2)}`
+                  : "n/a"
+              }
+            />
+            <DetailField
+              label="Reference Details"
+              value={purchase.payment_reference || "n/a"}
+            />
+            <ApprovalStatus
+              label="Invoicing Approval Status"
+              status={purchase.BI_Approval || "n/a"}
+            />
+
+            <DetailField
+              label="Invoiced By"
+              value={purchase.bi_approver_name || "n/a"}
+            />
+            <DetailField
+              label="Invoicing Approval Date"
+              value={formatDateLong(purchase.bi_approval_date)}
+            />
+          </div>
+        </div>
+
         {/* Bottom Buttons - Centered */}
-        <div className="mt-6 flex justify-center gap-4">
+        <div className="flex justify-center gap-4 py-6">
           {((userRole === "payroll" &&
             purchase.Payroll_Approval !== "approved" &&
             purchase.Payroll_Approval !== "declined") ||

@@ -220,11 +220,11 @@ export default function NewPurchase() {
 
   return (
     <>
-      <div className="mx-auto p-2 leading-relaxed dark:text-white">
-        <div className="mb-6 flex items-center justify-between">
+      <div className="mx-auto leading-relaxed dark:text-white">
+        <div className="flex items-center justify-between px-2 pt-2 pb-4">
           <div className="flex items-center justify-center gap-2 text-gray-900 dark:text-gray-200">
-            <ClipboardList className="h-6 w-6" />
             <h1 className="text-xl font-semibold">Request Form</h1>
+            <ClipboardList className="h-6 w-6" />
           </div>
           <TopBarButtons />
         </div>
@@ -251,12 +251,12 @@ export default function NewPurchase() {
           />
 
           {/* Main Product Pricing title */}
-          <div className="mt-8 mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
+          <div className="mt-8 mb-4 flex items-center gap-2 px-2 text-gray-900 dark:text-white">
             <PackagePlus className="h-6 w-6" />
             <span className="text-xl">Product & Pricing Details</span>
           </div>
           {user.role === "staff" && (
-            <p className="mb-4 text-xs">
+            <p className="mb-4 px-2 text-xs">
               <span className="font-semibold text-red-500 dark:text-red-400">
                 Please note:
               </span>{" "}
@@ -293,7 +293,7 @@ export default function NewPurchase() {
             </div>
           ))}
 
-          <div className="my-4 flex flex-col items-center space-y-3 md:flex-row md:justify-between md:space-y-0">
+          <div className="my-4 flex flex-col items-center space-y-3 px-2 md:flex-row md:justify-between md:space-y-0">
             {purchaseTotal > 0 && (
               <span className="text-lg">
                 Total Purchase Value:{" "}
@@ -306,7 +306,7 @@ export default function NewPurchase() {
               className="flex items-center gap-2 rounded-xl bg-gray-950 px-4 py-2 text-sm text-white transition-colors hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
             >
               <PlusCircle className="h-5 w-5" />
-              Add Product
+              Add <span className="hidden sm:block">Product</span>
             </button>
           </div>
 
