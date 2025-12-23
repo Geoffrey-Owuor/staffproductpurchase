@@ -448,7 +448,7 @@ export default function PaymentTracking() {
                         )}
                         {visibleColumns.invoiceAmount && (
                           <td className="text-sm">
-                            <div className="mr-3 rounded-lg border border-gray-300 px-6 py-2 dark:border-gray-600">
+                            <div className="mr-3 rounded-xl border border-gray-300 px-6 py-2 dark:border-gray-600">
                               {purchase.invoice_amount || "N/A"}
                             </div>
                           </td>

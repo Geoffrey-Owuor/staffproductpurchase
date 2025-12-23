@@ -11,8 +11,21 @@ import ThemeToggle from "./ThemeProviders/ThemeToggle";
 import { LoggingOutOverlay } from "./LoadingBar";
 import { useLayout } from "@/context/LayoutContext";
 
-export default function UserMenu({ hideMobileMenu }) {
+export default function UserMenu({ hideMobileMenu, menuOpen }) {
   const { showTopbar, sidebarOpen } = useLayout();
+
+  const dynamicWidth = menuOpen
+    ? "w-40"
+    : sidebarOpen && !showTopbar
+      ? "w-40"
+      : "w-0";
+
+  const dynamicOpen = menuOpen ? 20 : sidebarOpen && !showTopbar ? 20 : -20;
+  const dynamicPositioning = menuOpen
+    ? "bottom-full left-1"
+    : sidebarOpen && !showTopbar
+      ? "bottom-full left-1"
+      : "top-full right-0";
 
   const user = useUser();
   const router = useRouter();
@@ -80,9 +93,7 @@ export default function UserMenu({ hideMobileMenu }) {
             </span>
           </div>
           <div
-            className={`flex flex-col whitespace-nowrap transition-all duration-200 ${
-              sidebarOpen && !showTopbar ? "w-40" : "w-0"
-            }`}
+            className={`flex flex-col whitespace-nowrap transition-all duration-200 ${dynamicWidth}`}
           >
             <span className="max-w-[100px] truncate text-sm font-semibold">
               {user.name.toLowerCase()}
@@ -95,15 +106,15 @@ export default function UserMenu({ hideMobileMenu }) {
         <AnimatePresence>
           {isOpen && user && (
             <motion.div
-              initial={{ scale: 0.95, opacity: 0, y: showTopbar ? -20 : 20 }}
+              initial={{ scale: 0.95, opacity: 0, y: dynamicOpen }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.95, opacity: 0, y: showTopbar ? -20 : 20 }}
+              exit={{ scale: 0.95, opacity: 0, y: dynamicOpen }}
               transition={{
                 type: "spring",
                 stiffness: 300,
                 damping: 30,
               }}
-              className={`absolute ${showTopbar ? "top-full right-0" : "bottom-full left-1"} bg-user-menu z-50 mt-2 mb-2 w-52.5 rounded-2xl border border-gray-200 shadow-lg dark:border-gray-700`}
+              className={`absolute ${dynamicPositioning} bg-user-menu z-50 mt-2 mb-2 w-52.5 rounded-2xl border border-gray-200 shadow-lg dark:border-gray-700`}
             >
               <div className="border-b border-gray-200 px-4 py-3 dark:border-gray-800">
                 <p className="max-w-40 truncate text-sm font-semibold text-gray-900 dark:text-white">
