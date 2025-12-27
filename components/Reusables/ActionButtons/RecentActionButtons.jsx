@@ -36,12 +36,6 @@ export const RecentActionButtons = ({
   onCloseError,
   disableDelete = false,
 }) => {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   const { role: userRole } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const [deleting, setIsDeleting] = useState(false);
@@ -120,12 +114,18 @@ export const RecentActionButtons = ({
       }
     };
 
+    const handleScroll = () => {
+      setIsOpen(false);
+    };
+
     if (isOpen) {
       document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("scroll", handleScroll, true);
     }
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("scroll", handleScroll, true);
     };
   }, [id, isOpen]);
 
@@ -163,95 +163,98 @@ export const RecentActionButtons = ({
   };
 
   // The JSX for the menu, to be rendered in the portal
-  const DropdownMenu = () => (
-    <motion.div
-      initial={{ scale: 0.95, opacity: 0, y: openUpwards ? 10 : -10 }}
-      animate={{ scale: 1, opacity: 1, y: 0 }}
-      exit={{ scale: 0.95, opacity: 0, y: openUpwards ? 10 : -10 }}
-      transition={{
-        type: "spring",
-        stiffness: 300,
-        damping: 30,
-      }}
-      id={`action-menu-${id}`}
-      style={{
-        position: "absolute",
-        top: `${menuPosition.top}px`,
-        left: `${menuPosition.left}px`,
-      }}
-      className="z-50 w-32 rounded-xl border border-gray-200 bg-white shadow-lg focus:outline-none dark:border-gray-700 dark:bg-gray-800"
-    >
-      <div className="p-1">
-        <button
-          type="button"
-          onClick={() => handleActionClick(gotoPurchaseView)}
-          disabled={goingTo === id}
-          className={menuItemStyles}
-        >
-          <Eye className="mr-1 h-4 w-4" />
-          <span>View</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => handleActionClick(gotoPurchaseEdit)}
-          disabled={
-            //Approver cannot edit once approved
-            goingTo === id ||
-            (userRole === "payroll" &&
-              (payrollApproval === "approved" ||
-                payrollApproval === "declined")) ||
-            (userRole === "hr" &&
-              (hrApproval === "approved" ||
-                hrApproval === "declined" ||
-                payrollApproval === "declined")) ||
-            (userRole === "cc" &&
-              (ccApproval === "approved" ||
-                ccApproval === "declined" ||
-                payrollApproval === "declined" ||
-                hrApproval === "declined")) ||
-            (userRole === "bi" &&
-              (biApproval === "approved" ||
-                biApproval === "declined" ||
-                payrollApproval === "declined" ||
-                hrApproval === "declined" ||
-                ccApproval === "declined"))
-          }
-          className={menuItemStyles}
-        >
-          <Settings2 className="mr-1 h-4 w-4" />
-          <span>Edit</span>
-        </button>
-
-        <div className="mt-1 border-t border-gray-200 dark:border-gray-700">
+  const DropdownMenu = () => {
+    const content = (
+      <motion.div
+        initial={{ scale: 0.95, opacity: 0, y: openUpwards ? 10 : -10 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.95, opacity: 0, y: openUpwards ? 10 : -10 }}
+        transition={{
+          type: "spring",
+          stiffness: 300,
+          damping: 30,
+        }}
+        id={`action-menu-${id}`}
+        style={{
+          position: "absolute",
+          top: `${menuPosition.top}px`,
+          left: `${menuPosition.left}px`,
+        }}
+        className="z-50 w-32 rounded-xl border border-gray-200 bg-white shadow-lg focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+      >
+        <div className="p-1">
           <button
             type="button"
-            onClick={handleConfirmDelete}
-            disabled={
-              //Approver cannot delete once approved
-              goingTo === id || disableDelete || userRole !== "admin"
-            }
-            className="mt-1 flex w-full items-center rounded-lg p-2 text-left text-sm text-red-600 hover:bg-red-50 disabled:opacity-50 disabled:hover:bg-transparent dark:text-red-400 dark:hover:bg-red-600/15"
-          >
-            <Trash2 className="mr-1 h-4 w-4" />
-            <span>Delete</span>
-          </button>
-        </div>
-
-        {closeButton && (
-          <button
-            type="button"
-            onClick={handleConfirmClose}
-            disabled={goingTo === id || closureValue === "closed"}
+            onClick={() => handleActionClick(gotoPurchaseView)}
+            disabled={goingTo === id}
             className={menuItemStyles}
           >
-            <GitPullRequestClosed className="mr-1 h-4 w-4" />
-            <span>Close</span>
+            <Eye className="mr-1 h-4 w-4" />
+            <span>View</span>
           </button>
-        )}
-      </div>
-    </motion.div>
-  );
+
+          <button
+            type="button"
+            onClick={() => handleActionClick(gotoPurchaseEdit)}
+            disabled={
+              //Approver cannot edit once approved
+              goingTo === id ||
+              (userRole === "payroll" &&
+                (payrollApproval === "approved" ||
+                  payrollApproval === "declined")) ||
+              (userRole === "hr" &&
+                (hrApproval === "approved" ||
+                  hrApproval === "declined" ||
+                  payrollApproval === "declined")) ||
+              (userRole === "cc" &&
+                (ccApproval === "approved" ||
+                  ccApproval === "declined" ||
+                  payrollApproval === "declined" ||
+                  hrApproval === "declined")) ||
+              (userRole === "bi" &&
+                (biApproval === "approved" ||
+                  biApproval === "declined" ||
+                  payrollApproval === "declined" ||
+                  hrApproval === "declined" ||
+                  ccApproval === "declined"))
+            }
+            className={menuItemStyles}
+          >
+            <Settings2 className="mr-1 h-4 w-4" />
+            <span>Edit</span>
+          </button>
+
+          <div className="mt-1 border-t border-gray-200 dark:border-gray-700">
+            <button
+              type="button"
+              onClick={handleConfirmDelete}
+              disabled={
+                //Approver cannot delete once approved
+                goingTo === id || disableDelete || userRole !== "admin"
+              }
+              className="mt-1 flex w-full items-center rounded-lg p-2 text-left text-sm text-red-600 hover:bg-red-50 disabled:opacity-50 disabled:hover:bg-transparent dark:text-red-400 dark:hover:bg-red-600/15"
+            >
+              <Trash2 className="mr-1 h-4 w-4" />
+              <span>Delete</span>
+            </button>
+          </div>
+
+          {closeButton && (
+            <button
+              type="button"
+              onClick={handleConfirmClose}
+              disabled={goingTo === id || closureValue === "closed"}
+              className={menuItemStyles}
+            >
+              <GitPullRequestClosed className="mr-1 h-4 w-4" />
+              <span>Close</span>
+            </button>
+          )}
+        </div>
+      </motion.div>
+    );
+    return createPortal(content, document.body);
+  };
 
   return (
     <>
@@ -286,14 +289,7 @@ export const RecentActionButtons = ({
           <MoreVertical className="h-4 w-4" />
         </button>
 
-        {mounted &&
-          isOpen &&
-          createPortal(
-            <AnimatePresence>
-              <DropdownMenu />
-            </AnimatePresence>,
-            document.body,
-          )}
+        <AnimatePresence>{isOpen && <DropdownMenu />}</AnimatePresence>
       </div>
     </>
   );

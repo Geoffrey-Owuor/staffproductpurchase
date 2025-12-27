@@ -1,4 +1,3 @@
-"use client";
 import { Loader, Loader2 } from "lucide-react";
 import { createPortal } from "react-dom";
 
@@ -55,7 +54,7 @@ export const LoadingBarWave = ({ isLoading }) => {
 export const LoggingOutOverlay = ({ isLoggingOut }) => {
   if (!isLoggingOut) return null;
 
-  return (
+  const content = (
     // This main div provides the full-screen semi-transparent overlay
     <div className="fixed inset-0 z-9999 flex h-screen items-center justify-center bg-white dark:bg-gray-950">
       {/* Container to align the spinner and text horizontally */}
@@ -73,6 +72,8 @@ export const LoggingOutOverlay = ({ isLoggingOut }) => {
       </div>
     </div>
   );
+
+  return createPortal(content, document.body);
 };
 
 export const DeletingOverlay = () => {

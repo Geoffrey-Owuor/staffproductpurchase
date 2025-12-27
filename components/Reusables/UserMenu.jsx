@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { ChevronsUpDown, LogOutIcon, Palette, Settings } from "lucide-react";
@@ -33,9 +32,6 @@ export default function UserMenu({ hideMobileMenu, menuOpen }) {
   const [showUserSettings, setShowUserSettings] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
 
-  // 2. Add mounted state for Next.js SSR safety
-  const [mounted, setMounted] = useState(false);
-
   const menuRef = useRef(null);
 
   const roleDisplayMap = {
@@ -46,8 +42,6 @@ export default function UserMenu({ hideMobileMenu, menuOpen }) {
   };
   // Close when clicking outside
   useEffect(() => {
-    // Set mounted to true once on client
-    setMounted(true);
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setIsOpen(false);
@@ -75,12 +69,6 @@ export default function UserMenu({ hideMobileMenu, menuOpen }) {
 
   return (
     <>
-      {/* Logout display overlay in a portal */}
-      {mounted &&
-        createPortal(
-          <LoggingOutOverlay isLoggingOut={loggingOut} />,
-          document.body,
-        )}
       <div className="relative" ref={menuRef}>
         {/* Toggle button */}
         <div
@@ -162,16 +150,13 @@ export default function UserMenu({ hideMobileMenu, menuOpen }) {
           )}
         </AnimatePresence>
       </div>
-      {/* 4. Use createPortal to move the modal outside the sidebar div */}
-      {mounted &&
-        createPortal(
-          <AnimatePresence>
-            {showUserSettings && (
-              <SettingsPage onClose={() => setShowUserSettings(false)} />
-            )}
-          </AnimatePresence>,
-          document.body, // Render this at the end of the <body> tag
+      {/* Logging out overlay */}
+      <LoggingOutOverlay isLoggingOut={loggingOut} />
+      <AnimatePresence>
+        {showUserSettings && (
+          <SettingsPage onClose={() => setShowUserSettings(false)} />
         )}
+      </AnimatePresence>
     </>
   );
 }
