@@ -78,7 +78,7 @@ export default function CompleteRegistrationComponent({ email }) {
       )}
 
       {/* Card */}
-      <div className="rounded-xl border border-gray-200 bg-gray-50 px-6 py-4 shadow-lg dark:border-gray-700 dark:bg-gray-950">
+      <div className="rounded-xl border border-gray-200 bg-gray-50 px-6 py-4 shadow-lg dark:border-gray-800 dark:bg-gray-950">
         <div className="w-full max-w-sm space-y-4">
           {/* Title Section */}
           <div className="space-y-1 text-center">

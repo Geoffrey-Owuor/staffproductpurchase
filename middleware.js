@@ -14,7 +14,12 @@ async function verifyEdgeJWT(token) {
 }
 
 // Define paths to redirect if already logged in
-const redirectIfLoggedInPaths = ["/login", "/register", "/forgot-password"];
+const redirectIfLoggedInPaths = [
+  "/",
+  "/login",
+  "/register",
+  "/forgot-password",
+];
 
 export default async function middleware(request) {
   const { pathname } = request.nextUrl;
@@ -55,5 +60,5 @@ export default async function middleware(request) {
 
 // Only run in this specific routes
 export const config = {
-  matcher: ["/login", "/register", "/forgot-password"],
+  matcher: ["/", "/login", "/register", "/forgot-password"],
 };

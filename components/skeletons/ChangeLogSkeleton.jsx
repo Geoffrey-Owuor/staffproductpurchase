@@ -3,7 +3,7 @@ import { Sparkles } from "lucide-react";
 
 const ChangelogSkeleton = () => {
   return (
-    <div className="containerizing mt-16 mb-12 px-4 py-3">
+    <div className="mx-auto mt-16 mb-12 max-w-7xl px-4 py-3">
       {/* Header */}
       <div className="mb-6 flex items-center justify-center gap-3">
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
