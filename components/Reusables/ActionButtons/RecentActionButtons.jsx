@@ -258,23 +258,21 @@ export const RecentActionButtons = ({
 
   return (
     <>
-      <AnimatePresence>
-        {showConfirmation && (
-          <DeleteConfirmation
-            onConfirm={handleDelete}
-            onCancel={() => setShowConfirmation(false)}
-          />
-        )}
+      {showConfirmation && (
+        <DeleteConfirmation
+          onConfirm={handleDelete}
+          onCancel={() => setShowConfirmation(false)}
+        />
+      )}
 
-        {showCloseConfirmation && (
-          <ConfirmationDialog
-            message="Are you sure you want to close this purchase request? (You cannot reopen after closing)"
-            onConfirm={handleClose}
-            onCancel={() => setShowCloseConfirmation(false)}
-            title="Close Purchase Request"
-          />
-        )}
-      </AnimatePresence>
+      {showCloseConfirmation && (
+        <ConfirmationDialog
+          message="Are you sure you want to close this purchase request? (You cannot reopen after closing)"
+          onConfirm={handleClose}
+          onCancel={() => setShowCloseConfirmation(false)}
+          title="Close Purchase Request"
+        />
+      )}
 
       {deleting && <DeletingOverlay />}
       <LoadingBarWave isLoading={isClosing} />

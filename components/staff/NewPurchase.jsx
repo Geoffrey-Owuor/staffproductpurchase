@@ -1,6 +1,5 @@
 "use client";
 import { useState, useMemo, useEffect } from "react";
-import { AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import StaffInformation from "../StaffInformation";
 import ProductPricing from "../ProductPricing";
@@ -330,19 +329,17 @@ export default function NewPurchase() {
         />
       )}
 
-      <AnimatePresence>
-        {showConfirmDialog && (
-          <ConfirmationDialog
-            message="Are you sure you want to submit this purchase request? (You cannot edit after submission)"
-            onConfirm={() => {
-              setShowConfirmDialog(false);
-              handleSubmit();
-            }}
-            onCancel={() => setShowConfirmDialog(false)}
-            title="Submit Purchase"
-          />
-        )}
-      </AnimatePresence>
+      {showConfirmDialog && (
+        <ConfirmationDialog
+          message="Are you sure you want to submit this purchase request? (You cannot edit after submission)"
+          onConfirm={() => {
+            setShowConfirmDialog(false);
+            handleSubmit();
+          }}
+          onCancel={() => setShowConfirmDialog(false)}
+          title="Submit Purchase"
+        />
+      )}
     </>
   );
 }

@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect, useMemo } from "react";
-import { AnimatePresence } from "framer-motion";
 import { PackagePlus, PlusCircle, Trash2 } from "lucide-react";
 import Alert from "../Alert";
 import StaffInformation from "../StaffInformation";
@@ -426,16 +425,15 @@ function PurchaseForm({
       </div>
 
       {/* Confirmation Dialogue */}
-      <AnimatePresence>
-        {showConfirmation && (
-          <ConfirmationDialog
-            message="Are you sure you want to submit these request changes? (You can't edit once approved)"
-            onConfirm={handleConfirmSubmit}
-            onCancel={() => setShowConfirmation(false)}
-            title="Confirm Changes"
-          />
-        )}
-      </AnimatePresence>
+
+      {showConfirmation && (
+        <ConfirmationDialog
+          message="Are you sure you want to submit these request changes? (You can't edit once approved)"
+          onConfirm={handleConfirmSubmit}
+          onCancel={() => setShowConfirmation(false)}
+          title="Confirm Changes"
+        />
+      )}
 
       {/* Alert Component */}
       {showAlert && (
