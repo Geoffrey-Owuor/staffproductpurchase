@@ -23,28 +23,12 @@ import { UseHandleHistoryRoute } from "@/utils/HandleActionClicks/UseHandleHisto
 import { useUser } from "@/context/UserContext";
 
 export default function MobileHeader() {
-  // --- State for header scroll effect ---
-  const [isScrolled, setIsScrolled] = useState(false);
   // --- State and logic for Mobile Sidebar ---
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { role } = useUser();
   const router = useRouter();
   const pathname = usePathname();
   const { startLoading } = useLoadingLine();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
 
   // UseEffect to disable scrolling when sidebar is open (for screens wider than 640px)
   useEffect(() => {
@@ -94,11 +78,7 @@ export default function MobileHeader() {
   return (
     <>
       {/* Mobile Header Bar */}
-      <div
-        className={`custom:hidden fixed right-0 left-0 z-50 transition-all duration-200 ease-in-out ${
-          isScrolled ? "custom-blur shadow-xs" : ""
-        }`}
-      >
+      <div className="custom:hidden fixed right-0 left-0 z-50 transition-all duration-200 ease-in-out">
         <div className="flex items-center justify-between border-gray-800 p-3">
           <div className="flex items-center justify-center space-x-3">
             <button

@@ -7,7 +7,7 @@ import {
   GitPullRequestClosed,
 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { createPortal } from "react-dom";
 import DeleteConfirmation from "../DeleteConfirmation/DeleteConfirmation";
 import ConfirmationDialog from "../ConfirmationDialog";
@@ -287,7 +287,7 @@ export const RecentActionButtons = ({
           <MoreVertical className="h-4 w-4" />
         </button>
 
-        <AnimatePresence>{isOpen && <DropdownMenu />}</AnimatePresence>
+        {isOpen && <DropdownMenu />}
       </div>
     </>
   );
