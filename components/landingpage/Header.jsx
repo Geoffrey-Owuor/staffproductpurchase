@@ -62,13 +62,13 @@ export default function Header() {
           </div>
           <Link
             href="/login"
-            className="cursor-default rounded-xl px-3 py-1.5 font-semibold text-red-600 transition hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-600/20"
+            className="cursor-default rounded-full px-3 py-1.5 font-semibold text-red-600 transition hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-600/20"
           >
             Log In
           </Link>
           <Link
             href="/register"
-            className="cursor-default rounded-xl bg-red-600 px-3 py-1.5 font-semibold text-white shadow-sm transition hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600"
+            className="cursor-default rounded-full bg-red-600 px-3 py-1.5 font-semibold text-white shadow-sm transition hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600"
           >
             Sign Up
           </Link>
