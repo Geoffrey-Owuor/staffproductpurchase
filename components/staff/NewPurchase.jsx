@@ -5,7 +5,6 @@ import StaffInformation from "../StaffInformation";
 import ProductPricing from "../ProductPricing";
 import Alert from "../Alert";
 import { LoadingBarWave } from "../Reusables/LoadingBar";
-import { useLoadingLine } from "@/context/LoadingLineContext";
 import {
   ClipboardList,
   PackagePlus,
@@ -32,7 +31,6 @@ const initialProductState = {
 };
 
 export default function NewPurchase() {
-  const { stopLoading } = useLoadingLine();
   const user = useUser();
   const router = useRouter();
 
@@ -87,11 +85,6 @@ export default function NewPurchase() {
     };
     fetchData();
   }, []);
-
-  // Set showing loading line to false
-  useEffect(() => {
-    stopLoading();
-  }, [stopLoading]);
 
   //Handler for staff change
   const handleStaffChange = (e) => {

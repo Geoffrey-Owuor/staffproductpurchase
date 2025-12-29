@@ -1,18 +1,12 @@
 "use client";
 import { CheckCircle2, Loader, RotateCcw, UserRoundCheck } from "lucide-react";
 import ApprovalCardsSkeleton from "@/components/skeletons/ApprovalCardsSkeleton";
-import { useEffect } from "react";
+
 import { StatCard } from "../StatCard";
-import { useLoadingLine } from "@/context/LoadingLineContext";
+
 import { useTrackingApprovalCards } from "@/context/TrackingApprovalCardsContext";
 
 export default function TrackingApprovalCards() {
-  const { stopLoading } = useLoadingLine();
-
-  useEffect(() => {
-    stopLoading();
-  }, [stopLoading]);
-
   const { loading, counts, refetchCounts } = useTrackingApprovalCards();
 
   return (

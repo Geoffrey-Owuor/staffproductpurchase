@@ -13,17 +13,10 @@ import { StatCard } from "../StatCard";
 import CardHeadings from "../Headings/CardHeadings";
 import { useUser } from "@/context/UserContext";
 import SkeletonBox from "@/components/skeletons/SkeletonBox";
-import { useEffect } from "react";
-import { useLoadingLine } from "@/context/LoadingLineContext";
+
 import { useApprovalCounts } from "@/context/ApprovalCountsContext";
 
 export default function ApprovalCards() {
-  const { stopLoading } = useLoadingLine();
-
-  useEffect(() => {
-    stopLoading();
-  }, [stopLoading]);
-
   const { role: userRole } = useUser();
   const { counts, loading, refetchCounts } = useApprovalCounts();
 

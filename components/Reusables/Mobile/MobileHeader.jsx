@@ -28,7 +28,12 @@ export default function MobileHeader() {
   const { role } = useUser();
   const router = useRouter();
   const pathname = usePathname();
-  const { startLoading } = useLoadingLine();
+  const { startLoading, stopLoading } = useLoadingLine();
+
+  // useEffect to stop Loading when pathname changes
+  useEffect(() => {
+    stopLoading();
+  }, [pathname]);
 
   // UseEffect to disable scrolling when sidebar is open (for screens wider than 640px)
   useEffect(() => {
