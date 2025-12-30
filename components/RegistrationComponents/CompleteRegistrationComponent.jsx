@@ -78,7 +78,7 @@ export default function CompleteRegistrationComponent({ email }) {
       )}
 
       {/* Card */}
-      <div className="rounded-xl border border-gray-200 bg-gray-50 px-6 py-4 shadow-lg dark:border-gray-700 dark:bg-gray-950">
+      <div className="my-10 rounded-xl border border-gray-200 bg-gray-50 px-6 py-8 shadow-lg dark:border-gray-800 dark:bg-gray-950">
         <div className="w-full max-w-sm space-y-4">
           {/* Title Section */}
           <div className="space-y-1 text-center">
@@ -268,7 +268,7 @@ export default function CompleteRegistrationComponent({ email }) {
           <div className="flex items-center justify-center">
             <Link
               href="/register"
-              className="text-center text-xs text-gray-500 hover:underline dark:text-gray-500"
+              className="text-center text-sm text-gray-500 hover:underline dark:text-gray-500"
             >
               back to register page
             </Link>

@@ -27,13 +27,13 @@ export default function Hero() {
             <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center lg:justify-start">
               <Link
                 href="/register"
-                className="flex w-full items-center justify-center rounded-xl bg-red-600 px-6 py-3 font-semibold text-white shadow-md transition hover:bg-red-700 sm:w-auto dark:bg-red-500 dark:hover:bg-red-600"
+                className="flex w-full items-center justify-center rounded-full bg-red-600 px-6 py-3 font-semibold text-white shadow-md transition hover:bg-red-700 sm:w-auto dark:bg-red-500 dark:hover:bg-red-600"
               >
                 Get Started <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
               <a
                 href="#how-it-works"
-                className="flex w-full items-center justify-center rounded-xl border border-gray-300 px-6 py-3 font-semibold text-gray-700 transition hover:bg-gray-50 sm:w-auto dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+                className="flex w-full items-center justify-center rounded-full border border-gray-300 px-6 py-3 font-semibold text-gray-700 transition hover:bg-gray-50 sm:w-auto dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
               >
                 How It Works <BookMarked className="ml-2 h-5 w-5" />
               </a>

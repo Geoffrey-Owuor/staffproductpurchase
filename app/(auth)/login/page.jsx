@@ -72,14 +72,14 @@ export default function LoginPage() {
     <AuthBackground>
       {/* Login Card */}
 
-      <div className="flex items-center justify-center rounded-xl border border-gray-200 bg-gray-50 p-6 shadow-lg dark:border-gray-700 dark:bg-gray-950">
+      <div className="flex items-center justify-center rounded-xl border border-gray-200 bg-gray-50 p-6 shadow-lg dark:border-gray-800 dark:bg-gray-950">
         <div className="w-full max-w-sm space-y-6">
           <div className="space-y-2 text-center">
             <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
               Welcome back
             </h1>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              Enter your email to sign in to your account
+              Enter your credentials to sign in to your account
             </p>
           </div>
 

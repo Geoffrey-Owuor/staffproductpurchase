@@ -28,7 +28,7 @@ export default function ReusableLayoutShell({ user, children }) {
         <main
           className={`fixed right-2 ${mainMarginClass} bg-base-classes top-16 bottom-4 left-2 overflow-auto rounded-3xl border border-gray-300 px-2 transition-all duration-200 sm:bottom-2 sm:rounded-xl dark:border-gray-800`}
         >
-          <div className={`containerizing mt-2 flex-1`}>{children}</div>
+          <div className={`mx-auto mt-2 max-w-7xl flex-1`}>{children}</div>
           <DashboardFooter />
         </main>
       </div>

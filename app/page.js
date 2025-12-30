@@ -7,7 +7,7 @@ import Footer from "@/components/landingpage/Footer";
 
 export default async function Home() {
   return (
-    <div className="containerizing flex min-h-screen flex-col justify-center overflow-x-hidden">
+    <div className="mx-auto flex min-h-screen max-w-7xl flex-col justify-center overflow-x-hidden">
       <Header />
       <Hero />
       <Features />

@@ -1,12 +1,10 @@
 "use client";
 import { useState, useMemo, useEffect } from "react";
-import { AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import StaffInformation from "../StaffInformation";
 import ProductPricing from "../ProductPricing";
 import Alert from "../Alert";
 import { LoadingBarWave } from "../Reusables/LoadingBar";
-import { useLoadingLine } from "@/context/LoadingLineContext";
 import {
   ClipboardList,
   PackagePlus,
@@ -33,7 +31,6 @@ const initialProductState = {
 };
 
 export default function NewPurchase() {
-  const { stopLoading } = useLoadingLine();
   const user = useUser();
   const router = useRouter();
 
@@ -88,11 +85,6 @@ export default function NewPurchase() {
     };
     fetchData();
   }, []);
-
-  // Set showing loading line to false
-  useEffect(() => {
-    stopLoading();
-  }, [stopLoading]);
 
   //Handler for staff change
   const handleStaffChange = (e) => {
@@ -330,19 +322,17 @@ export default function NewPurchase() {
         />
       )}
 
-      <AnimatePresence>
-        {showConfirmDialog && (
-          <ConfirmationDialog
-            message="Are you sure you want to submit this purchase request? (You cannot edit after submission)"
-            onConfirm={() => {
-              setShowConfirmDialog(false);
-              handleSubmit();
-            }}
-            onCancel={() => setShowConfirmDialog(false)}
-            title="Submit Purchase"
-          />
-        )}
-      </AnimatePresence>
+      {showConfirmDialog && (
+        <ConfirmationDialog
+          message="Are you sure you want to submit this purchase request? (You cannot edit after submission)"
+          onConfirm={() => {
+            setShowConfirmDialog(false);
+            handleSubmit();
+          }}
+          onCancel={() => setShowConfirmDialog(false)}
+          title="Submit Purchase"
+        />
+      )}
     </>
   );
 }

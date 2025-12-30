@@ -1,31 +1,12 @@
-"use client";
-import { useEffect, useState } from "react";
 import { ArrowUpRight, ChevronDown } from "lucide-react";
 import ThemeToggleCompact from "../Reusables/ThemeProviders/ThemeToggleCompact";
 import Link from "next/link";
 import { LandingPageLogo } from "@/public/assets";
 
 export default function Header() {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
-
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   return (
-    <header
-      className={`fixed top-0 right-0 left-0 z-50 w-full transition-all duration-300 ${
-        scrolled
-          ? "custom-blur bg-white/70 shadow-sm dark:bg-gray-950/70"
-          : "bg-white dark:bg-gray-950"
-      }`}
-    >
-      <div className="containerizing flex items-center justify-between px-4 py-3">
+    <header className="fixed top-0 right-0 left-0 z-50 w-full bg-white transition-all duration-300 dark:bg-gray-950">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
         {/* Logo */}
         <LandingPageLogo />
 
@@ -62,13 +43,13 @@ export default function Header() {
           </div>
           <Link
             href="/login"
-            className="cursor-default rounded-xl px-3 py-1.5 font-semibold text-red-600 transition hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-600/20"
+            className="cursor-default rounded-full px-3 py-1.5 font-semibold text-red-600 transition hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-600/20"
           >
             Log In
           </Link>
           <Link
             href="/register"
-            className="cursor-default rounded-xl bg-red-600 px-3 py-1.5 font-semibold text-white shadow-sm transition hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600"
+            className="cursor-default rounded-full bg-red-600 px-3 py-1.5 font-semibold text-white shadow-sm transition hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600"
           >
             Sign Up
           </Link>

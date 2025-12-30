@@ -51,7 +51,7 @@ const TopSidebar = ({
         isScrolled ? "custom-blur shadow-xs" : ""
       }`}
     >
-      <div className="containerizing flex w-full items-center justify-between px-4">
+      <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4">
         {/* LEFT SECTION: Logo & Back Button */}
         <div className="flex items-center gap-4">
           {/* Pass isOpen={true} to ensure full logo is always visible */}

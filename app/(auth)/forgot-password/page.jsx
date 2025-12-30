@@ -101,7 +101,7 @@ export default function ForgotPassword() {
         />
       )}
       <AuthBackground>
-        <div className="flex items-center justify-center rounded-xl border border-gray-200 bg-gray-50 p-6 shadow-lg dark:border-gray-700 dark:bg-gray-950">
+        <div className="flex items-center justify-center rounded-xl border border-gray-200 bg-gray-50 p-6 shadow-lg dark:border-gray-800 dark:bg-gray-950">
           <div className="w-full max-w-sm space-y-6">
             {/* Title and Subtitle Section */}
             <div className="space-y-2 text-center">

@@ -13,7 +13,7 @@ export default function ReusableSidebar() {
   const { showTopbar } = useLayout();
   const { role } = useUser();
   const router = useRouter();
-  const { startLoading } = useLoadingLine();
+  const { startLoading, stopLoading } = useLoadingLine();
 
   const { homePath, handleHomeRoute } = UseHandleHomeRoute();
   const { historyPath, handleHistoryRoute } = UseHandleHistoryRoute();
@@ -65,18 +65,23 @@ export default function ReusableSidebar() {
     router.push(path);
   };
 
-  // Hook for managing the new purchase shortcut
+  // Hook for stopping loading line when pathname changes
   useEffect(() => {
+    stopLoading();
+  }, [pathname]);
+
+  // Hook for managing the new purchase shortcut - runs once on mount
+  useEffect(() => {
+    // Return early if role is not equal to staff
+    if (role !== "staff") return;
+
     const handleKeyDown = (event) => {
       // Check for alt + N
-      if (event.altKey & (event.key === "n")) {
+      if (event.altKey && event.key === "n") {
         // Prevent browsers default new window action
         event.preventDefault();
 
-        //check if user is allowed to use this shortcut
-        if (role === "staff") {
-          handleNavClick("/staffdashboard/new-purchase");
-        }
+        handleNavClick("/staffdashboard/new-purchase");
       }
     };
 
@@ -87,7 +92,7 @@ export default function ReusableSidebar() {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [role, router]); //dependencies
+  }, [pathname, role]);
 
   return (
     <>

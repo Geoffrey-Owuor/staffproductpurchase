@@ -123,6 +123,8 @@
     background-image: url(../public/light_mode_bg.svg);
     background-repeat: repeat; /* Use 'no-repeat' and 'background-size: cover' if it's a single big image */
     background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
   }
   [data-theme="dark"] .auth-background {
     background-image: url(../public/dark_mode_bg.svg);

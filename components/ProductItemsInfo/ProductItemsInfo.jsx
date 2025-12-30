@@ -11,7 +11,7 @@ export default function ProductItemsInfo({ products }) {
       </h2>
       <div className="overflow-x-auto rounded-xl">
         <table className="mb-4 min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-          <thead className="bg-gray-700 text-white dark:bg-gray-800">
+          <thead className="bg-gray-800 text-white">
             <tr>
               {[
                 "Item Name",
