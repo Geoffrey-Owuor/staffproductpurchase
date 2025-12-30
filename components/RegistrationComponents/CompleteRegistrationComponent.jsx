@@ -79,7 +79,7 @@ export default function CompleteRegistrationComponent({ email }) {
 
       {/* Card */}
       <div className="my-10 rounded-xl border border-gray-200 bg-gray-50 px-6 py-8 shadow-lg dark:border-gray-800 dark:bg-gray-950">
-        <div className="w-full max-w-md space-y-4">
+        <div className="w-full max-w-sm space-y-4">
           {/* Title Section */}
           <div className="space-y-1 text-center">
             <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
