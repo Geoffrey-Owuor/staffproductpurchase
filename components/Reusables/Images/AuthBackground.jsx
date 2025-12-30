@@ -14,7 +14,7 @@ export default function AuthBackground({ children }) {
       <div className="w-[350px] pb-8 md:w-[400px]">{children}</div>
 
       {/* Footer text */}
-      <div className="absolute bottom-2">
+      <div className="absolute bottom-4">
         <div className="flex items-center justify-center space-x-1 text-sm">
           <span className="text-gray-700 dark:text-gray-400">
             © {new Date().getFullYear()} Hotpoint Appliances Ltd. Built by
