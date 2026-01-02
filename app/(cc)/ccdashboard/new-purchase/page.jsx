@@ -1,5 +1,11 @@
-const page = () => {
-  return <div>page</div>;
-};
+import NewPurchase from "@/components/staff/NewPurchase";
+import TermsConditions from "@/components/TermsConditions";
 
-export default page;
+export default function page() {
+  return (
+    <>
+      <NewPurchase />
+      <TermsConditions />
+    </>
+  );
+}
