@@ -10,6 +10,7 @@ const ProductPricing = ({
   userRole,
   paymentTerms,
   productNumber,
+  approversPurchasing,
 }) => {
   const [fetchedDetails, setFetchedDetails] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -68,8 +69,8 @@ const ProductPricing = ({
 
   //useEffect for automatic policy and rate selection
   useEffect(() => {
-    // Guard clause to make sure this useEffect only runs when the user is staff or credit control
-    if (!["staff", "cc"].includes(userRole)) {
+    // Guard clause to make sure this useEffect only runs when the user is staff or credit control or there is an approver purchasing
+    if (!["staff", "cc"].includes(userRole) || !approversPurchasing) {
       return;
     }
 
@@ -133,6 +134,14 @@ const ProductPricing = ({
   ]);
 
   useEffect(() => {
+    // Guard clause to make sure this useEffect only runs when the user is staff or credit control or there is an approver purchasing
+    if (!["staff", "cc"].includes(userRole) || !approversPurchasing) {
+      return;
+    }
+
+    // Guard clause to make sure it only runs after we have all the required info
+    if (!formData.tdPrice || !formData.discountRate) return;
+
     const tdPrice = parseFloat(formData.tdPrice) || 0;
     const discountRate = parseFloat(formData.discountRate) || 0;
 

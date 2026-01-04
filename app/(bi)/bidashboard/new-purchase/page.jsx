@@ -4,7 +4,7 @@ import TermsConditions from "@/components/TermsConditions";
 export default function page() {
   return (
     <>
-      <NewPurchase />
+      <NewPurchase approversPurchasing={true} />
       <TermsConditions />
     </>
   );

@@ -2,10 +2,16 @@
 import FormAsterisk from "./Reusables/FormAsterisk/FormAsterisk";
 import { formatDateLong } from "@/public/assets";
 
-const PaymentDetails = ({ formData, handleChange, userRole, periods }) => {
+const PaymentDetails = ({
+  formData,
+  handleChange,
+  userRole,
+  periods,
+  approversPurchasing,
+}) => {
   const editableRoles = ["bi", "staff"];
-  const staffReadonly = userRole !== "staff";
-  const isReadOnly = !editableRoles.includes(userRole);
+  const staffReadonly = userRole !== "staff" && !approversPurchasing;
+  const isReadOnly = !editableRoles.includes(userRole) && !approversPurchasing;
   return (
     <div className="relative rounded-xl">
       <div className="rounded-t-xl px-2 py-3 text-lg font-semibold text-gray-900 dark:text-white">
