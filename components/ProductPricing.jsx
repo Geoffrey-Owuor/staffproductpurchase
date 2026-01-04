@@ -70,7 +70,7 @@ const ProductPricing = ({
   //useEffect for automatic policy and rate selection
   useEffect(() => {
     // Guard clause to make sure this useEffect only runs when the user is staff or credit control or there is an approver purchasing
-    if (!["staff", "cc"].includes(userRole) || !approversPurchasing) {
+    if (!["staff", "cc"].includes(userRole) && !approversPurchasing) {
       return;
     }
 
@@ -135,11 +135,11 @@ const ProductPricing = ({
 
   useEffect(() => {
     // Guard clause to make sure this useEffect only runs when the user is staff or credit control or there is an approver purchasing
-    if (!["staff", "cc"].includes(userRole) || !approversPurchasing) {
+    if (!["staff", "cc"].includes(userRole) && !approversPurchasing) {
       return;
     }
 
-    // Guard clause to make sure it only runs after we have all the required info
+    // Guard clause to make sure it only runs after we have all the required information
     if (!formData.tdPrice || !formData.discountRate) return;
 
     const tdPrice = parseFloat(formData.tdPrice) || 0;
@@ -153,9 +153,10 @@ const ProductPricing = ({
   }, [formData.tdPrice, formData.discountRate]);
 
   const editableRoles = ["staff", "cc"];
-  const staffReadOnly = userRole !== "staff";
+  const staffReadOnly = userRole !== "staff" && !approversPurchasing;
   const ccReadOnly = userRole !== "cc";
-  const isReadonlyGeneral = !editableRoles.includes(userRole);
+  const isReadonlyGeneral =
+    !editableRoles.includes(userRole) && !approversPurchasing;
 
   return (
     <div className="relative rounded-xl">
@@ -216,7 +217,9 @@ const ProductPricing = ({
                 required
                 readOnly={isReadonlyGeneral}
               />
-              {(userRole === "staff" || userRole === "cc") && (
+              {(userRole === "staff" ||
+                userRole === "cc" ||
+                approversPurchasing) && (
                 <button
                   type="button"
                   onClick={fetchDetails}

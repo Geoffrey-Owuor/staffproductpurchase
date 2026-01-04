@@ -51,7 +51,7 @@ function PurchaseForm({
   const [periods, setPeriods] = useState([]);
   const [discountPolicies, setDiscountPolicies] = useState([]);
 
-  //useEffect for fetching discount policies and credit periods
+  //useEffect for fetching discount policies and credit periods on mount
   useEffect(() => {
     const fetchData = async () => {
       // Fetching credit periods and discount policies
@@ -357,8 +357,8 @@ function PurchaseForm({
                 paymentTerms={paymentInfo.employee_payment_terms}
                 approversPurchasing={false}
               />
-              {/* Removing a product - Only when role is bi */}
-              {products.length > 1 && userRole === "cc" && (
+              {/* Removing a product - Only when role is cc */}
+              {products.length > 1 && userRole === "admin" && (
                 <button
                   type="button"
                   onClick={() => removeProduct(index)}
@@ -373,13 +373,13 @@ function PurchaseForm({
 
           <div className="my-8 flex items-center justify-between px-2">
             {purchaseTotal > 0 && (
-              <span className="text-lg italic">
+              <span className="text-lg">
                 Total Purchase Value:{" "}
                 <span className="font-bold">{`Ksh ${purchaseTotal.toFixed(2)}`}</span>
               </span>
             )}
             {/* Adding a product - Only when role is cc */}
-            {userRole === "cc" && (
+            {userRole === "admin" && (
               <button
                 type="button"
                 onClick={addProduct}
