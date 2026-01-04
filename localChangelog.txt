@@ -1,31 +1,6 @@
--- A table for tracking the changelogs made to the application
-CREATE TABLE changelogs (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    category VARCHAR(50) NOT NULL,
-    description TEXT NOT NULL,
-    is_active BOOLEAN DEFAULT TRUE, -- Global switch to hide/show specific logs
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- The key field for our comparison logic
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
+--Next Feat
 
-
--- A table to alter users table to include a date for last view changelog
-
-ALTER TABLE users
-ADD COLUMN last_changelog_viewed_at TIMESTAMP NULL DEFAULT NULL;
-
-
-
-
-
-  //Background Image code reference
-  auth-background {
-    background-image: url(../public/light_mode_bg.png);
-    background-attachment: fixed; /* Keeps bg still while scrolling */
-    background-repeat: repeat; /* Use 'no-repeat' and 'background-size: cover' if it's a single big image */
-    background-position: center;
-  }
-  [data-theme="dark"] auth-background {
-    background-image: url(../public/dark_mode_bg.png);
-  }
+1. Add a way for approvers to be able to submit a purchase request by themselves
+2. Will require route changes and route tied functions
+3. Changes to payment details and product pricing
+4. Edit in role-based access
