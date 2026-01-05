@@ -20,6 +20,7 @@ import { usePathname } from "next/navigation";
 import UserMenu from "../UserMenu";
 import { UseHandleHomeRoute } from "@/utils/HandleActionClicks/UseHandleHomeRoute";
 import { UseHandleHistoryRoute } from "@/utils/HandleActionClicks/UseHandleHistoryRoute";
+import { UseHandlePurchaseRoute } from "@/utils/HandleActionClicks/UseHandlePurchaseRoute";
 import { useUser } from "@/context/UserContext";
 
 export default function MobileHeader() {
@@ -51,6 +52,7 @@ export default function MobileHeader() {
 
   const { handleHomeRoute, homePath } = UseHandleHomeRoute();
   const { handleHistoryRoute, historyPath } = UseHandleHistoryRoute();
+  const { handlePurchaseRoute, purchasePath } = UseHandlePurchaseRoute();
 
   const handleHomeClick = () => {
     const isSameRoute = homePath === pathname;
@@ -69,6 +71,15 @@ export default function MobileHeader() {
     }
     setIsMobileMenuOpen(false); // Close menu on click
   };
+
+  const handlePurchaseClick = () => {
+    const isSameRoute = purchasePath === pathname;
+    if (!isSameRoute) {
+      startLoading();
+      handlePurchaseRoute();
+    }
+    setIsMobileMenuOpen(false);
+  }
 
   // Generic handler for other links
   const handleNavClick = (path) => {
@@ -122,17 +133,15 @@ export default function MobileHeader() {
 
       {/* Sidebar Backdrop */}
       <div
-        className={`custom:hidden fixed inset-0 z-60 bg-black/50 transition-opacity duration-200 ease-in-out dark:bg-black/60 ${
-          isMobileMenuOpen ? "opacity-100" : "pointer-events-none opacity-0"
-        }`}
+        className={`custom:hidden fixed inset-0 z-60 bg-black/50 transition-opacity duration-200 ease-in-out dark:bg-black/60 ${isMobileMenuOpen ? "opacity-100" : "pointer-events-none opacity-0"
+          }`}
         onClick={() => setIsMobileMenuOpen(false)}
       ></div>
 
       {/* Sidebar Content */}
       <div
-        className={`custom:hidden fixed top-0 bottom-0 left-0 z-70 flex w-64 transform flex-col bg-white p-4 shadow-lg transition-transform duration-300 ease-in-out dark:border-r dark:border-gray-700 dark:bg-gray-950 ${
-          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`custom:hidden fixed top-0 bottom-0 left-0 z-70 flex w-64 transform flex-col bg-white p-4 shadow-lg transition-transform duration-300 ease-in-out dark:border-r dark:border-gray-700 dark:bg-gray-950 ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
       >
         {/* Sidebar Header */}
         <div className="flex items-center justify-between border-b border-gray-200 pb-3 dark:border-gray-700">
@@ -159,17 +168,17 @@ export default function MobileHeader() {
               </div>
             </li>
 
-            {role === "staff" && (
-              <li>
-                <div
-                  onClick={() => handleNavClick("/staffdashboard/new-purchase")}
-                  className="flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-base font-semibold text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
-                >
-                  <ShoppingBagIcon className="h-5 w-5 shrink-0" />
-                  <span>New Purchase</span>
-                </div>
-              </li>
-            )}
+
+            <li>
+              <div
+                onClick={handlePurchaseClick}
+                className="flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-base font-semibold text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
+              >
+                <ShoppingBagIcon className="h-5 w-5 shrink-0" />
+                <span>New Purchase</span>
+              </div>
+            </li>
+
 
             <li>
               <div

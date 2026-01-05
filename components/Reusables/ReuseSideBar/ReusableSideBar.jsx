@@ -4,6 +4,7 @@ import { useLoadingLine } from "@/context/LoadingLineContext";
 import { usePathname, useRouter } from "next/navigation";
 import { UseHandleHomeRoute } from "@/utils/HandleActionClicks/UseHandleHomeRoute";
 import { UseHandleHistoryRoute } from "@/utils/HandleActionClicks/UseHandleHistoryRoute";
+import { UseHandlePurchaseRoute } from "@/utils/HandleActionClicks/UseHandlePurchaseRoute";
 import { useUser } from "@/context/UserContext";
 import LeftSidebar from "./LeftSidebar";
 import TopSidebar from "./TopSidebar";
@@ -17,6 +18,7 @@ export default function ReusableSidebar() {
 
   const { homePath, handleHomeRoute } = UseHandleHomeRoute();
   const { historyPath, handleHistoryRoute } = UseHandleHistoryRoute();
+  const { purchasePath, handlePurchaseRoute } = UseHandlePurchaseRoute();
 
   //Determining active tabs
   const pathname = usePathname();
@@ -37,11 +39,19 @@ export default function ReusableSidebar() {
     "/bidashboard/purchases-history",
   ];
 
+  const purchaseRoutes = [
+    "/staffdashboard/new-purchase",
+    "/payrolldashboard/new-purchase",
+    "/hrdashboard/new-purchase",
+    "/ccdashboard/new-purchase",
+    "/bidashboard/new-purchase",
+  ]
+
   if (homeRoutes.includes(pathname)) {
     activeTab = "home";
   } else if (historyRoutes.includes(pathname)) {
     activeTab = "history";
-  } else if (pathname === "/staffdashboard/new-purchase") {
+  } else if (purchaseRoutes.includes(pathname)) {
     activeTab = "newpurchase";
   } else if (pathname === "/ccdashboard/payment-tracking") {
     activeTab = "paymentTracking";
@@ -59,6 +69,12 @@ export default function ReusableSidebar() {
     handleHistoryRoute();
   };
 
+  const handlePurchaseClick = () => {
+    if (pathname === purchasePath) return;
+    startLoading();
+    handlePurchaseRoute();
+  }
+
   const handleNavClick = (path) => {
     if (pathname === path) return;
     startLoading();
@@ -70,18 +86,15 @@ export default function ReusableSidebar() {
     stopLoading();
   }, [pathname]);
 
-  // Hook for managing the new purchase shortcut - runs once on mount
+  // Hook for managing the new purchase shortcut (Applys for all roles)
   useEffect(() => {
-    // Return early if role is not equal to staff
-    if (role !== "staff") return;
-
     const handleKeyDown = (event) => {
       // Check for alt + N
       if (event.altKey && event.key === "n") {
         // Prevent browsers default new window action
         event.preventDefault();
 
-        handleNavClick("/staffdashboard/new-purchase");
+        handlePurchaseClick();
       }
     };
 
@@ -102,6 +115,7 @@ export default function ReusableSidebar() {
           router={router}
           handleHistoryClick={handleHistoryClick}
           handleHomeClick={handleHomeClick}
+          handlePurchaseClick={handlePurchaseClick}
           handleNavClick={handleNavClick}
           activeTab={activeTab}
         />
@@ -111,6 +125,7 @@ export default function ReusableSidebar() {
           activeTab={activeTab}
           role={role}
           handleHomeClick={handleHomeClick}
+          handlePurchaseClick={handlePurchaseClick}
           handleHistoryClick={handleHistoryClick}
           handleNavClick={handleNavClick}
         />

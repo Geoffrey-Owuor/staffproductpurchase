@@ -5,6 +5,7 @@ import StaffInformation from "../StaffInformation";
 import ProductPricing from "../ProductPricing";
 import Alert from "../Alert";
 import { LoadingBarWave } from "../Reusables/LoadingBar";
+import { UseHandleHomeRoute } from "@/utils/HandleActionClicks/UseHandleHomeRoute";
 import {
   ClipboardList,
   PackagePlus,
@@ -33,6 +34,7 @@ const initialProductState = {
 export default function NewPurchase({ approversPurchasing }) {
   const user = useUser();
   const router = useRouter();
+  const { handleHomeRoute } = UseHandleHomeRoute();
 
   const { refetchCounts } = useApprovalCounts();
 
@@ -194,9 +196,9 @@ export default function NewPurchase({ approversPurchasing }) {
       // Refetch Approval Counts
       refetchCounts();
 
-      // Redirect to staff dashboard after 0.7 seconds
+      // Redirect to designated dashboard after 0.7 seconds
       setTimeout(() => {
-        router.push("/staffdashboard");
+        handleHomeRoute();
       }, 700);
     } catch (error) {
       console.error("Error submitting form:", error);
