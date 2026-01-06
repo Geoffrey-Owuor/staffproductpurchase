@@ -5,6 +5,7 @@ import StaffInformation from "../StaffInformation";
 import ProductPricing from "../ProductPricing";
 import Alert from "../Alert";
 import { LoadingBarWave } from "../Reusables/LoadingBar";
+import { UseHandleHomeRoute } from "@/utils/HandleActionClicks/UseHandleHomeRoute";
 import {
   ClipboardList,
   PackagePlus,
@@ -30,9 +31,10 @@ const initialProductState = {
   discountedValue: "",
 };
 
-export default function NewPurchase() {
+export default function NewPurchase({ approversPurchasing }) {
   const user = useUser();
   const router = useRouter();
+  const { handleHomeRoute } = UseHandleHomeRoute();
 
   const { refetchCounts } = useApprovalCounts();
 
@@ -194,9 +196,9 @@ export default function NewPurchase() {
       // Refetch Approval Counts
       refetchCounts();
 
-      // Redirect to staff dashboard after 0.7 seconds
+      // Redirect to designated dashboard after 0.7 seconds
       setTimeout(() => {
-        router.push("/staffdashboard");
+        handleHomeRoute();
       }, 700);
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -232,6 +234,7 @@ export default function NewPurchase() {
             formData={staffInfo}
             handleChange={handleStaffChange}
             userRole={user.role}
+            approversPurchasing={approversPurchasing}
           />
 
           {/* New Payment Details Component */}
@@ -240,6 +243,7 @@ export default function NewPurchase() {
             handleChange={handlePaymentChange}
             userRole={user.role}
             periods={periods}
+            approversPurchasing={approversPurchasing}
           />
 
           {/* Main Product Pricing title */}
@@ -247,7 +251,7 @@ export default function NewPurchase() {
             <PackagePlus className="h-6 w-6" />
             <span className="text-xl">Product & Pricing Details</span>
           </div>
-          {user.role === "staff" && (
+          {(user.role === "staff" || approversPurchasing) && (
             <p className="mb-4 px-2 text-xs">
               <span className="font-semibold text-red-500 dark:text-red-400">
                 Please note:
@@ -270,6 +274,7 @@ export default function NewPurchase() {
                 discountPolicies={discountPolicies}
                 productNumber={index + 1}
                 userRole={user.role}
+                approversPurchasing={approversPurchasing}
                 paymentTerms={paymentInfo.employee_payment_terms}
               />
               {products.length > 1 && (

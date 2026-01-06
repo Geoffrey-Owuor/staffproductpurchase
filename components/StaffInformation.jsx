@@ -1,7 +1,12 @@
 import FormAsterisk from "./Reusables/FormAsterisk/FormAsterisk";
 
-const StaffInformation = ({ formData, handleChange, userRole }) => {
-  const isReadOnly = userRole !== "staff";
+const StaffInformation = ({
+  formData,
+  handleChange,
+  userRole,
+  approversPurchasing,
+}) => {
+  const isReadOnly = userRole !== "staff" && !approversPurchasing;
   return (
     <div className="rounded-xl">
       <div className="rounded-t-xl px-2 py-3 text-lg font-semibold text-gray-900 dark:text-white">

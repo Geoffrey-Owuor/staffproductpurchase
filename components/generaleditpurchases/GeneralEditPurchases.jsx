@@ -47,6 +47,23 @@ function PurchaseForm({
   handleHrefLink,
   id,
 }) {
+  //Initially setting periods and policies to an empty array
+  const [periods, setPeriods] = useState([]);
+  const [discountPolicies, setDiscountPolicies] = useState([]);
+
+  //useEffect for fetching discount policies and credit periods on mount
+  useEffect(() => {
+    const fetchData = async () => {
+      // Fetching credit periods and discount policies
+      const { periods, policies } = await FetchPeriodsPolicies();
+
+      //Setting the credit periods and discount policies
+      setPeriods(periods);
+      setDiscountPolicies(policies);
+    };
+    fetchData();
+  }, []);
+
   //Other formdata from hr approval - billing & invoicing (initial state)
   const [formData, setFormData] = useState(() => {
     //initial products from the purchase data and setting products
@@ -141,27 +158,10 @@ function PurchaseForm({
   );
 
   const [submitting, setIsSubmitting] = useState(false);
-  const [discountPolicies, setDiscountPolicies] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [alertType, setAlertType] = useState("success");
-
-  //Initially setting periods to an empty array
-  const [periods, setPeriods] = useState([]);
-
-  //useEffect for fetching credit periods and discount policies
-  useEffect(() => {
-    const fetchData = async () => {
-      // Fetching credit periods and discount policies
-      const { periods, policies } = await FetchPeriodsPolicies();
-
-      //Setting the credit periods and discount policies
-      setPeriods(periods);
-      setDiscountPolicies(policies);
-    };
-    fetchData();
-  }, []);
 
   //Handler for other formdata change
   const handleChange = (e) => {
@@ -317,6 +317,7 @@ function PurchaseForm({
             formData={staffInfo}
             handleChange={handleStaffChange}
             userRole={userRole}
+            approversPurchasing={false}
           />
 
           {/* Payment Details Component */}
@@ -325,6 +326,7 @@ function PurchaseForm({
             handleChange={handlePaymentChange}
             userRole={userRole}
             periods={periods}
+            approversPurchasing={false}
           />
 
           {/* Main Product Pricing title */}
@@ -353,9 +355,10 @@ function PurchaseForm({
                 productNumber={index + 1}
                 userRole={userRole}
                 paymentTerms={paymentInfo.employee_payment_terms}
+                approversPurchasing={false}
               />
-              {/* Removing a product - Only when role is bi */}
-              {products.length > 1 && userRole === "cc" && (
+              {/* Removing a product - Only when role is cc */}
+              {products.length > 1 && userRole === "admin" && (
                 <button
                   type="button"
                   onClick={() => removeProduct(index)}
@@ -370,13 +373,13 @@ function PurchaseForm({
 
           <div className="my-8 flex items-center justify-between px-2">
             {purchaseTotal > 0 && (
-              <span className="text-lg italic">
+              <span className="text-lg">
                 Total Purchase Value:{" "}
                 <span className="font-bold">{`Ksh ${purchaseTotal.toFixed(2)}`}</span>
               </span>
             )}
-            {/* Adding a product - Only when role is bi */}
-            {userRole === "cc" && (
+            {/* Adding a product - Only when role is cc */}
+            {userRole === "admin" && (
               <button
                 type="button"
                 onClick={addProduct}

@@ -18,6 +18,7 @@ const LeftSidebar = ({
   router,
   handleHomeClick,
   handleHistoryClick,
+  handlePurchaseClick,
   handleNavClick,
   activeTab,
   role,
@@ -25,9 +26,8 @@ const LeftSidebar = ({
   const { sidebarOpen, setSidebarOpen, setShowTopbar } = useLayout();
   return (
     <div
-      className={`custom:flex fixed top-0 bottom-0 left-0 z-50 hidden flex-col transition-all duration-200 ${
-        sidebarOpen ? "w-58" : "w-14"
-      }`}
+      className={`custom:flex fixed top-0 bottom-0 left-0 z-50 hidden flex-col transition-all duration-200 ${sidebarOpen ? "w-58" : "w-14"
+        }`}
     >
       <div className="relative flex grow flex-col">
         <div className="relative mt-2 flex px-4.5 pb-[11.5px]">
@@ -64,57 +64,51 @@ const LeftSidebar = ({
             <li>
               <div
                 onClick={handleHomeClick}
-                className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
-                  activeTab === "home"
-                    ? "bg-gray-200 text-black dark:bg-gray-800 dark:text-white"
-                    : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
-                }`}
+                className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${activeTab === "home"
+                  ? "bg-gray-200 text-black dark:bg-gray-800 dark:text-white"
+                  : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
+                  }`}
               >
                 <HomeIcon className="h-4 w-4 shrink-0" />
                 <span
-                  className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
-                    sidebarOpen ? "w-40" : "w-0"
-                  }`}
+                  className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${sidebarOpen ? "w-40" : "w-0"
+                    }`}
                 >
                   Home
                 </span>
               </div>
             </li>
-            {role === "staff" && (
-              <li>
-                <div
-                  onClick={() => handleNavClick("/staffdashboard/new-purchase")}
-                  className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
-                    activeTab === "newpurchase"
-                      ? "bg-gray-200 text-black dark:bg-gray-800 dark:text-white"
-                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
+
+            <li>
+              <div
+                onClick={handlePurchaseClick}
+                className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${activeTab === "newpurchase"
+                  ? "bg-gray-200 text-black dark:bg-gray-800 dark:text-white"
+                  : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
                   }`}
-                >
-                  <ShoppingBagIcon className="h-4 w-4 shrink-0" />
-                  <span
-                    className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
-                      sidebarOpen ? "w-40" : "w-0"
+              >
+                <ShoppingBagIcon className="h-4 w-4 shrink-0" />
+                <span
+                  className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${sidebarOpen ? "w-40" : "w-0"
                     }`}
-                  >
-                    New Purchase
-                  </span>
-                </div>
-              </li>
-            )}
+                >
+                  New Purchase
+                </span>
+              </div>
+            </li>
+
             <li>
               <div
                 onClick={handleHistoryClick}
-                className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
-                  activeTab === "history"
-                    ? "bg-gray-200 text-black dark:bg-gray-800 dark:text-white"
-                    : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
-                }`}
+                className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${activeTab === "history"
+                  ? "bg-gray-200 text-black dark:bg-gray-800 dark:text-white"
+                  : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
+                  }`}
               >
                 <History className="h-4 w-4 shrink-0" />
                 <span
-                  className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
-                    sidebarOpen ? "w-40" : "w-0"
-                  }`}
+                  className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${sidebarOpen ? "w-40" : "w-0"
+                    }`}
                 >
                   Purchases History
                 </span>
@@ -126,17 +120,15 @@ const LeftSidebar = ({
                   onClick={() =>
                     handleNavClick("/ccdashboard/payment-tracking")
                   }
-                  className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
-                    activeTab === "paymentTracking"
-                      ? "bg-gray-200 text-black dark:bg-gray-800 dark:text-white"
-                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
-                  }`}
+                  className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${activeTab === "paymentTracking"
+                    ? "bg-gray-200 text-black dark:bg-gray-800 dark:text-white"
+                    : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
+                    }`}
                 >
                   <BookOpenCheck className="h-4 w-4 shrink-0" />
                   <span
-                    className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
-                      sidebarOpen ? "w-40" : "w-0"
-                    }`}
+                    className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${sidebarOpen ? "w-40" : "w-0"
+                      }`}
                   >
                     Fully Approved
                   </span>
@@ -153,9 +145,8 @@ const LeftSidebar = ({
           >
             <ArrowUpWideNarrow className="h-4 w-4 shrink-0" />
             <span
-              className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
-                sidebarOpen ? "w-40" : "w-0"
-              }`}
+              className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${sidebarOpen ? "w-40" : "w-0"
+                }`}
             >
               Topbar View
             </span>
@@ -168,9 +159,8 @@ const LeftSidebar = ({
           >
             <Link2 className="h-4 w-4 shrink-0" />
             <span
-              className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
-                sidebarOpen ? "w-40" : "w-0"
-              }`}
+              className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${sidebarOpen ? "w-40" : "w-0"
+                }`}
             >
               Hotpoint Website
             </span>
@@ -181,9 +171,8 @@ const LeftSidebar = ({
           >
             <MessageCircleQuestion className="h-4 w-4 shrink-0" />
             <span
-              className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${
-                sidebarOpen ? "w-40" : "w-0"
-              }`}
+              className={`overflow-hidden whitespace-nowrap transition-all duration-200 ${sidebarOpen ? "w-40" : "w-0"
+                }`}
             >
               Help & Support
             </span>
