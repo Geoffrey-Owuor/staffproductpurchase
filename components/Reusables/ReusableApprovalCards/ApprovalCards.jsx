@@ -7,6 +7,7 @@ import {
   MessageCircleX,
   CheckCheck,
   RotateCcw,
+  ClockFading,
 } from "lucide-react";
 import ApprovalCardsSkeleton from "@/components/skeletons/ApprovalCardsSkeleton";
 import { StatCard } from "../StatCard";
@@ -19,6 +20,10 @@ import { useApprovalCounts } from "@/context/ApprovalCountsContext";
 export default function ApprovalCards() {
   const { role: userRole } = useUser();
   const { counts, loading, refetchCounts } = useApprovalCounts();
+
+  // Calculating the total pending purchases from returned counts data
+  const totalPending =
+    counts.total - counts.totalDeclined - counts.totalApproved;
 
   return (
     <div className="mb-8 rounded-xl px-2">
@@ -50,8 +55,8 @@ export default function ApprovalCards() {
           <>
             {userRole !== "staff" && (
               <div className="hidden items-center space-x-2 lg:flex">
-                {[...Array(3)].map((_, i) => (
-                  <SkeletonBox key={i} className="mr-2 h-12 w-25 md:flex" />
+                {[...Array(4)].map((_, i) => (
+                  <SkeletonBox key={i} className="mr-2 h-12 w-20 md:flex" />
                 ))}
               </div>
             )}
@@ -71,6 +76,12 @@ export default function ApprovalCards() {
                     {counts.totalDeclined}
                   </span>{" "}
                   <MessageCircleX />
+                </div>
+                <div className="flex items-center gap-2 rounded-xl bg-yellow-50 p-3 dark:bg-gray-800">
+                  <span className="font-mono text-xl font-semibold">
+                    {totalPending}
+                  </span>{" "}
+                  <ClockFading />
                 </div>
                 <div className="flex items-center gap-2 rounded-xl bg-blue-50 p-3 dark:bg-slate-800">
                   <span className="font-mono text-xl font-semibold">
