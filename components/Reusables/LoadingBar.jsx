@@ -1,5 +1,5 @@
 import { Loader, Loader2 } from "lucide-react";
-import { createPortal } from "react-dom";
+import ClientPortal from "./ClientPortal/ClientPortal";
 
 export const LoadingBar = ({ isLoading }) => {
   if (!isLoading) return null;
@@ -24,7 +24,7 @@ export const LoadingBar = ({ isLoading }) => {
       </div>
     </div>
   );
-  return createPortal(content, document.body);
+  return <ClientPortal>{content}</ClientPortal>;
 };
 
 export const LoadingBarWave = ({ isLoading }) => {
@@ -48,7 +48,7 @@ export const LoadingBarWave = ({ isLoading }) => {
     </div>
   );
 
-  return createPortal(content, document.body);
+  return <ClientPortal>{content}</ClientPortal>;
 };
 
 export const LoggingOutOverlay = ({ isLoggingOut }) => {
@@ -73,7 +73,7 @@ export const LoggingOutOverlay = ({ isLoggingOut }) => {
     </div>
   );
 
-  return createPortal(content, document.body);
+  return <ClientPortal>{content}</ClientPortal>;
 };
 
 export const DeletingOverlay = () => {
@@ -96,5 +96,5 @@ export const DeletingOverlay = () => {
       </div>
     </div>
   );
-  return createPortal(content, document.body);
+  return <ClientPortal>{content}</ClientPortal>;
 };

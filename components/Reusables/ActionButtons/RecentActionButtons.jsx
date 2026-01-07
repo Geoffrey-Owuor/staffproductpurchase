@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { createPortal } from "react-dom";
+import ClientPortal from "../ClientPortal/ClientPortal";
 import DeleteConfirmation from "../DeleteConfirmation/DeleteConfirmation";
 import ConfirmationDialog from "../ConfirmationDialog";
 import { DeletingOverlay } from "../LoadingBar";
@@ -253,7 +253,7 @@ export const RecentActionButtons = ({
         </div>
       </motion.div>
     );
-    return createPortal(content, document.body);
+    return <ClientPortal>{content}</ClientPortal>;
   };
 
   return (

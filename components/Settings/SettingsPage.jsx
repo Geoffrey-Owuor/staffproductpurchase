@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { createPortal } from "react-dom";
+import ClientPortal from "../Reusables/ClientPortal/ClientPortal";
 import { CircleUserRound, ShieldUser, X } from "lucide-react";
 import { motion } from "framer-motion"; // 1. Import motion
 import GeneralSettingsPage from "./GeneralSettingsPage";
@@ -80,5 +80,5 @@ export default function SettingsPage({ onClose }) {
       </motion.div>
     </motion.div>
   );
-  return createPortal(content, document.body);
+  return <ClientPortal>{content}</ClientPortal>;
 }

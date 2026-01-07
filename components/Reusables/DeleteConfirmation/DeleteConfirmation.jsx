@@ -2,7 +2,7 @@
 import { Loader2, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { useUser } from "@/context/UserContext";
-import { createPortal } from "react-dom";
+import ClientPortal from "../ClientPortal/ClientPortal";
 import { useState } from "react";
 import FormAsterisk from "../FormAsterisk/FormAsterisk";
 
@@ -187,5 +187,5 @@ export default function DeleteConfirmation({ onConfirm, onCancel }) {
       </motion.div>
     </motion.div>
   );
-  return createPortal(content, document.body);
+  return <ClientPortal>{content}</ClientPortal>;
 }
