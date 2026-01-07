@@ -1,7 +1,7 @@
 "use client";
 
 import { X } from "lucide-react";
-import { createPortal } from "react-dom";
+import ClientPortal from "./ClientPortal/ClientPortal";
 
 import { motion } from "framer-motion";
 
@@ -59,7 +59,7 @@ const ConfirmationDialog = ({ message, onConfirm, onCancel, title }) => {
       </motion.div>
     </motion.div>
   );
-  return createPortal(content, document.body);
+  return <ClientPortal>{content}</ClientPortal>;
 };
 
 export default ConfirmationDialog;
