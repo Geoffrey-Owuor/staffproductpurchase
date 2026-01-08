@@ -21,7 +21,7 @@ const PagesFooter = () => {
       </div>
 
       {/* ThemeToggle pinned right */}
-      <div className="absolute top-18 right-4 hidden -translate-y-1/2 sm:block">
+      <div className="absolute top-18 right-10 hidden -translate-y-1/2 sm:block">
         <ThemeToggle />
       </div>
     </div>

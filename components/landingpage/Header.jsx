@@ -5,7 +5,7 @@ import { LandingPageLogo } from "@/public/assets";
 
 export default function Header() {
   return (
-    <header className="fixed top-0 right-0 left-0 z-50 w-full bg-white transition-all duration-300 dark:bg-gray-950">
+    <header className="custom:px-6 fixed top-0 right-0 left-0 z-50 w-full bg-white px-0 transition-all duration-300 dark:bg-gray-950">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
         {/* Logo */}
         <LandingPageLogo />
