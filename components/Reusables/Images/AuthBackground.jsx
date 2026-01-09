@@ -6,7 +6,7 @@ export default function AuthBackground({ children }) {
   return (
     <div className="auth-background relative flex min-h-screen flex-col items-center justify-center bg-center text-gray-900 dark:text-white">
       {/* Company Logo */}
-      <div className="fixed top-3.5 left-4 z-50">
+      <div className="custom:left-10 fixed top-3.5 left-4 z-50">
         <AuthPagesLogo />
       </div>
 
@@ -32,7 +32,7 @@ export default function AuthBackground({ children }) {
       </div>
 
       {/* Theme Toggle - Bottom Right */}
-      <div className="absolute right-4 bottom-2 z-50 hidden sm:block">
+      <div className="custom:right-10 absolute right-4 bottom-2 z-50 hidden sm:block">
         <ThemeToggle />
       </div>
     </div>
