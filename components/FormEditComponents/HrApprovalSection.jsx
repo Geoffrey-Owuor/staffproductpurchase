@@ -43,9 +43,6 @@ export default function HRApprovalSection({
             </option>
             <option value="contract">Contract</option>
             <option value="permanent">Permanent</option>
-            <option value="cash approval" disabled>
-              Cash Approval
-            </option>
           </select>
         </div>
 
@@ -75,9 +72,6 @@ export default function HRApprovalSection({
             </option>
             <option value="yes">Yes</option>
             <option value="no">No</option>
-            <option value="cash approval" disabled>
-              Cash Approval
-            </option>
           </select>
         </div>
 

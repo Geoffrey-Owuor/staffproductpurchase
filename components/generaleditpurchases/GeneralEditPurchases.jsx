@@ -431,7 +431,7 @@ function PurchaseForm({
 
       {showConfirmation && (
         <ConfirmationDialog
-          message="Are you sure you want to submit these request changes? (You can't edit once approved)"
+          message="Are you sure you want to submit these request changes? (You can't edit once approved/declined)"
           onConfirm={handleConfirmSubmit}
           onCancel={() => setShowConfirmation(false)}
           title="Confirm Changes"
