@@ -19,10 +19,15 @@ export default function UserMenu({ hideMobileMenu, menuOpen }) {
       ? "w-40"
       : "w-0";
 
-  const dynamicOpen = menuOpen ? 20 : sidebarOpen && !showTopbar ? 20 : -20;
+  const dynamicOpen = menuOpen
+    ? 20
+    : (sidebarOpen || !sidebarOpen) && !showTopbar
+      ? 20
+      : -20;
+
   const dynamicPositioning = menuOpen
     ? "bottom-full left-1"
-    : sidebarOpen && !showTopbar
+    : (sidebarOpen || !sidebarOpen) && !showTopbar
       ? "bottom-full left-1"
       : "top-full right-0";
 
