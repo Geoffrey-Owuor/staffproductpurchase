@@ -36,7 +36,7 @@ INNER JOIN purchase_products AS pp ON p.id = pp.purchase_id
 
   //Add date range condition if both dates are provided
   if (fromDate && toDate) {
-    whereClauses.push(`DATE(p.createdAt) BETWEEN ? AND ?`);
+    whereClauses.push(`DATE(p.bi_approval_date) BETWEEN ? AND ?`);
     params.push(fromDate, toDate);
   }
 
