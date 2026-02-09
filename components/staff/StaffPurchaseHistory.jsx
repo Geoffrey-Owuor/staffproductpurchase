@@ -10,6 +10,8 @@ import { TableApprovalStatus } from "../Reusables/TableApprovalStatus";
 import Pagination from "../pagination/Pagination";
 import { formatDateLong } from "@/public/assets";
 import { useStaffPurchases } from "@/context/StaffPurchaseContext";
+import { useLoadingLine } from "@/context/LoadingLineContext";
+import Link from "next/link";
 
 export default function StaffPurchaseHistory() {
   const {
@@ -25,6 +27,7 @@ export default function StaffPurchaseHistory() {
   const [totalPages, setTotalPages] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const router = useRouter();
+  const { startLoading } = useLoadingLine();
 
   //Filters
   const [filterType, setFilterType] = useState("approval");
@@ -35,6 +38,12 @@ export default function StaffPurchaseHistory() {
 
   const handleViewClick = (id) => {
     setNavigatingTo(id);
+    router.push(`/staffdashboard/purchase-history/purchases/${id}`);
+  };
+
+  // Handling table row click
+  const handleTableRowClick = (id) => {
+    startLoading();
     router.push(`/staffdashboard/purchase-history/purchases/${id}`);
   };
 
@@ -240,7 +249,8 @@ export default function StaffPurchaseHistory() {
                   currentPurchases.map((purchase) => (
                     <tr
                       key={purchase.id}
-                      className="odd:bg-white even:bg-gray-50 dark:odd:bg-gray-950 dark:even:bg-gray-900"
+                      className="transition-colors duration-200 odd:bg-white even:bg-gray-50 hover:cursor-pointer hover:bg-blue-50 dark:odd:bg-gray-950 dark:even:bg-gray-900 dark:hover:bg-[#1a2332]"
+                      onClick={() => handleTableRowClick(purchase.id)}
                     >
                       <td className="max-w-[200px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900 dark:text-white">
                         {formatDateLong(purchase.createdAt)}
@@ -249,7 +259,16 @@ export default function StaffPurchaseHistory() {
                         className="max-w-[200px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900 dark:text-white"
                         title={purchase.reference_number}
                       >
-                        {purchase.reference_number}
+                        <Link
+                          href={`/staffdashboard/purchase-history/purchases/${purchase.id}`}
+                          className="hover:text-blue-400 hover:underline"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            startLoading();
+                          }}
+                        >
+                          {purchase.reference_number}
+                        </Link>
                       </td>
                       <td
                         className="max-w-[150px] truncate px-6 py-4 text-sm text-gray-900 dark:text-white"

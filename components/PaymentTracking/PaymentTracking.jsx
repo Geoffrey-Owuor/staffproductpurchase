@@ -16,12 +16,15 @@ import { FetchPeriodsPolicies } from "@/app/lib/FetchPeriodsPolicies";
 import { useApproversPurchases } from "@/context/ApproversPurchaseContext";
 import { useTrackingApprovalCards } from "@/context/TrackingApprovalCardsContext";
 import { Search, SearchX } from "lucide-react";
+import { useLoadingLine } from "@/context/LoadingLineContext";
+import Link from "next/link";
 
 export default function PaymentTracking() {
   const [goingTo, setGoingTo] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const { startLoading } = useLoadingLine();
 
   //Setting fetched credit periods
   const [periods, setPeriods] = useState([]);
@@ -70,7 +73,7 @@ export default function PaymentTracking() {
   };
 
   const handleEditClick = UseHandleEditClick();
-  const handleViewClick = UseHandleViewClick();
+  const { handleViewClick, getViewPathName } = UseHandleViewClick();
 
   const gotoPurchaseEdit = (id) => {
     setGoingTo(id);
@@ -79,6 +82,12 @@ export default function PaymentTracking() {
 
   const gotoPurchaseView = (id) => {
     setGoingTo(id);
+    handleViewClick(id);
+  };
+
+  // Handling table row click
+  const handleTableRowClick = (id) => {
+    startLoading();
     handleViewClick(id);
   };
 
@@ -401,7 +410,8 @@ export default function PaymentTracking() {
                     currentPurchases.map((purchase) => (
                       <tr
                         key={purchase.id}
-                        className="odd:bg-white even:bg-gray-50 dark:odd:bg-gray-950 dark:even:bg-gray-900"
+                        className="transition-colors duration-200 odd:bg-white even:bg-gray-50 hover:cursor-pointer hover:bg-blue-50 dark:odd:bg-gray-950 dark:even:bg-gray-900 dark:hover:bg-[#1a2332]"
+                        onClick={() => handleTableRowClick(purchase.id)}
                       >
                         {visibleColumns.submissionDate && (
                           <td className="max-w-[200px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900 dark:text-white">
@@ -412,7 +422,16 @@ export default function PaymentTracking() {
                           className="max-w-[200px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900 dark:text-white"
                           title={purchase.reference_number}
                         >
-                          {purchase.reference_number}
+                          <Link
+                            href={getViewPathName(purchase.id)}
+                            className="hover:text-blue-400 hover:underline"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              startLoading();
+                            }}
+                          >
+                            {purchase.reference_number}
+                          </Link>
                         </td>
                         {visibleColumns.nameOfStaff && (
                           <td
