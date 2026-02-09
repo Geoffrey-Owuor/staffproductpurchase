@@ -358,7 +358,7 @@ function PurchaseForm({
                 approversPurchasing={false}
               />
               {/* Removing a product - Only when role is cc */}
-              {products.length > 1 && userRole === "admin" && (
+              {products.length > 1 && userRole === "cc" && (
                 <button
                   type="button"
                   onClick={() => removeProduct(index)}
@@ -379,7 +379,7 @@ function PurchaseForm({
               </span>
             )}
             {/* Adding a product - Only when role is cc */}
-            {userRole === "admin" && (
+            {userRole === "cc" && (
               <button
                 type="button"
                 onClick={addProduct}
