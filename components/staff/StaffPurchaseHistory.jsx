@@ -258,7 +258,7 @@ export default function StaffPurchaseHistory() {
                         {purchase.employee_payment_terms}
                       </td>
                       <td
-                        className="px-6 py-4 text-sm text-gray-900 dark:text-white"
+                        className="max-w-[150px] truncate px-6 py-4 text-sm text-gray-900 dark:text-white"
                         title={purchase.mpesa_code}
                       >
                         {purchase.mpesa_code || "N/A"}
