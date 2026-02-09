@@ -7,7 +7,7 @@ import {
   Link2,
   BookOpenCheck,
   ChevronsLeft,
-  ToggleLeft, // Changed icon to represent switching back to side view
+  LayoutPanelLeft, // Changed icon to represent switching back to side view
 } from "lucide-react";
 import HotpointLogo from "../HotpointLogo";
 import UserMenu from "../UserMenu";
@@ -48,8 +48,9 @@ const TopSidebar = ({
 
   return (
     <header
-      className={`custom:flex fixed top-0 right-0 left-0 z-50 hidden h-16 transition-all duration-200 ${isScrolled ? "custom-blur shadow-xs" : ""
-        }`}
+      className={`custom:flex fixed top-0 right-0 left-0 z-50 hidden h-16 transition-all duration-200 ${
+        isScrolled ? "custom-blur shadow-xs" : ""
+      }`}
     >
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4">
         {/* LEFT SECTION: Logo & Back Button */}
@@ -66,10 +67,11 @@ const TopSidebar = ({
             <li>
               <div
                 onClick={handleHomeClick}
-                className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${activeTab === "home"
-                  ? "bg-gray-200 text-black dark:bg-gray-800 dark:text-white"
-                  : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
-                  }`}
+                className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
+                  activeTab === "home"
+                    ? "bg-gray-200 text-black dark:bg-gray-800 dark:text-white"
+                    : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
+                }`}
               >
                 <HomeIcon className="h-4 w-4 shrink-0" />
                 <span>Home</span>
@@ -79,10 +81,11 @@ const TopSidebar = ({
             <li>
               <div
                 onClick={handlePurchaseClick}
-                className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${activeTab === "newpurchase"
-                  ? "bg-gray-200 text-black dark:bg-gray-800 dark:text-white"
-                  : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
-                  }`}
+                className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
+                  activeTab === "newpurchase"
+                    ? "bg-gray-200 text-black dark:bg-gray-800 dark:text-white"
+                    : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
+                }`}
               >
                 <ShoppingBagIcon className="h-4 w-4 shrink-0" />
                 <span>New Purchase</span>
@@ -92,10 +95,11 @@ const TopSidebar = ({
             <li>
               <div
                 onClick={handleHistoryClick}
-                className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${activeTab === "history"
-                  ? "bg-gray-200 text-black dark:bg-gray-800 dark:text-white"
-                  : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
-                  }`}
+                className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
+                  activeTab === "history"
+                    ? "bg-gray-200 text-black dark:bg-gray-800 dark:text-white"
+                    : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
+                }`}
               >
                 <History className="h-4 w-4 shrink-0" />
                 <span>History</span>
@@ -108,10 +112,11 @@ const TopSidebar = ({
                   onClick={() =>
                     handleNavClick("/ccdashboard/payment-tracking")
                   }
-                  className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${activeTab === "paymentTracking"
-                    ? "bg-gray-200 text-black dark:bg-gray-800 dark:text-white"
-                    : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
-                    }`}
+                  className={`flex cursor-default items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
+                    activeTab === "paymentTracking"
+                      ? "bg-gray-200 text-black dark:bg-gray-800 dark:text-white"
+                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
+                  }`}
                 >
                   <BookOpenCheck className="h-4 w-4 shrink-0" />
                   <span>Fully Approved</span>
@@ -137,7 +142,7 @@ const TopSidebar = ({
             title="Switch to Side View"
             className="flex cursor-pointer items-center justify-center rounded-xl p-2 text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-100"
           >
-            <ToggleLeft className="h-5 w-5" />
+            <LayoutPanelLeft className="h-4 w-4 shrink-0" />
           </div>
 
           <div className="hidden h-6 w-px bg-gray-200 sm:block dark:bg-gray-700"></div>
