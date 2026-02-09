@@ -6,27 +6,52 @@ export function UseHandleViewClick() {
   const { role: userRole } = useUser();
   const router = useRouter();
 
-  return function handleViewClick(id) {
-    let dashboardPath;
-
+  function handleViewClick(id) {
+    let path;
     switch (userRole) {
       case "payroll":
-        dashboardPath = `/payrolldashboard/purchases-history/purchases/${id}`;
+        path = `/payrolldashboard/purchases-history/purchases/${id}`;
         break;
       case "hr":
-        dashboardPath = `/hrdashboard/requests-history/requests/${id}`;
+        path = `/hrdashboard/requests-history/requests/${id}`;
         break;
       case "cc":
-        dashboardPath = `/ccdashboard/purchases-history/purchases/${id}`;
+        path = `/ccdashboard/purchases-history/purchases/${id}`;
         break;
       case "bi":
-        dashboardPath = `/bidashboard/purchases-history/purchases/${id}`;
+        path = `/bidashboard/purchases-history/purchases/${id}`;
         break;
       default:
-        dashboardPath = "/login";
+        path = "/login";
+        break;
+    }
+    //navigate to path
+    router.push(path);
+  }
+
+  const getViewPathName = (id) => {
+    let path;
+    switch (userRole) {
+      case "payroll":
+        path = `/payrolldashboard/purchases-history/purchases/${id}`;
+        break;
+      case "hr":
+        path = `/hrdashboard/requests-history/requests/${id}`;
+        break;
+      case "cc":
+        path = `/ccdashboard/purchases-history/purchases/${id}`;
+        break;
+      case "bi":
+        path = `/bidashboard/purchases-history/purchases/${id}`;
+        break;
+      default:
+        path = "/login";
         break;
     }
 
-    router.push(dashboardPath);
+    // Return the path
+    return path;
   };
+
+  return { handleViewClick, getViewPathName };
 }
