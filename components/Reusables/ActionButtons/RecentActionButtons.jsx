@@ -135,7 +135,9 @@ export const RecentActionButtons = ({
   };
 
   // Update toggleDropdown to calculate precise coordinates for the portal
-  const toggleDropdown = () => {
+  const toggleDropdown = (e) => {
+    e.stopPropagation();
+
     if (!isOpen && menuRef.current) {
       const rect = menuRef.current.getBoundingClientRect();
       const dropdownHeight = 150; // Estimated height of the dropdown
@@ -280,7 +282,7 @@ export const RecentActionButtons = ({
       <div className="relative inline-block text-left" ref={menuRef}>
         <button
           type="button"
-          onClick={toggleDropdown}
+          onClick={(e) => toggleDropdown(e)}
           title="More options"
           className="rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-200 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-50"
         >
