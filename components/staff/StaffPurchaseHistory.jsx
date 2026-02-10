@@ -308,7 +308,10 @@ export default function StaffPurchaseHistory() {
                       <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900 dark:text-white">
                         <div className="group ml-1.5 flex">
                           <button
-                            onClick={() => handleViewClick(purchase.id)}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleViewClick(purchase.id);
+                            }}
                             className="rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-200 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-50"
                             title="View"
                             disabled={navigatingTo === purchase.id}
