@@ -134,26 +134,28 @@ export default function Pagination({
   return (
     <div className="mt-4 mb-1">
       {/* Mobile Pagination */}
-      <div className="flex items-center justify-between px-1 sm:hidden">
-        <button
-          onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
-          disabled={currentPage === 1}
-          className="flex items-center gap-1 rounded-lg bg-gray-200 px-3 py-2 ring-1 ring-gray-300 disabled:opacity-50 dark:bg-gray-800 dark:ring-gray-700"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Previous
-        </button>
-        <button
-          onClick={() =>
-            handlePageChange(Math.min(totalPages, currentPage + 1))
-          }
-          disabled={currentPage === totalPages}
-          className="flex items-center gap-1 rounded-lg bg-gray-200 px-6 py-2 ring-1 ring-gray-300 disabled:opacity-50 dark:bg-gray-800 dark:ring-gray-700"
-        >
-          Next
-          <ArrowRight className="h-4 w-4" />
-        </button>
-      </div>
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between px-1 sm:hidden">
+          <button
+            onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+            disabled={currentPage === 1}
+            className="flex items-center gap-1 rounded-lg bg-gray-200 px-3 py-2 ring-1 ring-gray-300 disabled:opacity-50 dark:bg-gray-800 dark:ring-gray-700"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Previous
+          </button>
+          <button
+            onClick={() =>
+              handlePageChange(Math.min(totalPages, currentPage + 1))
+            }
+            disabled={currentPage === totalPages}
+            className="flex items-center gap-1 rounded-lg bg-gray-200 px-6 py-2 ring-1 ring-gray-300 disabled:opacity-50 dark:bg-gray-800 dark:ring-gray-700"
+          >
+            Next
+            <ArrowRight className="h-4 w-4" />
+          </button>
+        </div>
+      )}
       {/* Desktop Pagination */}
       <div className="hidden items-center justify-center space-x-2 sm:flex">
         {/* Rows Per Page Drop Down */}

@@ -19,6 +19,7 @@ import TopBarButtons from "../Reusables/TopBarButtons/TopBarButtons";
 import { FetchPeriodsPolicies } from "@/app/lib/FetchPeriodsPolicies";
 import { useUser } from "@/context/UserContext";
 import { useApprovalCounts } from "@/context/ApprovalCountsContext";
+import MpesaTillNumber from "./MpesaTillNumber";
 
 // The initial state for a single product
 const initialProductState = {
@@ -222,6 +223,9 @@ export default function NewPurchase({ approversPurchasing }) {
           </div>
           <TopBarButtons />
         </div>
+
+        {/* Till Number Area*/}
+        <MpesaTillNumber />
 
         <form
           id="staffInformation"
