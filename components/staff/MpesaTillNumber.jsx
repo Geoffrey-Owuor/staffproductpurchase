@@ -42,7 +42,7 @@ export default function MpesaTillNumber() {
   return (
     <div className="px-2">
       {/* Single compact rounded container */}
-      <div className="relative mb-4 w-full max-w-[280px] rounded-2xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-950">
+      <div className="relative mb-4 w-full rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:max-w-[280px] dark:border-gray-800 dark:bg-gray-950">
         {/* Title */}
         <p className="mb-1 font-mono text-[11px] font-semibold tracking-wider text-gray-500 uppercase dark:text-gray-400">
           Hotpoint Till Number
