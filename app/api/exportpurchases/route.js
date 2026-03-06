@@ -11,18 +11,26 @@ export async function GET(request) {
 
   const baseSelect = `
   SELECT
-    p.id, p.createdAt, p.reference_number, p.staffName, p.payrollNo, p.department,
+    p.id, 
+    DATE_FORMAT(p.createdAt, '%Y-%m-%d %H:%i:%s') AS createdAt,
+    p.reference_number, p.staffName, p.payrollNo, p.department,
     p.employee_payment_terms, p.user_credit_period, p.mpesa_code, p.invoicing_location,
     p.delivery_details, pp.itemName, pp.itemStatus, pp.productPolicy, pp.productCode, 
     pp.tdPrice AS initialPrice, pp.discountRate, pp.discountedValue, p.Payroll_Approval, p.HR_Approval,
     p.CC_Approval, p.BI_Approval, p.one_third_rule, p.payroll_approver_name,
-    p.payroll_approval_date, p.is_employed, p.on_probation, p.hr_comments,
-    p.hr_approver_name, p.hr_approval_date, p.credit_period, p.purchase_history_comments,
-    p.pending_invoices, p.cc_approver_name, p.cc_approval_date, p.invoice_date,
+    DATE_FORMAT(p.payroll_approval_date, '%Y-%m-%d %H:%i:%s') AS payroll_approval_date, 
+    p.is_employed, p.on_probation, p.hr_comments,
+    p.hr_approver_name, 
+    DATE_FORMAT(p.hr_approval_date, '%Y-%m-%d %H:%i:%s') AS hr_approval_date,
+    p.credit_period, p.purchase_history_comments,
+    p.pending_invoices, p.cc_approver_name, 
+    DATE_FORMAT(p.cc_approval_date, '%Y-%m-%d %H:%i:%s') AS cc_approval_date,
+    DATE_FORMAT(p.invoice_date, '%Y-%m-%d') AS invoice_date,
     p.invoice_number, p.invoice_amount, p.payment_reference, p.bi_approver_name,
-    p.bi_approval_date, p.request_closure
-FROM purchasesinfo AS p
-INNER JOIN purchase_products AS pp ON p.id = pp.purchase_id
+    DATE_FORMAT(p.bi_approval_date, '%Y-%m-%d %H:%i:%s') AS bi_approval_date,
+    p.request_closure
+  FROM purchasesinfo AS p
+  INNER JOIN purchase_products AS pp ON p.id = pp.purchase_id
   `;
 
   let query = baseSelect;
@@ -35,8 +43,13 @@ INNER JOIN purchase_products AS pp ON p.id = pp.purchase_id
   }
 
   //Add date range condition if both dates are provided
+  // Based on which date to use
   if (fromDate && toDate) {
-    whereClauses.push(`DATE(p.bi_approval_date) BETWEEN ? AND ?`);
+    if (!exportAll) {
+      whereClauses.push(`DATE(p.bi_approval_date) BETWEEN ? AND ?`);
+    } else {
+      whereClauses.push(`DATE(p.createdAt) BETWEEN ? AND ?`);
+    }
     params.push(fromDate, toDate);
   }
 
@@ -66,9 +79,14 @@ INNER JOIN purchase_products AS pp ON p.id = pp.purchase_id
           .replace(/^./, (str) => str.toUpperCase()), // Format header text (e.g., "purchaseId" -> "Purchase Id")
         key: key,
         width: 20, // Set a default column width
+        numFmt:
+          key.toLowerCase().includes("date") ||
+          key.toLowerCase().includes("created")
+            ? "yyyy-mm-dd hh:mm:ss"
+            : undefined,
       }));
 
-      // 4. Add the data rows
+      // Add rows - row data
       worksheet.addRows(rows);
     }
 

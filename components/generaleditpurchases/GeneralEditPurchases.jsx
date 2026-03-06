@@ -456,7 +456,7 @@ export default function GeneralEditPurchases({ id }) {
   const { role: userRole, name } = useUser();
   const { purchase, loading, error } = usePurchase();
   const { refetchCounts } = useApprovalCounts();
-  const handleViewClick = UseHandleViewClick();
+  const { handleViewClick } = UseHandleViewClick();
 
   // 1. Context Loading State
   if (loading) {
