@@ -1,6 +1,8 @@
 import pool from "@/lib/db";
 import { getCurrentUser } from "@/app/lib/auth";
 
+const LIMIT = 500;
+
 export async function GET(request) {
   const user = await getCurrentUser();
 
@@ -71,7 +73,8 @@ export async function GET(request) {
       query += ` WHERE ${whereClauses.join(" AND ")}`;
     }
 
-    query += ` ORDER BY createdAt DESC`;
+    query += ` ORDER BY createdAt DESC LIMIT ?`;
+    params.push(LIMIT);
 
     const [rows] = await connection.execute(query, params);
 

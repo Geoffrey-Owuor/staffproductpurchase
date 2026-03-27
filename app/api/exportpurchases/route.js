@@ -1,6 +1,8 @@
 import ExcelJS from "exceljs";
 import pool from "@/lib/db";
 
+const LIMIT = 500;
+
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
 
@@ -59,7 +61,8 @@ export async function GET(request) {
   }
 
   //Add ORDER BY clause
-  query += ` ORDER BY p.createdAt DESC`;
+  query += ` ORDER BY p.createdAt DESC LIMIT ?`;
+  params.push(LIMIT);
 
   let connection;
 
