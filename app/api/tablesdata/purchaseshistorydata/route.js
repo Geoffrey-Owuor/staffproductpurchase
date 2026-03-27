@@ -2,8 +2,6 @@
 import pool from "@/lib/db";
 import { getCurrentUser } from "@/app/lib/auth";
 
-const LIMIT = 500;
-
 //role to column mapping
 const roleToColumnMap = {
   payroll: "Payroll_Approval",
@@ -105,8 +103,7 @@ export async function GET(request) {
       query += ` WHERE ${whereClauses.join(" AND ")}`;
     }
 
-    query += ` ORDER BY createdAt DESC LIMIT ?`;
-    params.push(LIMIT);
+    query += ` ORDER BY createdAt DESC LIMIT 500`;
 
     const [rows] = await connection.execute(query, params);
 
