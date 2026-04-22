@@ -159,8 +159,6 @@ const formatCurrency = (value) =>
     .toFixed(2)
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
 
-const biApprovalDate = new Date();
-
 const formatDate = (dateString) =>
   dateString ? new Date(dateString).toLocaleDateString("en-GB") : "N/A";
 
@@ -201,7 +199,7 @@ const PurchasePDFDocument = ({
               <Text>Reference Number: {reference || "N/A"}</Text>
               <Text>
                 Date Issued:{" "}
-                {formatDate(purchaseData.bi_approval_date || biApprovalDate)}
+                {formatDate(purchaseData.bi_approval_date ?? new Date())}
               </Text>
             </View>
           </View>
@@ -488,9 +486,7 @@ const PurchasePDFDocument = ({
                   <View style={styles.infoRow}>
                     <Text style={styles.infoLabel}>Date</Text>
                     <Text style={styles.infoValue}>
-                      {formatDate(
-                        purchaseData.bi_approval_date || biApprovalDate,
-                      )}
+                      {formatDate(purchaseData.bi_approval_date ?? new Date())}
                     </Text>
                   </View>
 
@@ -499,7 +495,7 @@ const PurchasePDFDocument = ({
                     <Text style={styles.infoValue}>
                       {calculateDaysDifference(
                         createdAt,
-                        purchaseData.bi_approval_date || biApprovalDate,
+                        purchaseData.bi_approval_date ?? new Date(),
                       )}
                     </Text>
                   </View>
