@@ -8,10 +8,10 @@ const getRoleFromEmail = (email) => {
   const normalizedEmail = email.toLowerCase();
 
   const emailRoleMappings = {
-    "bmulwa@hotpoint.co.ke": "payroll",
-    "hrassist@hotpoint.co.ke": "hr",
-    "cc@hotpoint.co.ke": "cc",
-    "sales@hotpoint.co.ke": "bi",
+    "test11@hotpoint.co.ke": "payroll",
+    "test21@hotpoint.co.ke": "hr",
+    "test33@hotpoint.co.ke": "cc",
+    "test44@hotpoint.co.ke": "bi",
   };
 
   return emailRoleMappings[normalizedEmail] || "staff";

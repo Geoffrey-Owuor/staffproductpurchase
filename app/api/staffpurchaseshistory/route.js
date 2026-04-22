@@ -71,7 +71,7 @@ export async function GET(request) {
       query += ` WHERE ${whereClauses.join(" AND ")}`;
     }
 
-    query += ` ORDER BY createdAt DESC`;
+    query += ` ORDER BY createdAt DESC LIMIT 500`;
 
     const [rows] = await connection.execute(query, params);
 

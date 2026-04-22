@@ -4,3 +4,35 @@
 2. Will require route changes and route tied functions
 3. Changes to payment details and product pricing
 4. Edit in role-based access
+
+
+
+-- CREATING INDEXES - QUERY OPTIMIZATION
+-- User indexes
+CREATE INDEX idx_user_payroll_no ON users(payrollNo);
+CREATE INDEX idx_user_department ON users(department);
+
+-- purchasesinfo indexes
+CREATE INDEX idx_payroll_approver_id ON purchasesinfo(payroll_approver_id);
+CREATE INDEX idx_bi_approver_id ON purchasesinfo(bi_approver_id);
+CREATE INDEX idx_reference_number ON purchasesinfo(reference_number);
+CREATE INDEX idx_staff_name ON purchasesinfo(staffName);
+CREATE INDEX idx_payroll_no ON purchasesinfo(payrollNo);
+CREATE INDEX idx_department ON purchasesinfo(department);
+CREATE INDEX idx_employee_payment_terms ON purchasesinfo(employee_payment_terms);
+CREATE INDEX idx_user_credit_period ON purchasesinfo(user_credit_period);
+CREATE INDEX idx_created_at ON purchasesinfo(createdAt);
+CREATE INDEX idx_payroll_approval ON purchasesinfo(Payroll_Approval);
+CREATE INDEX idx_hr_approval ON purchasesinfo(HR_Approval);
+CREATE INDEX idx_cc_approval ON purchasesinfo(CC_Approval);
+CREATE INDEX idx_bi_approval ON purchasesinfo(BI_Approval);
+CREATE INDEX idx_payroll_approval_date ON purchasesinfo(payroll_approval_date);
+CREATE INDEX idx_hr_approval_date ON purchasesinfo(hr_approval_date);
+CREATE INDEX idx_cc_approval_date ON purchasesinfo(cc_approval_date);
+CREATE INDEX idx_bi_approval_date ON purchasesinfo(bi_approval_date);
+CREATE INDEX idx_request_closure ON purchasesinfo(request_closure);
+
+
+CREATE INDEX idx_last_changelog_viewed_at ON users(last_changelog_viewed_at);
+CREATE INDEX idx_reset_token ON users(reset_token);
+CREATE INDEX idx_reset_token_expiry ON users(reset_token_expiry);

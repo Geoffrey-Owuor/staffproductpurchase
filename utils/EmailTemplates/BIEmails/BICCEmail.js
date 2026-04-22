@@ -9,8 +9,6 @@ const calculateDaysDifference = (startDate, endDate) => {
   return `${diffDays} day${diffDays !== 1 ? "s" : ""}`;
 };
 
-const biApprovalDate = new Date().toLocaleDateString("en-GB");
-
 const generateBICCApprovedEmailHTML = ({
   staffName,
   payrollNo,
@@ -68,7 +66,7 @@ const generateBICCApprovedEmailHTML = ({
                          <p><strong>Name:</strong> ${staffName}</p>
                          <p><strong>Payroll No:</strong> ${payrollNo}</p>
                          <p><strong>Billing & Invoice Approver:</strong> ${bi_approver_name}</p>
-                         <p><strong>Billing & Invoice Approval Date:</strong> ${biApprovalDate}</p>
+                         <p><strong>Billing & Invoice Approval Date:</strong> ${new Date().toLocaleDateString("en-GB")}</p>
                          <p><strong>Approval Time:</strong> ${calculateDaysDifference(createdAt, new Date())}</p>
                          
                          <h3 style="color: #333;">Requested Items</h3>

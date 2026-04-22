@@ -59,7 +59,7 @@ export async function GET(request) {
   }
 
   //Add ORDER BY clause
-  query += ` ORDER BY p.createdAt DESC`;
+  query += ` ORDER BY p.createdAt DESC LIMIT 500`;
 
   let connection;
 
