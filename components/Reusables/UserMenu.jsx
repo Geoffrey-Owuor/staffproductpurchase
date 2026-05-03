@@ -65,7 +65,7 @@ export default function UserMenu({ hideMobileMenu, menuOpen }) {
       });
 
       if (response.ok) {
-        router.push("/login");
+        window.location.href = "/login";
       }
     } catch (error) {
       console.error("Logout failed:", error);

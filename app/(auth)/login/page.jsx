@@ -56,7 +56,7 @@ export default function LoginPage() {
         }
 
         // Redirect with page reload
-        router.push(dashboardPath);
+        window.location.href = dashboardPath;
       } else {
         const data = await response.json();
         setLoginError(data.message || "Login Failed");

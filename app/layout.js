@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "../styles/globals.css";
 import LoadingLine from "@/components/Reusables/LoadingLine";
 import { ThemeProvider } from "next-themes";
+import QueryProvider from "@/components/QueryProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,7 +35,7 @@ export default function RootLayout({ children }) {
           disableTransitionOnChange={true}
         >
           <LoadingLine />
-          <main>{children}</main>
+          <QueryProvider>{children}</QueryProvider>
         </ThemeProvider>
       </body>
     </html>

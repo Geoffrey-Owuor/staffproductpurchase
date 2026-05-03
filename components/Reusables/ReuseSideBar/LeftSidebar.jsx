@@ -49,7 +49,7 @@ const LeftSidebar = ({
 
           <button
             className={`absolute ${sidebarOpen ? "top-[1.5px] left-48" : "top-20 left-[13px]"} rounded-lg bg-gray-100 p-1.5 text-gray-900 transition-all duration-200 hover:bg-gray-200 dark:bg-gray-800/50 dark:text-white dark:hover:bg-gray-800`}
-            onClick={() => setSidebarOpen((prev) => !prev)}
+            onClick={() => setSidebarOpen(!sidebarOpen)}
           >
             {sidebarOpen ? (
               <PanelLeftClose className="h-4.5 w-4.5" />

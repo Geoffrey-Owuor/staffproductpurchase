@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState, useMemo, useCallback } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import TableSkeleton from "../skeletons/TableSkeleton";
 import { LoadingBar } from "../Reusables/LoadingBar";
 import PurchasesHistoryHeading from "../Reusables/Headings/PurchasesHistoryHeading";
@@ -14,50 +15,88 @@ import Pagination from "../pagination/Pagination";
 import ColumnToggle from "../Reusables/ColumnToggle";
 import ImportExcelData from "../Reusables/Import/ImportExcelData";
 import { useApprovalCounts } from "@/context/ApprovalCountsContext";
-import { useApproversPurchases } from "@/context/ApproversPurchaseContext";
-import { Search, SearchX } from "lucide-react";
+import { RotateCcw, Search, SearchX, X } from "lucide-react";
 import { useLoadingLineStore } from "@/store/useLoadingLineStore";
 import Link from "next/link";
+import { fetchApproverPurchases } from "@/utils/FetchPurchases/fetchApproverPurchases";
 
-export default function PurchasesHistory() {
+// ─── Constants ────────────────────────────────────────────────────────────────
+
+const APPROVAL_STATUS_LABELS = {
+  pending: "Pending",
+  approved: "Approved",
+  declined: "Declined",
+};
+
+const PAYMENT_TERMS_LABELS = {
+  CASH: "Cash",
+  CREDIT: "Credit",
+  "CASH AND CREDIT": "Cash & Credit",
+};
+
+// ─── Filter Pill Component ─────────────────────────────────────────────────────
+
+function FilterPill({ label, value, onRemove }) {
+  return (
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">
+      <span className="text-blue-500 dark:text-blue-400">{label}:</span>
+      {value}
+      <button
+        onClick={onRemove}
+        className="ml-0.5 rounded-full p-0.5 transition-colors hover:bg-blue-200 dark:hover:bg-blue-800"
+        aria-label={`Remove ${label} filter`}
+      >
+        <X className="h-3 w-3" />
+      </button>
+    </span>
+  );
+}
+
+// ─── Main Component ────────────────────────────────────────────────────────────
+
+export default function PurchasesHistory({ fetchAllData = false }) {
+  const queryClient = useQueryClient();
   const [goingTo, setGoingTo] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const startLoading = useLoadingLineStore((state) => state.startLoading);
-
-  // Get purchases details from approversContext hook
-  const {
-    purchases,
-    setPurchases,
-    loading,
-    fetchPurchases,
-    fetchAllData,
-    refetchDefaultPurchases,
-  } = useApproversPurchases();
-
-  // Get the refetch counts function
   const { refetchCounts } = useApprovalCounts();
 
-  //Filter States
+  // ── TanStack Query: fetch all data once ──────────────────────────────────────
+  const {
+    data: allPurchases = [],
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery({
+    queryKey: ["purchases", fetchAllData],
+    queryFn: () => fetchApproverPurchases(fetchAllData),
+  });
+
+  // ── Filter Input States (staging — not yet "applied") ────────────────────────
   const [filterType, setFilterType] = useState("staff");
   const [searchTerm, setSearchTerm] = useState("");
   const [approvalStatus, setApprovalStatus] = useState("");
   const [paymentTerms, setPaymentTerms] = useState("");
   const [payrollNumber, setPayrollNumber] = useState("");
   const [fromDate, setFromDate] = useState("");
-  const [referenceNumber, setReferenceNumber] = useState("");
   const [toDate, setToDate] = useState("");
+  const [referenceNumber, setReferenceNumber] = useState("");
 
-  //Alert information state
+  // ── Active (applied) Filters — drive the useMemo ────────────────────────────
+  const [activeFilters, setActiveFilters] = useState({});
+  // Shape: { staff?: string, reference?: string, payroll?: string,
+  //          fromDate?: string, toDate?: string, approval?: string, terms?: string }
+
+  // ── Alert State ──────────────────────────────────────────────────────────────
   const [alertInfo, setAlertInfo] = useState({
     show: false,
     type: "",
     message: "",
   });
 
-  //Toggling hiding columns
+  // ── Column Visibility ─────────────────────────────────────────────────────────
   const [visibleColumns, setVisibleColumns] = useState({
     submissionDate: true,
     termsOfPayment: true,
@@ -69,12 +108,8 @@ export default function PurchasesHistory() {
     invoicingApproval: true,
   });
 
-  //Handling column toggle
   const handleColumnToggle = (columnKey) => {
-    setVisibleColumns((prev) => ({
-      ...prev,
-      [columnKey]: !prev[columnKey],
-    }));
+    setVisibleColumns((prev) => ({ ...prev, [columnKey]: !prev[columnKey] }));
   };
 
   const handleEditClick = UseHandleEditClick();
@@ -84,40 +119,140 @@ export default function PurchasesHistory() {
     setGoingTo(id);
     handleEditClick(id);
   };
-
   const gotoPurchaseView = (id) => {
     setGoingTo(id);
     handleViewClick(id);
   };
 
-  // Handling table row click
   const handleTableRowClick = (id) => {
     startLoading();
     handleViewClick(id);
   };
 
-  // Button click handler
-  const applyFilters = () => {
-    fetchPurchases({
-      filterType,
-      searchTerm,
-      fromDate,
-      toDate,
-      approvalStatus,
-      paymentTerms,
-      payrollNumber,
-      referenceNumber,
-    });
-    setCurrentPage(1); //set to first page on new search
-  };
+  // ── Client-side Filtering via useMemo ────────────────────────────────────────
+  const filteredPurchases = useMemo(() => {
+    let result = allPurchases;
 
-  //Function to return default purchases data and clear filters
-  const fetchDefaultPurchases = () => {
-    // Call refetch default purchases
-    refetchDefaultPurchases();
+    if (activeFilters.staff) {
+      const term = activeFilters.staff.toLowerCase();
+      result = result.filter((p) => p.staffName?.toLowerCase().includes(term));
+    }
+
+    if (activeFilters.reference) {
+      const term = activeFilters.reference.toLowerCase();
+      result = result.filter((p) =>
+        p.reference_number?.toLowerCase().includes(term),
+      );
+    }
+
+    if (activeFilters.payroll) {
+      const term = activeFilters.payroll.toLowerCase();
+      result = result.filter((p) => p.payrollNo?.toLowerCase().includes(term));
+    }
+
+    if (activeFilters.fromDate && activeFilters.toDate) {
+      const from = new Date(activeFilters.fromDate);
+      const to = new Date(activeFilters.toDate);
+      // Include the full toDate day
+      to.setHours(23, 59, 59, 999);
+      result = result.filter((p) => {
+        const d = new Date(p.createdAt);
+        return d >= from && d <= to;
+      });
+    }
+
+    if (activeFilters.approval) {
+      const status = activeFilters.approval.toLowerCase();
+      result = result.filter((p) => {
+        const statuses = [
+          p.Payroll_Approval,
+          p.HR_Approval,
+          p.CC_Approval,
+          p.BI_Approval,
+        ].map((s) => s?.toLowerCase());
+
+        if (status === "pending")
+          return statuses.some((s) => s === "pending" || !s);
+        if (status === "approved")
+          return statuses.every((s) => s === "approved");
+        if (status === "declined")
+          return statuses.some((s) => s === "declined");
+        return true;
+      });
+    }
+
+    if (activeFilters.terms) {
+      result = result.filter(
+        (p) => p.employee_payment_terms === activeFilters.terms,
+      );
+    }
+
+    return result;
+  }, [allPurchases, activeFilters]);
+
+  // ── Pagination ────────────────────────────────────────────────────────────────
+  const totalPages = Math.ceil(filteredPurchases.length / rowsPerPage);
+
+  const currentPurchases = useMemo(
+    () =>
+      filteredPurchases.slice(
+        (currentPage - 1) * rowsPerPage,
+        currentPage * rowsPerPage,
+      ),
+    [filteredPurchases, currentPage, rowsPerPage],
+  );
+
+  // ── Apply Filters Handler ─────────────────────────────────────────────────────
+  const applyFilters = useCallback(() => {
+    const newFilters = {};
+
+    if (filterType === "staff" && searchTerm.trim()) {
+      newFilters.staff = searchTerm.trim();
+    } else if (filterType === "reference" && referenceNumber.trim()) {
+      newFilters.reference = referenceNumber.trim();
+    } else if (filterType === "payroll" && payrollNumber.trim()) {
+      newFilters.payroll = payrollNumber.trim();
+    } else if (filterType === "date" && fromDate && toDate) {
+      newFilters.fromDate = fromDate;
+      newFilters.toDate = toDate;
+    } else if (filterType === "approval" && approvalStatus) {
+      newFilters.approval = approvalStatus;
+    } else if (filterType === "terms" && paymentTerms) {
+      newFilters.terms = paymentTerms;
+    }
+
+    // Merge with existing active filters (overwrite same-key filters)
+    setActiveFilters((prev) => ({ ...prev, ...newFilters }));
     setCurrentPage(1);
+  }, [
+    filterType,
+    searchTerm,
+    referenceNumber,
+    payrollNumber,
+    fromDate,
+    toDate,
+    approvalStatus,
+    paymentTerms,
+  ]);
 
-    // Clear previous filters
+  // ── Remove a Single Filter Pill ───────────────────────────────────────────────
+  const removeFilter = useCallback((key) => {
+    setActiveFilters((prev) => {
+      const next = { ...prev };
+      if (key === "date") {
+        delete next.fromDate;
+        delete next.toDate;
+      } else {
+        delete next[key];
+      }
+      return next;
+    });
+    setCurrentPage(1);
+  }, []);
+
+  // ── Clear All Filters ─────────────────────────────────────────────────────────
+  const clearAllFilters = useCallback(() => {
+    setActiveFilters({});
     setSearchTerm("");
     setApprovalStatus("");
     setPaymentTerms("");
@@ -125,47 +260,79 @@ export default function PurchasesHistory() {
     setFromDate("");
     setToDate("");
     setPayrollNumber("");
-  };
+    setCurrentPage(1);
+  }, []);
 
-  // Recalculate total pages when purchases or rowsPerPage changes
-  useEffect(() => {
-    setTotalPages(Math.ceil(purchases.length / rowsPerPage));
-  }, [rowsPerPage, purchases]);
+  // ── Build pill descriptors from activeFilters ─────────────────────────────────
+  const filterPills = useMemo(() => {
+    const pills = [];
+    if (activeFilters.staff)
+      pills.push({ key: "staff", label: "Staff", value: activeFilters.staff });
+    if (activeFilters.reference)
+      pills.push({
+        key: "reference",
+        label: "Reference",
+        value: activeFilters.reference,
+      });
+    if (activeFilters.payroll)
+      pills.push({
+        key: "payroll",
+        label: "Payroll",
+        value: activeFilters.payroll,
+      });
+    if (activeFilters.fromDate && activeFilters.toDate)
+      pills.push({
+        key: "date",
+        label: "Date",
+        value: `${activeFilters.fromDate} → ${activeFilters.toDate}`,
+      });
+    if (activeFilters.approval)
+      pills.push({
+        key: "approval",
+        label: "Status",
+        value:
+          APPROVAL_STATUS_LABELS[activeFilters.approval] ??
+          activeFilters.approval,
+      });
+    if (activeFilters.terms)
+      pills.push({
+        key: "terms",
+        label: "Terms",
+        value: PAYMENT_TERMS_LABELS[activeFilters.terms] ?? activeFilters.terms,
+      });
+    return pills;
+  }, [activeFilters]);
 
-  const currentPurchases = purchases.slice(
-    (currentPage - 1) * rowsPerPage,
-    currentPage * rowsPerPage,
+  // ── Delete handlers ───────────────────────────────────────────────────────────
+  const handleDeleteSuccess = useCallback(
+    (deletedId, message) => {
+      // Optimistically update the query cache instead of a separate state
+      queryClient.setQueryData(["purchases", fetchAllData], (old = []) =>
+        old.filter((p) => p.id !== deletedId),
+      );
+      setAlertInfo({
+        show: true,
+        type: "success",
+        message: message || "Purchase Request Successfully Deleted",
+      });
+      refetchCounts();
+    },
+    [queryClient, fetchAllData, refetchCounts],
   );
 
-  //Filtering out a deleted purchase from our current purchases state after deletion
-  const handleDeleteSuccess = (deletedId, message) => {
-    setPurchases((currentPurchases) =>
-      currentPurchases.filter((purchase) => purchase.id !== deletedId),
-    );
-    setAlertInfo({
-      show: true,
-      type: "success",
-      message: message || "Purchase Request Succesfully Deleted",
-    });
-
-    // Call the refetch function to refetch approval counts
-    refetchCounts();
-  };
-
-  //Handler for deletion errors
-  const handleDeleteError = (message) => {
+  const handleDeleteError = useCallback((message) => {
     setAlertInfo({
       show: true,
       type: "error",
       message: message || "Error Deleting Purchase Request",
     });
-  };
+  }, []);
 
+  // ── Render ────────────────────────────────────────────────────────────────────
   return (
     <>
       {goingTo && <LoadingBar isLoading={true} />}
 
-      {/* Alert Component for showing alerts from the recentAction delete functionality */}
       {alertInfo.show && (
         <Alert
           message={alertInfo.message}
@@ -173,8 +340,9 @@ export default function PurchasesHistory() {
           onClose={() => setAlertInfo({ show: false, message: "", type: "" })}
         />
       )}
+
       <div className="rounded-xl px-2 pb-4">
-        {/* Purchase History Heading or Recent Purchases Heading & toggling columns */}
+        {/* Heading & toolbar */}
         <div className="flex flex-col space-y-6 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
           {fetchAllData ? (
             <PurchasesHistoryHeading />
@@ -182,6 +350,13 @@ export default function PurchasesHistory() {
             <RecentPurchasesHeading />
           )}
           <div className="flex items-center gap-4">
+            {/* Refetch Button */}
+            <button
+              onClick={() => refetch()}
+              className="rounded-full bg-gray-100 p-2.5 hover:bg-gray-200 dark:bg-gray-900 dark:hover:bg-gray-800"
+            >
+              <RotateCcw className="h-4.5 w-4.5" />
+            </button>
             <ImportExcelData
               exportAll={true}
               fromDate={fromDate}
@@ -194,9 +369,10 @@ export default function PurchasesHistory() {
           </div>
         </div>
 
-        {/* Search Bar (Selecting filter types) */}
-        <div className="mx-auto mb-6 max-w-md">
+        {/* Filter Controls */}
+        <div className="mx-auto mb-3 max-w-2xl">
           <div className="mt-3 flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
+            {/* Filter type selector */}
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
@@ -210,12 +386,14 @@ export default function PurchasesHistory() {
               <option value="terms">Filter by Payment Terms</option>
             </select>
 
+            {/* Conditional inputs */}
             {filterType === "staff" && (
               <input
                 type="text"
                 placeholder="Search staff..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && applyFilters()}
                 className="rounded-md border border-gray-300 px-3 py-1 text-sm focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
               />
             )}
@@ -226,6 +404,7 @@ export default function PurchasesHistory() {
                 placeholder="Enter reference number..."
                 value={referenceNumber}
                 onChange={(e) => setReferenceNumber(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && applyFilters()}
                 className="rounded-md border border-gray-300 px-3 py-1 text-sm focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
               />
             )}
@@ -236,6 +415,7 @@ export default function PurchasesHistory() {
                 placeholder="Enter payroll number..."
                 value={payrollNumber}
                 onChange={(e) => setPayrollNumber(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && applyFilters()}
                 className="rounded-md border border-gray-300 px-3 py-1 text-sm focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
               />
             )}
@@ -284,11 +464,12 @@ export default function PurchasesHistory() {
                 </option>
                 <option value="CASH">Cash</option>
                 <option value="CREDIT">Credit</option>
-                <option value="CASH AND CREDIT">Cash & Credit</option>
+                <option value="CASH AND CREDIT">Cash &amp; Credit</option>
               </select>
             )}
 
-            <div className="flex items-center gap-4">
+            {/* Action buttons */}
+            <div className="flex items-center gap-2">
               <button
                 onClick={applyFilters}
                 className="mt-2 flex items-center space-x-1 rounded-md bg-gray-900 px-3 py-1 text-sm text-white hover:bg-gray-700 sm:mt-0 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
@@ -297,7 +478,7 @@ export default function PurchasesHistory() {
                 <span>Search</span>
               </button>
               <button
-                onClick={fetchDefaultPurchases}
+                onClick={clearAllFilters}
                 className="mt-2 flex items-center space-x-1 rounded-md bg-gray-700 px-3 py-1 text-sm text-white hover:bg-gray-800 sm:mt-0 dark:bg-gray-300 dark:text-gray-900 dark:hover:bg-white"
               >
                 <SearchX className="h-3.5 w-3.5" />
@@ -306,8 +487,43 @@ export default function PurchasesHistory() {
             </div>
           </div>
         </div>
-        {loading ? (
+
+        {/* Active Filter Pills */}
+        {filterPills.length > 0 && (
+          <div className="mb-4 flex flex-wrap items-center gap-2 px-1">
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              Active filters:
+            </span>
+            {filterPills.map((pill) => (
+              <FilterPill
+                key={pill.key}
+                label={pill.label}
+                value={pill.value}
+                onRemove={() => removeFilter(pill.key)}
+              />
+            ))}
+            {filterPills.length > 1 && (
+              <button
+                onClick={clearAllFilters}
+                className="text-xs text-gray-400 underline transition-colors hover:text-gray-600 dark:hover:text-gray-200"
+              >
+                Clear all
+              </button>
+            )}
+            <span className="ml-auto text-xs text-gray-400 dark:text-gray-500">
+              {filteredPurchases.length} result
+              {filteredPurchases.length !== 1 ? "s" : ""}
+            </span>
+          </div>
+        )}
+
+        {/* Table */}
+        {isLoading ? (
           <TableSkeleton />
+        ) : isError ? (
+          <div className="py-10 text-center text-sm text-red-500">
+            Failed to load purchases. Please try refreshing the page.
+          </div>
         ) : (
           <>
             <div className="overflow-x-auto rounded-xl">
@@ -501,13 +717,16 @@ export default function PurchasesHistory() {
                         colSpan="12"
                         className="px-6 py-4 text-center text-sm whitespace-nowrap text-gray-500 dark:text-gray-400"
                       >
-                        No purchase data found
+                        {Object.keys(activeFilters).length > 0
+                          ? "No purchases match the active filters."
+                          : "No purchase data found"}
                       </td>
                     </tr>
                   )}
                 </tbody>
               </table>
             </div>
+
             {/* Pagination */}
             <Pagination
               totalPages={totalPages}
