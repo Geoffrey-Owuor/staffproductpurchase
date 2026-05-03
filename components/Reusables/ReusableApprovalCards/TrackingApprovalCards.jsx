@@ -1,13 +1,22 @@
 "use client";
 import { CheckCircle2, Loader, RotateCcw, UserRoundCheck } from "lucide-react";
 import ApprovalCardsSkeleton from "@/components/skeletons/ApprovalCardsSkeleton";
-
 import { StatCard } from "../StatCard";
-
-import { useTrackingApprovalCards } from "@/context/TrackingApprovalCardsContext";
+import { useQuery } from "@tanstack/react-query";
+import {
+  fetchTrackingCounts,
+  defaultClosureCounts,
+} from "@/utils/FetchCardCounts/fetchTrackingCounts";
 
 export default function TrackingApprovalCards() {
-  const { loading, counts, refetchCounts } = useTrackingApprovalCards();
+  const {
+    data: counts = defaultClosureCounts,
+    isLoading: loading,
+    refetch: refetchCounts,
+  } = useQuery({
+    queryKey: ["TrackingApprovalCardCounts"],
+    queryFn: fetchTrackingCounts,
+  });
 
   return (
     <div className="mb-8 rounded-xl px-2">
@@ -23,7 +32,7 @@ export default function TrackingApprovalCards() {
         </div>
         <button
           className="hidden rounded-full bg-slate-200/50 p-2 transition-colors duration-200 hover:bg-slate-200 md:flex dark:bg-gray-800 dark:hover:bg-gray-700"
-          onClick={refetchCounts}
+          onClick={() => refetchCounts()}
           title="refresh"
         >
           <RotateCcw />

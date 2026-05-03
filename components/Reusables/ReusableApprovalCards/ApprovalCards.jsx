@@ -13,13 +13,24 @@ import ApprovalCardsSkeleton from "@/components/skeletons/ApprovalCardsSkeleton"
 import { StatCard } from "../StatCard";
 import CardHeadings from "../Headings/CardHeadings";
 import { useUser } from "@/context/UserContext";
+import { useQuery } from "@tanstack/react-query";
+import {
+  defaultCounts,
+  fetchApprovalCounts,
+} from "@/utils/FetchCardCounts/fetchApprovalCounts";
 import SkeletonBox from "@/components/skeletons/SkeletonBox";
-
-import { useApprovalCounts } from "@/context/ApprovalCountsContext";
 
 export default function ApprovalCards() {
   const { role: userRole } = useUser();
-  const { counts, loading, refetchCounts } = useApprovalCounts();
+
+  const {
+    data: counts = defaultCounts,
+    isLoading: loading,
+    refetch: refetchCounts,
+  } = useQuery({
+    queryKey: ["ApprovalCardCounts"],
+    queryFn: fetchApprovalCounts,
+  });
 
   // Calculating the total pending purchases from returned counts data
   const totalPending =
@@ -44,7 +55,7 @@ export default function ApprovalCards() {
           )}
           <button
             className="hidden rounded-full bg-slate-200/50 p-2 transition-colors duration-200 hover:bg-slate-200 md:flex dark:bg-gray-800 dark:hover:bg-gray-700"
-            onClick={refetchCounts}
+            onClick={() => refetchCounts()}
             title="refresh"
           >
             <RotateCcw />
