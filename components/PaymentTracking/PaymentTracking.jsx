@@ -73,7 +73,6 @@ export default function PaymentTracking() {
   } = useQuery({
     queryKey: ["paymentTracking"],
     queryFn: fetchPaymentTrackingPurchases,
-    staleTime: 1000 * 60 * 2, // 2 minutes
   });
 
   // ── Fetch credit periods (static data, fetched once) ──────────────────────────
