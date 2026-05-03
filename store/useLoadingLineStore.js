@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export const useLoadingLine = create((set) => ({
+export const useLoadingLineStore = create((set) => ({
   // State
   isLoading: false,
 

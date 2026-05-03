@@ -10,7 +10,7 @@ import { TableApprovalStatus } from "../Reusables/TableApprovalStatus";
 import Pagination from "../pagination/Pagination";
 import { formatDateLong } from "@/public/assets";
 import { useStaffPurchases } from "@/context/StaffPurchaseContext";
-import { useLoadingLine } from "@/context/LoadingLineContext";
+import { useLoadingLineStore } from "@/store/useLoadingLineStore";
 import Link from "next/link";
 
 export default function StaffPurchaseHistory() {
@@ -27,7 +27,8 @@ export default function StaffPurchaseHistory() {
   const [totalPages, setTotalPages] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const router = useRouter();
-  const { startLoading } = useLoadingLine();
+
+  const startLoading = useLoadingLineStore((state) => state.startLoading);
 
   //Filters
   const [filterType, setFilterType] = useState("approval");

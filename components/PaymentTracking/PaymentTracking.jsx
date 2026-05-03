@@ -16,7 +16,7 @@ import { FetchPeriodsPolicies } from "@/app/lib/FetchPeriodsPolicies";
 import { useApproversPurchases } from "@/context/ApproversPurchaseContext";
 import { useTrackingApprovalCards } from "@/context/TrackingApprovalCardsContext";
 import { Search, SearchX } from "lucide-react";
-import { useLoadingLine } from "@/context/LoadingLineContext";
+import { useLoadingLineStore } from "@/store/useLoadingLineStore";
 import Link from "next/link";
 
 export default function PaymentTracking() {
@@ -24,7 +24,8 @@ export default function PaymentTracking() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const { startLoading } = useLoadingLine();
+
+  const startLoading = useLoadingLineStore((state) => state.startLoading);
 
   //Setting fetched credit periods
   const [periods, setPeriods] = useState([]);

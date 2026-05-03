@@ -13,7 +13,7 @@ import {
   NotebookText,
 } from "lucide-react";
 import HotpointLogo from "../HotpointLogo";
-import { useLoadingLine } from "@/context/LoadingLineContext";
+import { useLoadingLineStore } from "@/store/useLoadingLineStore";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
@@ -29,7 +29,9 @@ export default function MobileHeader() {
   const { role } = useUser();
   const router = useRouter();
   const pathname = usePathname();
-  const { startLoading, stopLoading } = useLoadingLine();
+
+  const startLoading = useLoadingLineStore((state) => state.startLoading);
+  const stopLoading = useLoadingLineStore((state) => state.stopLoading);
 
   // useEffect to stop Loading when pathname changes
   useEffect(() => {
@@ -79,7 +81,7 @@ export default function MobileHeader() {
       handlePurchaseRoute();
     }
     setIsMobileMenuOpen(false);
-  }
+  };
 
   // Generic handler for other links
   const handleNavClick = (path) => {
@@ -133,15 +135,17 @@ export default function MobileHeader() {
 
       {/* Sidebar Backdrop */}
       <div
-        className={`custom:hidden fixed inset-0 z-60 bg-black/50 transition-opacity duration-200 ease-in-out dark:bg-black/60 ${isMobileMenuOpen ? "opacity-100" : "pointer-events-none opacity-0"
-          }`}
+        className={`custom:hidden fixed inset-0 z-60 bg-black/50 transition-opacity duration-200 ease-in-out dark:bg-black/60 ${
+          isMobileMenuOpen ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
         onClick={() => setIsMobileMenuOpen(false)}
       ></div>
 
       {/* Sidebar Content */}
       <div
-        className={`custom:hidden fixed top-0 bottom-0 left-0 z-70 flex w-64 transform flex-col bg-white p-4 shadow-lg transition-transform duration-300 ease-in-out dark:border-r dark:border-gray-700 dark:bg-gray-950 ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
+        className={`custom:hidden fixed top-0 bottom-0 left-0 z-70 flex w-64 transform flex-col bg-white p-4 shadow-lg transition-transform duration-300 ease-in-out dark:border-r dark:border-gray-700 dark:bg-gray-950 ${
+          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
       >
         {/* Sidebar Header */}
         <div className="flex items-center justify-between border-b border-gray-200 pb-3 dark:border-gray-700">
@@ -168,7 +172,6 @@ export default function MobileHeader() {
               </div>
             </li>
 
-
             <li>
               <div
                 onClick={handlePurchaseClick}
@@ -178,7 +181,6 @@ export default function MobileHeader() {
                 <span>New Purchase</span>
               </div>
             </li>
-
 
             <li>
               <div

@@ -1,6 +1,6 @@
 "use client";
 import { useEffect } from "react";
-import { useLoadingLine } from "@/context/LoadingLineContext";
+import { useLoadingLineStore } from "@/store/useLoadingLineStore";
 import { usePathname, useRouter } from "next/navigation";
 import { UseHandleHomeRoute } from "@/utils/HandleActionClicks/UseHandleHomeRoute";
 import { UseHandleHistoryRoute } from "@/utils/HandleActionClicks/UseHandleHistoryRoute";
@@ -14,7 +14,9 @@ export default function ReusableSidebar() {
   const showTopbar = useSidebarStore((state) => state.showTopbar);
   const { role } = useUser();
   const router = useRouter();
-  const { startLoading, stopLoading } = useLoadingLine();
+
+  const startLoading = useLoadingLineStore((state) => state.startLoading);
+  const stopLoading = useLoadingLineStore((state) => state.stopLoading);
 
   const { homePath, handleHomeRoute } = UseHandleHomeRoute();
   const { historyPath, handleHistoryRoute } = UseHandleHistoryRoute();

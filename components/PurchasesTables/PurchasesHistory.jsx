@@ -16,7 +16,7 @@ import ImportExcelData from "../Reusables/Import/ImportExcelData";
 import { useApprovalCounts } from "@/context/ApprovalCountsContext";
 import { useApproversPurchases } from "@/context/ApproversPurchaseContext";
 import { Search, SearchX } from "lucide-react";
-import { useLoadingLine } from "@/context/LoadingLineContext";
+import { useLoadingLineStore } from "@/store/useLoadingLineStore";
 import Link from "next/link";
 
 export default function PurchasesHistory() {
@@ -24,7 +24,8 @@ export default function PurchasesHistory() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const { startLoading } = useLoadingLine();
+
+  const startLoading = useLoadingLineStore((state) => state.startLoading);
 
   // Get purchases details from approversContext hook
   const {
