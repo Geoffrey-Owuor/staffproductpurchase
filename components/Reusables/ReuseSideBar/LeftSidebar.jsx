@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import HotpointLogo from "../HotpointLogo";
 import UserMenu from "../UserMenu";
-import { useLayout } from "@/context/LayoutContext";
+import { useSidebarStore } from "@/store/useSidebarStore";
 
 const LeftSidebar = ({
   router,
@@ -23,7 +23,9 @@ const LeftSidebar = ({
   activeTab,
   role,
 }) => {
-  const { sidebarOpen, setSidebarOpen, setShowTopbar } = useLayout();
+  const sidebarOpen = useSidebarStore((state) => state.sidebarOpen);
+  const setSidebarOpen = useSidebarStore((state) => state.setSidebarOpen);
+  const setShowTopbar = useSidebarStore((state) => state.setShowTopbar);
   return (
     <div
       className={`custom:flex fixed top-0 bottom-0 left-0 z-50 hidden flex-col transition-all duration-200 ${

@@ -4,11 +4,12 @@ import DashboardFooter from "../DashboardFooter";
 import MobileHeader from "../Mobile/MobileHeader";
 import { useInactivityTimer } from "@/hooks/useInactivityTimer";
 import UserContext from "@/context/UserContext";
+import { useSidebarStore } from "@/store/useSidebarStore";
 import ChangeLogAlert from "@/components/ChangeLog/ChangeLogAlert";
-import { useLayout } from "@/context/LayoutContext";
 
 export default function ReusableLayoutShell({ user, children }) {
-  const { sidebarOpen, showTopbar } = useLayout();
+  const sidebarOpen = useSidebarStore((state) => state.sidebarOpen);
+  const showTopbar = useSidebarStore((state) => state.showTopbar);
 
   //Hook used to track user inactivity so as to automatically logout
   useInactivityTimer(20 * 60 * 1000, user); //20 minutes in milliseconds for security reasons

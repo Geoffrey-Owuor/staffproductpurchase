@@ -12,7 +12,7 @@ import {
 import HotpointLogo from "../HotpointLogo";
 import UserMenu from "../UserMenu";
 import { useState, useEffect } from "react";
-import { useLayout } from "@/context/LayoutContext";
+import { useSidebarStore } from "@/store/useSidebarStore";
 
 const TopSidebar = ({
   router,
@@ -25,7 +25,8 @@ const TopSidebar = ({
 }) => {
   // --- State for header scroll effect ---
   const [isScrolled, setIsScrolled] = useState(false);
-  const { setShowTopbar } = useLayout();
+
+  const setShowTopbar = useSidebarStore((state) => state.setShowTopbar);
 
   const toggleTopbarView = () => {
     setShowTopbar(false);

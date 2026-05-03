@@ -8,10 +8,11 @@ import SettingsPage from "../Settings/SettingsPage";
 import { useUser } from "@/context/UserContext";
 import ThemeToggle from "./ThemeProviders/ThemeToggle";
 import { LoggingOutOverlay } from "./LoadingBar";
-import { useLayout } from "@/context/LayoutContext";
+import { useSidebarStore } from "@/store/useSidebarStore";
 
 export default function UserMenu({ hideMobileMenu, menuOpen }) {
-  const { showTopbar, sidebarOpen } = useLayout();
+  const showTopbar = useSidebarStore((state) => state.showTopbar);
+  const sidebarOpen = useSidebarStore((state) => state.sidebarOpen);
 
   const dynamicWidth = menuOpen
     ? "w-40"

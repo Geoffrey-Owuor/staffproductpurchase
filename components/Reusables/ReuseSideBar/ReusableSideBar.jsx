@@ -8,10 +8,10 @@ import { UseHandlePurchaseRoute } from "@/utils/HandleActionClicks/UseHandlePurc
 import { useUser } from "@/context/UserContext";
 import LeftSidebar from "./LeftSidebar";
 import TopSidebar from "./TopSidebar";
-import { useLayout } from "@/context/LayoutContext";
+import { useSidebarStore } from "@/store/useSidebarStore";
 
 export default function ReusableSidebar() {
-  const { showTopbar } = useLayout();
+  const showTopbar = useSidebarStore((state) => state.showTopbar);
   const { role } = useUser();
   const router = useRouter();
   const { startLoading, stopLoading } = useLoadingLine();
@@ -45,7 +45,7 @@ export default function ReusableSidebar() {
     "/hrdashboard/new-purchase",
     "/ccdashboard/new-purchase",
     "/bidashboard/new-purchase",
-  ]
+  ];
 
   if (homeRoutes.includes(pathname)) {
     activeTab = "home";
@@ -73,7 +73,7 @@ export default function ReusableSidebar() {
     if (pathname === purchasePath) return;
     startLoading();
     handlePurchaseRoute();
-  }
+  };
 
   const handleNavClick = (path) => {
     if (pathname === path) return;
