@@ -1,3 +1,4 @@
+"use server";
 import pool from "@/lib/db";
 import { unstable_cache } from "next/cache";
 

@@ -129,7 +129,8 @@ export const RecentActionButtons = ({
     };
   }, [id, isOpen]);
 
-  const handleActionClick = (action) => {
+  const handleActionClick = (action, event) => {
+    event.stopPropagation();
     action(id);
     setIsOpen(false);
   };
@@ -187,7 +188,7 @@ export const RecentActionButtons = ({
         <div className="p-1">
           <button
             type="button"
-            onClick={() => handleActionClick(gotoPurchaseView)}
+            onClick={(e) => handleActionClick(gotoPurchaseView, e)}
             disabled={goingTo === id}
             className={menuItemStyles}
           >
@@ -197,7 +198,7 @@ export const RecentActionButtons = ({
 
           <button
             type="button"
-            onClick={() => handleActionClick(gotoPurchaseEdit)}
+            onClick={(e) => handleActionClick(gotoPurchaseEdit, e)}
             disabled={
               //Approver cannot edit once approved
               goingTo === id ||
@@ -229,7 +230,10 @@ export const RecentActionButtons = ({
           <div className="mt-1 border-t border-gray-200 dark:border-gray-700">
             <button
               type="button"
-              onClick={handleConfirmDelete}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleConfirmDelete();
+              }}
               disabled={
                 //Approver cannot delete once approved
                 goingTo === id || disableDelete || userRole !== "admin"
@@ -244,7 +248,10 @@ export const RecentActionButtons = ({
           {closeButton && (
             <button
               type="button"
-              onClick={handleConfirmClose}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleConfirmClose();
+              }}
               disabled={goingTo === id || closureValue === "closed"}
               className={menuItemStyles}
             >

@@ -1,5 +1,6 @@
 "use client";
 import { useState, useMemo, useCallback } from "react";
+import { useUser } from "@/context/UserContext";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import TableSkeleton from "../skeletons/TableSkeleton";
 import { LoadingBar } from "../Reusables/LoadingBar";
@@ -58,6 +59,7 @@ export default function PurchasesHistory({ fetchAllData = false }) {
   const [goingTo, setGoingTo] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const { role } = useUser();
 
   const startLoading = useLoadingLineStore((state) => state.startLoading);
 
@@ -161,20 +163,39 @@ export default function PurchasesHistory({ fetchAllData = false }) {
 
     if (activeFilters.approval) {
       const status = activeFilters.approval.toLowerCase();
-      result = result.filter((p) => {
-        const statuses = [
-          p.Payroll_Approval,
-          p.HR_Approval,
-          p.CC_Approval,
-          p.BI_Approval,
-        ].map((s) => s?.toLowerCase());
 
-        if (status === "pending")
-          return statuses.some((s) => s === "pending" || !s);
-        if (status === "approved")
-          return statuses.every((s) => s === "approved");
-        if (status === "declined")
-          return statuses.some((s) => s === "declined");
+      const ROLE_TO_APPROVAL_FIELD = {
+        payroll: "Payroll_Approval",
+        hr: "HR_Approval",
+        cc: "CC_Approval",
+        bi: "BI_Approval",
+      };
+
+      const approvalField = ROLE_TO_APPROVAL_FIELD[role?.toLowerCase()];
+
+      result = result.filter((p) => {
+        if (approvalField) {
+          // Role-scoped: check only the relevant approval field
+          const s = p[approvalField]?.toLowerCase();
+          if (status === "pending") return s === "pending" || !s;
+          if (status === "approved") return s === "approved";
+          if (status === "declined") return s === "declined";
+        } else {
+          // Fallback for admin or unmapped roles: check all fields
+          const statuses = [
+            p.Payroll_Approval,
+            p.HR_Approval,
+            p.CC_Approval,
+            p.BI_Approval,
+          ].map((s) => s?.toLowerCase());
+
+          if (status === "pending")
+            return statuses.some((s) => s === "pending" || !s);
+          if (status === "approved")
+            return statuses.every((s) => s === "approved");
+          if (status === "declined")
+            return statuses.some((s) => s === "declined");
+        }
         return true;
       });
     }

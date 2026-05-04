@@ -15,7 +15,7 @@ import BIApprovalSection from "../FormEditComponents/BIApprovalSection";
 import ConfirmationDialog from "../Reusables/ConfirmationDialog";
 import UnauthorizedEdit from "../Reusables/UnauthorizedEdit";
 import { LoadingBarWave } from "../Reusables/LoadingBar";
-import { UseHandleViewClick } from "@/utils/HandleActionClicks/UseHandleViewClick";
+import { UseHandleHomeRoute } from "@/utils/HandleActionClicks/UseHandleHomeRoute";
 import EditPurchaseHeading from "../EditPurchaseComponents/EditPurchaseHeading";
 import SaveCloseComponent from "../EditPurchaseComponents/SaveCloseComponent";
 import { useUser } from "@/context/UserContext";
@@ -39,7 +39,7 @@ const month = (today.getMonth() + 1).toString().padStart(2, "0");
 const day = today.getDate().toString().padStart(2, "0");
 const localTodayString = `${year}-${month}-${day}`;
 
-function PurchaseForm({ purchase, userRole, name, handleHrefLink, id }) {
+function PurchaseForm({ purchase, userRole, name, handleHomeRoute, id }) {
   const queryClient = useQueryClient();
 
   //Initially setting periods and policies to an empty array
@@ -286,11 +286,11 @@ function PurchaseForm({ purchase, userRole, name, handleHrefLink, id }) {
       queryClient.invalidateQueries({ queryKey: ["ApprovalCardCounts"] });
       queryClient.invalidateQueries({ queryKey: ["purchases", true] });
       queryClient.invalidateQueries({ queryKey: ["purchases", false] });
-      queryClient.invalidateQueries({ queryKey: ["purchaseDetails", id] });
 
       // Redirect back after 0.7 seconds
       setTimeout(() => {
-        handleHrefLink(id);
+        handleHomeRoute();
+        queryClient.invalidateQueries({ queryKey: ["purchaseDetails", id] });
       }, 700);
     } catch (err) {
       console.error("Error updating purchase:", err);
@@ -462,7 +462,7 @@ export default function GeneralEditPurchases({ id }) {
     queryFn: () => fetchPurchaseDetails(id),
   });
 
-  const { handleViewClick } = UseHandleViewClick();
+  const { handleHomeRoute } = UseHandleHomeRoute();
 
   // 1. Context Loading State
   if (loading) {
@@ -509,7 +509,7 @@ export default function GeneralEditPurchases({ id }) {
       purchase={purchase}
       userRole={userRole}
       name={name}
-      handleHrefLink={handleViewClick}
+      handleHomeRoute={handleHomeRoute}
       id={id}
     />
   );
