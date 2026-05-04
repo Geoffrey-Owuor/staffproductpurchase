@@ -67,7 +67,7 @@ const generateStaffBIApprovedEmailHTML = ({
                          <p><strong>Payroll No:</strong> ${payrollNo}</p>
                          <p><strong>Billing & Invoice Approver:</strong> ${bi_approver_name}</p>
                          <p><strong>Billing & Invoice Approval Date:</strong> ${new Date().toLocaleDateString("en-GB")}</p>
-                         <p><strong>Approval Time:</strong> ${calculateDaysDifference(createdAt, new Date().toLocaleString())}</p>
+                         <p><strong>Approval Time:</strong> ${calculateDaysDifference(createdAt, new Date())}</p>
                          
                          <h3 style="color: #333;">Requested Items</h3>
                       

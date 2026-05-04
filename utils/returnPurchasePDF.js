@@ -169,7 +169,7 @@ const formatStatus = (status) =>
 
 const calculateDaysDifference = (startDate, endDate) => {
   if (!startDate) return "N/A";
-  endDate = endDate ? endDate : new Date().toLocaleString();
+  endDate = endDate ? endDate : new Date();
   const start = new Date(startDate);
   const end = new Date(endDate);
   const diff = Math.ceil((end - start) / (1000 * 60 * 60 * 24));

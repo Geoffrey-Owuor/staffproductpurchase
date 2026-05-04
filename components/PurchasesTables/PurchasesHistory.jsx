@@ -164,24 +164,46 @@ export default function PurchasesHistory({ fetchAllData = false }) {
     if (activeFilters.approval) {
       const status = activeFilters.approval.toLowerCase();
 
-      const ROLE_TO_APPROVAL_FIELD = {
-        payroll: "Payroll_Approval",
-        hr: "HR_Approval",
-        cc: "CC_Approval",
-        bi: "BI_Approval",
-      };
+      const APPROVAL_STAGES = [
+        { role: "payroll", field: "Payroll_Approval", previous: [] },
+        { role: "hr", field: "HR_Approval", previous: ["Payroll_Approval"] },
+        {
+          role: "cc",
+          field: "CC_Approval",
+          previous: ["Payroll_Approval", "HR_Approval"],
+        },
+        {
+          role: "bi",
+          field: "BI_Approval",
+          previous: ["Payroll_Approval", "HR_Approval", "CC_Approval"],
+        },
+      ];
 
-      const approvalField = ROLE_TO_APPROVAL_FIELD[role?.toLowerCase()];
+      const myStage = APPROVAL_STAGES.find(
+        (s) => s.role === role?.toLowerCase(),
+      );
 
       result = result.filter((p) => {
-        if (approvalField) {
-          // Role-scoped: check only the relevant approval field
-          const s = p[approvalField]?.toLowerCase();
-          if (status === "pending") return s === "pending" || !s;
-          if (status === "approved") return s === "approved";
-          if (status === "declined") return s === "declined";
+        if (myStage) {
+          const myStatus = p[myStage.field]?.toLowerCase();
+          const previousAllApproved = myStage.previous.every(
+            (f) => p[f]?.toLowerCase() === "approved",
+          );
+
+          if (status === "pending") {
+            // All previous stages approved AND mine is still pending/unset
+            return previousAllApproved && (myStatus === "pending" || !myStatus);
+          }
+          if (status === "approved") {
+            // Mine is approved (regardless of what comes after)
+            return myStatus === "approved";
+          }
+          if (status === "declined") {
+            // Mine specifically declined it
+            return myStatus === "declined";
+          }
         } else {
-          // Fallback for admin or unmapped roles: check all fields
+          // Fallback for admin: check all fields
           const statuses = [
             p.Payroll_Approval,
             p.HR_Approval,
