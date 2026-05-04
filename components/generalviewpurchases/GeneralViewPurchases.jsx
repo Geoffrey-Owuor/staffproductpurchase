@@ -1,10 +1,11 @@
 "use client";
 import { Edit, X, Download, View, GitPullRequestClosed } from "lucide-react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
+import { fetchPurchaseDetails } from "@/utils/FetchPurchaseDetails/fetchPurchaseDetails";
 import ApprovalStatus from "../Reusables/ApprovalStatus";
 import { AnimatePresence } from "framer-motion";
 import TopBarButtons from "../Reusables/TopBarButtons/TopBarButtons";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import PurchaseDetailSkeleton from "../skeletons/PurchaseDetailsSkeleton";
 import DetailField from "../Reusables/DetailField";
@@ -13,7 +14,6 @@ import { LoadingBar } from "../Reusables/LoadingBar";
 import { formatDateLong } from "@/public/assets";
 import { UseHandleEditClick } from "@/utils/HandleActionClicks/UseHandleEditClick";
 import ProductItemsInfo from "../ProductItemsInfo/ProductItemsInfo";
-import { usePurchase } from "@/context/PurchaseDetailsContext";
 import { useUser } from "@/context/UserContext";
 import { formatCreditPeriod } from "@/public/assets";
 import ConfirmationDialog from "../Reusables/ConfirmationDialog";
@@ -25,7 +25,15 @@ export default function GeneralViewPurchases({ id }) {
 
   const { role: userRole } = useUser();
 
-  const { purchase, loading, error, refetchPurchaseDetails } = usePurchase();
+  const {
+    data: purchase,
+    isLoading: loading,
+    isError: error,
+  } = useQuery({
+    queryKey: ["purchaseDetails", id],
+    queryFn: () => fetchPurchaseDetails(id),
+  });
+
   const [isEditing, setIsEditing] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -68,11 +76,6 @@ export default function GeneralViewPurchases({ id }) {
       setUpdating(false);
     }
   };
-
-  useEffect(() => {
-    // Ensures the component always shows up-to-date data
-    refetchPurchaseDetails();
-  }, [refetchPurchaseDetails]);
 
   const router = useRouter();
 

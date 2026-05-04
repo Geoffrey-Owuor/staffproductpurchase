@@ -2,7 +2,8 @@
 import { useState, useEffect, useMemo } from "react";
 import { PackagePlus, PlusCircle, Trash2 } from "lucide-react";
 import Alert from "../Alert";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
+import { fetchPurchaseDetails } from "@/utils/FetchPurchaseDetails/fetchPurchaseDetails";
 import StaffInformation from "../StaffInformation";
 import ProductPricing from "../ProductPricing";
 import PaymentDetails from "../PaymentDetails";
@@ -17,7 +18,6 @@ import { LoadingBarWave } from "../Reusables/LoadingBar";
 import { UseHandleViewClick } from "@/utils/HandleActionClicks/UseHandleViewClick";
 import EditPurchaseHeading from "../EditPurchaseComponents/EditPurchaseHeading";
 import SaveCloseComponent from "../EditPurchaseComponents/SaveCloseComponent";
-import { usePurchase } from "@/context/PurchaseDetailsContext";
 import { useUser } from "@/context/UserContext";
 import { FetchPeriodsPolicies } from "@/app/lib/FetchPeriodsPolicies";
 
@@ -286,6 +286,7 @@ function PurchaseForm({ purchase, userRole, name, handleHrefLink, id }) {
       queryClient.invalidateQueries({ queryKey: ["ApprovalCardCounts"] });
       queryClient.invalidateQueries({ queryKey: ["purchases", true] });
       queryClient.invalidateQueries({ queryKey: ["purchases", false] });
+      queryClient.invalidateQueries({ queryKey: ["purchaseDetails", id] });
 
       // Redirect back after 0.7 seconds
       setTimeout(() => {
@@ -451,7 +452,16 @@ function PurchaseForm({ purchase, userRole, name, handleHrefLink, id }) {
 
 export default function GeneralEditPurchases({ id }) {
   const { role: userRole, name } = useUser();
-  const { purchase, loading, error } = usePurchase();
+
+  const {
+    data: purchase,
+    isLoading: loading,
+    isError: error,
+  } = useQuery({
+    queryKey: ["purchaseDetails", id],
+    queryFn: () => fetchPurchaseDetails(id),
+  });
+
   const { handleViewClick } = UseHandleViewClick();
 
   // 1. Context Loading State
