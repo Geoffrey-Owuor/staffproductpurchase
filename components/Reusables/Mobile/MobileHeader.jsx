@@ -7,7 +7,7 @@ import {
   MessageCircleQuestion,
   History,
   Link2,
-  ChevronsLeft,
+  ChevronLeft,
   BookOpenCheck,
   Menu,
   NotebookText,
@@ -115,7 +115,7 @@ export default function MobileHeader() {
               className="rounded-full p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
               aria-label="Go back"
             >
-              <ChevronsLeft className="h-5 w-5" />
+              <ChevronLeft className="h-5 w-5" />
             </button>
             <a
               href="https://drive.google.com/drive/folders/1GdDpICwn6nA-51uKcubAa3YiNDrxqcAi?usp=drive_link"

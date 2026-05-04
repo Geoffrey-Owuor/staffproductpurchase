@@ -6,7 +6,7 @@ import {
   History,
   Link2,
   BookOpenCheck,
-  ChevronsLeft,
+  ChevronLeft,
   LayoutPanelLeft, // Changed icon to represent switching back to side view
 } from "lucide-react";
 import HotpointLogo from "../HotpointLogo";
@@ -135,7 +135,7 @@ const TopSidebar = ({
             className="rounded-full p-2 text-gray-600 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-500 dark:hover:bg-gray-800/50 dark:hover:text-white"
             title="Go back"
           >
-            <ChevronsLeft className="h-5 w-5" />
+            <ChevronLeft className="h-5 w-5" />
           </button>
           {/* Sidebar View Toggle */}
           <div

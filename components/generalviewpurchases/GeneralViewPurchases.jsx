@@ -1,5 +1,12 @@
 "use client";
-import { Edit, X, Download, View, GitPullRequestClosed } from "lucide-react";
+import {
+  Edit,
+  X,
+  Download,
+  View,
+  GitPullRequestClosed,
+  RotateCcw,
+} from "lucide-react";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { fetchPurchaseDetails } from "@/utils/FetchPurchaseDetails/fetchPurchaseDetails";
 import ApprovalStatus from "../Reusables/ApprovalStatus";
@@ -29,6 +36,7 @@ export default function GeneralViewPurchases({ id }) {
     data: purchase,
     isLoading: loading,
     isError: error,
+    refetch,
   } = useQuery({
     queryKey: ["purchaseDetails", id],
     queryFn: () => fetchPurchaseDetails(id),
@@ -145,10 +153,18 @@ export default function GeneralViewPurchases({ id }) {
       {/* Details Card */}
       <div className="mx-auto rounded-xl pb-6">
         {/* Header with back button */}
-        <div className="flex items-center justify-between px-2 pt-2 pb-4">
-          <div className="flex items-center gap-2">
-            <span className="text-xl font-semibold">View Request</span>
-            <View className="h-6 w-6" />
+        <div className="flex flex-wrap items-center justify-between gap-4 px-2 pt-2 pb-4">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <View className="h-6 w-6" />
+              <span className="text-xl font-semibold">View Request</span>
+            </div>
+            <button
+              onClick={() => refetch()}
+              className="rounded-full bg-gray-100 p-2 hover:bg-gray-200 dark:bg-gray-900 dark:hover:bg-gray-800"
+            >
+              <RotateCcw className="h-4 w-4" />
+            </button>
           </div>
           <div className="flex items-center justify-end gap-4">
             {/* Middle Edit Button */}

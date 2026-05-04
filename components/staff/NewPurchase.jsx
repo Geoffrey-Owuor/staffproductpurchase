@@ -218,8 +218,8 @@ export default function NewPurchase({ approversPurchasing }) {
       <div className="mx-auto leading-relaxed dark:text-white">
         <div className="flex items-center justify-between px-2 pt-2 pb-4">
           <div className="flex items-center justify-center gap-2 text-gray-900 dark:text-gray-200">
-            <h1 className="text-xl font-semibold">Request Form</h1>
             <ClipboardList className="h-6 w-6" />
+            <h1 className="text-xl font-semibold">Request Form</h1>
           </div>
           <TopBarButtons />
         </div>

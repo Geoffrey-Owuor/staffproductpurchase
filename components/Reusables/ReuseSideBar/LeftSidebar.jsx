@@ -5,7 +5,7 @@ import {
   History,
   Link2,
   BookOpenCheck,
-  ChevronsLeft,
+  ChevronLeft,
   PanelLeftClose,
   PanelLeftOpen,
   LayoutPanelTop,
@@ -42,7 +42,7 @@ const LeftSidebar = ({
             className={`absolute ${sidebarOpen ? "top-[1.5px] left-39" : "top-11 left-[13px]"} rounded-full bg-gray-100 p-1.5 text-gray-900 transition-all duration-200 hover:bg-gray-200 dark:bg-gray-800/50 dark:text-white dark:hover:bg-gray-800`}
             title="Go back"
           >
-            <ChevronsLeft className="h-4.5 w-4.5" />
+            <ChevronLeft className="h-4.5 w-4.5" />
           </button>
 
           {/* Toggling the sidebar */}

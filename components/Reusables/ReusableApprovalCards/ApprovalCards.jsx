@@ -54,7 +54,7 @@ export default function ApprovalCards() {
             <CardHeadings />
           )}
           <button
-            className="hidden rounded-full bg-slate-200/50 p-2 transition-colors duration-200 hover:bg-slate-200 md:flex dark:bg-gray-800 dark:hover:bg-gray-700"
+            className="hidden rounded-full bg-gray-100 p-2 transition-colors duration-200 hover:bg-gray-200 md:flex dark:bg-gray-900 dark:hover:bg-gray-800"
             onClick={() => refetchCounts()}
             title="refresh"
           >

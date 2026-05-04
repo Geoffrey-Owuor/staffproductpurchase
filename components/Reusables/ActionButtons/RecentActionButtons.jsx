@@ -58,7 +58,8 @@ export const RecentActionButtons = ({
     setIsOpen(false);
   };
 
-  const handleClose = async () => {
+  const handleClose = async (e) => {
+    e.stopPropagation();
     setShowCloseConfirmation(false);
     setIsClosing(true);
     try {
@@ -79,7 +80,8 @@ export const RecentActionButtons = ({
     }
   };
 
-  const handleDelete = async () => {
+  const handleDelete = async (e) => {
+    e.stopPropagation();
     setShowConfirmation(false);
     setIsDeleting(true);
     try {
@@ -269,7 +271,7 @@ export const RecentActionButtons = ({
     <>
       {showConfirmation && (
         <DeleteConfirmation
-          onConfirm={handleDelete}
+          onConfirm={(e) => handleDelete(e)}
           onCancel={() => setShowConfirmation(false)}
         />
       )}
@@ -277,7 +279,7 @@ export const RecentActionButtons = ({
       {showCloseConfirmation && (
         <ConfirmationDialog
           message="Are you sure you want to close this purchase request? (You cannot reopen after closing)"
-          onConfirm={handleClose}
+          onConfirm={(e) => handleClose(e)}
           onCancel={() => setShowCloseConfirmation(false)}
           title="Close Purchase Request"
         />
