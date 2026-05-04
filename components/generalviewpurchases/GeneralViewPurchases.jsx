@@ -1,5 +1,6 @@
 "use client";
 import { Edit, X, Download, View, GitPullRequestClosed } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 import ApprovalStatus from "../Reusables/ApprovalStatus";
 import { AnimatePresence } from "framer-motion";
 import TopBarButtons from "../Reusables/TopBarButtons/TopBarButtons";
@@ -18,11 +19,12 @@ import { formatCreditPeriod } from "@/public/assets";
 import ConfirmationDialog from "../Reusables/ConfirmationDialog";
 import Alert from "../Alert";
 import { LoadingBarWave } from "../Reusables/LoadingBar";
-import { useTrackingApprovalCards } from "@/context/TrackingApprovalCardsContext";
 
 export default function GeneralViewPurchases({ id }) {
+  const queryClient = useQueryClient();
+
   const { role: userRole } = useUser();
-  const { refetchCounts } = useTrackingApprovalCards();
+
   const { purchase, loading, error, refetchPurchaseDetails } = usePurchase();
   const [isEditing, setIsEditing] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
@@ -52,7 +54,11 @@ export default function GeneralViewPurchases({ id }) {
       setAlertType("success");
       setAlertMessage(result.message || "Purchase request closed successfully");
       setShowAlert(true);
-      refetchCounts();
+
+      queryClient.invalidateQueries({
+        queryKey: ["TrackingApprovalCardCounts"],
+      });
+      queryClient.invalidateQueries({ queryKey: ["paymentTracking"] });
     } catch (error) {
       console.error("Error Closing Purchase Request:", error);
       setAlertType("error");

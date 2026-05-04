@@ -16,7 +16,6 @@ import Pagination from "../pagination/Pagination";
 import ColumnToggle from "../Reusables/ColumnToggle";
 import ImportExcelData from "../Reusables/Import/ImportExcelData";
 import { FetchPeriodsPolicies } from "@/app/lib/FetchPeriodsPolicies";
-import { useTrackingApprovalCards } from "@/context/TrackingApprovalCardsContext";
 import { RotateCcw, Search, SearchX, X } from "lucide-react";
 import { useLoadingLineStore } from "@/store/useLoadingLineStore";
 import Link from "next/link";
@@ -62,7 +61,6 @@ export default function PaymentTracking() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const startLoading = useLoadingLineStore((state) => state.startLoading);
-  const { refetchCounts } = useTrackingApprovalCards();
 
   // ── TanStack Query: fetch all data once ────────────────────────────────────────
   const {
@@ -328,9 +326,11 @@ export default function PaymentTracking() {
       });
       // Invalidate to refetch fresh data reflecting the closure update
       queryClient.invalidateQueries({ queryKey: ["paymentTracking"] });
-      refetchCounts();
+      queryClient.invalidateQueries({
+        queryKey: ["TrackingApprovalCardCounts"],
+      });
     },
-    [queryClient, refetchCounts],
+    [queryClient],
   );
 
   const handleCloseError = useCallback((message) => {

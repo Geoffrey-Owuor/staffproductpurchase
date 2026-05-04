@@ -2,6 +2,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import StaffInformation from "../StaffInformation";
+import { useQueryClient } from "@tanstack/react-query";
 import ProductPricing from "../ProductPricing";
 import Alert from "../Alert";
 import { LoadingBarWave } from "../Reusables/LoadingBar";
@@ -18,7 +19,6 @@ import PaymentDetails from "../PaymentDetails";
 import TopBarButtons from "../Reusables/TopBarButtons/TopBarButtons";
 import { FetchPeriodsPolicies } from "@/app/lib/FetchPeriodsPolicies";
 import { useUser } from "@/context/UserContext";
-import { useApprovalCounts } from "@/context/ApprovalCountsContext";
 import MpesaTillNumber from "./MpesaTillNumber";
 
 // The initial state for a single product
@@ -34,10 +34,8 @@ const initialProductState = {
 
 export default function NewPurchase({ approversPurchasing }) {
   const user = useUser();
-  const router = useRouter();
+  const queryClient = useQueryClient();
   const { handleHomeRoute } = UseHandleHomeRoute();
-
-  const { refetchCounts } = useApprovalCounts();
 
   const [discountPolicies, setDiscountPolicies] = useState([]);
   const [staffInfo, setStaffInfo] = useState(() => ({
@@ -194,8 +192,10 @@ export default function NewPurchase({ approversPurchasing }) {
       setAlertType("success");
       setShowAlert(true);
 
-      // Refetch Approval Counts
-      refetchCounts();
+      // Invalidate query data
+      queryClient.invalidateQueries({ queryKey: ["staffPurchases", true] });
+      queryClient.invalidateQueries({ queryKey: ["staffPurchases", false] });
+      queryClient.invalidateQueries({ queryKey: ["ApprovalCardCounts"] });
 
       // Redirect to designated dashboard after 0.7 seconds
       setTimeout(() => {

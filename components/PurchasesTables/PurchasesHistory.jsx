@@ -14,7 +14,6 @@ import Alert from "../Alert";
 import Pagination from "../pagination/Pagination";
 import ColumnToggle from "../Reusables/ColumnToggle";
 import ImportExcelData from "../Reusables/Import/ImportExcelData";
-import { useApprovalCounts } from "@/context/ApprovalCountsContext";
 import { RotateCcw, Search, SearchX, X } from "lucide-react";
 import { useLoadingLineStore } from "@/store/useLoadingLineStore";
 import Link from "next/link";
@@ -61,7 +60,6 @@ export default function PurchasesHistory({ fetchAllData = false }) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const startLoading = useLoadingLineStore((state) => state.startLoading);
-  const { refetchCounts } = useApprovalCounts();
 
   // ── TanStack Query: fetch all data once ──────────────────────────────────────
   const {
@@ -315,9 +313,10 @@ export default function PurchasesHistory({ fetchAllData = false }) {
         type: "success",
         message: message || "Purchase Request Successfully Deleted",
       });
-      refetchCounts();
+
+      queryClient.invalidateQueries({ queryKey: ["ApprovalCardCounts"] });
     },
-    [queryClient, fetchAllData, refetchCounts],
+    [queryClient, fetchAllData],
   );
 
   const handleDeleteError = useCallback((message) => {
