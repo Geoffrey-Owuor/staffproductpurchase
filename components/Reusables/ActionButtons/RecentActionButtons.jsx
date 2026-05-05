@@ -58,7 +58,8 @@ export const RecentActionButtons = ({
     setIsOpen(false);
   };
 
-  const handleClose = async () => {
+  const handleClose = async (e) => {
+    e.stopPropagation();
     setShowCloseConfirmation(false);
     setIsClosing(true);
     try {
@@ -79,7 +80,8 @@ export const RecentActionButtons = ({
     }
   };
 
-  const handleDelete = async () => {
+  const handleDelete = async (e) => {
+    e.stopPropagation();
     setShowConfirmation(false);
     setIsDeleting(true);
     try {
@@ -129,7 +131,8 @@ export const RecentActionButtons = ({
     };
   }, [id, isOpen]);
 
-  const handleActionClick = (action) => {
+  const handleActionClick = (action, event) => {
+    event.stopPropagation();
     action(id);
     setIsOpen(false);
   };
@@ -187,7 +190,7 @@ export const RecentActionButtons = ({
         <div className="p-1">
           <button
             type="button"
-            onClick={() => handleActionClick(gotoPurchaseView)}
+            onClick={(e) => handleActionClick(gotoPurchaseView, e)}
             disabled={goingTo === id}
             className={menuItemStyles}
           >
@@ -197,7 +200,7 @@ export const RecentActionButtons = ({
 
           <button
             type="button"
-            onClick={() => handleActionClick(gotoPurchaseEdit)}
+            onClick={(e) => handleActionClick(gotoPurchaseEdit, e)}
             disabled={
               //Approver cannot edit once approved
               goingTo === id ||
@@ -229,7 +232,10 @@ export const RecentActionButtons = ({
           <div className="mt-1 border-t border-gray-200 dark:border-gray-700">
             <button
               type="button"
-              onClick={handleConfirmDelete}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleConfirmDelete();
+              }}
               disabled={
                 //Approver cannot delete once approved
                 goingTo === id || disableDelete || userRole !== "admin"
@@ -244,7 +250,10 @@ export const RecentActionButtons = ({
           {closeButton && (
             <button
               type="button"
-              onClick={handleConfirmClose}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleConfirmClose();
+              }}
               disabled={goingTo === id || closureValue === "closed"}
               className={menuItemStyles}
             >
@@ -262,7 +271,7 @@ export const RecentActionButtons = ({
     <>
       {showConfirmation && (
         <DeleteConfirmation
-          onConfirm={handleDelete}
+          onConfirm={(e) => handleDelete(e)}
           onCancel={() => setShowConfirmation(false)}
         />
       )}
@@ -270,7 +279,7 @@ export const RecentActionButtons = ({
       {showCloseConfirmation && (
         <ConfirmationDialog
           message="Are you sure you want to close this purchase request? (You cannot reopen after closing)"
-          onConfirm={handleClose}
+          onConfirm={(e) => handleClose(e)}
           onCancel={() => setShowCloseConfirmation(false)}
           title="Close Purchase Request"
         />

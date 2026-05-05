@@ -6,13 +6,13 @@ import {
   History,
   Link2,
   BookOpenCheck,
-  ChevronsLeft,
+  ChevronLeft,
   LayoutPanelLeft, // Changed icon to represent switching back to side view
 } from "lucide-react";
 import HotpointLogo from "../HotpointLogo";
 import UserMenu from "../UserMenu";
 import { useState, useEffect } from "react";
-import { useLayout } from "@/context/LayoutContext";
+import { useSidebarStore } from "@/store/useSidebarStore";
 
 const TopSidebar = ({
   router,
@@ -25,7 +25,8 @@ const TopSidebar = ({
 }) => {
   // --- State for header scroll effect ---
   const [isScrolled, setIsScrolled] = useState(false);
-  const { setShowTopbar } = useLayout();
+
+  const setShowTopbar = useSidebarStore((state) => state.setShowTopbar);
 
   const toggleTopbarView = () => {
     setShowTopbar(false);
@@ -134,7 +135,7 @@ const TopSidebar = ({
             className="rounded-full p-2 text-gray-600 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-500 dark:hover:bg-gray-800/50 dark:hover:text-white"
             title="Go back"
           >
-            <ChevronsLeft className="h-5 w-5" />
+            <ChevronLeft className="h-5 w-5" />
           </button>
           {/* Sidebar View Toggle */}
           <div

@@ -5,14 +5,14 @@ import {
   History,
   Link2,
   BookOpenCheck,
-  ChevronsLeft,
+  ChevronLeft,
   PanelLeftClose,
   PanelLeftOpen,
   LayoutPanelTop,
 } from "lucide-react";
 import HotpointLogo from "../HotpointLogo";
 import UserMenu from "../UserMenu";
-import { useLayout } from "@/context/LayoutContext";
+import { useSidebarStore } from "@/store/useSidebarStore";
 
 const LeftSidebar = ({
   router,
@@ -23,7 +23,9 @@ const LeftSidebar = ({
   activeTab,
   role,
 }) => {
-  const { sidebarOpen, setSidebarOpen, setShowTopbar } = useLayout();
+  const sidebarOpen = useSidebarStore((state) => state.sidebarOpen);
+  const setSidebarOpen = useSidebarStore((state) => state.setSidebarOpen);
+  const setShowTopbar = useSidebarStore((state) => state.setShowTopbar);
   return (
     <div
       className={`custom:flex fixed top-0 bottom-0 left-0 z-50 hidden flex-col transition-all duration-200 ${
@@ -40,14 +42,14 @@ const LeftSidebar = ({
             className={`absolute ${sidebarOpen ? "top-[1.5px] left-39" : "top-11 left-[13px]"} rounded-full bg-gray-100 p-1.5 text-gray-900 transition-all duration-200 hover:bg-gray-200 dark:bg-gray-800/50 dark:text-white dark:hover:bg-gray-800`}
             title="Go back"
           >
-            <ChevronsLeft className="h-4.5 w-4.5" />
+            <ChevronLeft className="h-4.5 w-4.5" />
           </button>
 
           {/* Toggling the sidebar */}
 
           <button
             className={`absolute ${sidebarOpen ? "top-[1.5px] left-48" : "top-20 left-[13px]"} rounded-lg bg-gray-100 p-1.5 text-gray-900 transition-all duration-200 hover:bg-gray-200 dark:bg-gray-800/50 dark:text-white dark:hover:bg-gray-800`}
-            onClick={() => setSidebarOpen((prev) => !prev)}
+            onClick={() => setSidebarOpen(!sidebarOpen)}
           >
             {sidebarOpen ? (
               <PanelLeftClose className="h-4.5 w-4.5" />

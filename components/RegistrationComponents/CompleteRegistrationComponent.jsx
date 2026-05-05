@@ -60,7 +60,7 @@ export default function CompleteRegistrationComponent({ email }) {
       else if (data.role === "staff") dashboardPath = "/staffdashboard";
       else dashboardPath = "/login";
 
-      router.push(dashboardPath);
+      window.location.href = dashboardPath;
     } catch (err) {
       setError(err.message);
       setLoading(false);

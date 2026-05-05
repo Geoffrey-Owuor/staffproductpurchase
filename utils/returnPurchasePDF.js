@@ -160,13 +160,16 @@ const formatCurrency = (value) =>
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
 
 const formatDate = (dateString) =>
-  dateString ? new Date(dateString).toLocaleDateString("en-GB") : "N/A";
+  dateString
+    ? new Date(dateString).toLocaleDateString("en-GB")
+    : new Date().toLocaleDateString("en-GB");
 
 const formatStatus = (status) =>
   status ? status.charAt(0).toUpperCase() + status.slice(1) : "Pending";
 
 const calculateDaysDifference = (startDate, endDate) => {
-  if (!startDate || !endDate) return "N/A";
+  if (!startDate) return "N/A";
+  endDate = endDate ? endDate : new Date();
   const start = new Date(startDate);
   const end = new Date(endDate);
   const diff = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
@@ -198,8 +201,7 @@ const PurchasePDFDocument = ({
             <View style={styles.headerRight}>
               <Text>Reference Number: {reference || "N/A"}</Text>
               <Text>
-                Date Issued:{" "}
-                {formatDate(purchaseData.bi_approval_date ?? new Date())}
+                Date Issued: {formatDate(purchaseData.bi_approval_date)}
               </Text>
             </View>
           </View>
@@ -486,7 +488,7 @@ const PurchasePDFDocument = ({
                   <View style={styles.infoRow}>
                     <Text style={styles.infoLabel}>Date</Text>
                     <Text style={styles.infoValue}>
-                      {formatDate(purchaseData.bi_approval_date ?? new Date())}
+                      {formatDate(purchaseData.bi_approval_date)}
                     </Text>
                   </View>
 
@@ -495,7 +497,7 @@ const PurchasePDFDocument = ({
                     <Text style={styles.infoValue}>
                       {calculateDaysDifference(
                         createdAt,
-                        purchaseData.bi_approval_date ?? new Date(),
+                        purchaseData.bi_approval_date,
                       )}
                     </Text>
                   </View>

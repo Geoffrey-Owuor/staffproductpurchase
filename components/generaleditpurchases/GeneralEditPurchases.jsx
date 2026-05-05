@@ -2,6 +2,8 @@
 import { useState, useEffect, useMemo } from "react";
 import { PackagePlus, PlusCircle, Trash2 } from "lucide-react";
 import Alert from "../Alert";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
+import { fetchPurchaseDetails } from "@/utils/FetchPurchaseDetails/fetchPurchaseDetails";
 import StaffInformation from "../StaffInformation";
 import ProductPricing from "../ProductPricing";
 import PaymentDetails from "../PaymentDetails";
@@ -13,13 +15,11 @@ import BIApprovalSection from "../FormEditComponents/BIApprovalSection";
 import ConfirmationDialog from "../Reusables/ConfirmationDialog";
 import UnauthorizedEdit from "../Reusables/UnauthorizedEdit";
 import { LoadingBarWave } from "../Reusables/LoadingBar";
-import { UseHandleViewClick } from "@/utils/HandleActionClicks/UseHandleViewClick";
+import { UseHandleHomeRoute } from "@/utils/HandleActionClicks/UseHandleHomeRoute";
 import EditPurchaseHeading from "../EditPurchaseComponents/EditPurchaseHeading";
 import SaveCloseComponent from "../EditPurchaseComponents/SaveCloseComponent";
-import { usePurchase } from "@/context/PurchaseDetailsContext";
 import { useUser } from "@/context/UserContext";
 import { FetchPeriodsPolicies } from "@/app/lib/FetchPeriodsPolicies";
-import { useApprovalCounts } from "@/context/ApprovalCountsContext";
 
 // The initial state for a single product
 const initialProductState = {
@@ -39,14 +39,9 @@ const month = (today.getMonth() + 1).toString().padStart(2, "0");
 const day = today.getDate().toString().padStart(2, "0");
 const localTodayString = `${year}-${month}-${day}`;
 
-function PurchaseForm({
-  purchase,
-  userRole,
-  name,
-  refetchCounts,
-  handleHrefLink,
-  id,
-}) {
+function PurchaseForm({ purchase, userRole, name, handleHomeRoute, id }) {
+  const queryClient = useQueryClient();
+
   //Initially setting periods and policies to an empty array
   const [periods, setPeriods] = useState([]);
   const [discountPolicies, setDiscountPolicies] = useState([]);
@@ -287,12 +282,15 @@ function PurchaseForm({
 
       setIsSubmitting(false);
 
-      // Refetch approval counts
-      refetchCounts();
+      // Invalidate query data
+      queryClient.invalidateQueries({ queryKey: ["ApprovalCardCounts"] });
+      queryClient.invalidateQueries({ queryKey: ["purchases", true] });
+      queryClient.invalidateQueries({ queryKey: ["purchases", false] });
 
       // Redirect back after 0.7 seconds
       setTimeout(() => {
-        handleHrefLink(id);
+        handleHomeRoute();
+        queryClient.invalidateQueries({ queryKey: ["purchaseDetails", id] });
       }, 700);
     } catch (err) {
       console.error("Error updating purchase:", err);
@@ -454,9 +452,17 @@ function PurchaseForm({
 
 export default function GeneralEditPurchases({ id }) {
   const { role: userRole, name } = useUser();
-  const { purchase, loading, error } = usePurchase();
-  const { refetchCounts } = useApprovalCounts();
-  const { handleViewClick } = UseHandleViewClick();
+
+  const {
+    data: purchase,
+    isLoading: loading,
+    isError: error,
+  } = useQuery({
+    queryKey: ["purchaseDetails", id],
+    queryFn: () => fetchPurchaseDetails(id),
+  });
+
+  const { handleHomeRoute } = UseHandleHomeRoute();
 
   // 1. Context Loading State
   if (loading) {
@@ -503,8 +509,7 @@ export default function GeneralEditPurchases({ id }) {
       purchase={purchase}
       userRole={userRole}
       name={name}
-      refetchCounts={refetchCounts}
-      handleHrefLink={handleViewClick}
+      handleHomeRoute={handleHomeRoute}
       id={id}
     />
   );

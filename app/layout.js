@@ -1,9 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "../styles/globals.css";
 import LoadingLine from "@/components/Reusables/LoadingLine";
-import { LoadingLineProvider } from "@/context/LoadingLineContext";
 import { ThemeProvider } from "next-themes";
-import { LayoutProvider } from "@/context/LayoutContext";
+import QueryProvider from "@/components/QueryProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,12 +34,8 @@ export default function RootLayout({ children }) {
           defaultTheme="system"
           disableTransitionOnChange={true}
         >
-          <LoadingLineProvider>
-            <LayoutProvider>
-              <LoadingLine />
-              <main>{children}</main>
-            </LayoutProvider>
-          </LoadingLineProvider>
+          <LoadingLine />
+          <QueryProvider>{children}</QueryProvider>
         </ThemeProvider>
       </body>
     </html>

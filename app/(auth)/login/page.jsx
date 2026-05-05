@@ -2,12 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 import AuthBackground from "@/components/Reusables/Images/AuthBackground";
 
 export default function LoginPage() {
-  const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -56,7 +54,7 @@ export default function LoginPage() {
         }
 
         // Redirect with page reload
-        router.push(dashboardPath);
+        window.location.href = dashboardPath;
       } else {
         const data = await response.json();
         setLoginError(data.message || "Login Failed");
@@ -123,6 +121,7 @@ export default function LoginPage() {
                 </label>
                 <Link
                   href="/forgot-password"
+                  tabIndex={-1}
                   className="text-sm text-gray-600 hover:text-gray-900 hover:underline dark:text-gray-400 dark:hover:text-gray-100"
                 >
                   Forgot password?
@@ -141,6 +140,7 @@ export default function LoginPage() {
                 />
                 <button
                   type="button"
+                  tabIndex={-1}
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                 >

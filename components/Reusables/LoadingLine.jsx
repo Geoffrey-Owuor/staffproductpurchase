@@ -1,9 +1,9 @@
 "use client";
 import { motion } from "framer-motion";
-import { useLoadingLine } from "@/context/LoadingLineContext";
+import { useLoadingLineStore } from "@/store/useLoadingLineStore";
 
 const LoadingLine = () => {
-  const { isLoading } = useLoadingLine();
+  const isLoading = useLoadingLineStore((state) => state.isLoading);
   return (
     <>
       {isLoading && (

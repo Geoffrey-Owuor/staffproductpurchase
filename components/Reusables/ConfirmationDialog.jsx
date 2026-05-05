@@ -26,7 +26,7 @@ const ConfirmationDialog = ({ message, onConfirm, onCancel, title }) => {
         className="mx-auto max-w-90 rounded-2xl border border-gray-200 bg-gray-50 p-4 shadow-2xl md:max-w-md dark:border-gray-700 dark:bg-gray-950"
       >
         <div className="flex items-start justify-between">
-          <h3 className="mb-3 text-xl font-bold text-gray-900 dark:text-white">
+          <h3 className="mb-3 text-xl font-semibold text-gray-900 dark:text-white">
             {title}
           </h3>
           <button

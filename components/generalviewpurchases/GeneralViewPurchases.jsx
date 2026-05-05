@@ -1,9 +1,18 @@
 "use client";
-import { Edit, X, Download, View, GitPullRequestClosed } from "lucide-react";
+import {
+  Edit,
+  X,
+  Download,
+  View,
+  GitPullRequestClosed,
+  RotateCcw,
+} from "lucide-react";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
+import { fetchPurchaseDetails } from "@/utils/FetchPurchaseDetails/fetchPurchaseDetails";
 import ApprovalStatus from "../Reusables/ApprovalStatus";
 import { AnimatePresence } from "framer-motion";
 import TopBarButtons from "../Reusables/TopBarButtons/TopBarButtons";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import PurchaseDetailSkeleton from "../skeletons/PurchaseDetailsSkeleton";
 import DetailField from "../Reusables/DetailField";
@@ -12,18 +21,27 @@ import { LoadingBar } from "../Reusables/LoadingBar";
 import { formatDateLong } from "@/public/assets";
 import { UseHandleEditClick } from "@/utils/HandleActionClicks/UseHandleEditClick";
 import ProductItemsInfo from "../ProductItemsInfo/ProductItemsInfo";
-import { usePurchase } from "@/context/PurchaseDetailsContext";
 import { useUser } from "@/context/UserContext";
 import { formatCreditPeriod } from "@/public/assets";
 import ConfirmationDialog from "../Reusables/ConfirmationDialog";
 import Alert from "../Alert";
 import { LoadingBarWave } from "../Reusables/LoadingBar";
-import { useTrackingApprovalCards } from "@/context/TrackingApprovalCardsContext";
 
 export default function GeneralViewPurchases({ id }) {
+  const queryClient = useQueryClient();
+
   const { role: userRole } = useUser();
-  const { refetchCounts } = useTrackingApprovalCards();
-  const { purchase, loading, error, refetchPurchaseDetails } = usePurchase();
+
+  const {
+    data: purchase,
+    isLoading: loading,
+    isError: error,
+    refetch,
+  } = useQuery({
+    queryKey: ["purchaseDetails", id],
+    queryFn: () => fetchPurchaseDetails(id),
+  });
+
   const [isEditing, setIsEditing] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -52,7 +70,11 @@ export default function GeneralViewPurchases({ id }) {
       setAlertType("success");
       setAlertMessage(result.message || "Purchase request closed successfully");
       setShowAlert(true);
-      refetchCounts();
+
+      queryClient.invalidateQueries({
+        queryKey: ["TrackingApprovalCardCounts"],
+      });
+      queryClient.invalidateQueries({ queryKey: ["paymentTracking"] });
     } catch (error) {
       console.error("Error Closing Purchase Request:", error);
       setAlertType("error");
@@ -62,11 +84,6 @@ export default function GeneralViewPurchases({ id }) {
       setUpdating(false);
     }
   };
-
-  useEffect(() => {
-    // Ensures the component always shows up-to-date data
-    refetchPurchaseDetails();
-  }, [refetchPurchaseDetails]);
 
   const router = useRouter();
 
@@ -136,10 +153,18 @@ export default function GeneralViewPurchases({ id }) {
       {/* Details Card */}
       <div className="mx-auto rounded-xl pb-6">
         {/* Header with back button */}
-        <div className="flex items-center justify-between px-2 pt-2 pb-4">
-          <div className="flex items-center gap-2">
-            <span className="text-xl font-semibold">View Request</span>
-            <View className="h-6 w-6" />
+        <div className="flex flex-wrap items-center justify-between gap-4 px-2 pt-2 pb-4">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <View className="h-6 w-6" />
+              <span className="text-xl font-semibold">View Request</span>
+            </div>
+            <button
+              onClick={() => refetch()}
+              className="rounded-full bg-gray-100 p-2 hover:bg-gray-200 dark:bg-gray-900 dark:hover:bg-gray-800"
+            >
+              <RotateCcw className="h-4 w-4" />
+            </button>
           </div>
           <div className="flex items-center justify-end gap-4">
             {/* Middle Edit Button */}

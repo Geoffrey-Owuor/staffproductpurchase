@@ -2,6 +2,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import StaffInformation from "../StaffInformation";
+import { useQueryClient } from "@tanstack/react-query";
 import ProductPricing from "../ProductPricing";
 import Alert from "../Alert";
 import { LoadingBarWave } from "../Reusables/LoadingBar";
@@ -18,7 +19,6 @@ import PaymentDetails from "../PaymentDetails";
 import TopBarButtons from "../Reusables/TopBarButtons/TopBarButtons";
 import { FetchPeriodsPolicies } from "@/app/lib/FetchPeriodsPolicies";
 import { useUser } from "@/context/UserContext";
-import { useApprovalCounts } from "@/context/ApprovalCountsContext";
 import MpesaTillNumber from "./MpesaTillNumber";
 
 // The initial state for a single product
@@ -34,10 +34,8 @@ const initialProductState = {
 
 export default function NewPurchase({ approversPurchasing }) {
   const user = useUser();
-  const router = useRouter();
+  const queryClient = useQueryClient();
   const { handleHomeRoute } = UseHandleHomeRoute();
-
-  const { refetchCounts } = useApprovalCounts();
 
   const [discountPolicies, setDiscountPolicies] = useState([]);
   const [staffInfo, setStaffInfo] = useState(() => ({
@@ -194,8 +192,10 @@ export default function NewPurchase({ approversPurchasing }) {
       setAlertType("success");
       setShowAlert(true);
 
-      // Refetch Approval Counts
-      refetchCounts();
+      // Invalidate query data
+      queryClient.invalidateQueries({ queryKey: ["staffPurchases", true] });
+      queryClient.invalidateQueries({ queryKey: ["staffPurchases", false] });
+      queryClient.invalidateQueries({ queryKey: ["ApprovalCardCounts"] });
 
       // Redirect to designated dashboard after 0.7 seconds
       setTimeout(() => {
@@ -218,8 +218,8 @@ export default function NewPurchase({ approversPurchasing }) {
       <div className="mx-auto leading-relaxed dark:text-white">
         <div className="flex items-center justify-between px-2 pt-2 pb-4">
           <div className="flex items-center justify-center gap-2 text-gray-900 dark:text-gray-200">
-            <h1 className="text-xl font-semibold">Request Form</h1>
             <ClipboardList className="h-6 w-6" />
+            <h1 className="text-xl font-semibold">Request Form</h1>
           </div>
           <TopBarButtons />
         </div>
