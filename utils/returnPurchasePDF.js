@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Font,
   pdf,
+  renderToBuffer,
 } from "@react-pdf/renderer";
 import { formatCreditPeriod } from "@/public/assets";
 
@@ -523,20 +524,44 @@ export async function generatePurchasePDF({
   createdAt,
   reference,
 }) {
-  const pdfStream = await pdf(
+  // OLD STREAMING METHOD
+  // const pdfStream = await pdf(
+  //   <PurchasePDFDocument
+  //     purchaseData={purchaseData}
+  //     products={products}
+  //     createdAt={createdAt}
+  //     reference={reference}
+  //   />,
+  // ).toBuffer();
+
+  // return {
+  //   filename: `Purchase_${purchaseData.staffName || purchaseData.payrollNo}_${
+  //     new Date().toISOString().split("T")[0]
+  //   }.pdf`,
+  //   content: pdfStream,
+  //   contentType: "application/pdf",
+  // };
+
+  // NEW METHOD
+  // Use renderToBuffer instead of pdf().toBuffer()
+  const pdfBuffer = await renderToBuffer(
     <PurchasePDFDocument
       purchaseData={purchaseData}
       products={products}
       createdAt={createdAt}
       reference={reference}
     />,
-  ).toBuffer();
+  );
+
+  // Convert to Base64 immediately
+  const base64Content = pdfBuffer.toString("base64");
 
   return {
     filename: `Purchase_${purchaseData.staffName || purchaseData.payrollNo}_${
       new Date().toISOString().split("T")[0]
     }.pdf`,
-    content: pdfStream,
+    // Send the base64 string directly
+    content: base64Content,
     contentType: "application/pdf",
   };
 }
