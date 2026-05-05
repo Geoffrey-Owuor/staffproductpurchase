@@ -39,8 +39,10 @@ const generateStaffCCApprovedEmailHTML = ({
           <table width="100%" cellpadding="0" cellspacing="0" border="0">
             <tr>
               <td align="center" style="padding: 20px 0;">
-                <img src="https://hotpoint.co.ke/media/images/Hotpoint_Appliances_Ltd.width-800.png" alt="Hotpoint Appliances" width="180" style="display: block;">
-              </td>
+                <h1 style="margin: 0; padding: 0; font-family: 'Segoe UI', Arial, Helvetica, sans-serif; font-size: 26px; font-weight: 800; color: #1a2340; letter-spacing: -0.5px; line-height: 1.2;">
+                  Hotpoint <span style="font-weight: 400; color: #B30000; font-size: 24px;">Appliances Ltd</span>
+                </h1>
+             </td>
             </tr>
             <tr>
               <td>
