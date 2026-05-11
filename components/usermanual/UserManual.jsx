@@ -1,6 +1,5 @@
 import {
   LogIn,
-  UserPlus,
   ShoppingCart,
   Bell,
   GitPullRequest,
@@ -9,6 +8,7 @@ import {
   CreditCard,
   Banknote,
   AlertCircle,
+  UserRoundPlus,
 } from "lucide-react";
 import PagesFooter from "../Reusables/PagesFooter/PagesFooter";
 import Header from "../landingpage/Header";
@@ -28,7 +28,7 @@ const manualSteps = [
   {
     id: 2,
     title: "New User Registration",
-    icon: UserPlus,
+    icon: UserRoundPlus,
     content: [
       "Fill in the required details on the registration page.",
       "Check your email for a verification code.",
@@ -121,8 +121,8 @@ const UserManual = () => {
             {manualSteps.map((step) => (
               <div key={step.id} className="relative mb-12 ml-8 md:ml-12">
                 {/* Timeline Dot / Icon */}
-                <span className="absolute -left-[52px] flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 ring-8 ring-white md:-left-[68px] dark:bg-blue-950 dark:ring-gray-950">
-                  <step.icon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                <span className="absolute -left-[52px] flex h-10 w-10 items-center justify-center rounded-full bg-red-50 ring-8 ring-white md:-left-[68px] dark:bg-red-950 dark:ring-gray-950">
+                  <step.icon className="h-5 w-5 text-red-600 dark:text-red-400" />
                 </span>
 
                 {/* Content Card */}
@@ -139,7 +139,7 @@ const UserManual = () => {
                           key={idx}
                           className="flex items-start gap-3 text-gray-600 dark:text-gray-300"
                         >
-                          <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-green-500" />
+                          <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-gray-500" />
                           <span className="text-base leading-relaxed">
                             {point}
                           </span>

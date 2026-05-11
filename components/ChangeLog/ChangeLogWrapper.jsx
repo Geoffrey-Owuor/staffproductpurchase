@@ -1,5 +1,5 @@
 "use client";
-import { FolderClock, Calendar, RefreshCcw } from "lucide-react";
+import { FolderClock, Calendar, RotateCcw } from "lucide-react";
 import { revalidateChangelogs } from "@/app/lib/fetchChangelogs";
 import { useTransition } from "react";
 import { LoadingBar } from "../Reusables/LoadingBar";
@@ -47,10 +47,10 @@ const ChangeLogWrapper = ({ changelogs }) => {
             </div>
           </div>
           <button
-            className="hidden cursor-pointer items-center gap-2 rounded-xl bg-gray-950 px-3 py-2 text-white transition-colors hover:bg-gray-800 sm:flex dark:bg-white dark:text-black dark:hover:bg-gray-200"
+            className="hidden cursor-pointer items-center gap-2 rounded-xl bg-gray-950 px-3 py-2 text-sm text-white transition-colors hover:bg-gray-800 sm:flex dark:bg-white dark:text-black dark:hover:bg-gray-200"
             onClick={handleRefreshLogs}
           >
-            <RefreshCcw className="h-5 w-5" />
+            <RotateCcw className="h-4 w-4" />
             Refresh
           </button>
         </div>

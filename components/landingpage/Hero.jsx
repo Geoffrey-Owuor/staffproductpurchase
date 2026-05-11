@@ -59,25 +59,25 @@ export default function Hero() {
                 </div>
                 <ul className="space-y-4">
                   <li className="flex items-center">
-                    <Check className="mr-2 h-5 w-5 text-green-500 dark:text-green-400" />
+                    <Check className="mr-2 h-5 w-5 text-gray-950 dark:text-white" />
                     <span className="text-gray-700 dark:text-gray-300">
                       Exclusive employee discounts
                     </span>
                   </li>
                   <li className="flex items-center">
-                    <Check className="mr-2 h-5 w-5 text-green-500 dark:text-green-400" />
+                    <Check className="mr-2 h-5 w-5 text-gray-950 dark:text-white" />
                     <span className="text-gray-700 dark:text-gray-300">
                       Easy online requisition
                     </span>
                   </li>
                   <li className="flex items-center">
-                    <Check className="mr-2 h-5 w-5 text-green-500 dark:text-green-400" />
+                    <Check className="mr-2 h-5 w-5 text-gray-950 dark:text-white" />
                     <span className="text-gray-700 dark:text-gray-300">
                       Track your purchase status
                     </span>
                   </li>
                   <li className="flex items-center">
-                    <Check className="mr-2 h-5 w-5 text-green-500 dark:text-green-400" />
+                    <Check className="mr-2 h-5 w-5 text-gray-950 dark:text-white" />
                     <span className="text-gray-700 dark:text-gray-300">
                       Access with your work account
                     </span>

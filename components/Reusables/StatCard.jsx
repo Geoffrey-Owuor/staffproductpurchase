@@ -19,7 +19,7 @@ export const StatCard = ({ title, count, description, IconComponent }) => {
 
   return (
     <div
-      className={`rounded-2xl ${dynamicBackgrounds[title]} p-6 shadow-md dark:bg-gray-800`}
+      className={`rounded-2xl ${dynamicBackgrounds[title]} p-6 shadow-xs hover:shadow-sm dark:bg-gray-800`}
     >
       <div className="flex items-center justify-between">
         <div>

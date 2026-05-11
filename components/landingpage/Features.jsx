@@ -58,7 +58,7 @@ export default function Features() {
                 className={`rounded-3xl ${feature.bgColor} p-8 transition hover:shadow-md dark:hover:shadow-lg`}
               >
                 <div
-                  className={`mb-6 flex h-12 w-12 items-center justify-center rounded-lg ${feature.iconBgColor} p-3`}
+                  className={`mb-6 flex h-12 w-12 items-center justify-center rounded-xl ${feature.iconBgColor} p-3`}
                 >
                   <Icon className={`h-6 w-6 ${feature.iconColor}`} />
                 </div>

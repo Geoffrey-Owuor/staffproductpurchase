@@ -39,7 +39,9 @@ const CLOSURE_LABELS = {
 function FilterPill({ label, value, onRemove }) {
   return (
     <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">
-      <span className="text-blue-500 dark:text-blue-400">{label}:</span>
+      <span className="font-semibold text-blue-500 dark:text-blue-400">
+        {label}:
+      </span>
       {value}
       <button
         onClick={onRemove}

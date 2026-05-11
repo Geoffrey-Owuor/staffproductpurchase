@@ -2,7 +2,6 @@ import hotpoint_logo from "./hotpoint_logo.webp";
 import hotpoint_white_logo from "./hotpoint_white_logo.webp";
 import dark_mode_bg from "./dark_mode_bg.svg";
 import light_mode_bg from "./light_mode_bg.svg";
-import Image from "next/image";
 import hat from "./hat.png";
 import Link from "next/link";
 
