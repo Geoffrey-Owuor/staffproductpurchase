@@ -2,7 +2,6 @@ import hotpoint_logo from "./hotpoint_logo.webp";
 import hotpoint_white_logo from "./hotpoint_white_logo.webp";
 import dark_mode_bg from "./dark_mode_bg.svg";
 import light_mode_bg from "./light_mode_bg.svg";
-import Image from "next/image";
 import hat from "./hat.png";
 import Link from "next/link";
 
@@ -67,3 +66,20 @@ export const LandingPageLogo = () => {
     </a>
   );
 };
+
+export const baseDepartments = [
+  { option: "IT & Projects", value: "IT & Projects" },
+  { option: "Commercial", value: "Commercial" },
+  { option: "Directorate", value: "Directorate" },
+  { option: "Marketing", value: "Marketing" },
+  { option: "HR & Admin", value: "HR & Admin" },
+  { option: "Finance", value: "Finance" },
+  { option: "B2B", value: "B2B" },
+  { option: "Retail", value: "Retail" },
+  { option: "Modern Trade", value: "Modern Trade" },
+  { option: "Engineering & HVAC", value: "Engineering & HVAC" },
+  { option: "Service Center", value: "Service Center" },
+  { option: "Internal Audit", value: "Internal Audit" },
+  { option: "Operations", value: "Operations" },
+  { option: "Security", value: "Security" },
+];

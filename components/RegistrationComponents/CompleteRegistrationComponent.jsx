@@ -5,10 +5,9 @@ import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import AuthBackground from "../Reusables/Images/AuthBackground";
 import Alert from "../Alert";
-import { useRouter } from "next/navigation";
+import { baseDepartments } from "@/public/assets";
 
 export default function CompleteRegistrationComponent({ email }) {
-  const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     password: "",
@@ -165,22 +164,12 @@ export default function CompleteRegistrationComponent({ email }) {
                 <option value="" disabled>
                   Select a department
                 </option>
-                <option value="Commercial">Commercial</option>
-                <option value="Finance">Finance</option>
-                <option value="HR & Admin">HR & Admin</option>
-                <option value="Directorate">Directorate</option>
-                <option value="Marketing">Marketing</option>
-                <option value="B2B">B2B</option>
-                <option value="IT & Projects">IT & Projects</option>
-                <option value="Operations">Operations</option>
-                <option value="Modern Trade">Modern Trade</option>
-                <option value="Retail">Retail</option>
-                <option value="Engineering & HVAC">Engineering & HVAC</option>
-                <option value="Service Center">Service Center</option>
-                <option value="Internal Audit">Internal Audit</option>
-                <option value="Security">Security</option>
+                {baseDepartments.map((department) => (
+                  <option key={department.value} value={department.value}>
+                    {department.option}
+                  </option>
+                ))}
               </select>
-              {/* Custom arrow for select - often added here if appearance-none is used */}
             </div>
 
             {/* Password */}
