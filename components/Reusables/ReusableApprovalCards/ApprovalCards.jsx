@@ -78,25 +78,25 @@ export default function ApprovalCards() {
               <div className="hidden items-center space-x-2 lg:flex">
                 <div className="flex items-center gap-2 rounded-xl bg-slate-200 p-3 dark:bg-slate-900">
                   <span className="font-mono text-xl font-semibold">
-                    {counts.total}
+                    {counts.total > 500 ? "500+" : counts.total}
                   </span>{" "}
                   <TrendingUp />
                 </div>
                 <div className="flex items-center gap-2 rounded-xl bg-red-50 p-3 dark:bg-slate-700">
                   <span className="font-mono text-xl font-semibold">
-                    {counts.totalDeclined}
+                    {counts.totalDeclined > 500 ? "500+" : counts.totalDeclined}
                   </span>{" "}
                   <MessageCircleX />
                 </div>
                 <div className="flex items-center gap-2 rounded-xl bg-yellow-50 p-3 dark:bg-gray-800">
                   <span className="font-mono text-xl font-semibold">
-                    {totalPending}
+                    {totalPending > 500 ? "500+" : totalPending}
                   </span>{" "}
                   <ClockFading />
                 </div>
                 <div className="flex items-center gap-2 rounded-xl bg-blue-50 p-3 dark:bg-slate-800">
                   <span className="font-mono text-xl font-semibold">
-                    {counts.totalApproved}
+                    {counts.totalApproved > 500 ? "500+" : counts.totalApproved}
                   </span>{" "}
                   <CheckCheck />
                 </div>
@@ -115,7 +115,7 @@ export default function ApprovalCards() {
           {/* Pending Card */}
           <StatCard
             title="Pending"
-            count={counts.pending}
+            count={counts.pending > 500 ? "500+" : counts.pending}
             description={
               userRole === "staff"
                 ? "Awaiting invoicing approval"
@@ -126,7 +126,7 @@ export default function ApprovalCards() {
           {/* Declined Card */}
           <StatCard
             title="Declined"
-            count={counts.declined}
+            count={counts.declined > 500 ? "500+" : counts.declined}
             description={
               userRole === "staff"
                 ? "Declined Requests"
@@ -138,7 +138,7 @@ export default function ApprovalCards() {
           {/* Approved Card */}
           <StatCard
             title="Approved"
-            count={counts.approved}
+            count={counts.approved > 500 ? "500+" : counts.approved}
             description={
               userRole === "staff"
                 ? "Approved by invoicing"

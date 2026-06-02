@@ -48,14 +48,14 @@ export default function TrackingApprovalCards() {
           {/* Open Card */}
           <StatCard
             title="Open"
-            count={counts.open}
+            count={counts.open > 500 ? "500+" : counts.open}
             description="Summary of open requests"
             IconComponent={Loader}
           />
           {/* Closed Card */}
           <StatCard
             title="Closed"
-            count={counts.closed}
+            count={counts.closed > 500 ? "500+" : counts.closed}
             description="Summary of closed requests"
             IconComponent={UserRoundCheck}
           />
@@ -63,7 +63,7 @@ export default function TrackingApprovalCards() {
           {/* Approved Card */}
           <StatCard
             title="Approved"
-            count={counts.approved}
+            count={counts.approved > 500 ? "500+" : counts.approved}
             description="Summary of approved requests"
             IconComponent={CheckCircle2}
           />
