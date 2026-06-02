@@ -16,7 +16,7 @@ export default function SettingsPage({ onClose }) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
-      className="custom-blur fixed inset-0 z-80 flex items-center justify-center bg-white/50 md:p-4 dark:bg-gray-950/50"
+      className="custom-blur fixed inset-0 z-80 flex items-center justify-center bg-black/50 md:p-4 dark:bg-black/60"
     >
       <motion.div
         initial={{ scale: 0.95, opacity: 0, y: 20 }}
