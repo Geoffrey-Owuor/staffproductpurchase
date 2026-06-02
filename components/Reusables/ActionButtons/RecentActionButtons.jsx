@@ -272,7 +272,10 @@ export const RecentActionButtons = ({
       {showConfirmation && (
         <DeleteConfirmation
           onConfirm={(e) => handleDelete(e)}
-          onCancel={() => setShowConfirmation(false)}
+          onCancel={(e) => {
+            e.stopPropagation();
+            setShowConfirmation(false);
+          }}
         />
       )}
 
@@ -280,7 +283,10 @@ export const RecentActionButtons = ({
         <ConfirmationDialog
           message="Are you sure you want to close this purchase request? (You cannot reopen after closing)"
           onConfirm={(e) => handleClose(e)}
-          onCancel={() => setShowCloseConfirmation(false)}
+          onCancel={(e) => {
+            e.stopPropagation();
+            setShowCloseConfirmation(false);
+          }}
           title="Close Purchase Request"
         />
       )}
