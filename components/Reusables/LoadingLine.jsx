@@ -25,7 +25,7 @@ const LoadingLine = () => {
         >
           {/* Glowing effect */}
           <motion.div
-            className="absolute inset-0 bg-linear-to-r from-slate-600 via-slate-700 to-slate-800 dark:from-sky-400 dark:via-blue-400 dark:to-indigo-400"
+            className="absolute inset-0 bg-linear-to-r from-rose-500 via-rose-600 to-rose-700 dark:from-sky-400 dark:via-blue-400 dark:to-indigo-400"
             animate={{
               opacity: [0.5, 1, 0.5],
             }}
