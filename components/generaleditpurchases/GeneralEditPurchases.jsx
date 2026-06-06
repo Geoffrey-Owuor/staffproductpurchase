@@ -15,11 +15,11 @@ import BIApprovalSection from "../FormEditComponents/BIApprovalSection";
 import ConfirmationDialog from "../Reusables/ConfirmationDialog";
 import UnauthorizedEdit from "../Reusables/UnauthorizedEdit";
 import { LoadingBarWave } from "../Reusables/LoadingBar";
-import { UseHandleHomeRoute } from "@/utils/HandleActionClicks/UseHandleHomeRoute";
 import EditPurchaseHeading from "../EditPurchaseComponents/EditPurchaseHeading";
 import SaveCloseComponent from "../EditPurchaseComponents/SaveCloseComponent";
 import { useUser } from "@/context/UserContext";
 import { FetchPeriodsPolicies } from "@/app/lib/FetchPeriodsPolicies";
+import { useRouter } from "next/navigation";
 
 // The initial state for a single product
 const initialProductState = {
@@ -39,8 +39,10 @@ const month = (today.getMonth() + 1).toString().padStart(2, "0");
 const day = today.getDate().toString().padStart(2, "0");
 const localTodayString = `${year}-${month}-${day}`;
 
-function PurchaseForm({ purchase, userRole, name, handleHomeRoute, id }) {
+function PurchaseForm({ purchase, userRole, name, id }) {
   const queryClient = useQueryClient();
+
+  const router = useRouter();
 
   //Initially setting periods and policies to an empty array
   const [periods, setPeriods] = useState([]);
@@ -289,8 +291,8 @@ function PurchaseForm({ purchase, userRole, name, handleHomeRoute, id }) {
 
       // Redirect back after 0.7 seconds
       setTimeout(() => {
-        handleHomeRoute();
         queryClient.invalidateQueries({ queryKey: ["purchaseDetails", id] });
+        router.back();
       }, 700);
     } catch (err) {
       console.error("Error updating purchase:", err);
@@ -449,7 +451,6 @@ function PurchaseForm({ purchase, userRole, name, handleHomeRoute, id }) {
 }
 
 // The Loader component
-
 export default function GeneralEditPurchases({ id }) {
   const { role: userRole, name } = useUser();
 
@@ -461,8 +462,6 @@ export default function GeneralEditPurchases({ id }) {
     queryKey: ["purchaseDetails", id],
     queryFn: () => fetchPurchaseDetails(id),
   });
-
-  const { handleHomeRoute } = UseHandleHomeRoute();
 
   // 1. Context Loading State
   if (loading) {
@@ -509,7 +508,6 @@ export default function GeneralEditPurchases({ id }) {
       purchase={purchase}
       userRole={userRole}
       name={name}
-      handleHomeRoute={handleHomeRoute}
       id={id}
     />
   );
