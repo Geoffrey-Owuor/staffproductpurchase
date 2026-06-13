@@ -2,7 +2,6 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/app/lib/auth";
 import UnauthorizedPage from "@/components/Reusables/UnauthorizedPage";
 import ReusableLayoutShell from "@/components/Reusables/ReuseLayoutShell/ReusableLayoutShell";
-import { FirstLoader } from "@/components/Reusables/FirstLoader";
 
 export const metadata = {
   title: "HAL - Credit Control Dashboard",
@@ -20,10 +19,5 @@ export default async function layout({ children }) {
     return <UnauthorizedPage />;
   }
 
-  return (
-    <>
-      <FirstLoader />
-      <ReusableLayoutShell user={user}>{children}</ReusableLayoutShell>
-    </>
-  );
+  return <ReusableLayoutShell user={user}>{children}</ReusableLayoutShell>;
 }
