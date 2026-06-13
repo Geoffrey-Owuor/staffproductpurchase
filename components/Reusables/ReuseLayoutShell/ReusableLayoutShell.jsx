@@ -23,14 +23,16 @@ export default function ReusableLayoutShell({ user, children }) {
   return (
     <UserContext.Provider value={user}>
       <ChangeLogAlert />
-      <div className="flex min-h-screen flex-col">
+      <div className="min-h-screen">
         <MobileHeader />
         <ReusableSidebar />
         <main
           className={`fixed right-2 ${mainMarginClass} bg-base-classes top-16 bottom-4 left-2 overflow-auto rounded-3xl border border-gray-300 px-2 transition-all duration-200 sm:bottom-2 sm:rounded-xl dark:border-gray-800`}
         >
-          <div className={`mx-auto mt-2 max-w-7xl flex-1`}>{children}</div>
-          <DashboardFooter />
+          <div className="mx-auto mt-2 flex h-full max-w-7xl flex-col">
+            <div className="flex-1">{children}</div>
+            <DashboardFooter />
+          </div>
         </main>
       </div>
     </UserContext.Provider>
