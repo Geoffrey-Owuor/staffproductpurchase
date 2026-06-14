@@ -33,7 +33,7 @@ const Alert = ({ message, type, onClose }) => {
   return (
     <ClientPortal>
       <div
-        className={`custom:top-0 fixed top-15 right-4 left-4 z-9999 md:left-auto ${
+        className={`fixed top-15 right-4 left-4 z-9999 md:top-0 md:left-auto ${
           isClosing ? "animate-slideUp" : "animate-slideDown"
         }`}
       >
