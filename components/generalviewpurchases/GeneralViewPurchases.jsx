@@ -6,6 +6,7 @@ import {
   View,
   GitPullRequestClosed,
   RotateCcw,
+  Blocks,
 } from "lucide-react";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { fetchPurchaseDetails } from "@/utils/FetchPurchaseDetails/fetchPurchaseDetails";
@@ -106,6 +107,12 @@ export default function GeneralViewPurchases({ id }) {
 
   const handleEditClick = UseHandleEditClick();
 
+  // const handleCustomAlertShow = () => {
+  //   setAlertType("success");
+  //   setAlertMessage("Custom Alert Message Showing");
+  //   setShowAlert(true);
+  // };
+
   const gotoPurchaseEdit = (id) => {
     setIsEditing(true);
     handleEditClick(id);
@@ -165,6 +172,12 @@ export default function GeneralViewPurchases({ id }) {
             >
               <RotateCcw className="h-4 w-4" />
             </button>
+            {/* <button
+              onClick={handleCustomAlertShow}
+              className="rounded-full bg-gray-100 p-2 hover:bg-gray-200 dark:bg-gray-900 dark:hover:bg-gray-800"
+            >
+              <Blocks className="h-4 w-4" />
+            </button> */}
           </div>
           <div className="flex items-center justify-end gap-4">
             {/* Middle Edit Button */}

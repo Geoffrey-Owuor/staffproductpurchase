@@ -135,7 +135,7 @@ export default function MobileHeader() {
 
       {/* Sidebar Backdrop */}
       <div
-        className={`custom:hidden fixed inset-0 z-60 bg-black/50 transition-opacity duration-200 ease-in-out dark:bg-black/60 ${
+        className={`custom:hidden fixed inset-0 z-60 bg-black/50 transition-opacity duration-200 ease-in-out dark:bg-black/70 ${
           isMobileMenuOpen ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
         onClick={() => setIsMobileMenuOpen(false)}
@@ -143,7 +143,7 @@ export default function MobileHeader() {
 
       {/* Sidebar Content */}
       <div
-        className={`custom:hidden fixed top-0 bottom-0 left-0 z-70 flex w-64 transform flex-col bg-white p-4 shadow-lg transition-transform duration-300 ease-in-out dark:border-r dark:border-gray-700 dark:bg-gray-950 ${
+        className={`custom:hidden fixed top-0 bottom-0 left-0 z-70 flex w-64 transform flex-col bg-white p-4 shadow-lg transition-transform duration-300 ease-in-out dark:bg-gray-950 ${
           isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
