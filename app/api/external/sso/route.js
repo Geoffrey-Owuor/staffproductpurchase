@@ -26,13 +26,16 @@ export async function GET(request) {
     const signature = searchParams.get("signature");
 
     if (!email || !timestamp || !signature) {
+      console.log("Some required fields are missing");
       return NextResponse.redirect(new URL("/login", baseUrl));
     }
 
-    // 1. Prevent Replay Attacks (e.g., link expires in 60 seconds)
+    // 1. Prevent Replay Attacks (link expires in 2 minutes - 120000 milliseconds)
+    // To cater for second differences between hosting servers
     const now = Date.now();
     const timeDiff = now - parseInt(timestamp, 10);
-    if (timeDiff > 60000 || timeDiff < 0) {
+    if (timeDiff > 120000 || timeDiff < 0) {
+      console.log("There is a timestamp difference");
       return NextResponse.redirect(new URL("/login", baseUrl));
     }
 
@@ -46,6 +49,7 @@ export async function GET(request) {
 
     // 3. Compare signatures
     if (signature !== expectedSignature) {
+      console.log("Signatures are not matching");
       return NextResponse.redirect(new URL("/login", baseUrl));
     }
 
@@ -67,6 +71,7 @@ export async function GET(request) {
 
     // No user found
     if (user.length === 0) {
+      console.log("Could not find the selected user");
       return NextResponse.redirect(new URL("/login", baseUrl));
     }
 
