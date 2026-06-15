@@ -71,7 +71,6 @@ export async function GET(request) {
 
     // No user found
     if (user.length === 0) {
-      console.log("Could not find the selected user");
       return NextResponse.redirect(new URL("/login", baseUrl));
     }
 
