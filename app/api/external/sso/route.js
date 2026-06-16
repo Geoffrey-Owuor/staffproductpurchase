@@ -11,7 +11,7 @@ export async function GET(request) {
   const host =
     request.headers.get("x-forwarded-host") ||
     request.headers.get("host") ||
-    "127.0.0.1:4000";
+    "127.0.0.1:10556";
 
   // 2. Mathematically construct the exact base URL the user is currently using
   // Embedded via Nginx:   https://192.168.0.27:4443
