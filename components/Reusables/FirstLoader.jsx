@@ -51,7 +51,6 @@ export const FirstLoader = () => {
           className="flex items-center gap-1 text-gray-500 hover:text-gray-600 hover:underline dark:hover:text-gray-400"
         >
           <span className="font-semibold">Jeff</span>
-          <BrainCog className="h-3.5 w-3.5" />
         </a>
       </div>
     </div>

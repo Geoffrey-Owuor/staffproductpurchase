@@ -61,7 +61,7 @@ const LeftSidebar = ({
 
         {/* Navigation Buttons */}
         <nav
-          className={`${sidebarOpen ? "mt-4" : "mt-20"} grow px-2 transition-all duration-200`}
+          className={`${sidebarOpen ? "mt-1" : "mt-20"} grow px-2 transition-all duration-200`}
         >
           <ul className="space-y-1">
             <li>

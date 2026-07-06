@@ -48,7 +48,7 @@ export default function ColumnToggle({ visibleColumns, onToggle }) {
         className="inline-flex w-full items-center justify-center gap-x-2 rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 focus:outline-none dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:hover:bg-gray-800"
       >
         <Columns2 className="h-4 w-4 text-gray-700 dark:text-gray-300" />
-        Show/Hide Columns
+        <span className="hidden sm:block">Show/Hide Columns</span>
         <ChevronDown
           className={`h-5 w-5 text-gray-400 transition-transform ${
             isOpen ? "rotate-180" : ""

@@ -12,6 +12,7 @@ import { formatDateLong } from "@/public/assets";
 import { useLoadingLineStore } from "@/store/useLoadingLineStore";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
+import ColumnToggle from "../Reusables/ColumnToggle";
 import { fetchStaffPurchases } from "@/utils/FetchPurchases/fetchStaffPurchases";
 
 // ─── Constants ─────────────────────────────────────────────────────────────────
@@ -69,15 +70,34 @@ export default function StaffPurchaseHistory({ fetchAllData = false }) {
   });
 
   // ── Filter Input States (staging — not yet "applied") ──────────────────────────
-  const [filterType, setFilterType] = useState("approval");
+  const [filterType, setFilterType] = useState("staff");
+  const [searchTerm, setSearchTerm] = useState("");
   const [approvalStatus, setApprovalStatus] = useState("");
   const [paymentTerms, setPaymentTerms] = useState("");
+  const [payrollNumber, setPayrollNumber] = useState("");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
+  const [referenceNumber, setReferenceNumber] = useState("");
 
   // ── Active (applied) Filters — drive the useMemo ──────────────────────────────
   const [activeFilters, setActiveFilters] = useState({});
   // Shape: { fromDate?, toDate?, approval?, terms? }
+
+  // ── Column Visibility ─────────────────────────────────────────────────────────
+  const [visibleColumns, setVisibleColumns] = useState({
+    submissionDate: true,
+    termsOfPayment: true,
+    mpesaCode: true,
+    creditPeriod: true,
+    payrollApproval: true,
+    hrApproval: true,
+    creditApproval: true,
+    invoicingApproval: true,
+  });
+
+  const handleColumnToggle = (columnKey) => {
+    setVisibleColumns((prev) => ({ ...prev, [columnKey]: !prev[columnKey] }));
+  };
 
   // ── Navigation ────────────────────────────────────────────────────────────────
   const handleViewClick = useCallback(
@@ -96,14 +116,32 @@ export default function StaffPurchaseHistory({ fetchAllData = false }) {
     [router, startLoading],
   );
 
-  // ── Client-side Filtering via useMemo ─────────────────────────────────────────
+  // ── Client-side Filtering via useMemo ────────────────────────────────────────
   const filteredPurchases = useMemo(() => {
     let result = allPurchases;
+
+    if (activeFilters.staff) {
+      const term = activeFilters.staff.toLowerCase();
+      result = result.filter((p) => p.staffName?.toLowerCase().includes(term));
+    }
+
+    if (activeFilters.reference) {
+      const term = activeFilters.reference.toLowerCase();
+      result = result.filter((p) =>
+        p.reference_number?.toLowerCase().includes(term),
+      );
+    }
+
+    if (activeFilters.payroll) {
+      const term = activeFilters.payroll.toLowerCase();
+      result = result.filter((p) => p.payrollNo?.toLowerCase().includes(term));
+    }
 
     if (activeFilters.fromDate && activeFilters.toDate) {
       const from = new Date(activeFilters.fromDate);
       const to = new Date(activeFilters.toDate);
-      to.setHours(23, 59, 59, 999); // include the full toDate day
+      // Include the full toDate day
+      to.setHours(23, 59, 59, 999);
       result = result.filter((p) => {
         const d = new Date(p.createdAt);
         return d >= from && d <= to;
@@ -155,7 +193,13 @@ export default function StaffPurchaseHistory({ fetchAllData = false }) {
   const applyFilters = useCallback(() => {
     const newFilters = {};
 
-    if (filterType === "date" && fromDate && toDate) {
+    if (filterType === "staff" && searchTerm.trim()) {
+      newFilters.staff = searchTerm.trim();
+    } else if (filterType === "reference" && referenceNumber.trim()) {
+      newFilters.reference = referenceNumber.trim();
+    } else if (filterType === "payroll" && payrollNumber.trim()) {
+      newFilters.payroll = payrollNumber.trim();
+    } else if (filterType === "date" && fromDate && toDate) {
       newFilters.fromDate = fromDate;
       newFilters.toDate = toDate;
     } else if (filterType === "approval" && approvalStatus) {
@@ -167,7 +211,16 @@ export default function StaffPurchaseHistory({ fetchAllData = false }) {
     // Merge with existing active filters (overwrite same-key filters)
     setActiveFilters((prev) => ({ ...prev, ...newFilters }));
     setCurrentPage(1);
-  }, [filterType, fromDate, toDate, approvalStatus, paymentTerms]);
+  }, [
+    filterType,
+    searchTerm,
+    referenceNumber,
+    payrollNumber,
+    fromDate,
+    toDate,
+    approvalStatus,
+    paymentTerms,
+  ]);
 
   // ── Remove a Single Filter Pill ───────────────────────────────────────────────
   const removeFilter = useCallback((key) => {
@@ -187,16 +240,33 @@ export default function StaffPurchaseHistory({ fetchAllData = false }) {
   // ── Clear All Filters ─────────────────────────────────────────────────────────
   const clearAllFilters = useCallback(() => {
     setActiveFilters({});
+    setSearchTerm("");
     setApprovalStatus("");
     setPaymentTerms("");
+    setReferenceNumber("");
     setFromDate("");
     setToDate("");
+    setPayrollNumber("");
     setCurrentPage(1);
   }, []);
 
   // ── Build pill descriptors from activeFilters ─────────────────────────────────
   const filterPills = useMemo(() => {
     const pills = [];
+    if (activeFilters.staff)
+      pills.push({ key: "staff", label: "Staff", value: activeFilters.staff });
+    if (activeFilters.reference)
+      pills.push({
+        key: "reference",
+        label: "Reference",
+        value: activeFilters.reference,
+      });
+    if (activeFilters.payroll)
+      pills.push({
+        key: "payroll",
+        label: "Payroll",
+        value: activeFilters.payroll,
+      });
     if (activeFilters.fromDate && activeFilters.toDate)
       pills.push({
         key: "date",
@@ -225,108 +295,151 @@ export default function StaffPurchaseHistory({ fetchAllData = false }) {
     <div className="rounded-xl px-2 pb-4">
       {navigatingTo && <LoadingBar isLoading={true} />}
 
-      <div className="flex flex-col items-center justify-between gap-2 sm:flex-row">
+      <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
         {fetchAllData ? (
           <PurchasesHistoryHeading />
         ) : (
           <RecentPurchasesHeading />
         )}
 
-        {/* Refetch Button */}
-        <button
-          onClick={() => refetch()}
-          className="rounded-full bg-gray-100 p-2.5 hover:bg-gray-200 dark:bg-gray-900 dark:hover:bg-gray-800"
-        >
-          <RotateCcw className="h-4.5 w-4.5" />
-        </button>
+        {/* Refetch Button and column toggle button */}
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => refetch()}
+            className="rounded-full bg-gray-100 p-2.5 hover:bg-gray-200 dark:bg-gray-900 dark:hover:bg-gray-800"
+          >
+            <RotateCcw className="h-4.5 w-4.5" />
+          </button>
+
+          <ColumnToggle
+            visibleColumns={visibleColumns}
+            onToggle={handleColumnToggle}
+          />
+        </div>
       </div>
 
-      {/* Filter Controls — only shown in full history view */}
-      {fetchAllData && (
-        <div className="mx-auto mb-3 max-w-2xl">
-          <div className="mt-3 flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
-            {/* Filter type selector */}
+      {/* Filter Controls - Show in both purchases history and recent purchases (To support shared accounts) */}
+
+      <div className="mx-auto mb-3 max-w-2xl">
+        <div className="mt-3 flex flex-col justify-center space-y-4 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-4">
+          {/* Filter type selector */}
+          <select
+            value={filterType}
+            onChange={(e) => setFilterType(e.target.value)}
+            className="rounded-md border border-gray-300 bg-white px-2 py-1 text-sm focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+          >
+            <option value="staff">Filter by Staff Name</option>
+            <option value="reference">Filter by Reference Number</option>
+            <option value="payroll">Filter by Payroll Number</option>
+            <option value="date">Filter by Date</option>
+            <option value="approval">Filter by Approval Status</option>
+            <option value="terms">Filter by Payment Terms</option>
+          </select>
+
+          {/* Conditional inputs */}
+          {filterType === "staff" && (
+            <input
+              type="text"
+              placeholder="Search staff..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && applyFilters()}
+              className="rounded-md border border-gray-300 px-3 py-1 text-sm focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+            />
+          )}
+
+          {filterType === "reference" && (
+            <input
+              type="text"
+              placeholder="Enter reference number..."
+              value={referenceNumber}
+              onChange={(e) => setReferenceNumber(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && applyFilters()}
+              className="rounded-md border border-gray-300 px-3 py-1 text-sm focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+            />
+          )}
+
+          {filterType === "payroll" && (
+            <input
+              type="text"
+              placeholder="Enter payroll number..."
+              value={payrollNumber}
+              onChange={(e) => setPayrollNumber(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && applyFilters()}
+              className="rounded-md border border-gray-300 px-3 py-1 text-sm focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+            />
+          )}
+
+          {filterType === "date" && (
+            <div className="mt-2 flex items-center space-x-2 sm:mt-0">
+              <input
+                type="date"
+                value={fromDate}
+                onChange={(e) => setFromDate(e.target.value)}
+                className="rounded-md border border-gray-300 px-2 py-1 text-sm focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+              />
+              <span className="text-gray-500 dark:text-gray-400">to</span>
+              <input
+                type="date"
+                value={toDate}
+                onChange={(e) => setToDate(e.target.value)}
+                className="rounded-md border border-gray-300 px-2 py-1 text-sm focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+              />
+            </div>
+          )}
+
+          {filterType === "approval" && (
             <select
-              value={filterType}
-              onChange={(e) => setFilterType(e.target.value)}
+              value={approvalStatus}
+              onChange={(e) => setApprovalStatus(e.target.value)}
               className="rounded-md border border-gray-300 bg-white px-2 py-1 text-sm focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
             >
-              <option value="date">Filter by Date</option>
-              <option value="approval">Filter by Approval Status</option>
-              <option value="terms">Filter by Payment Terms</option>
+              <option value="" disabled>
+                Select Status
+              </option>
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="declined">Declined</option>
             </select>
+          )}
 
-            {/* Conditional inputs */}
-            {filterType === "date" && (
-              <div className="mt-2 flex items-center space-x-2 sm:mt-0">
-                <input
-                  type="date"
-                  value={fromDate}
-                  onChange={(e) => setFromDate(e.target.value)}
-                  className="rounded-md border border-gray-300 px-2 py-1 text-sm dark:border-gray-700 dark:bg-gray-950 dark:text-white"
-                />
-                <span className="text-gray-500 dark:text-gray-400">to</span>
-                <input
-                  type="date"
-                  value={toDate}
-                  onChange={(e) => setToDate(e.target.value)}
-                  className="rounded-md border border-gray-300 px-2 py-1 text-sm dark:border-gray-700 dark:bg-gray-950 dark:text-white"
-                />
-              </div>
-            )}
+          {filterType === "terms" && (
+            <select
+              value={paymentTerms}
+              onChange={(e) => setPaymentTerms(e.target.value)}
+              className="rounded-md border border-gray-300 bg-white px-2 py-1 text-sm focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+            >
+              <option value="" disabled>
+                Select terms
+              </option>
+              <option value="CASH">Cash</option>
+              <option value="CREDIT">Credit</option>
+              <option value="CASH AND CREDIT">Cash &amp; Credit</option>
+            </select>
+          )}
 
-            {filterType === "approval" && (
-              <select
-                value={approvalStatus}
-                onChange={(e) => setApprovalStatus(e.target.value)}
-                className="rounded-md border border-gray-300 bg-white px-2 py-1 text-sm focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
-              >
-                <option value="" disabled>
-                  Select Status
-                </option>
-                <option value="pending">Pending</option>
-                <option value="approved">Approved</option>
-                <option value="declined">Declined</option>
-              </select>
-            )}
-
-            {filterType === "terms" && (
-              <select
-                value={paymentTerms}
-                onChange={(e) => setPaymentTerms(e.target.value)}
-                className="rounded-md border border-gray-300 bg-white px-2 py-1 text-sm focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-white"
-              >
-                <option value="" disabled>
-                  Select terms
-                </option>
-                <option value="CASH">Cash</option>
-                <option value="CREDIT">Credit</option>
-              </select>
-            )}
-
-            {/* Action buttons */}
-            <div className="flex items-center gap-2">
-              <button
-                onClick={applyFilters}
-                className="mt-2 flex items-center space-x-1 rounded-md bg-gray-900 px-3 py-1 text-sm text-white hover:bg-gray-700 sm:mt-0 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
-              >
-                <Search className="h-3.5 w-3.5" />
-                <span>Search</span>
-              </button>
-              <button
-                onClick={clearAllFilters}
-                className="mt-2 flex items-center space-x-1 rounded-md bg-gray-700 px-3 py-1 text-sm text-white hover:bg-gray-800 sm:mt-0 dark:bg-gray-300 dark:text-gray-900 dark:hover:bg-white"
-              >
-                <SearchX className="h-3.5 w-3.5" />
-                <span>Clear</span>
-              </button>
-            </div>
+          {/* Action buttons */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={applyFilters}
+              className="mt-2 flex items-center space-x-1 rounded-md bg-gray-900 px-3 py-1 text-sm text-white hover:bg-gray-700 sm:mt-0 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
+            >
+              <Search className="h-3.5 w-3.5" />
+              <span>Search</span>
+            </button>
+            <button
+              onClick={clearAllFilters}
+              className="mt-2 flex items-center space-x-1 rounded-md bg-gray-700 px-3 py-1 text-sm text-white hover:bg-gray-800 sm:mt-0 dark:bg-gray-300 dark:text-gray-900 dark:hover:bg-white"
+            >
+              <SearchX className="h-3.5 w-3.5" />
+              <span>Clear</span>
+            </button>
           </div>
         </div>
-      )}
+      </div>
 
       {/* Active Filter Pills — only shown in full history view */}
-      {fetchAllData && filterPills.length > 0 && (
+      {filterPills.length > 0 && (
         <div className="mb-4 flex flex-wrap items-center gap-2 px-1">
           <span className="text-xs text-gray-500 dark:text-gray-400">
             Active filters:
@@ -367,69 +480,82 @@ export default function StaffPurchaseHistory({ fetchAllData = false }) {
             <table className="mb-6 min-w-full">
               <thead className="bg-gray-800 text-white">
                 <tr>
-                  <th
-                    className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
-                    title="Date Submitted"
-                  >
-                    Date Submitted
-                  </th>
+                  {visibleColumns.submissionDate && (
+                    <th
+                      className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                      title="Date Submitted"
+                    >
+                      Date Submitted
+                    </th>
+                  )}
                   <th
                     className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
                     title="Reference Number"
                   >
                     Reference Number
                   </th>
-                  <th
-                    className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
-                    title="Payment Terms"
-                  >
-                    Payment Terms
-                  </th>
-                  <th
-                    className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
-                    title="Mpesa Code"
-                  >
-                    Mpesa Code
-                  </th>
-                  <th
-                    className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
-                    title="Credit Period"
-                  >
-                    Credit Period
+                  <th className="px-6 py-3 text-left text-sm font-semibold">
+                    Staff
                   </th>
                   <th className="px-6 py-3 text-left text-sm font-semibold">
-                    PayrollNo
+                    Payroll
                   </th>
-                  <th
-                    className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
-                    title="Invoicing Location"
-                  >
-                    Invoicing Location
-                  </th>
-                  <th
-                    className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
-                    title="Payroll Approval"
-                  >
-                    Payroll Approval
-                  </th>
-                  <th
-                    className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
-                    title="HR Approval"
-                  >
-                    HR Approval
-                  </th>
-                  <th
-                    className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
-                    title="Credit Approval"
-                  >
-                    Credit Approval
-                  </th>
-                  <th
-                    className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
-                    title="Invoicing Approval"
-                  >
-                    Invoicing Approval
-                  </th>
+                  {visibleColumns.termsOfPayment && (
+                    <th
+                      className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                      title="Payment Terms"
+                    >
+                      Payment Terms
+                    </th>
+                  )}
+                  {visibleColumns.mpesaCode && (
+                    <th
+                      className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                      title="Mpesa Code"
+                    >
+                      Mpesa Code
+                    </th>
+                  )}
+                  {visibleColumns.creditPeriod && (
+                    <th
+                      className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                      title="Credit Period"
+                    >
+                      Credit Period
+                    </th>
+                  )}
+                  {visibleColumns.payrollApproval && (
+                    <th
+                      className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                      title="Payroll Approval"
+                    >
+                      Payroll Approval
+                    </th>
+                  )}
+                  {visibleColumns.hrApproval && (
+                    <th
+                      className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                      title="HR Approval"
+                    >
+                      HR Approval
+                    </th>
+                  )}
+                  {visibleColumns.creditApproval && (
+                    <th
+                      className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                      title="Credit Approval"
+                    >
+                      Credit Approval
+                    </th>
+                  )}
+                  {visibleColumns.invoicingApproval && (
+                    <th
+                      className="max-w-[130px] truncate px-6 py-3 text-left text-sm font-semibold"
+                      title="Invoicing Approval"
+                    >
+                      Invoicing Approval
+                    </th>
+                  )}
                   <th className="px-6 py-3 text-left text-sm font-semibold"></th>
                 </tr>
               </thead>
@@ -441,9 +567,11 @@ export default function StaffPurchaseHistory({ fetchAllData = false }) {
                       className="transition-colors duration-200 odd:bg-white even:bg-gray-50 hover:cursor-pointer hover:bg-blue-50 dark:odd:bg-gray-950 dark:even:bg-gray-900 dark:hover:bg-[#1a2332]"
                       onClick={() => handleTableRowClick(purchase.id)}
                     >
-                      <td className="max-w-[200px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900 dark:text-white">
-                        {formatDateLong(purchase.createdAt)}
-                      </td>
+                      {visibleColumns.submissionDate && (
+                        <td className="max-w-[200px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900 dark:text-white">
+                          {formatDateLong(purchase.createdAt)}
+                        </td>
+                      )}
                       <td
                         className="max-w-[200px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900 dark:text-white"
                         title={purchase.reference_number}
@@ -460,40 +588,57 @@ export default function StaffPurchaseHistory({ fetchAllData = false }) {
                         </Link>
                       </td>
                       <td
-                        className="max-w-[150px] truncate px-6 py-4 text-sm text-gray-900 dark:text-white"
-                        title={purchase.employee_payment_terms}
+                        className="max-w-[150px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900 dark:text-white"
+                        title={purchase.staffName}
                       >
-                        {purchase.employee_payment_terms}
+                        {purchase.staffName}
                       </td>
-                      <td
-                        className="max-w-[150px] truncate px-6 py-4 text-sm text-gray-900 dark:text-white"
-                        title={purchase.mpesa_code}
-                      >
-                        {purchase.mpesa_code || "N/A"}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
-                        {purchase.user_credit_period || "N/A"}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
+                      <td className="max-w-[150px] overflow-hidden px-6 py-4 text-sm text-ellipsis whitespace-nowrap text-gray-900 dark:text-white">
                         {purchase.payrollNo}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
-                        {purchase.invoicing_location}
-                      </td>
-                      <td className="px-6 py-4 text-sm">
-                        <TableApprovalStatus
-                          status={purchase.Payroll_Approval}
-                        />
-                      </td>
-                      <td className="px-6 py-4 text-sm">
-                        <TableApprovalStatus status={purchase.HR_Approval} />
-                      </td>
-                      <td className="px-6 py-4 text-sm">
-                        <TableApprovalStatus status={purchase.CC_Approval} />
-                      </td>
-                      <td className="px-6 py-4 text-sm">
-                        <TableApprovalStatus status={purchase.BI_Approval} />
-                      </td>
+                      {visibleColumns.termsOfPayment && (
+                        <td
+                          className="max-w-[150px] truncate px-6 py-4 text-sm text-gray-900 dark:text-white"
+                          title={purchase.employee_payment_terms}
+                        >
+                          {purchase.employee_payment_terms}
+                        </td>
+                      )}
+                      {visibleColumns.mpesaCode && (
+                        <td
+                          className="max-w-[150px] truncate px-6 py-4 text-sm text-gray-900 dark:text-white"
+                          title={purchase.mpesa_code}
+                        >
+                          {purchase.mpesa_code || "N/A"}
+                        </td>
+                      )}
+                      {visibleColumns.creditPeriod && (
+                        <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
+                          {purchase.user_credit_period || "N/A"}
+                        </td>
+                      )}
+                      {visibleColumns.payrollApproval && (
+                        <td className="px-6 py-4 text-sm">
+                          <TableApprovalStatus
+                            status={purchase.Payroll_Approval}
+                          />
+                        </td>
+                      )}
+                      {visibleColumns.hrApproval && (
+                        <td className="px-6 py-4 text-sm">
+                          <TableApprovalStatus status={purchase.HR_Approval} />
+                        </td>
+                      )}
+                      {visibleColumns.creditApproval && (
+                        <td className="px-6 py-4 text-sm">
+                          <TableApprovalStatus status={purchase.CC_Approval} />
+                        </td>
+                      )}
+                      {visibleColumns.invoicingApproval && (
+                        <td className="px-6 py-4 text-sm">
+                          <TableApprovalStatus status={purchase.BI_Approval} />
+                        </td>
+                      )}
                       <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-900 dark:text-white">
                         <div className="group ml-1.5 flex">
                           <button
