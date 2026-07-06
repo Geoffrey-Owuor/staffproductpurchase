@@ -17,8 +17,8 @@ export default function ReusableLayoutShell({ user, children }) {
   const mainMarginClass = showTopbar
     ? ""
     : sidebarOpen
-      ? "custom:left-58 custom:top-0 sm:rounded-tr-none"
-      : "custom:left-14 custom:top-0 sm:rounded-tr-none";
+      ? "custom:left-58 custom:top-0 custom:rounded-tr-none!"
+      : "custom:left-14 custom:top-0 custom:rounded-tr-none!";
 
   return (
     <UserContext.Provider value={user}>

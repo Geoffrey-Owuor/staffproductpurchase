@@ -14,29 +14,26 @@ export default function Header() {
         <nav className="navigation:flex hidden space-x-8 px-6">
           <a
             href="/#features"
-            className="flex items-center gap-2 text-gray-600 transition hover:text-red-600 dark:text-gray-300 dark:hover:text-red-400"
+            className="text-gray-600 transition hover:text-red-600 dark:text-gray-300 dark:hover:text-red-400"
           >
             Features
-            <ChevronDown className="mt-0.5 h-4 w-4" />
           </a>
           <a
             href="/#how-it-works"
-            className="flex items-center gap-2 text-gray-600 transition hover:text-red-600 dark:text-gray-300 dark:hover:text-red-400"
+            className="text-gray-600 transition hover:text-red-600 dark:text-gray-300 dark:hover:text-red-400"
           >
             How It Works
-            <ChevronDown className="mt-0.5 h-4 w-4" />
           </a>
           <Link
             href="/usermanual"
-            className="flex items-center gap-2 text-gray-600 transition hover:text-red-600 dark:text-gray-300 dark:hover:text-red-400"
+            className="text-gray-600 transition hover:text-red-600 dark:text-gray-300 dark:hover:text-red-400"
           >
             User Manual
-            <ArrowUpRight className="h-4 w-4" />
           </Link>
         </nav>
 
         {/* Auth Buttons  */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2">
           {/* Theme switcher in a fixed space div */}
           <div className="w-8">
             <ThemeToggleCompact />
@@ -45,7 +42,7 @@ export default function Header() {
             href="/login"
             className="rounded-full px-3 py-1.5 font-semibold text-red-600 transition hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-600/20"
           >
-            Log In
+            Login
           </Link>
           <Link
             href="/register"

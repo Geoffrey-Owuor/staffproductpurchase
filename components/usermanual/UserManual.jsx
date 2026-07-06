@@ -117,12 +117,12 @@ const UserManual = () => {
           </div>
 
           {/* Vertical Timeline */}
-          <div className="relative ml-3 border-l-2 border-gray-200 md:ml-6 dark:border-gray-800">
+          <div className="relative ml-3 border-l border-gray-200 md:ml-6 dark:border-gray-800">
             {manualSteps.map((step) => (
               <div key={step.id} className="relative mb-12 ml-8 md:ml-12">
                 {/* Timeline Dot / Icon */}
                 <span className="absolute -left-[52px] flex h-10 w-10 items-center justify-center rounded-full bg-red-50 ring-8 ring-white md:-left-[68px] dark:bg-red-950 dark:ring-gray-950">
-                  <step.icon className="h-5 w-5 text-red-600 dark:text-red-400" />
+                  <step.icon className="h-5 w-5 text-red-600 dark:text-red-300" />
                 </span>
 
                 {/* Content Card */}
