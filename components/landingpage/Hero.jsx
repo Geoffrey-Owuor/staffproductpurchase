@@ -11,7 +11,7 @@ export default function Hero() {
           {/* Left content */}
           <div className="mb-10 w-full lg:mb-0 lg:w-1/2">
             {/* Landing Logo - Reserving a fixed height for it */}
-            <div className="">
+            <div className="h-40 md:h-50">
               <LandingLogo />
             </div>
 

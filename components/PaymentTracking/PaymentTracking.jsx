@@ -385,7 +385,7 @@ export default function PaymentTracking() {
 
         {/* Filter Controls */}
         <div className="mx-auto mb-3 max-w-2xl">
-          <div className="mt-3 flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
+          <div className="mt-3 flex flex-col justify-center space-y-4 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-4">
             {/* Filter type selector */}
             <select
               value={filterType}

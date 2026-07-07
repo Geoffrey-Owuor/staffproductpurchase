@@ -76,25 +76,25 @@ export default function ApprovalCards() {
           <>
             {userRole !== "staff" && (
               <div className="hidden items-center space-x-2 lg:flex">
-                <div className="flex items-center gap-2 rounded-xl bg-slate-200 p-3 dark:bg-slate-900">
+                <div className="flex items-center gap-2 rounded-xl bg-slate-200 p-3 shadow-sm hover:shadow-md dark:bg-slate-900">
                   <span className="font-mono text-xl font-semibold">
                     {counts.total > 500 ? "500+" : counts.total}
                   </span>{" "}
                   <TrendingUp />
                 </div>
-                <div className="flex items-center gap-2 rounded-xl bg-red-50 p-3 dark:bg-slate-700">
+                <div className="flex items-center gap-2 rounded-xl bg-red-50 p-3 shadow-sm hover:shadow-md dark:bg-slate-700">
                   <span className="font-mono text-xl font-semibold">
                     {counts.totalDeclined > 500 ? "500+" : counts.totalDeclined}
                   </span>{" "}
                   <MessageCircleX />
                 </div>
-                <div className="flex items-center gap-2 rounded-xl bg-yellow-50 p-3 dark:bg-gray-800">
+                <div className="flex items-center gap-2 rounded-xl bg-yellow-50 p-3 shadow-sm hover:shadow-md dark:bg-gray-800">
                   <span className="font-mono text-xl font-semibold">
                     {totalPending > 500 ? "500+" : totalPending}
                   </span>{" "}
                   <ClockFading />
                 </div>
-                <div className="flex items-center gap-2 rounded-xl bg-blue-50 p-3 dark:bg-slate-800">
+                <div className="flex items-center gap-2 rounded-xl bg-blue-50 p-3 shadow-sm hover:shadow-md dark:bg-slate-800">
                   <span className="font-mono text-xl font-semibold">
                     {counts.totalApproved > 500 ? "500+" : counts.totalApproved}
                   </span>{" "}
