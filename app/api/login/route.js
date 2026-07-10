@@ -39,7 +39,7 @@ export async function POST(request) {
       user.department,
     );
 
-    return Response.json({ success: true, role: user.role });
+    return Response.json({ success: true, role: user.role, id: user.id });
   } catch (error) {
     console.error("Login Error:", error);
     return Response.json(

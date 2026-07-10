@@ -4,10 +4,11 @@ import { getCurrentUser } from "@/app/lib/auth";
 export async function GET(request) {
   const user = await getCurrentUser();
 
-  if (!user) {
+  //Check if current user is authenticated
+  if (!user.role) {
     return Response.json(
-      { message: "No user role found or session invalid" },
-      { status: 403 },
+      { message: "User is not authenticated" },
+      { status: 401 },
     );
   }
 
@@ -37,10 +38,8 @@ export async function GET(request) {
     }
 
     //This first if statement is always true for staff roles
-    if (user.role === "staff") {
-      whereClauses.push(`user_id = ?`);
-      params.push(user.id);
-    }
+    whereClauses.push(`user_id = ?`);
+    params.push(user.id);
 
     if (filterType === "date" && fromDate && toDate) {
       whereClauses.push(`DATE(createdAt) BETWEEN ? AND ?`);
