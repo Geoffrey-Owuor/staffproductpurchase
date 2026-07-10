@@ -4,15 +4,20 @@ import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 
 // Only check the server on focus if X minutes have passed since the last check
-const THROTTLE_INTERVAL = 1000 * 60 * 10; // 10 minutes
+const THROTTLE_INTERVAL = 1000 * 60 * 30; // 30 minutes
 
 export function useAuthSync(user) {
   const router = useRouter();
-  const lastCheckedRef = useRef(Date.now());
+  const lastCheckedRef = useRef(null);
 
   useEffect(() => {
     const localUserId = user?.id;
     if (!localUserId) return;
+
+    // Set the initial timestamp when the component mounts/user changes
+    if (lastCheckedRef.current === null) {
+      lastCheckedRef.current = Date.now();
+    }
 
     // 1. Initialize Modern Cross-Tab communication channel
     const authChannel = new BroadcastChannel("auth_session_sync");
@@ -36,7 +41,7 @@ export function useAuthSync(user) {
     // 2. Throttled server fallback (Handles absolute session expiration or logouts on other devices)
     const checkSessionFromServer = async () => {
       const now = Date.now();
-      if (now - lastCheckedRef.current < THROTTLE_INTERVAL) return; // Skip if checked recently
+      if (now - lastCheckedRef < THROTTLE_INTERVAL) return; // Skip if checked recently
 
       lastCheckedRef.current = now;
 
