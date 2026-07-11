@@ -36,3 +36,6 @@ CREATE INDEX idx_request_closure ON purchasesinfo(request_closure);
 CREATE INDEX idx_last_changelog_viewed_at ON users(last_changelog_viewed_at);
 CREATE INDEX idx_reset_token ON users(reset_token);
 CREATE INDEX idx_reset_token_expiry ON users(reset_token_expiry);
+
+alter table users add column is_active boolean default true;
+alter table users add column password_attempts smallint default 0;
