@@ -15,7 +15,7 @@ export async function PUT(request, { params }) {
 
   user = await getCurrentUser();
 
-  if (!user) {
+  if (!user.role) {
     return Response.json({ message: "Unauthorized" }, { status: 401 });
   }
 

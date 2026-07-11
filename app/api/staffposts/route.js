@@ -14,7 +14,7 @@ export async function POST(request) {
   try {
     // 1. Get the logged-in user
     user = await getCurrentUser();
-    if (!user) {
+    if (!user.role) {
       return Response.json(
         { success: false, message: "Not authenticated" },
         { status: 401 },

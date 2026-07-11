@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useRouter } from "next/navigation";
 import { ChevronsUpDown, LogOutIcon, Palette, Settings } from "lucide-react";
 import SettingsPage from "../Settings/SettingsPage";
 import { useUser } from "@/context/UserContext";
@@ -33,7 +32,6 @@ export default function UserMenu({ hideMobileMenu, menuOpen }) {
       : "top-full right-0";
 
   const user = useUser();
-  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [showUserSettings, setShowUserSettings] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
@@ -65,6 +63,10 @@ export default function UserMenu({ hideMobileMenu, menuOpen }) {
       });
 
       if (response.ok) {
+        // Notify other tabs to redirect to login
+        const authChannel = new BroadcastChannel("auth_session_sync");
+        authChannel.postMessage({ action: "LOGOUT" });
+        authChannel.close();
         window.location.href = "/login";
       }
     } catch (error) {

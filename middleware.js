@@ -9,48 +9,64 @@ async function verifyEdgeJWT(token) {
     const { payload } = await jwtVerify(token, SECRET);
     return { valid: true, role: payload.role };
   } catch {
+    // Catching expired or tampered tokens
     return { valid: false };
   }
 }
 
-// Define paths to redirect if already logged in
 const redirectIfLoggedInPaths = [
-  "/",
   "/login",
   "/register",
   "/forgot-password",
+  "/reset-password",
+];
+
+// Define protected base routes
+const protectedDashboards = [
+  "/staffdashboard",
+  "/payrolldashboard",
+  "/hrdashboard",
+  "/ccdashboard",
+  "/bidashboard",
 ];
 
 export default async function middleware(request) {
   const { pathname } = request.nextUrl;
+  const sessionToken = request.cookies.get("session_token")?.value;
 
-  // Redirect authenticated users away from login/register/forgot-password
+  // 1. HANDLE PROTECTED DASHBOARD ROUTES
+  const isProtectedRoute = protectedDashboards.some((dash) =>
+    pathname.startsWith(dash),
+  );
+
+  if (isProtectedRoute) {
+    // Case A: No token at all
+    if (!sessionToken) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+
+    const { valid, role } = await verifyEdgeJWT(sessionToken);
+
+    // Case B: Token has expired or is invalid
+    if (!valid) {
+      const response = NextResponse.redirect(new URL("/login", request.url));
+      response.cookies.delete("session_token"); // Hard clean from browser
+      return response;
+    }
+
+    // Case C: Valid token, but trying to access someone else's dashboard (Role Enforcement)
+    if (!pathname.startsWith(`/${role}dashboard`)) {
+      return NextResponse.redirect(new URL(`/${role}dashboard`, request.url));
+    }
+  }
+
+  // 2. HANDLE PUBLIC AUTH PATHS (Your existing redirect logic)
   if (redirectIfLoggedInPaths.includes(pathname)) {
-    const sessionToken = request.cookies.get("session_token")?.value;
-
     if (sessionToken) {
       const { valid, role } = await verifyEdgeJWT(sessionToken);
 
       if (valid) {
-        let redirectPath = null;
-        switch (role) {
-          case "staff":
-            redirectPath = "/staffdashboard";
-            break;
-          case "hr":
-            redirectPath = "/hrdashboard";
-            break;
-          case "cc":
-            redirectPath = "/ccdashboard";
-            break;
-          case "bi":
-            redirectPath = "/bidashboard";
-            break;
-        }
-
-        if (redirectPath) {
-          return NextResponse.redirect(new URL(redirectPath, request.url));
-        }
+        return NextResponse.redirect(new URL(`/${role}dashboard`, request.url));
       }
     }
   }
@@ -58,7 +74,16 @@ export default async function middleware(request) {
   return NextResponse.next();
 }
 
-// Only run in this specific routes
+// CRITICAL: Update matcher to monitor your dashboard routes
 export const config = {
-  matcher: ["/", "/login", "/register", "/forgot-password"],
+  matcher: [
+    "/login",
+    "/register",
+    "/forgot-password",
+    "/reset-password",
+    "/staffdashboard/:path*",
+    "/hrdashboard/:path*",
+    "/ccdashboard/:path*",
+    "/bidashboard/:path*",
+  ],
 };
