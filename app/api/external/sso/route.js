@@ -65,7 +65,7 @@ export async function GET(request) {
 
     // Check if the user exists or not
     const [user] = await pool.execute(
-      `SELECT id, name, payrollNo, department, role FROM users WHERE email = ? LIMIT 1`,
+      `SELECT id, name, payrollNo, department, role, is_active FROM users WHERE email = ? LIMIT 1`,
       [email],
     );
 
@@ -76,6 +76,11 @@ export async function GET(request) {
 
     // User exists assign the user object
     const userObject = user[0];
+
+    // User account is disabled
+    if (!userObject.is_active) {
+      return NextResponse.redirect(new URL("/login", baseUrl));
+    }
 
     //Create the user session
     await createSession(
