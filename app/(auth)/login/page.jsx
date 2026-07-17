@@ -38,11 +38,6 @@ export default function LoginPage() {
       if (response.ok) {
         const data = await response.json();
 
-        // Broadcast the new login to other tabs
-        const authChannel = new BroadcastChannel("auth_session_sync");
-        authChannel.postMessage({ action: "LOGIN", userId: data.id });
-        authChannel.close();
-
         // Determine dashboard path based on role
         let dashboardPath;
         if (data.role === "payroll") {
