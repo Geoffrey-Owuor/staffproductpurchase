@@ -119,7 +119,7 @@ export default function MobileHeader() {
               <ChevronLeft className="h-5 w-5" />
             </button>
             <Link
-              href="/manual"
+              href="/usermanual"
               target="_blank"
               title="Check manual"
               aria-label="Check manual"
