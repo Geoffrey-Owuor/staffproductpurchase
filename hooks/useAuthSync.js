@@ -3,9 +3,6 @@
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 
-// Only check the server on focus if X minutes have passed since the last check
-const THROTTLE_INTERVAL = 1000 * 60 * 30; // 30 minutes
-
 export function useAuthSync(user) {
   const router = useRouter();
   const lastCheckedRef = useRef(null);
@@ -26,48 +23,19 @@ export function useAuthSync(user) {
       const { action, userId } = event.data;
 
       if (action === "LOGOUT") {
-        // Another tab logged out, immediately clean up and redirect
-        router.push("/login");
-        router.refresh();
+        window.location.href = "/login";
       } else if (action === "LOGIN" && userId !== localUserId) {
-        // Another tab logged in as a different user (Imposter caught)
-        await fetch("/api/logout", { method: "POST" });
-        router.push("/login");
+        // Another tab logged in as a different user - reload the tab
+        window.location.reload();
       }
     };
 
     authChannel.addEventListener("message", handleCrossTabMessage);
 
-    // 2. Throttled server fallback (Handles absolute session expiration or logouts on other devices)
-    const checkSessionFromServer = async () => {
-      const now = Date.now();
-      if (now - lastCheckedRef < THROTTLE_INTERVAL) return; // Skip if checked recently
-
-      lastCheckedRef.current = now;
-
-      try {
-        const response = await fetch("/api/check-session");
-        const data = await response.json();
-
-        if (data.loggedIn === false) {
-          router.push("/login");
-          router.refresh();
-        } else if (data.loggedIn === true && data.userId !== localUserId) {
-          await fetch("/api/logout", { method: "POST" });
-          router.push("/login");
-        }
-      } catch (error) {
-        console.error("Error checking session status:", error);
-      }
-    };
-
-    window.addEventListener("focus", checkSessionFromServer);
-
     // Cleanup listeners on unmount
     return () => {
       authChannel.removeEventListener("message", handleCrossTabMessage);
       authChannel.close();
-      window.removeEventListener("focus", checkSessionFromServer);
     };
   }, [user, router]);
 }

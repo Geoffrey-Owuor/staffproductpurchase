@@ -1,5 +1,4 @@
 import ThemeToggle from "../ThemeProviders/ThemeToggle";
-import { BrainCog } from "lucide-react";
 
 const PagesFooter = () => {
   return (
@@ -7,16 +6,8 @@ const PagesFooter = () => {
       {/* Centered Part */}
       <div className="absolute inset-0 top-0 flex items-center justify-center space-x-1 text-sm md:top-7">
         <span className="text-gray-500 dark:text-gray-400">
-          © {new Date().getFullYear()} Hotpoint Appliances Ltd. Built by
+          © {new Date().getFullYear()} Hotpoint Appliances Ltd.
         </span>
-        <a
-          href="https://jeff-portfolio-web.vercel.app"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-1 text-gray-500 hover:text-gray-600 hover:underline dark:hover:text-gray-400"
-        >
-          <span className="font-semibold">Jeff</span>
-        </a>
       </div>
 
       {/* ThemeToggle pinned right */}

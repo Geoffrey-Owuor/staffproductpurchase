@@ -6,10 +6,18 @@ import UserContext from "@/context/UserContext";
 import { useAuthSync } from "@/hooks/useAuthSync";
 import { useSidebarStore } from "@/store/useSidebarStore";
 import ChangeLogAlert from "@/components/ChangeLog/ChangeLogAlert";
+import { useEffect } from "react";
 
 export default function ReusableLayoutShell({ user, children }) {
   const sidebarOpen = useSidebarStore((state) => state.sidebarOpen);
   const showTopbar = useSidebarStore((state) => state.showTopbar);
+
+  useEffect(() => {
+    // Broadcast the new login to other tabs
+    const authChannel = new BroadcastChannel("auth_session_sync");
+    authChannel.postMessage({ action: "LOGIN", userId: user.id });
+    authChannel.close();
+  }, [user.id]);
 
   useAuthSync(user);
 
